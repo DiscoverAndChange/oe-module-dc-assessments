@@ -1,0 +1,4 @@
+vendor
+#public/frontend/*.js
+#public/frontend/assets/images/
+#public/frontend/fontawesome*

@@ -1,0 +1,44 @@
+// we don't use our old css framework anymore but we are going to leave this here.
+.form-control-lg[type="radio"] + label:before, .form-control-lg[type="radio"] + label:after {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+.form-control-lg[type="checkbox"] + label:before, .form-control-lg[type="checkbox"] + label:after {
+    width: 2.0rem;
+    height: 2.0rem;
+    left: -.5rem;
+}
+
+.form-control-lg[type="radio"] + label, .form-control-lg[type="checkbox"] + label {
+    line-height: 2.0rem;
+}
+
+dac-sidebar .side-nav .collapsible .card .card-header a h5 {
+    font-weight: 500;
+}
+.navbar logo img {
+    max-height: 3.5rem;
+}
+
+// we bump up the z-index as this component's dropdown seems to have issues.
+/** TODO: stephen submit a bug report as the Client Create's save button is hidden briefly
+without this z-index fix **/
+user-selector {
+    z-index: 100;
+}
+dac-exercise {
+    .exercise {
+        th {
+            background-color: rgba($color: lighten(black, .5), $alpha: .5);
+        }
+        .editable:hover {
+            background-color: rgba($color: lighten(black, .3), $alpha: .2);
+        }
+    }
+    table {
+        border: 1px solid black;
+    }
+}
+
+@import "card";
+@import "toast";

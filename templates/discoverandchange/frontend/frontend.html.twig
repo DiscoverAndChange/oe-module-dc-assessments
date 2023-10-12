@@ -1,0 +1,152 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>{{ "Assessment Intake"|xlt }}</title>
+    <style>
+        .browser-upgrade {
+            display: none;
+        }
+        body, html {
+            height: 100%;
+        }
+        .app-loading {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+        .app-loading .spinner {
+            height: 200px;
+            width: 200px;
+            animation: rotate 2s linear infinite;
+            transform-origin: center center;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+        }
+        .app-loading .spinner .path {
+            stroke-dasharray: 1, 200;
+            stroke-dashoffset: 0;
+            animation: dash 1.5s ease-in-out infinite;
+            stroke-linecap: round;
+            stroke: #ddd;
+        }
+        @keyframes rotate {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        @keyframes dash {
+            0% {
+                stroke-dasharray: 1, 200;
+                stroke-dashoffset: 0;
+            }
+            50% {
+                stroke-dasharray: 89, 200;
+                stroke-dashoffset: -35px;
+            }
+            100% {
+                stroke-dasharray: 89, 200;
+                stroke-dashoffset: -124px;
+            }
+        }
+    </style>
+    <!-- TODO: @adunsulag Note: this does not work with reloading page.  Needs to fix this-->
+    <base href="{{ baseHref|attr }}">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+    <meta name="description" itemprop="description" content="{{ "Assessment Delivery System"|xlt }}" />
+    <!-- Matomo -->
+    <script type="text/javascript">
+        var _paq = window._paq || [];
+    </script>
+    <script>
+        (function(window) {
+            window.AuthToken = '{{AuthToken}}';
+            window.dacAppConfig = {
+                authToken: {{ AuthToken|js_escape }}
+                ,clientId: {{ clientId|js_escape }}
+                ,fhirUrl: {{ fhirUrl|json_encode }}
+                ,apiUrl: {{ apiUrl|json_encode }}
+                ,logoSrc: {{ smartStyles.logo_primary|json_encode }}
+            };
+        })(window);
+    </script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body class="mat-typography" data-client-id="{{ clientId|attr }}" data-fhir-url="{{ fhirUrl|attr }}" data-api-url="{{ apiUrl|attr }}">
+<div class="browser-upgrade">
+    <p>{{ "You are running an unsupported browser or browser version. Upgrade to the latest version of Microsoft Edge, Chrome, Safari,
+        or Firefox (Internet Explorer 11 is not supported) to have the best results of using our system."|xlt }}
+    <p>
+        <a href="https://www.whatismybrowser.com/guides/how-to-update-your-browser/auto">{{ "How do I upgrade my browser?"|xlt}} {{ "Click here"|xlt }}</a>
+    </p>
+</div>
+<app-root [isAdmin]="true">
+    <div class="preloader">
+        <div class="status">&nbsp;</div>
+    </div>
+    <!-- loading layout replaced by app after startupp -->
+    <div class="app-loading">
+        <div class="logo"></div>
+        <svg class="spinner" viewBox="25 25 50 50">
+            <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+        </svg>
+    </div>
+</app-root>
+<!-- rather than bundling modernizr we separate it so we can display browser warnings.  We don't want a js in the bundle to fail and not be able
+  to tell someone to upgrade -->
+<script src="modernizr.js"></script>
+<script src="https://checkout.stripe.com/checkout.js"></script>
+<script src="runtime-es2015.js" type="module"></script><script src="runtime-es5.js" nomodule defer></script><script src="polyfills-es5.js" nomodule defer></script><script src="polyfills-es2015.js" type="module"></script><script src="styles-es2015.js" type="module"></script><script src="styles-es5.js" nomodule defer></script><script src="scripts.js" defer></script><script src="vendor-es2015.js" type="module"></script><script src="vendor-es5.js" nomodule defer></script><script src="main-es2015.js" type="module"></script><script src="main-es5.js" nomodule defer></script>
+<style>
+    /**
+    {
+    "color_background": "#f8f9fa",
+    "color_error": "#9e2d2d",
+    "color_highlight": "#69b5ce",
+    "color_modal_backdrop": "",
+    "color_success": "#498e49",
+    "color_text": "#000",
+    "dim_border_radius": "6px",
+    "dim_font_size": "13px",
+    "dim_spacing_size": "20px",
+    "font_family_body": "'Lato','Helvetica',sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol','Noto Color Emoji'",
+    "font_family_heading": "'Lato','Helvetica',sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol','Noto Color Emoji'"
+}
+
+     */
+    html .dc-blue-skin {
+        background: {{ smartStyles.color_background|default("var(--light)") }};
+    }
+    html .dc-blue-skin .primary-color {
+     background-color: {{ smartStyles.color_background|default("var(--light)") }} !important;
+    }
+    html .dc-blue-skin .footer-info {
+        color: {{smartStyles.color_text_navigation|default("var(--dark)") }};
+    }
+    :root {
+        --nav-bg-color: {{ smartStyles.color_background|default("var(--light)") }};
+        --nav-text-color: {{smartStyles.color_text_navigation|default("var(--dark)") }};
+        --nav-text-active-color: {{smartStyles.color_success|default("var(--gray-dark)") }};
+        --nav-text-color-highlight: {{smartStyles.color_highlight|default("var(--dark)") }};
+        --font-family-sans-serif: {{ smartStyles.font_family_body }};
+    }
+    html body {
+        font-family: var(--font-family-sans-serif);
+    }
+</style>
+</body>
+
+</html>

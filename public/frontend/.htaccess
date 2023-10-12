@@ -1,0 +1,15 @@
+##
+## ACCESS RULES FOR Frontend
+## DirectoryIndex index.php
+
+
+RewriteEngine On
+## SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
+
+# Front-controller (exclude static resources)
+RewriteRule ^index\.php$ - [L]
+## exclude the assets directory
+RewriteCond %{REQUEST_URI} !^/(assets)/
+## exclude any files with an extension that we use in our application.
+RewriteCond %{REQUEST_URI} !(\.eot|\.ttf|\.woff|\.svg|\.png|\.jpg|\.gif|\.css|\.js|\.ico)$
+RewriteRule . index.php [L]

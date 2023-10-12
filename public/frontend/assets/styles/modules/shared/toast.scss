@@ -1,0 +1,49 @@
+/*
+ *   Copyright (c) 2023 Discover and Change @author Stephen Nielson <snielson@discoverandchange.com>
+ *   All rights reserved.
+ *   For License information see LICENSE.md in the root folder of this project.
+ */
+// toast option.
+.cdk-overlay-container {
+  .alert {
+    position: relative;
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+    padding: 10px 15px 10px 15px;
+    width: 290px;
+    // background: #fff;
+    border: none;
+    // border-width: 1px;
+    // border-style: solid;
+    // border-color: #dddddd #d6d6d6 #cfcfcf;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.11);
+    color: #fff;
+    font-weight: 400;
+    border-radius: 0;
+
+    .alert-type-icon {
+      margin-right: 10px;
+    }
+    .alert-message {
+      flex-grow: 1;
+    }
+
+    // not sure I need these anymore
+    &.alert-success {
+      @extend .text-success;
+    }
+
+    &.alert-info {
+      @extend .text-info;
+    }
+
+    &.alert-warning {
+      @extend .text-warning;
+    }
+
+    &.alert-danger {
+      @extend .text-danger;
+    }
+  }
+}

@@ -1,0 +1,118 @@
+.mat-select-panel-wrap {
+  flex-basis: 100%;
+}
+
+.mat-select-panel {
+  background: #fff;
+
+  min-width: 112px;
+  max-width: 280px;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-top: 0;
+  padding-bottom: 0;
+  max-height: 256px;
+  min-width: 100%;
+  border-radius: 4px;
+  outline: 0;
+}
+
+.mat-select-panel:not([class*=mat-elevation-z]) {
+  box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12);
+}
+
+.mat-select-panel .mat-optgroup-label, .mat-select-panel .mat-option {
+  font-size: inherit;
+  line-height: 3em;
+  height: 3em;
+}
+.mat-option.mat-active {
+  color: rgba(0,0,0,.87);
+}
+
+.mat-option.mat-active, .mat-option.mat-selected:not(.mat-option-multiple):not(.mat-option-disabled), .mat-option:focus:not(.mat-option-disabled), .mat-option:hover:not(.mat-option-disabled) {
+  // background: rgba(0,0,0,.04);
+  background: #4285f4;
+  color: #fff;
+  margin: 5px;
+}
+.mat-option.mat-selected:not(.mat-option-multiple):not(.mat-option-disabled), .mat-option:focus:not(.mat-option-disabled), .mat-option:hover:not(.mat-option-disabled) {
+  box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12);
+}
+
+.mat-option {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  line-height: 48px;
+  height: 48px;
+  padding: 0 16px;
+  text-align: left;
+  text-decoration: none;
+  max-width: 100%;
+  position: relative;
+  cursor: pointer;
+  outline: none;
+  display: flex;
+  flex-direction: row;
+  max-width: 100%;
+  box-sizing: border-box;
+  align-items: center;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mat-option {
+  color: rgba(0,0,0,.87);
+}
+
+.mat-focus-indicator, .mat-mdc-focus-indicator {
+  position: relative;
+}
+
+.mat-ripple {
+  overflow: hidden;
+  position: relative;
+}
+
+.mat-option {
+  font-family: Roboto,Helvetica Neue,sans-serif;
+  font-size: 16px;
+
+  .mat-option-ripple {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute;
+    pointer-events: none;
+  }
+}
+
+.mat-option-text {
+  display: inline-block;
+  flex-grow: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+.mat-form-field-flex {
+    display: inline-flex;
+    align-items: baseline;
+    box-sizing: border-box;
+    width: 100%;
+}
+.mat-form-field-appearance-fill .mat-form-field-flex {
+  background-color: rgba(0,0,0,.04);
+}
+
+user-selector {
+  display: block;
+  background-color: rgba(0,0,0,.04);
+  padding: 10px;
+  border-bottom: 1px solid #000;
+  &:hover {
+    border-bottom: 2px solid #000;
+  }
+}

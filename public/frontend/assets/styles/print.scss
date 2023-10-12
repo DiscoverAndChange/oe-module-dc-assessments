@@ -1,0 +1,306 @@
+// good reference here: https://zao.is/blog/2017/09/21/how-to-troubleshoot-print-style-sheets/
+@media print {
+
+    @page {
+       size: letter portrait;
+       margin: .5in;
+    }
+
+    @page :blank {
+        @top-center { content: "This page is intentionally left blank" }
+      }
+
+    html body {
+
+      .sidenav-container .mat-sidenav-content {
+        overflow: visible;
+      }
+      .mat-drawer-container {
+        overflow: inherit;
+      }
+        dac-site-container {
+          .main-content {
+            padding: 0 !important;
+            margin: 0;
+          }
+        }
+        // &.fixed-sn main {
+        //     padding: 0;
+        //     margin: 0;
+        // }
+        .avoid-page-break-after {
+            page-break-after: avoid;
+        }
+        .page-break-inside-avoid {
+            page-break-inside: avoid;
+        }
+        .footer-container,.sidenav,.dac-navbar-container {
+          display: none;
+        }
+        /** Make sure our margin-left is reset from the sidenav **/
+        .sidenav-content {
+          margin-left: 0 !important;
+        }
+
+        app-flagged-questions-list {
+            .card .card.card-cascade {
+                margin-bottom: 1rem;
+            }
+            .card .card.card-cascade:last-child {
+                margin-bottom: 0rem;
+            }
+        }
+
+        app-scales-summary-chart
+        ,canvas {
+            page-break-inside: avoid;
+        }
+        app-summary-scales-chart
+        ,app-summary-scales-chart.card.card-body {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+
+            canvas {
+                display: block;
+                border-radius: 0.3rem;
+                border: 1px solid rgba(0, 0, 0, .3);
+                // margin: .25rem;
+                // padding: .25rem;
+                background-color: white;
+            }
+        }
+
+        app-assessment-result-view {
+            app-therapist-scale-results {
+                .report-print-page {
+                    page-break-after: always;
+                }
+            }
+        }
+
+        .single-row-chart {
+            margin-left: auto;
+            margin-right: auto;
+            // .scale-chart-container {
+            //     width: 600px;
+            // }
+
+            // padding-left: 0;
+            // padding-right: 0;
+        }
+        .p-large-chart {
+            .scale-chart-container {
+                width: 690px;
+            }
+        }
+        .p-small-chart {
+            // padding: 0px;
+            // margin: 0px;
+            // width: 25%;
+
+            .scale-chart-container {
+                max-width: 330px;
+            }
+            // &:first-child {
+            //     margin-bottom: 1em;
+            //     padding-left: 0;
+            // }
+            // &:last-child {
+            //     padding-right: 0;
+            // }
+            // app-scales-summary-chart {
+            //     padding: 0px;
+            //     margin: 0px;
+            // }
+        }
+
+        .force-page-break {
+            page-break-after: always;
+        }
+        .mb-print-0 {
+            margin-bottom: 0 !important;
+        }
+        .mt-print-0 {
+            margin-bottom: 0 !important;
+        }
+
+        /** Only break if the header is visible and we are printing it **/
+        .scalePageHeader.d-print-block {
+            page-break-before: always;
+        }
+
+        .d-print-block-visible {
+            display: block !important;
+        }
+        .d-report-print-page {
+            display: block !important;
+            // margin-top: 1.5rem;
+            page-break-after: always;
+            page-break-inside: avoid;
+        }
+
+
+        dac-sidebar, dac-navbar {
+            display: none;
+        }
+
+
+        .itemsContainer.display-therapist-notes {
+            // we only show this content when the print flag is set.
+            .therapist-note-print-content {
+                display: block;
+            }
+        }
+
+        .itemsContainer {
+
+            /** We can't get the page breaks to work properly on the thead as it gets cut off or duplicated
+            all over the place when trying to print with the flexbox containers, so we just hide the repeating.
+            **/
+            table {
+                .secondary-color,.primary-color
+                {
+                    td, th {
+                        color: #000;
+                    }
+                }
+                // thead, tfoot { display: table-row-group }
+            }
+            .cover-letter {
+                margin-bottom: 0px;
+                p {
+                    font-size: 14.4px;
+                }
+                li {
+                    font-size: 13px;
+                }
+                .card-body {
+                    padding-bottom: 0px;
+
+                    ul:last-child {
+                        margin-bottom: 0px;
+                    }
+                }
+                .bullet-section {
+                    margin-bottom: 4px;
+                }
+            }
+            div.table > div.row > div.cell-data.text-small {
+                font-size: 10px;
+            }
+            .report-banner {
+                max-height: 28vh;
+                &.report-banner-small {
+                    max-height: 20vh;
+                }
+            }
+            .promotion {
+                .card-body{
+                    margin: 0px;
+                    padding: 0px;
+                    img {
+                        max-width: 75% !important;
+                    }
+                }
+
+            }
+
+            .report-item-component {
+                display: block !important;
+
+                page-break-after: always;
+
+                &:last-child {
+                    page-break-after: avoid;
+                }
+            }
+            .card {
+                .card-body {
+                    padding-left: 0;
+                    padding-right: 0;
+                    padding-bottom: 0;
+                    h3 {
+                        font-size: 100%;
+                    }
+                }
+                .card .secondary-gradient.view.gradient-card-header h3 {
+                    font-size: 100%;
+                }
+            }
+            .force-page-break .card:last-child
+            {
+
+                padding-bottom: 0px !important;
+                margin-bottom: 0px !important;
+                .card-body {
+                    margin-bottom: 0px !important;
+                    padding-bottom: 0px !important;
+                }
+                div.table {
+                    margin-bottom: 0px !important;
+                    div.row:last-child .cell-data {
+                        margin-bottom: 0px;
+                        padding-bottom: 0px;
+                    }
+                }
+            }
+
+            .report-controls {
+                display: none;
+            }
+
+            // tr {
+            //     break-inside:avoid;
+            //     page-break-inside: avoid !important;
+            // }
+            // table { page-break-inside:auto }
+            // tr    { page-break-inside:avoid; page-break-after:auto }
+            // table thead, table thead tr {
+            //     page-break-inside: avoid;
+            // }
+            // table th {
+            //     page-break-inside:avoid;
+            // }
+
+            .page-block-center {
+                padding-left: 9rem;
+                padding-right: 9rem;
+                padding-top: 9rem;
+            }
+
+            .card .card .secondary-gradient.view.gradient-card-header {
+                margin-top: 1rem;
+            }
+
+            /** Make the charts take up less space when printing on the top and bottom **/
+            app-therapist-scale-results app-summary-scales-chart.card.card-body {
+                padding: 0px !important;
+            }
+
+            div.table > div.row:last-child
+            {
+                padding-bottom: 0;
+                margin-bottom: 0;
+            }
+
+            app-pcl-assessment-results pcl-criteria-icon {
+                margin-bottom: 0px;
+            }
+        }
+
+        app-scale-results-summary {
+            .section.section-page-break {
+                display: block;
+                page-break-after: always;
+            }
+        }
+
+        dac-exercise,dac-article {
+            .table thead.thead-dark th {
+                color: #000; // make the text black for our headers to stand out
+            }
+        }
+    }
+
+}

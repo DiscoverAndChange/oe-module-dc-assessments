@@ -1,0 +1,42 @@
+.apsats-skin {
+    .home-banner.hm-black-light {
+        background-image:url(/assets/images/background-aquateal-full.jpg);
+        background-attachment: fixed;
+        height: 600px;
+        background-position-x: center;
+        background-size: cover;
+        .full-bg-img {
+            background-color: rgba(0, 0, 0, 0.0);
+        }
+
+        .h1-responsive {
+            text-shadow: 1px 2px #000;
+            font-size: 56px;
+            font-weight: 700;
+        }
+    }
+
+    .col.report-banner-container {
+        padding: 0px 15px;
+        text-align: center;
+    }
+    .report-banner {
+        object-fit: initial;
+        width: initial;
+        max-width: 100%;
+        max-height: 40vh;
+        margin-bottom: 2vh;
+    }
+
+    dac-signup {
+        .cta-section {
+            // TODO: stephen fix this image here.
+            background: url(/assets/images/background-aquateal-full.jpg) no-repeat center fixed;
+            -webkit-background-size: cover;
+            background-size: cover;
+        }
+        .cta-section .color-overlay {
+            background: (0, 0, 0, 0.0);
+        }
+    }
+}

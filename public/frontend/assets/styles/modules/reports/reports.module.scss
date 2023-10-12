@@ -1,0 +1,18 @@
+@import "addo-scale-results.component";
+@import "pcl-assessment-results.component";
+@import "pcl-criteria-icon.component";
+@import "report-viewer.component";
+@import "scale-questions-list.component";
+@import "scale-results-sections-list.component";
+@import "scale-results-table-summary.component";
+@import "scale-summary.component";
+@import "therapist-scale-results.component";
+@import "assessment-result-view.component";
+
+
+// overall styles
+// also itemsContainer applies to multiple report items.
+ // we don't show note content meant for printing unless the right flag is set
+.itemsContainer .therapist-note-print-content {
+    display: none;
+}

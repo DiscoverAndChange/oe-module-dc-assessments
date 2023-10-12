@@ -1,0 +1,158 @@
+
+$skins-border-color: #000;
+$skins-side-nav-hover-transition: #000;
+
+/** color of the flagged questions **/
+$flaggedColor: red;
+$aquaColor: rgb(40, 197, 197);
+$aquaColorGradientEnd: darken($aquaColor, 10%);
+$aquaGreenColor: rgb(140, 198, 62);
+
+$dcPrimaryColor: #3d5977;
+$dcSecondaryColor: #2b3034;
+
+$blackGrayPrimaryColor: rgb(29, 33, 32);
+$blackGraySecondaryColor: #5A5C51;
+$blackGraySecondaryBtnColor: rgb(186, 144, 119);
+
+$brownShadePrimaryColor: #d7cec7;
+$brownShadeSecondaryColor: #565656;
+$brownShadeSecondaryBtnColor: #565656;
+
+// Width of the sidebar navigation
+$sidenavWidth: 240px;
+
+// $blackGraySecondaryColor: rgb(186, 144, 119);
+
+// Reponsive Headings
+$responsive-secondary-headings: (
+    "xs": (
+      "h3": 105%,
+    ),
+    "sm": (
+      "h3": 115%,
+    ),
+    "md": (
+      "h3": 120%,
+    ),
+    "lg": (
+      "h3": 120%,
+    ),
+    "xl": (
+      "h3": 140%,
+    ),
+  );
+
+/** We overwrite and customize the skins we want here... */
+$skins: (
+    "aqua-green": (
+        "skin-primary-color": $aquaColor,
+        "skin-secondary-color": $aquaGreenColor,
+        "skin-navbar": #fff,
+        "skin-footer-color": #6f7178,
+        "skin-accent": $aquaColor,
+        "skin-flat": $aquaColor,
+        "skin-sidenav-item": $aquaColor,
+        "skin-sidenav-item-hover": rgba(0,0,0,0.05),
+        "skin-gradient-start": #ababab,
+        "skin-gradient-end": #fff,
+        "skin-mask-slight": rgba(255, 255, 255, 0.5),
+        "skin-mask-light": rgba(255, 255, 255, 0.65),
+        "skin-mask-strong": rgba(255, 255, 255, 0.8),
+        "skin-sn-child": $aquaColor,
+        "skin-btn-primary": $aquaColor,
+        "skin-btn-secondary": $aquaGreenColor,
+        "skin-btn-default": #454545,
+        "skin-text": #424242,
+        "skin-primary-gradient": $aquaColor,
+        "skin-secondary-gradient": $aquaGreenColor,
+        "skin-gradient-darken": 10%,
+        "skin-registration-input-text": #fff,
+        "skin-registration-input-color": rgba($aquaGreenColor, .40)
+      )
+    ,"dc-blue": (
+      "skin-primary-color": $dcPrimaryColor,
+      "skin-secondary-color": $dcSecondaryColor,
+      "skin-navbar": #fff,
+      "skin-footer-color": #6f7178,
+      "skin-accent": $dcPrimaryColor,
+      "skin-flat": $dcPrimaryColor,
+      "skin-sidenav-item": $dcPrimaryColor,
+      "skin-sidenav-item-hover": rgba(0,0,0,0.05),
+      "skin-gradient-start": #ababab,
+      "skin-gradient-end": #fff,
+      "skin-mask-slight": rgba(255, 255, 255, 0.5),
+      "skin-mask-light": rgba(255, 255, 255, 0.65),
+      "skin-mask-strong": rgba(255, 255, 255, 0.8),
+      "skin-sn-child": $dcPrimaryColor,
+      "skin-btn-primary": $dcPrimaryColor,
+      "skin-btn-secondary": $dcSecondaryColor,
+      "skin-btn-default": #454545,
+      "skin-text": #424242,
+      "skin-primary-gradient": $dcPrimaryColor,
+      "skin-secondary-gradient": $dcSecondaryColor,
+      "skin-gradient-darken": 10%,
+      "skin-sidenav-item-icon-color": #fff,
+      "skin-registration-input-text": #fff,
+      "skin-registration-input-color": rgba(0, 0, 255, .10)
+    )
+    ,"black-gray": (
+      "skin-primary-color": $blackGrayPrimaryColor,
+      "skin-secondary-color": $blackGraySecondaryColor,
+      "skin-navbar": #fff,
+      "skin-footer-color": #6f7178,
+      "skin-accent": $blackGrayPrimaryColor,
+      "skin-flat": $blackGrayPrimaryColor,
+      "skin-sidenav-item": $blackGrayPrimaryColor,
+      "skin-sidenav-item-hover": rgba(0,0,0,0.05),
+      "skin-gradient-start": #ababab,
+      "skin-gradient-end": #fff,
+      "skin-mask-slight": rgba(255, 255, 255, 0.5),
+      "skin-mask-light": rgba(255, 255, 255, 0.65),
+      "skin-mask-strong": rgba(255, 255, 255, 0.8),
+      "skin-sn-child": $blackGrayPrimaryColor,
+      "skin-btn-primary": $blackGrayPrimaryColor,
+      "skin-btn-secondary": $blackGraySecondaryBtnColor,
+      "skin-btn-default": #454545,
+      "skin-text": #424242,
+      "skin-primary-gradient": $blackGrayPrimaryColor,
+      "skin-secondary-gradient": $blackGraySecondaryColor,
+      "skin-gradient-darken": 10%,
+      "skin-sidenav-item-icon-color": #fff,
+      "skin-registration-input-text": #fff,
+      "skin-registration-input-color": rgba(0, 0, 255, .10)
+    )
+    ,"brown-shade": (
+      "skin-primary-color": $brownShadePrimaryColor,
+      "skin-secondary-color": $brownShadeSecondaryColor,
+      "skin-navbar": #fff,
+      "skin-footer-color": #6f7178,
+      "skin-accent": $brownShadePrimaryColor,
+      "skin-flat": $brownShadePrimaryColor,
+      "skin-sidenav-item": $brownShadePrimaryColor,
+      "skin-sidenav-item-hover": rgba(0,0,0,0.05),
+      "skin-gradient-start": #ababab,
+      "skin-gradient-end": #fff,
+      "skin-mask-slight": rgba(255, 255, 255, 0.5),
+      "skin-mask-light": rgba(255, 255, 255, 0.65),
+      "skin-mask-strong": rgba(255, 255, 255, 0.8),
+      "skin-sn-child": $brownShadePrimaryColor,
+      "skin-btn-primary": $brownShadePrimaryColor,
+      "skin-btn-secondary": $brownShadeSecondaryBtnColor,
+      "skin-btn-default": #454545,
+      "skin-text": #424242,
+      "skin-primary-gradient": $brownShadePrimaryColor,
+      "skin-secondary-gradient": $brownShadeSecondaryColor,
+      "skin-gradient-darken": 10%,
+      "skin-sidenav-item-icon-color": #fff,
+      "skin-registration-input-text": #fff,
+      "skin-registration-input-color": rgba(0, 0, 255, .10)
+    )
+  );
+
+  :root {
+    --nav-bg-color: var(--light);
+    --nav-text-color: var(--dark);
+    --nav-text-active-color: var(--gray-dark);
+    --nav-text-color-highlight: rgba(0,0,0, 0.75);
+  }

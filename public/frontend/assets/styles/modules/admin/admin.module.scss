@@ -1,0 +1,60 @@
+.wrapper {
+    display: flex;
+    align-items: stretch;
+}
+
+dac-assessment-tokens-list {
+    display: block;
+}
+app-client-edit {
+    .deleteBtn {
+        margin-top: -25%;
+    }
+}
+
+shop-items {
+    .shoppingActionBarFiller, .shoppingActionBar {
+        height: 80px;
+    }
+
+    .shoppingActionBar {
+        position: fixed;
+        z-index: 100;
+        bottom: 0px;
+        height: 80px;
+    }
+}
+
+view-order {
+    label,.item-header {
+        font-weight: 700;
+    }
+    .items-header {
+        border-bottom: 1px solid black;
+    }
+    .items-total {
+        border-top: 1px solid black;
+    }
+    .items-total-footer {
+        border-bottom: 1px solid black;
+    }
+}
+app-admin {
+    // .side-nav {
+    //     .logo-wrapper {
+    //         background-color: #fff;
+    //         height: 54px;
+    //         box-shadow: 2px 4px 5px 0 rgba(0, 0, 0, 0.16), 0px 4px 10px 0 rgba(0, 0, 0, 0.12);
+    //     }
+    // }
+    .mat-sidenav-content router-outlet + * {
+      margin-left: 15px;
+      display: flex;
+      flex-direction: column;
+    }
+    .text-editor-window {
+        min-height: 80vw;
+        width: 100%;
+    }
+
+}

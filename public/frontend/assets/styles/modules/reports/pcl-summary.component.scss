@@ -1,0 +1,17 @@
+app-pcl-summary {
+    .criteriaContainer {
+        cursor: pointer;
+    }
+    pcl-criteria-icon {
+        font-size: 1.375rem;
+    }
+    .glyphicon {
+        color: green;
+    }
+    .checked .glyphicon {
+        color: rgba(204,0,0, .75);
+    }
+    .scale-name {
+        margin-bottom: 2px;
+    }
+}

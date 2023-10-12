@@ -1,0 +1,43 @@
+dac-question,dac-question-dropdown
+, dac-question-single-checkbox
+, dac-question-checklist {
+    [type="radio"] + label:before, [type="checkbox"] + label:before {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+
+    [type="radio"] + label, [type="checkbox"] + label {
+        line-height: 2.0rem;
+    }
+}
+
+.question-item:nth-child(even) {
+    .horizontal {
+        background-color: rgba(0, 0, 0, .05);
+    }
+}
+
+dac-question-checklist {
+    .row:nth-child(even) {
+        background-color: rgba(0, 0, 0, .05);
+    }
+}
+.questions-header h6{
+    font-size: .80rem;
+    text-align: center;
+
+}
+.questions-header{
+    position: sticky;
+    position: -webkit-sticky;
+    top: 49px;
+    opacity: 1.0;
+    z-index: 9999;
+    /** since we are in a flexbox we need to set our align-self to make sticky work **/
+    /** Note we assume all parent containers have overflow:visible otherwise sticky wont work **/
+    align-self: flex-start;
+}
+
+.journalContainer .journal {
+    min-height: 15vh;
+}

@@ -1,0 +1,105 @@
+
+{#
+# Authorization Server Member
+#
+# @package   OpenEMR
+# @link      http://www.open-emr.org
+# @author    Jerry Padgett <sjpadgett@gmail.com>
+# @copyright Copyright (c) 2020 Jerry Padgett <sjpadgett@gmail.com>
+# @license   https://github.com/openemr/openemr/blob/master/LICENSE GNU General Public License 3
+#}
+{% extends "oauth2/oauth2-login.html.twig" %}
+{% block title %}{{ "OpenEMR Authorization"|xlt }}{% endblock %}
+{% block scripts %}
+<style>
+    .oauth2-bg-container {
+        background-color: var(--light);
+        color: var(--white);
+    }
+</style>
+{% endblock %}
+{% block preContent %}
+    <div class="row w-100">
+        <div class="col-12 col-sm-10 col-lg-7 mt-2 mt-sm-5 mt-lg-3 ml-auto mr-auto rounded oauth2-bg-container">
+            <div class="row w-100 mb-3">
+                <div class="col-lg-6 ml-auto mr-auto text-center">
+                    {% if dacPrimaryLogo is not empty %}
+                        <img class="img-fluid login-logo" src="{{ dacPrimaryLogo }}">
+                    {% elseif applicationName is not empty %}
+                        <h1 class="text-center">{{ applicationName|text }}</h1>
+                    {% else %}
+                        <h1 class="text-center">{{ "OpenEMR"|xlt }}</h1>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block content %}
+    <div class="row w-100 justify-content-center align-items-center">
+        <div class="col-12 col-sm-10 col-lg-7 ml-auto mr-auto  oauth2-bg-container">
+            <h5 class="text-center">{{ "Sign into your account in order to connect to the following application" }}</h5>
+            <h5 class="text-center font-weight-bold">{{ client.name }}</h5>
+        </div>
+    </div>
+
+    <div class="row w-100 justify-content-center align-items-center">
+        <div class="col-12 col-sm-10 col-lg-7 ml-auto mr-auto oauth2-bg-container">
+            {% if mfaRequired %}
+                {% include "discoverandchange/oauth2/oauth2-mfa.html.twig" %}
+            {% else %}
+            <ul class="nav nav-tabs" role="tablist">
+                {% if patientRoleSupport is not empty %}
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#patient" role="tab" aria-controls="patient" aria-selected="true">{{ "Patient Login"|xlt  }}</a>
+                </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link {% if patientRoleSupport is empty %}active{% endif %}" data-toggle="tab" href="#provider" role="tab" aria-controls="provider" aria-selected="false">{{ "Provider Login"|xlt }}</a>
+                </li>
+            </ul>
+            <div class="card tab-content mb-3">
+                {% if patientRoleSupport is not empty %}
+                <div class="card-body tab-pane active" id="patient" role="tabpanel">
+                    {% include "discoverandchange/oauth2/oauth2-login-form.html.twig" with {loginRole:"patient"} %}
+                </div>
+                {% endif %}
+                <div class="card-body tab-pane {% if patientRoleSupport is not empty %}d-none{% endif %}" id="provider" role="tabpanel">
+                    {% include "discoverandchange/oauth2/oauth2-login-form.html.twig" with {loginRole:"provider"} %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <script>
+        // listen to DOMContentLoaded event
+        // grab the .nav-link elements and add a click event listener to each
+        // in the click listener grab the href attribute and grab the element with that id
+        // hide all the other .tab-pane classes by adding the .d-none class
+        // remove the .d-none class from the element with the id that matches the href attribute
+        (function(window) {
+            window.document.addEventListener("DOMContentLoaded", function() {
+                var navLinks = document.querySelectorAll(".nav-link");
+                navLinks.forEach(function(navLink) {
+                    navLink.addEventListener("click", function(evt) {
+                        navLinks.forEach(function(navLink) {
+                            navLink.classList.remove("active");
+                            navLink.attributes["aria-selected"].value = "false";
+                        });
+                        evt.target.classList.add("active");
+                        evt.target.attributes["aria-selected"].value = "true";
+                        var href = navLink.getAttribute("href");
+                        var tabPane = document.querySelector(href);
+                        var tabPanes = document.querySelectorAll(".tab-pane");
+                        tabPanes.forEach(function(tabPane) {
+                            tabPane.classList.add("d-none");
+                            tabPane.classList.remove("active");
+                        });
+                        tabPane.classList.remove("d-none");
+                        tabPane.classList.add("active");
+                    });
+                });
+            });
+        })(window);
+    </script>
+{% endblock %}

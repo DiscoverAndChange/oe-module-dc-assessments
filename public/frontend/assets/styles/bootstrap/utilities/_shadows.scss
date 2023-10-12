@@ -1,0 +1,7 @@
+ // stylelint-disable declaration-no-important
+ // brought this in from Bootstrap 4.6 so we don't upgrade everything but we can at least handle shadows.
+
+.shadow-sm { box-shadow: $box-shadow-sm !important; }
+.shadow { box-shadow: $box-shadow !important; }
+.shadow-lg { box-shadow: $box-shadow-lg !important; }
+.shadow-none { box-shadow: none !important; }

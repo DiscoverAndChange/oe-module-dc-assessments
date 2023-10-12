@@ -1,0 +1,164 @@
+dac-report-viewer,dac-asset-result-view,app-assessment-result-view {
+    display: flex;
+
+    .col.report-banner-container {
+        padding: 0px;
+        margin: 0px;
+    }
+    .report-banner {
+        object-fit: cover;
+        width: 100%;
+        max-height: 40vh;
+        margin-bottom: 2vh;
+    }
+
+     .card .card .secondary-gradient.view.gradient-card-header {
+        padding: 1rem .1rem;
+        h3 {
+            /** TODO: stephen this isn't responsive... so we need to fix this. **/
+            padding: .1rem;
+            font-size: 140%;
+        }
+    }
+    ol.references li {
+        font-size: .6rem;
+    }
+
+    h1.report-name {
+        font-size: 1.25em;
+    }
+    .report-item-component {
+        display: flex;
+        margin-bottom: 1.5rem;
+        &:last-child {
+            margin-bottom: 0;
+        }
+        & > .card {
+          flex-grow: 1;
+        }
+    }
+
+    p, li {
+        font-size: 14px;
+    }
+
+    .fillin {
+        min-width: 200px;
+        border-bottom: 1px solid black;
+        min-height: 2em;
+    }
+
+    .form-horizontal label {
+        font-size: 1.25em;
+    }
+
+    .plan-recovery .section-end {
+        margin-bottom: 1.5em;
+    }
+    .scale-name {
+        color: #ee6855;
+        font-weight: 700;
+    }
+    .form-horizontal input[type='checkbox'] {
+        height: 1.25em;
+        width:1.25em;
+        margin-right: 1.25em;
+        display: inline-block;
+    }
+    address {
+        font-size: .9em;
+    }
+    .fullwidth {
+        width: 100%;
+    }
+    .content-vertical-container {
+        position: relative;
+    }
+    .content-vertical.vertical-center {
+        position: absolute;
+        top: 50%;
+    }
+    .signature {
+        margin-top: 2em;
+    }
+    .well {
+        background-color: white;
+    }
+
+    app-html-content-item,
+    app-scale-results-sections-list {
+        display: block;
+    }
+
+    @for $i from 1 through 3 {
+        h#{$i} {
+            text-transform: uppercase;
+        }
+        .card .card-body h#{$i} {
+            padding-left: 0;
+        }
+    }
+    // h1 {
+    //     font-size: 2.5em;
+    // }
+    // h2 {
+    //     font-size: 2em;
+    // }
+    // h3 {
+    //     font-size: 1.25em;
+    //     font-weight: 700;
+    // }
+    // h4 {
+    //     font-size: 1.10em;
+    //     font-weight: 700;
+    //     color: gray;
+    // }
+
+
+    .page-block-center {
+        padding-left: 1rem;
+        padding-right: 1rem;
+        padding-top: 1rem;
+    }
+
+    /** one off items to make things look more even. **/
+    .ace-expand {
+        .card-body {
+            padding-bottom: 3rem;
+        }
+    }
+    app-scale-range-content .card-header
+    ,app-scale-range-content .card-footer {
+        cursor: pointer;
+    }
+
+    .single-row-chart {
+        height: 75%;
+    }
+
+    app-summary-scales-chart
+    {
+        display: block;
+        &.card {
+            display: block;
+        }
+    }
+    .p-small-chart {
+        height: 75%;
+        margin-bottom: 0;
+        // padding-left: 0px;
+        // padding-right: 0px;
+    }
+}
+// @media (min-width: 768px) {
+//     dac-report-viewer {
+//         .p-small-chart {
+//             &:first-child {
+//                 padding-left: 1em;
+//             }
+//             &:last-child {
+//                 padding-right: 1em;
+//             }
+//         }
+//     }
+// }

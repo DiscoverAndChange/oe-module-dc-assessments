@@ -1,0 +1,140 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Assessment Intake</title>
+  <style type="text/css">
+    .browser-upgrade {
+      display: none;
+    }
+    body, html {
+      height: 100%;
+    }
+    .app-loading {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+    }
+    .app-loading .spinner {
+      height: 200px;
+      width: 200px;
+      animation: rotate 2s linear infinite;
+      transform-origin: center center;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+    }
+    .app-loading .spinner .path {
+      stroke-dasharray: 1, 200;
+      stroke-dashoffset: 0;
+      animation: dash 1.5s ease-in-out infinite;
+      stroke-linecap: round;
+      stroke: #ddd;
+    }
+    @keyframes rotate {
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+    @keyframes dash {
+      0% {
+        stroke-dasharray: 1, 200;
+        stroke-dashoffset: 0;
+      }
+      50% {
+        stroke-dasharray: 89, 200;
+        stroke-dashoffset: -35px;
+      }
+      100% {
+        stroke-dasharray: 89, 200;
+        stroke-dashoffset: -124px;
+      }
+    }
+  </style>
+  <!-- TODO: @adunsulag Note: this does not work with reloading page.  Needs to fix this-->
+  <base href="/">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+  <meta name="description" itemprop="description" content="Intake System for Addo Recovery" />
+  <!-- Matomo -->
+    <script type="text/javascript">
+    // TODO: @adunsulag look at re-enabling the matomo tracker later.
+    var _paq = window._paq || [];
+    /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+    // _paq.push(['trackPageView']);
+    // _paq.push(['enableLinkTracking']);
+    // (function() {
+    //   var u="https://metrics.discoverandchange.com/"; // TODO: stephen when we are ready we need this to go to the right spot.
+    //         // reset
+    //         _paq.push(['setRequestMethod', 'POST']);
+    //   _paq.push(['setTrackerUrl', u+'js/']);
+    //   _paq.push(['setSiteId', '1']);
+    //   var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    //   g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'js/'; s.parentNode.insertBefore(g,s);
+    // })();
+  </script>
+  <!-- Start of discoverandchange Zendesk Widget script -->
+  <!-- <script>
+    window.zESettings = {
+      webWidget: {
+        helpCenter: {
+          filter: {
+            section: '360004563092-Training'
+          }
+        }
+      }
+    };
+
+  </script>
+  <script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=c6e76f72-faf8-4c1e-b82f-318322cbbca7"> </script> -->
+  <!-- End of discoverandchange Zendesk Widget script -->
+  <!-- End Matomo Code -->
+  <script>
+    (function(window) {
+      window.AuthToken = '{{AuthToken}}';
+    })(window);
+  </script>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body class="mat-typography" data-smart-style-url="https://localhost:9300/oauth2/default/smart/smart-style">
+  <div class="browser-upgrade">
+    <p>You are running an unsupported browser or browser version. Upgrade to the latest version of Microsoft Edge, Chrome, Safari,
+      or Firefox (Internet Explorer 11 is not supported) to have the best results of using our system.
+    <p>
+      <a href="https://www.whatismybrowser.com/guides/how-to-update-your-browser/auto">How do I upgrade my browser? Click here</a>
+    </p>
+    <p>
+      If you need further help contact our technical support at <a href="mailto:info@discoverandchange.com">info@discoverandchange.com</a> or call us
+      at (385) 233-9626.
+    </p>
+  </div>
+  <app-root [isAdmin]="true">
+    <div class="preloader">
+      <div class="status">&nbsp;</div>
+    </div>
+    <!-- loading layout replaced by app after startupp -->
+    <div class="app-loading">
+        <div class="logo"></div>
+        <svg class="spinner" viewBox="25 25 50 50">
+          <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+        </svg>
+      </div>
+  </app-root>
+  <!-- rather than bundling modernizr we separate it so we can display browser warnings.  We don't want a js in the bundle to fail and not be able
+    to tell someone to upgrade -->
+  <script src="modernizr.js"></script>
+  <script src="https://checkout.stripe.com/checkout.js"></script>
+<script src="runtime-es2015.js" type="module"></script><script src="runtime-es5.js" nomodule defer></script><script src="polyfills-es5.js" nomodule defer></script><script src="polyfills-es2015.js" type="module"></script><script src="styles-es2015.js" type="module"></script><script src="styles-es5.js" nomodule defer></script><script src="scripts.js" defer></script><script src="vendor-es2015.js" type="module"></script><script src="vendor-es5.js" nomodule defer></script><script src="main-es2015.js" type="module"></script><script src="main-es5.js" nomodule defer></script></body>
+
+</html>

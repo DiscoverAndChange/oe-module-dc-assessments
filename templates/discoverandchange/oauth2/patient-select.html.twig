@@ -1,0 +1,20 @@
+{% extends "oauth2/patient-select.html.twig" %}
+{% block title %}{{ "OpenEMR Authorization"|xlt }}{% endblock %}
+{# add the pre content header and leave everything the same #}
+{% block preContent %}
+    <div class="row w-100">
+        <div class="col-12 col-sm-10 col-lg-7 mt-2 mt-sm-5 mt-lg-3 ml-auto mr-auto bg-light text-dark rounded">
+            <div class="row w-100 mb-3">
+                <div class="col-lg-6 ml-auto mr-auto">
+                    {% if dacPrimaryLogo is not empty %}
+                        <img class="img-fluid login-logo" src="{{ dacPrimaryLogo }}">
+                    {% elseif applicationName is not empty %}
+                        <h1 class="text-center">{{ applicationName|text }}</h1>
+                    {% else %}
+                        <h1 class="text-center">{{ "OpenEMR"|xlt }}</h1>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

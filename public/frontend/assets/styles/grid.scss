@@ -1,0 +1,24 @@
+.no-gutter {
+
+    /** SRC: https://gist.github.com/berfarah/b50c9e8872c9c44044dc **/
+    &.row
+    ,&.container
+    ,&.container-fluid {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    @for $i from 1 through 12 {
+        > .col-xs-#{$i} {
+            padding-left: 0;
+            padding-right: 0;
+        }
+    }
+}
+
+.flex-grow-1 {
+  flex-grow: 1
+}
+.flex-grow-0 {
+  flex-grow: 0
+}

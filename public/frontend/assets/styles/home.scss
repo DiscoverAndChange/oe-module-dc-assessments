@@ -1,0 +1,17 @@
+.page-footer .footer-info {
+    min-height: 50px;
+    line-height: 50px;
+    text-align: center;
+    font-size: 0.9rem;
+}
+.home-banner {
+    margin-top: -10px;
+    background-image:url(/assets/images/railroad.jpg);
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    height: 600px;
+    .hm-black-light .full-bg-img {
+        background-color: rgba(0, 0, 0, 0.3);
+    }
+}

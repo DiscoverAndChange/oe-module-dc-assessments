@@ -1,0 +1,171 @@
+{
+    "AssessmentBlob": [
+        {
+            "_uid": "phptest-1",
+            "_name": "Test Assessment Name",
+            "_description": "This is a test assessment",
+            "_scales": [],
+            "_question_sets": [],
+            "_display_order": 1,
+            "_enabled": 1,
+            "_instructions": "These are test instructions 3",
+            "_display_client_results": true,
+            "_resourcesURL": "",
+            "_creator": "Stephen Nielson",
+            "_creatorUrl": "https://www.discoverandchange.com",
+            "_isPublic": false
+        },
+        {
+            "_uid": "phptest-2",
+            "_name": "Test Assessment Name 2",
+            "_description": "This is a test assessment 2",
+            "_scales": [],
+            "_question_sets": [],
+            "_display_order": 1,
+            "_enabled": 1,
+            "_instructions": "These are test instructions 3",
+            "_display_client_results": true,
+            "_resourcesURL": "",
+            "_creator": "Stephen Nielson",
+            "_creatorUrl": "https://www.discoverandchange.com",
+            "_isPublic": false
+        },
+        {
+            "_scales": [
+                {
+                    "_id": "f49774df-4b38-2fe7-b5e0-7316de2984d4",
+                    "_name": "General Well Being",
+                    "_instructions": "",
+                    "_answer_start_value": 1,
+                    "_display_order": 1,
+                    "_ranges": [
+                        {
+                            "_id": "1f9faba5-f4a5-ee2f-e0c1-efd1279eda39",
+                            "_rangeStart": 0,
+                            "_rangeEnd": 1,
+                            "_name": "Normal",
+                            "_displayName": "normal",
+                            "_clientContent": "You are in the normal range.",
+                            "_content": "You are in the normal range.",
+                            "_mediaType": "video",
+                            "_mediaURL": null,
+                            "_assignmentURL": null
+                        },
+                        {
+                            "_id": "d06a400b-9fdd-c886-d487-8c07e423be9e",
+                            "_rangeStart": 2,
+                            "_rangeEnd": 3,
+                            "_name": "High",
+                            "_displayName": "high",
+                            "_clientContent": "You are in the high range",
+                            "_content": "You are in the high range",
+                            "_mediaType": "video",
+                            "_mediaURL": null,
+                            "_assignmentURL": null
+                        }
+                    ],
+                    "_deleted": false,
+                    "_multiplier": 1,
+                    "_negativeToPositiveRanges": false,
+                    "_type": "Sum",
+                    "_gradingData": {},
+                    "_includeInReports": true,
+                    "_rollUpSubScaleQuestions": false,
+                    "_descriptionClient": "general well being",
+                    "_subScaleIds": []
+                }
+            ],
+            "_question_sets": [
+                {
+                    "_display_conditions": [],
+                    "_id": "b3f11ffd-e71f-95f1-ff43-2d173bf6e2cb",
+                    "_title": "General Questions",
+                    "_display_order": 0,
+                    "_questions": [
+                        {
+                            "_id": "f0aa732d-8047-23c1-cfb1-9ad51727bb43",
+                            "_prompt": "Are you satisfied with your general well being?",
+                            "_display_order": 0,
+                            "_is_reversed": false,
+                            "_scale": {
+                                "_id": "f49774df-4b38-2fe7-b5e0-7316de2984d4",
+                                "_name": "General Well Being",
+                                "_instructions": "",
+                                "_answer_start_value": 1,
+                                "_display_order": 1,
+                                "_ranges": [
+                                    {
+                                        "_id": "1f9faba5-f4a5-ee2f-e0c1-efd1279eda39",
+                                        "_rangeStart": 0,
+                                        "_rangeEnd": 1,
+                                        "_name": "Normal",
+                                        "_displayName": "normal",
+                                        "_clientContent": "You are in the normal range.",
+                                        "_content": "You are in the normal range.",
+                                        "_mediaType": "video",
+                                        "_mediaURL": null,
+                                        "_assignmentURL": null
+                                    },
+                                    {
+                                        "_id": "d06a400b-9fdd-c886-d487-8c07e423be9e",
+                                        "_rangeStart": 2,
+                                        "_rangeEnd": 3,
+                                        "_name": "High",
+                                        "_displayName": "high",
+                                        "_clientContent": "You are in the high range",
+                                        "_content": "You are in the high range",
+                                        "_mediaType": "video",
+                                        "_mediaURL": null,
+                                        "_assignmentURL": null
+                                    }
+                                ],
+                                "_deleted": false,
+                                "_multiplier": 1,
+                                "_negativeToPositiveRanges": false,
+                                "_subScales": {},
+                                "_type": "Sum",
+                                "_gradingData": {},
+                                "_includeInReports": true,
+                                "_rollUpSubScaleQuestions": false,
+                                "_descriptionClient": "general well being"
+                            },
+                            "_skip_scoring": false,
+                            "_display_index": 0,
+                            "_flaggedCondition": null,
+                            "_is_flagged": false,
+                            "_computedScore": null,
+                            "_customLabels": [],
+                            "_type": 1
+                        }
+                    ],
+                    "_labels": [
+                        {
+                            "_id": "0a0b3d57-ddf9-ac8f-49bf-8d0e3eeff9cb",
+                            "_display_order": 0,
+                            "_label": "No"
+                        },
+                        {
+                            "_id": "c7d1da35-3c60-f1eb-e5ee-10dc7b362e53",
+                            "_display_order": 0,
+                            "_label": "Yes"
+                        }
+                    ],
+                    "_answer_start_value": 1,
+                    "_display_type": "MultipleChoiceGrid",
+                    "_instructions": "Fill these out please"
+                }
+            ],
+            "_display_order": 1,
+            "_enabled": 1,
+            "_instructions": "These are test instructions 3",
+            "_display_client_results": true,
+            "_name": "My New Assessment 3",
+            "_uid": "phptest-3",
+            "_resourcesURL": "",
+            "_creator": "Stephen Nielson",
+            "_creatorUrl": "https://www.discoverandchange.com",
+            "_description": "This is a test description",
+            "_isPublic": false
+        }
+    ]
+}

@@ -1,0 +1,203 @@
+/** We'd overwrite the variables if they had handled this consistently... **/
+/** TODO: stephen This is very hacky to get the skins fixed, see if we can find a better way **/
+$enable-transitions: true;
+
+@import "bootstrap/mixins/transition";
+
+/** Define our primary and secondary colors we are working with **/
+@each $name, $data in $skins {
+  $skin-primary-color: map-get($data, skin-primary-color);
+  $skin-secondary-color: map-get($data, skin-secondary-color);
+  $skin-btn-primary: map-get($data, skin-btn-primary);
+  $skin-btn-secondary: map-get($data, skin-btn-secondary);
+
+  // remove the color printing on our print skins.
+  @media print {
+    html {
+      .#{$name}-skin {
+        background-color: transparent;
+      }
+    }
+  }
+
+  .#{$name}-skin {
+    background-color: $skin-primary-color;
+
+    &.seamless {
+      background-color: transparent;
+    }
+
+    .primary-color {
+      background-color: $skin-primary-color !important;
+    }
+
+    .btn-primary {
+      background-color: $skin-btn-primary !important;
+    }
+
+    .btn-secondary {
+      background-color: $skin-btn-secondary !important;
+    }
+
+    .primary-gradient {
+      background-color: $skin-primary-color;
+
+      background: linear-gradient(
+          40deg,
+          $skin-primary-color,
+          darken($skin-primary-color, map-get($data, skin-gradient-darken))
+      );
+    }
+    .badge-primary {
+      background-color: $skin-primary-color;
+    }
+    .secondary-color {
+      background-color: $skin-secondary-color !important;
+    }
+
+    .badge-secondary {
+      background-color: $skin-secondary-color;
+    }
+
+    .secondary-gradient {
+      background-color: $skin-secondary-color;
+      background: linear-gradient(
+          40deg,
+          $skin-secondary-color,
+          darken($skin-secondary-color, map-get($data, skin-gradient-darken))
+      );
+    }
+
+    .nav-tabs {
+      &.primary-color,&.primary-gradient {
+        .nav-link.active {
+          background-color: lighten( $skin-primary-color, 20%);
+        }
+      }
+      &.secondary-color,&.secondary-gradient {
+        .nav-link.active {
+          background-color: lighten( $skin-secondary-color, 20%);
+        }
+      }
+    }
+
+    .side-nav .fa {
+      color: map-get($data, skin-sidenav-item-icon-color);
+    }
+
+
+    dac-signup {
+      .colored-line {
+          background: $skin-primary-color;
+        }
+        .colored-text {
+          color: $skin-primary-color !important;
+        }
+        .color-bg {
+          background: $skin-primary-color;
+        }
+        a {
+          color: $skin-primary-color;
+        }
+        .non-sticky .navbar-nav > li > a:hover {
+          color: $skin-primary-color;
+        }
+        .standard-button {
+          background: $skin-primary-color;
+          color: #ffffff;
+        }
+        .standard-button:hover {
+          color: #ffffff;
+          background: #0186ca;
+        }
+        .secondary-button:hover {
+          color: $skin-primary-color;
+          border-color: $skin-primary-color;
+        }
+        .sticky-navigation .main-navigation .current a {
+          color: $skin-primary-color !important;
+        }
+        .sticky-navigation .navbar-nav > li > a:hover {
+          color: $skin-primary-color;
+        }
+        .feature-list-1 li .icon-container {
+          background: $skin-primary-color;
+        }
+        .feature-list-2 li .icon-container {
+          background: $skin-primary-color;
+        }
+        .feature .icon {
+          color: $skin-primary-color;
+        }
+        .vertical-registration-form {
+          background-color: rgba($skin-primary-color, .5);
+        }
+        .vertical-registration-form .input-box {
+          background-color: #000;
+
+        }
+        .vertical-registration-form .input-box::placeholder {
+          color: map-get($data, skin-registration-input-text);
+          text-align: center;
+        }
+        .vertical-registration-form .input-box {
+          border-top: 1px solid rgba(0, 142, 214, 0.4);
+          border-bottom: 1px solid rgba(0, 142, 214, 0.4);
+          border-right: 1px solid rgba(0, 142, 214, 0.4);
+          border-left: 3px solid $skin-primary-color;
+          background-color: map-get($data, skin-registration-input-color);
+        }
+        .vertical-registration-form .input-box:focus,
+        .vertical-registration-form .input-box:active {
+          border-color: $skin-primary-color;
+        }
+        .subscription-form .input-box:focus,
+        .subscription-form .input-box:active {
+          border-left: 3px solid $skin-primary-color !important;
+        }
+        .input-box:active,
+        .textarea-box:active,
+        .input-box:focus,
+        .textarea-box:focus {
+          border-left: 3px solid $skin-primary-color !important;
+        }
+        .screenshots .owl-theme .owl-controls .owl-page span {
+          background: $skin-primary-color;
+        }
+        .contact-link {
+          color: $skin-primary-color;
+        }
+        .contact-link:hover {
+          color: #005885;
+        }
+        .social-icons li a:hover {
+          color: $skin-primary-color;
+        }
+
+      }
+
+      amplify-authenticator {
+        .amplify-form-link {
+          color: $skin-primary-color;
+        }
+        .amplify-form-button {
+          background-color: $skin-primary-color;
+        }
+        .amplify-alert-close {
+          color: gray;
+        }
+
+        .amplify-alert-close:hover {
+          color: $skin-primary-color;
+        }
+
+        .amplify-alert-message {
+          color: $skin-primary-color;
+        }
+
+        .amplify-alert-icon {
+          color: $flaggedColor;
+          }
+      }
+    }
+}

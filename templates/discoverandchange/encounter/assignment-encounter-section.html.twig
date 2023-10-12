@@ -1,0 +1,33 @@
+<h5 class="h3-responsive">{{ "Patient Assignment List"|xlt }}</h5>
+<hr />
+{% if assignments is not empty %}
+    <button class='btn btn-primary btn-sm smart-launch-btn' data-smart-name="{{ clientName|attr }}"
+            data-client-id="{{ clientId|attr }}"
+            data-intent="{{ intent|attr }}">
+        {{ "View Patient Assignment Reports"|xlt }}
+    </button>
+    <ul class="list-group">
+    {% for assignment in assignments %}
+        <li class="list-group-item">
+            {{ assignment.name|text }}{% if assignment.isComplete() %}- {{ "Completed"|xlt }} {{ assignment.dateCompleted|date }}{% endif %}
+            {% if assignment.items|length > 1 %}
+                <ul>
+                    {% for item in assignment.items %}
+                        <li>{{ item.name|text }}{% if item.isComplete() %}- {{ "Completed"|xlt }} {{ item.dateCompleted|date }}{% endif %}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </li>
+    {% endfor %}
+    </ul>
+    <script>
+        (function(oeSMART) {
+            if (oeSMART && oeSMART.initLaunch) {
+                oeSMART.initLaunch({{webroot|json_encode}}, {{ csrfTokenRaw()|json_encode}});
+            }
+        })(window.oeSMART || {});
+
+    </script>
+{% else %}
+<p class="alert alert-info">{{ "No patient portal assignments for this encounter"|xlt }}</p>
+{% endif %}

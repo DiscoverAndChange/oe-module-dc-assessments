@@ -1,0 +1,70 @@
+{% if assignments %}
+<details class="mx-2 mb-2">
+    <summary>{{ "Digital Documents Assigned" }} ({{ itemCount }})</summary>
+    <div class="card">
+        <div class="card-header">
+            <h6>{{ "The following digital documents are assigned to the patient for this appointment"|xlt }}</h6>
+        </div>
+        <div class="card-body">
+            <div class="list-group">
+                {% for assignment in assignments %}
+                    <div class="list-group-item">
+                        {{ assignment.name|text }}
+                        {% if assignment.isGroupType() %}
+                            <ul>
+                                {% for subitem in assignment.Items %}
+                                    <li>
+                                        {{ subitem.Name|text }} - {% if subitem.isComplete() %}{{ "Completed"|xlt}} {{ subitem.getDateCompleted()|date }} {% else %} {{ "Incomplete"|xlt }}{% endif %}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</details>
+{% endif %}
+<div class="form-check mx-2 mb-2">
+    <input type="checkbox" class="dc-include-digital-paperwork form-check-input" name='dc_add_edit_event_digital_documents'
+           id="add_edit_event_digital_documents" {% if assignment %}checked{% endif %}>
+    <label class="form-check-label" for="add_edit_event_digital_documents">
+        {{ "Add or update Digital Documents for this appointment"|xlt }}
+    </label>
+</div>
+<script>
+    (function(window) {
+
+        function setupEvents() {
+            let document = window.document;
+            let includeDigitalPaperwork = document.querySelectorAll('.dc-include-digital-paperwork');
+            let profileSelect = document.querySelectorAll('.dc-appointments-profile');
+            let profileLists = document.querySelectorAll('.dc-profile-list-group');
+            includeDigitalPaperwork.forEach(i => i.addEventListener('change', function (evt) {
+                if (evt.target.checked) {
+                    profileSelect.forEach(i => i.parentNode.classList.remove("d-none"));
+                    profileLists.forEach(i => i.classList.add('d-none'));
+                } else {
+                    profileSelect.forEach(i => i.parentNode.classList.add("d-none"));
+                    profileLists.forEach(i => i.classList.add("d-none"));
+                }
+            }));
+
+            profileSelect.forEach(i => i.addEventListener('change', function () {
+                var profileId = $(this).val();
+                if (profileId) {
+                    profileLists.forEach(i => i.classList.add('d-none'));
+                    let profile = document.querySelector('[data-profile-id="' + profileId + '"]');
+                    if (profile) {
+                        profile.classList.remove('d-none');
+                    }
+                }
+            }));
+        }
+
+        window.addEventListener("DOMContentLoaded", function() {
+            setupEvents();
+        });
+    })(window);
+</script>

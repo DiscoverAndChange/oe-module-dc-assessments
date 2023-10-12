@@ -1,0 +1,43 @@
+<html style='height: 100%'>
+    <head>
+        {{ setupHeader(['common', 'datetime-picker', 'opener']) }}
+    </head>
+    <body style='height:100%; overflow:hidden;'>
+        <h5>
+            <a href='{{ backUrl|attr }}' class='btn btn-back btn-sm'>{{ "Back"|xlt }}</a>
+            {{ headerText|text  }}
+            {% if nextStepUrl %}
+                <a href='{{ nextStepUrl|attr }}' class='btn btn-add float-right btn-sm'>{{ nextStepTitle|text }}</a>
+            {% else %}
+                <input type='button' class='btn btn-close btn-sm float-right' value='{{ "Close"|xla }}' />
+            {% endif %}
+        </h5>
+        <iframe src='{{ ehrLaunchUrl|attr }}' style='width: 100%; height: 100%; border: none;'></iframe>
+        <script>
+            (function(window) {
+                function setupEvents() {
+                    let document = window.document;
+                    let btnClose = document.querySelector('.btn-close');
+                    if (btnClose) {
+                        btnClose.addEventListener('click', function () {
+                            if (opener && !opener.closed && opener.refreshme) {
+                                opener.refreshme(); // This is for standard calendar page refresh
+                            } else {
+                                if (window.opener.pattrk) {
+                                    window.opener.pattrk.submit(); // This is for patient flow board page refresh}
+                                }
+                            }
+                            if (window.dlgclose()) {
+                                window.dlgclose();
+                            }
+                        });
+                    }
+                }
+
+                window.addEventListener("DOMContentLoaded", function () {
+                    setupEvents();
+                });
+            })(window);
+        </script>
+    </body>
+</html>

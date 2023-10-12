@@ -1,0 +1,152 @@
+dac-site-container {
+  .logo-wrapper {
+    line-height: 3rem;
+
+    img {
+      max-height: 2rem;
+    }
+  }
+  .page-footer {
+    .fa {
+      margin-right: 5px;
+    }
+  }
+  .main-content {
+    padding-left: 6%;
+    padding-right: 6%;
+    &.main-fluid {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+  .mat-expansion-panel {
+    border-radius: 0px !important;
+    box-shadow: none !important;
+
+    &.mat-expansion-panel-spacing {
+      margin: 0px;
+    }
+
+    .mat-expansion-panel-body {
+      padding: 0px;
+    }
+
+    .mat-expansion-panel-header {
+      height: 40px;
+      padding: 0px 24px 0px 16px;
+    }
+
+    // .mat-expansion-panel-header-title {
+    //   font-size: .8rem;
+    //   font-weight: 500;
+    // }
+  }
+  .mat-sidenav-content {
+    .navbar {
+      line-height: 2rem;
+      background-color: var(--nav-bg-color);
+
+      a {
+        color: var(--nav-text-color);
+        transition: .35;
+        &:hover {
+          color: var(--nav-text-color-highlight);
+        }
+        img {
+          max-height: 2rem;
+        }
+      }
+    }
+  }
+  .sidenav {
+    font-size: .8rem;
+    font-weight: 500;
+    color: var(--white);
+    // .mat-expansion-panel-header-title,
+    // .mat-expansion-indicator {
+
+    // }
+    .mat-expansion-panel {
+      &.mat-expanded {
+        background-color: rgba(0,0,0,.15);
+      }
+    }
+
+    .mat-list-item-content {
+      margin-left: 1rem;
+    }
+
+    .mat-expansion-panel-header {
+      outline: none;
+      &.mat-expanded {
+        background-color: rgba(255,255,255,.15);
+      }
+    }
+    .mat-expansion-panel-content {
+
+    }
+
+    a.mat-list-item.active {
+      background-color: rgba(0, 0, 0, .35);
+    }
+    .mat-expansion-panel-header-title {
+      outline: none;
+    }
+
+    .fa {
+      font-size: .8rem;
+      margin-right: 13px;
+      padding-top: 2px;
+    }
+  }
+}
+
+.sidenav-container {
+  height: 100%;
+
+  /** site-container sets overflow:hidden here and when the sticky fix is enabled we want to allow sticky to show. **/
+  &.sticky-container-fix {
+    overflow: inherit;
+
+    .mat-sidenav-content {
+      overflow: inherit;
+    }
+  }
+
+  .mat-sidenav-content {
+    width: calc(100vw-$sidenavWidth);
+    margin-right: auto;
+    margin-left: auto;
+  }
+  &.sidenav-open {
+    .mat-sidenav-content {
+      width: 100%;
+    }
+  }
+
+  .sidenav {
+    width: $sidenavWidth;
+  }
+
+  .sidenav .mat-toolbar {
+    background: inherit;
+  }
+
+  .mat-toolbar.mat-primary {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+
+  mat-toolbar ul {
+    li {
+      display: inline-block;
+    }
+    list-style: none;
+  }
+
+  .example-spacer {
+    flex: 1 1 auto;
+  }
+
+}

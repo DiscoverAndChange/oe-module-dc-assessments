@@ -1,0 +1,16 @@
+
+/** Handle flexbox tables since sometimes the tables don't work properly **/
+    div.table.table-striped > div.row:nth-child(odd) {
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    div.table > div.row.table-header > div.cell-data {
+        font-weight: 400;
+    }
+
+    div.table > div.row > div.cell-data
+    {
+        padding: .75rem;
+        font-size: 0.9rem;
+        font-weight: 300;
+    }

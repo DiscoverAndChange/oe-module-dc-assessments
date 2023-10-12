@@ -1,0 +1,83 @@
+{% extends 'portal/base.html.twig' %}
+{% block head %}
+    {{ setupHeader(['datetime-picker', 'i18next']) }}
+{% endblock %}
+{% block pagetitle %}{{ "Audit Questionnaire"|xlt }}{% endblock %}
+{% block header %}
+{# Need a large title for the Audit actions and then an html action bar that will include our charting #}
+<div class="row">
+    <div class="col-md-12">
+        <h1>{{ "Audit Questionnaire"|xlt }}</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="btn-group mb-3" role="group" aria-label="...">
+            <a href="#" class="btn btn-primary btn-launch-patient-encounter-chart">{{ "Save to Patient Chart"|xlt }}</a>
+{#            <a href="#" class="btn btn-primary btn-launch-patient-document-chart">{{ "Save to Patient Documents"|xlt }}</a>#}
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block content %}
+<div class="row audit-card-chart no-gutters">
+    <div class="col-12">
+        <h3>{{ questionnaireTitle|text }}</h3>
+    </div>
+    <div class="col-12 card d-none card-chart-encounters mb-2">
+        <div class="card-header">
+            <h5>{{ "Chart Questionnaire To Encounter"|xlt }}</h5>
+        </div>
+        <div class="card-body">
+            <select name="assignment-encounter-select">
+                {% for encounter in encounters %}
+                    <option value="{{ encounter.eid|attr }}">{{ encounter.date|date("Y-m-d")|text }} - {{ encounter.pc_catname|text }}</option>
+                {% endfor %}
+            </select>
+            <input type="button" value="{{ "Save To Encounter"|xlt }}" data-audit-record-id="{{ auditId|attr }}"
+                   class="btn btn-primary btn-chart-encounter">
+
+{#            <input type="button" value="{{ "Save To New Encounter"|xlt }}" class="btn btn-secondary btn-chart-new-encounter">#}
+        </div>
+    </div>
+    <div class="col-12 card d-none card-chart-documents mb-2">
+        <div class="card-header">
+            <h5>{{ "Save Questionnaire To Patient Documents"|xlt }}</h5>
+        </div>
+        <div class="card-body">
+            {{ "Document Category"|xlt }}
+            {% include "document_categories/select-category-tree.html.twig" with {categories:categories
+                , name: 'questionnaire-document-categories', 'selectText': "Select a Category"} %}
+            {{ "Tag to Encounter"|xlt }}
+            <select name="questionnaire-document-encounter-select">
+                <option>{{ "None"|xlt }}</option>
+                {% for encounter in encounters %}
+                    <option value="{{ encounter.eid|attr }}">{{ encounter.date|date("Y-m-d")|text }} - {{ encounter.pc_catname|text }}</option>
+                {% endfor %}
+            </select>
+            <input type="button" value="{{ "Save As Document"|xlt }}" class="btn btn-primary btn-chart-document" data-audit-record-id="{{ auditId|attr }}">
+        </div>
+    </div>
+</div>
+<div class="row no-gutters">
+    <div class="card col-12">
+        <div class="card-header">
+            <h5>{{ "Patient Answers Summary"|xlt }}</h5>
+        </div>
+        <div class="card-body">
+            {{ content }}
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        (function(portalAudit, window) {
+            portalAudit.csrfToken = {{ csrfTokenRaw()|json_encode }};
+            portalAudit.scriptPath = {{ scriptPath|json_encode }};
+            window.portalAudit = portalAudit;
+        })(window.portalAudit || {}, window);
+    </script>
+    <script src="{{ scriptPath }}/assets/js/questionnaire-audit.js?v={{ assetVersion }}"></script>
+{% endblock %}

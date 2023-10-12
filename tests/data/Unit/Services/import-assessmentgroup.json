@@ -1,0 +1,17 @@
+{
+    "AssessmentGroup": [
+        {
+            "_name": "phptest-Test Group 1"
+            ,"_assessments": [
+                "phptest-1"
+                ,"phptest-2"
+            ]
+        }
+        ,{
+            "_name": "phptest-Test Group 2"
+            ,"_assessments": [
+                "phptest-1"
+            ]
+        }
+    ]
+}

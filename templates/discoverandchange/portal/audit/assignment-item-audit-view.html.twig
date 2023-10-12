@@ -1,0 +1,57 @@
+{% extends 'portal/base.html.twig' %}
+{% block head %}
+    {{ setupHeader(['datetime-picker', 'i18next']) }}
+{% endblock %}
+{% block pagetitle %}{{ "Audit"|xlt }} {{ assignmentName|text }}{% endblock %}
+{% block header %}
+{# Need a large title for the Audit actions and then an html action bar that will include our charting #}
+<div class="row">
+    <div class="col-md-12">
+        <h1>{{ "Audit"|xlt }} {{ assignmentName|text }}</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="btn-group mb-3" role="group" aria-label="...">
+            <a href="#" class="btn btn-primary btn-launch-patient-encounter-chart">{{ "Save to Patient Chart"|xlt }}</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block content %}
+<div class="row audit-card-chart no-gutters">
+    <div class="col-12">
+        <h3>{{ assignmentName|text }}</h3>
+    </div>
+    <div class="col-12 card d-none card-chart-encounters mb-2">
+        <div class="card-header">
+            <h5>{{ "Chart To Encounter"|xlt }}</h5>
+        </div>
+        <div class="card-body">
+            <select name="assignment-encounter-select">
+                {% for encounter in encounters %}
+                    <option value="{{ encounter.eid|attr }}">{{ encounter.date|date("Y-m-d")|text }} - {{ encounter.pc_catname|text }}</option>
+                {% endfor %}
+            </select>
+            <input type="button" value="{{ "Save To Encounter"|xlt }}" data-audit-record-id="{{ auditId|attr }}"
+                   class="btn btn-primary btn-chart-encounter">
+        </div>
+    </div>
+</div>
+<div class="row no-gutters">
+    <div class="card col-12">
+        <iframe src="{{ smartUrl|attr }}" style="width: 100%; height: 100vh;"></iframe>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        (function(portalAudit, window) {
+            portalAudit.csrfToken = {{ csrfTokenRaw()|json_encode }};
+            portalAudit.scriptPath = {{ scriptPath|json_encode }};
+            window.portalAudit = portalAudit;
+        })(window.portalAudit || {}, window);
+    </script>
+    <script src="{{ scriptPath }}/assets/js/questionnaire-audit.js?v={{ assetVersion }}"></script>
+{% endblock %}

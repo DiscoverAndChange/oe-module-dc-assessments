@@ -1,0 +1,54 @@
+<html>
+<head>
+    {{ setupHeader() }}
+</head>
+<body>
+    <div class="card">
+        <div class="card-header">
+            <h1>{{ "Tools"|xlt }}</h1>
+        </div>
+
+        <div class="card-body">
+            <h2>{{ "Import Resources"|xlt }}</h2>
+            <form action="{{ submitURL }}" method="post">
+                <input type="hidden" name="action" value="{{ action|attr }}" />
+                {% if msgError %}
+                    <div class="alert alert-danger">
+                        {{ msgError|text }}
+                    </div>
+                {% endif %}
+                {% if msgSuccess %}
+                    <div class="alert alert-success">
+                        {{ msgSuccess|text }}
+                    </div>
+                {% endif %}
+                <input type="text" class="form-control" name="importUrl" value="" placeholder="{{ "Resource JSON URL"|xla }}" value="{{ importUrl }}" />
+                <input type="submit" name="submit" class="btn btn-secondary" value="{{ "Import"|xla }}" />
+            </form>
+            {% if logEntries %}
+                <div class="log">
+                    <h3>{{ "Log"|xla }}</h3>
+                    <ul>
+                        {% for logEntry in logEntries %}
+                        <li>
+                            <details>
+                                <summary>{{ logEntry.index|text }} ) {{ logEntry.type }}
+                                <span class="text-{% if logEntry.importStatus == 'success' %}success{% else %}danger{% endif %}">
+                                    {{ logEntry.importStatus|text }}
+                                </span></summary>
+                                {% if logEntry.error %}<p class="text-danger">{{ logEntry.error|text }}</p>{% endif %}
+                                {% if logEntry.importStatus == 'success' %}<p class="text-success">{{ logEntry.getMessage()|text }}</p>{% endif %}
+                                {% if debug %}
+                                <pre>{{ logEntry.importResource|text }}</pre>
+                                {% endif %}
+                            </details>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
+

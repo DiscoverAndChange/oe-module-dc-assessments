@@ -1,0 +1,151 @@
+<html style='height: 100%'>
+<head>
+    {{ setupHeader(['common', 'datetime-picker', 'opener']) }}
+</head>
+<body style='height:100%; overflow:hidden;'>
+<h5>
+    <a href='{{ backUrl|attr }}' class='btn btn-back btn-sm'>{{ "Back"|xlt }}</a>
+    {{ headerText|text  }}
+    {% if nextStepUrl %}
+        <a href='{{ nextStepUrl|attr }}' class='btn btn-add float-right btn-sm'>{{ nextStepTitle|text }}</a>
+    {% else %}
+        <input type='button' class='btn btn-add btn-sm float-right btn-close' value='{{ "Close"|xla }}' />
+    {% endif %}
+</h5>
+{# It would be nice to have the notification contact list available. #}
+<form method="POST" action="{{ notificationPostUrl|attr }}">
+<div class="form-row mx-2 notification-contact-list mb-2 ">
+    <p>{{ "Notifications will be sent to the following contact methods authorized by the patient" }}:</p>
+    <ul>
+        {% if noContactMethods %}
+        <li class="alert alert-info">{{ "No contact methods authorized or setup for this patient"|xlt }}</li>
+        {% endif %}
+        {% if sendPatientEmail and patient.email %}
+        <li>
+            {{ "Patient Email" }}: <strong>{{ patient.email }}</strong>
+        </li>
+        {% endif %}
+        {% if sendPatientSMS and patient.phone %}
+        <li>
+            {{ "Patient SMS" }}: <strong>{{ patient.phone }}</strong>
+        </li>
+        {% endif %}
+    </ul>
+</div>
+{#<div class="form-row mx-2 mb-2 {% if assignment is empty %}d-none{% endif %}">#}
+{#    <label>{{ 'Select a Notification Message Template'|xlt }}</label>#}
+{#    <select class="dc-appointments-message-templates form-control" name="dc_message_id">#}
+{#        <option value="">--{{ "None"|xlt}}--</option>#}
+{#        {% for profile in profiles %}#}
+{#            <option value="{{ profile.id|attr }}" {%#}
+{#                if assignment.profileId and assignment.profileId == profile.id#}
+{#            %}selected{% endif %}#}
+{#            >{{ profile.name|text }}</option>#}
+{#        {% endfor %}#}
+{#    </select>#}
+{#</div>#}
+<div class="form-row flex-column mx-2 mb-2">
+    <label>{{ "Message to send to patient" }}:</label>
+    <textarea name="dc_appointments_notification_message" class="form-control dc-appointments-notification-message">{{ defaultMessage|text }}</textarea>
+    <div class="alert alert-info">
+        <p>
+            {{ "This message will be sent along with a link for the patient to complete their documents before their next appointment"|xlt }}
+        </p>
+        <p>
+            {{ "Note if only SMS messages are setup to send to the patient your message may be shortened or removed"|xlt }}
+        </p>
+    </div>
+
+</div>
+<div class="form-row mx-2 mb-2 alert alert-success d-none">
+    {{ "Notification sent successfully"|xlt }}
+</div>
+<div class="form-row mx-2 mb-2 alert alert-error d-none">
+    {{ "Notification failed to send." }} {{ "Try again, check your network connection, or contact your server administrator." }}
+</div>
+<div class="form-row mx-2 mb-2 text-center">
+    <input type="button" value="{{ "Send Notification"|xlt }}" class="btn btn-primary btn-lg dc-send-notification" />
+</div>
+<!-- Show smart app here, if we are not registered we will need to popup a window to do the authorization and return to the original document -->
+{#<iframe src="http://localhost:4200/admin/embed-select-digital-documents" width="100%" height="100%"></iframe>#}
+<script>
+    (function(window) {
+        let url = {{ notificationPostUrl|json_encode }};
+        let csrfToken = {{ csrfTokenRaw()|json_encode }};
+        function showAlert(type) {
+            let document = window.document;
+            let alertSuccess = document.querySelector('.alert-success');
+            let alertError = document.querySelector('.alert-danger');
+            if (alertSuccess) {
+                alertSuccess.classList.add('d-none');
+            }
+            if (alertError) {
+                alertError.classList.add('d-none');
+            }
+            if (type == 'success') {
+                alertSuccess.classList.remove('d-none');
+            } else {
+                alertError.classList.remove('d-none');
+            }
+        }
+        function sendNotification(evt) {
+            let document = window.document;
+
+            let notificationMessage = document.querySelector('.dc-appointments-notification-message');
+            let contactMethods = document.querySelector('.notification-contact-list');
+            let form = new FormData();
+            form.set("csrf_token", csrfToken);
+            form.set("dc_appointments_notification_message", notificationMessage.value);
+
+            window.fetch(url, {
+                method: 'POST'
+                ,body: form
+            })
+            .then(function (response) {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('Network response was not ok.');
+            })
+            .then(json => {
+                if (json.type) {
+                    showAlert(json.type);
+                } else {
+                    showAlert('error');
+                }
+            })
+            .catch(error => {
+                showAlert('error');
+                console.error(error);
+            });
+        }
+        function setupEvents() {
+            let document = window.document;
+            let sendNotificationBtn = document.querySelector('.dc-send-notification');
+            sendNotificationBtn.addEventListener('click', sendNotification);
+
+            let btnClose = document.querySelector('.btn-close');
+            if (btnClose) {
+                btnClose.addEventListener('click', function() {
+                    if (opener && !opener.closed && opener.refreshme) {
+                        opener.refreshme(); // This is for standard calendar page refresh
+                    } else {
+                        if (window.opener.pattrk) {
+                            window.opener.pattrk.submit(); // This is for patient flow board page refresh}
+                        }
+                    }
+                    if (window.dlgclose()) {
+                        window.dlgclose();
+                    }
+                });
+            }
+        }
+
+        window.addEventListener("DOMContentLoaded", function() {
+            setupEvents();
+        });
+    })(window);
+</script>
+
+</body>
+</html>

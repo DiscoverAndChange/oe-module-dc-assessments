@@ -1,0 +1,64 @@
+/** TODO: stephen need to figure out how to make it so this only shows up for dc.
+dc font-face **/
+$fontFamily: 'Proxima Nova Alt';
+$fontWeights: (
+    100: 'Thin'
+    ,300: 'Light'
+    ,400: 'Regular'
+    ,600: 'Semibold'
+    ,700: 'Bold'
+    ,800: 'Extrabold'
+    ,900: 'Black'
+);
+
+@each $weight, $src in $fontWeights {
+    @font-face {
+        font-family: #{$fontFamily};
+        src: url("/assets/fonts/Proxima-Nova-Alt/Proxima-Nova-Alt-#{$src}.otf");
+        src: url("/assets/fonts/Proxima-Nova-Alt/Proxima-Nova-Alt-#{$src}.otf") format('opentype');
+        font-weight: $weight;
+        font-style: normal;
+    }
+    @font-face {
+        font-family: #{$fontFamily};
+        src: url("/assets/fonts/Proxima-Nova-Alt/Proxima-Nova-Alt-#{$src}-Italic.otf");
+        src: url("/assets/fonts/Proxima-Nova-Alt/Proxima-Nova-Alt-#{$src}-Italic.otf") format('opentype');
+        font-weight: $weight;
+        font-style: italic;
+    }
+}
+
+.dc-skin {
+    dac-report-viewer {
+        font-family: 'Proxima Nova Alt', 'Helvetica', 'serif';
+        @for $i from 1 through 6 {
+            h#{$i} {
+                font-family: 'Proxima Nova Alt', 'Helvetica', 'serif';
+            }
+        }
+
+        .cover-letter {
+            ol {
+                font-style: italic;
+            }
+            &.large-font p, &.large-font li {
+                font-size: 16px;
+            }
+        }
+        .logo {
+            width: 50%;
+            margin-bottom: 2em;
+        }
+
+        .promotion {
+            .card-body {
+                text-align: center;
+                margin-bottom: 0;
+                padding-bottom: 0;
+                img {
+                    max-width: 100%;
+                }
+            }
+        }
+    }
+}

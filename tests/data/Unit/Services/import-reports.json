@@ -1,0 +1,28 @@
+{
+    "Report": [
+        {
+            "_id": "phptest-report-1",
+            "_name": "Report Test Group 3"
+            ,"_assessmentgroup": "phptest-Test Group 3"
+            ,"_data": {
+                "id": "phptest-report-1"
+                ,"name": "Report Test Group 3"
+                ,"linkedAssessments": ["phptest-3", "phptest-4"]
+                ,"variables": [],
+                "computedResults": []
+            }
+        }
+        ,{
+            "_id": "phptest-report-2",
+            "_name": "Report Test Assessment 4"
+            ,"_assessment": "phptest-4"
+            ,"_data": {
+                "id": "phptest-report-4"
+                ,"name": "Report Test Group 4"
+                ,"linkedAssessments": ["phptest-4"]
+                ,"variables": []
+                ,"computedResults": []
+            }
+        }
+    ]
+}

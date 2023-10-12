@@ -1,0 +1,39 @@
+<div class="text-md-center">
+    <h4 class="mb-4 mt-1">{{ "Sign In"|xlt  }}</h4>
+</div>
+<hr />
+<form method="post" name="userLogin" id="userLogin" action="{{ redirect|attr }}">
+    {% if invalid is not empty %}
+        <div class="alert alert-danger">
+            <p>{{ invalid|text }}</p>
+        </div>
+    {% endif %}
+    <input type="hidden" name="csrf_token_form" value="{{ csrfTokenRaw('oauth2')|attr }}" />
+    {% if enforce_signin_email %}
+        <div class="form-group">
+            <input class="form-control" placeholder="{{ "Email if required"|xla  }}" type="email" name="email">
+        </div>
+    {% endif %}
+    <div class="form-group">
+        <input class="form-control" placeholder="{{ "Registered username"|xla  }}" type="text" name="username" value="">
+    </div>
+    <div class="form-group">
+        <input class="form-control" placeholder="******" type="password" name="password" value="">
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-md-12">
+            <div class="btn-group">
+                {% if loginRole == "patient" %}
+                <button type="submit" name="user_role" class="btn btn-outline-info" value="portal-api">{{ "Patient Login"|xlt  }} <i class="fa fa-sign-in-alt"></i></button>
+                {% else %}
+                <button type="submit" name="user_role" class="btn btn-outline-primary" value="api">{{"OpenEMR Login"|xlt }} <i class="fa fa-sign-in-alt"></i></button>
+                {% endif %}
+            </div>
+            <div class="form-check-inline float-right">
+                <input class="form-check-input" type="checkbox" name="persist_login" id="persist_login" value="1">
+                <label for="persist_login" class="form-check-label">{{ "Remember Me"|xlt  }}</label>
+            </div>
+        </div>
+    </div>
+</form>
