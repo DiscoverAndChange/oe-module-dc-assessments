@@ -1,5 +1,5 @@
 {
-  "name": "DiscoverAndChange/oe-module-dc-assessments",
+  "name": "discoverandchange/oe-module-dc-assessments",
   "description": "Patient Assignment/Assessment system for OpenEMR",
   "type": "openemr-module",
   "license": "GPL 3.0",
