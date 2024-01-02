@@ -46,8 +46,11 @@ class FrontendDispatchController
 
     private function getSmartStylesJson()
     {
+        // TODO: @adunsulag I don't like the duplicate code here and in SMARTAuthorizationController->smartAppStyles()
+        // TODO: @adunsulag look at refactoring this to be more DRY
         $cssTheme = $GLOBALS['css_header'];
-        $parts = explode(".", $cssTheme);
+        $baseNameCssTheme = basename($cssTheme);
+        $parts = explode(".", $baseNameCssTheme);
         $coreTheme = $parts[0] ?? "style_light";
         $logoService = new LogoService();
         // do we want to expose each of the logos?  These really need to be cached instead of hitting FS each time...
@@ -57,17 +60,14 @@ class FrontendDispatchController
                 'primary' => $primaryLogo
             ]
         ];
-        $defaultFile = "/api/smart/smart-style_light.json";
-        $themeFile = "/api/smart/smart-" . $coreTheme . ".json";
+        $defaultFile = "/api/smart/smart-style_light.json.twig";
+        $themeFile = "/api/smart/smart-" . $coreTheme . ".json.twig";
         $templatePageEvent = new TemplatePageEvent('oauth2/authorize/smart-style', [], $themeFile, $context);
         $updatedTemplatePageEvent = $this->dispatcher->dispatch($templatePageEvent);
         $template = $updatedTemplatePageEvent->getTwigTemplate();
         $vars = $updatedTemplatePageEvent->getTwigVariables();
 
-        $templates = [$template];
-        if (isset($defaultTemplate)) {
-            $templates[] = $defaultTemplate;
-        }
+        $templates = [$template, $defaultFile];
         $resolvedTemplate = $this->twig->resolveTemplate($templates);
         $stringVar = $resolvedTemplate->render($vars);
         $json = [];
