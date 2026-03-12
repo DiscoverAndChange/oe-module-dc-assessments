@@ -36,6 +36,7 @@
         "phpstan": "MODULE_DIR=$(pwd) && cd ${MODULE_DIR}/../../../.. && php -d memory_limit=4G vendor/bin/phpstan analyze --configuration=phpstan.neon.dist ${MODULE_DIR}/src",
         "rector-check": "MODULE_DIR=$(pwd) && cd ${MODULE_DIR}/../../../.. && php -d memory_limit=4G vendor/bin/rector process --dry-run ${MODULE_DIR}/src",
         "rector-fix": "MODULE_DIR=$(pwd) && cd ${MODULE_DIR}/../../../.. && php -d memory_limit=4G vendor/bin/rector process ${MODULE_DIR}/src",
-        "test": "MODULE_DIR=$(pwd) && cd ${MODULE_DIR}/../../../.. && vendor/bin/phpunit --configuration=${MODULE_DIR}/phpunit.xml"
+        "test": "MODULE_DIR=$(pwd) && cd ${MODULE_DIR}/../../../.. && vendor/bin/phpunit --configuration=${MODULE_DIR}/phpunit.xml --testsuite Unit",
+        "test-integration": "MODULE_DIR=$(pwd) && cd ${MODULE_DIR}/../../../.. && vendor/bin/phpunit --configuration=${MODULE_DIR}/phpunit.xml --testsuite Integration"
     }
 }

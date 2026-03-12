@@ -1,2 +1,12 @@
-<phpunit bootstrap="tests/bootstrap.php">
+<phpunit bootstrap="tests/bootstrap-unit.php">
+    <testsuites>
+        <testsuite name="Unit">
+            <directory>tests/Tests/Unit</directory>
+            <exclude>tests/Tests/Unit/Services/ResourceImporterServiceTest.php</exclude>
+        </testsuite>
+        <testsuite name="Integration">
+            <file>tests/Tests/Unit/Services/ResourceImporterServiceTest.php</file>
+            <file>tests/Tests/Unit/BootstrapTest.php</file>
+        </testsuite>
+    </testsuites>
 </phpunit>

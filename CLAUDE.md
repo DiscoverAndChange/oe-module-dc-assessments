@@ -22,8 +22,11 @@ composer phpstan
 composer rector-check
 composer rector-fix
 
-# Run tests (uses OpenEMR root's phpunit, loads globals via tests/bootstrap.php)
+# Run unit tests (no database required, uses tests/bootstrap-unit.php)
 composer test
+
+# Run integration tests (requires OpenEMR Docker with database, uses tests/bootstrap.php)
+composer test-integration
 
 # Clear cached DI container (do this after changing Bootstrap service definitions)
 rm -f cache/container.php cache/container.php.meta
