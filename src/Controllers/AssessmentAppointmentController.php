@@ -37,27 +37,27 @@ use Twig\Environment;
 
 class AssessmentAppointmentController implements IStaticEventSubscriber
 {
-    public function __construct(private Environment $twig, private AssignmentRepository $repository, private EventDispatcher $dispatcher, private GlobalConfig $config, private SmartAppClientService $appClientService)
+    public function __construct(private readonly Environment $twig, private readonly AssignmentRepository $repository, private readonly EventDispatcher $dispatcher, private readonly GlobalConfig $config, private readonly SmartAppClientService $appClientService)
     {
     }
 
     public static function subscribeToEvents(Container $container, EventDispatcherInterface $dispatcher)
     {
 
-        $dispatcher->addListener(AppointmentRenderEvent::RENDER_BEFORE_ACTION_BAR, function (AppointmentRenderEvent $event) use ($container) {
+        $dispatcher->addListener(AppointmentRenderEvent::RENDER_BEFORE_ACTION_BAR, function (AppointmentRenderEvent $event) use ($container): void {
             $service = $container->get(self::class);
             if ($service instanceof self) {
                 $service->renderDigitalDocumentsSection($event);
             }
         });
 //        $dispatcher->addListener(AppointmentSetEvent::EVENT_HANDLE, [$this, 'sendNotificationMessages'], 20);
-        $dispatcher->addListener(ServiceDeleteEvent::EVENT_PRE_DELETE, function (ServiceDeleteEvent $event) use ($container) {
+        $dispatcher->addListener(ServiceDeleteEvent::EVENT_PRE_DELETE, function (ServiceDeleteEvent $event) use ($container): void {
             $service = $container->get(self::class);
             if ($service instanceof self) {
                 $service->deleteDigitalDocumentsSection($event);
             }
         });
-        $dispatcher->addListener(AppointmentDialogCloseEvent::EVENT_NAME, function (AppointmentDialogCloseEvent $event) use ($container) {
+        $dispatcher->addListener(AppointmentDialogCloseEvent::EVENT_NAME, function (AppointmentDialogCloseEvent $event) use ($container): void {
             $service = $container->get(self::class);
             if ($service instanceof self) {
                 $service->renderAppointmentWizardScreens($event);
@@ -71,7 +71,7 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
             $apptId = $deleteEvent->getRecordId();
             try {
                 $assignments = $this->repository->getAssignmentsForAppointmentId($apptId);
-                array_map($assignments, function (Assignment $assignment) {
+                array_map($assignments, function (Assignment $assignment): void {
                     $this->repository->removeAssignment($assignment->getClientId(), $assignment->getId(), $_SESSION['authUserId']);
                 });
             } catch (\Exception $e) {
@@ -158,7 +158,7 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
                 // currently the only other step is the documents... if more wizards steps are added we'd handle this.
                 $backUrl = $this->config->getPublicBackendPathFQDN() . "index-backend.php?action="
                     . urlencode(BackendDispatchController::RENDER_DIGITAL_DOCUMENTS)
-                    . "&pc_eid=" . urlencode($appointment['pc_eid'])
+                    . "&pc_eid=" . urlencode((string) $appointment['pc_eid'])
                     . "&dc_add_edit_event_send_notification=1";
             }
             $nextStepUrl = null;
@@ -195,16 +195,16 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
     private function getNotificatioNextStepUrl($pc_eid, $action = BackendDispatchController::RENDER_APPOINTMENT_NOTIFICATION)
     {
         return $this->config->getPublicBackendPathFQDN() . "index-backend.php?action="
-            . urlencode($action)
-            . "&pc_eid=" . urlencode($pc_eid)
+            . urlencode((string) $action)
+            . "&pc_eid=" . urlencode((string) $pc_eid)
             . "&previous_step=" . urlencode(BackendDispatchController::RENDER_DIGITAL_DOCUMENTS);
     }
 
     private function getCalendarEventBackUrl($appointment)
     {
-        $linkDate = preg_replace("/-/", "", $appointment['pc_eventDate']);
+        $linkDate = preg_replace("/-/", "", (string) $appointment['pc_eventDate']);
         $backUrl = $GLOBALS['webroot'] . '/interface/main/calendar/add_edit_event.php?date='
-            . urlencode($linkDate) . '&eid=' . urlencode($appointment['pc_eid']) . '&prov=';
+            . urlencode($linkDate) . '&eid=' . urlencode((string) $appointment['pc_eid']) . '&prov=';
         return $backUrl;
     }
 
@@ -214,8 +214,8 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
             $smartAppService = $this->appClientService;
             $clientId = $smartAppService->getRegisteredClientId();
             $url = $GLOBALS['webroot'] . '/interface/smart/ehr-launch-client.php?intent=' . urlencode(SMARTLaunchToken::INTENT_APPOINTMENT_DIALOG)
-                . '&client_id=' . urlencode($clientId) . "&csrf_token=" . urlencode(CsrfUtils::collectCsrfToken())
-                . '&appointment_id=' . urlencode($appointmentId);
+                . '&client_id=' . urlencode((string) $clientId) . "&csrf_token=" . urlencode((string) CsrfUtils::collectCsrfToken())
+                . '&appointment_id=' . urlencode((string) $appointmentId);
             $appointmentService = new AppointmentService();
             $appointment = $appointmentService->getAppointment($appointmentId);
             if (!empty($appointment) && !empty($appointment[0]['pc_pid'])) { // patient appointment

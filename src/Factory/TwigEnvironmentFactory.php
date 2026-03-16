@@ -9,7 +9,7 @@ use Twig\Environment;
 
 class TwigEnvironmentFactory
 {
-    public function __construct(private SimplifiedOAuthTwigExtension $oauthTwigExtension, private Kernel $kernel, private string $templatePath)
+    public function __construct(private readonly SimplifiedOAuthTwigExtension $oauthTwigExtension, private readonly Kernel $kernel, private readonly string $templatePath)
     {
     }
 

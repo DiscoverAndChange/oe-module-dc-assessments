@@ -4,7 +4,7 @@ namespace OpenEMR\Modules\DiscoverAndChange\Assessments\Models;
 
 class ErrorCodeStatus
 {
-    const codeMap = array(
+    const codeMap = [
         ErrorCode::DUP_ENTRY => 400,
         ErrorCode::INVALID_REQUEST => 400,
         ErrorCode::VALIDATE_DATA_MISSING => 400,
@@ -16,7 +16,7 @@ class ErrorCodeStatus
         ErrorCode::RECORD_NOT_FOUND => 404,
         ErrorCode::SYSTEM_ERROR => 500,
         ErrorCode::RECORD_CREATE_FAILED => 500
-    );
+    ];
 
     public static function getStatusForErrorCode($code): int
     {

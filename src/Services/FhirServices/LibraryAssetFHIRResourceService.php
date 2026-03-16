@@ -28,15 +28,9 @@ class LibraryAssetFHIRResourceService extends FhirServiceBase
 
     const CODE_DAC_LIBRARY_ASSET = 'openemr-dac-library-asset';
 
-    /**
-     * @var LibraryAssetBlobRepository
-     */
-    private $repository;
-
-    public function __construct(LibraryAssetBlobRepository $repository)
+    public function __construct(private LibraryAssetBlobRepository $repository)
     {
         parent::__construct();
-        $this->repository = $repository;
     }
 
     public function supportsCode($code)
@@ -54,7 +48,7 @@ class LibraryAssetFHIRResourceService extends FhirServiceBase
         ];
     }
 
-    protected function createOpenEMRSearchParameters($fhirSearchParameters, $puuidBind)
+    protected function createOpenEMRSearchParameters(array $fhirSearchParameters, ?string $puuidBind = null): array
     {
         // we don't do anything with the code once we have it, so we remove it.
         if (!empty($fhirSearchParameters['questionnaire-code'])) {
@@ -63,7 +57,7 @@ class LibraryAssetFHIRResourceService extends FhirServiceBase
         return parent::createOpenEMRSearchParameters($fhirSearchParameters, $puuidBind);
     }
 
-    public function parseOpenEMRRecord($dataRecord = array(), $encode = false)
+    public function parseOpenEMRRecord($dataRecord = [], $encode = false)
     {
         $fhirResource = new FHIRQuestionnaire();
         $id = new FhirId();

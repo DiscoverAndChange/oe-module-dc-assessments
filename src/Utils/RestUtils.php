@@ -34,11 +34,7 @@ class RestUtils
     {
         $logger->errorLogCaller($error->getMessage(), ['trace' => $error->getTraceAsString()]);
 
-        if ($error instanceof AccessDeniedException) {
-            $message = xlt("Access Denied");
-        } else {
-            $message = $error->getMessage();
-        }
+        $message = $error instanceof AccessDeniedException ? xlt("Access Denied") : $error->getMessage();
         $codeAsString = ErrorCode::getErrorStringForErrorCode($error->getCode() ?? ErrorCode::SYSTEM_ERROR);
         $err = [
             '_code' => $codeAsString

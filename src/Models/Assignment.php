@@ -195,9 +195,7 @@ class Assignment implements \JsonSerializable
             "items" => []
         ];
         if (!empty($this->getItems())) {
-            $result["items"] = array_map(function ($item) {
-                return $item->jsonSerialize();
-            }, $this->getItems());
+            $result["items"] = array_map(fn($item) => $item->jsonSerialize(), $this->getItems());
         }
         if ($this->dateAssigned !== null) {
             $result["dateAssigned"] = $this->dateAssigned->format(DateTime::ATOM);

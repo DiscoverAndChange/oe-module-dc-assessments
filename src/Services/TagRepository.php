@@ -16,7 +16,7 @@ class TagRepository
             return [];
         }
         // make sure they are all integers and remove any that are not
-        $assetIds = array_filter(array_map('intval', $assetIds), function ($id) {
+        $assetIds = array_filter(array_map(intval(...), $assetIds), function ($id) {
             return $id > 0; // make sure we only have values greater than 0 for our ids
         });
 

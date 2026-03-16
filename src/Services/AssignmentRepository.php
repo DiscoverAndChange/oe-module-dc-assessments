@@ -43,10 +43,9 @@ class AssignmentRepository
     {
 
         // grab our client ids
-        $uuids = array_map(function ($client) {
+        $uuids = array_map(
             // make sure we don't have a SQL injection problem when we implode these by intval'ing them
-            return $client->getId();
-        }, $clients);
+            fn($client) => $client->getId(), $clients);
         // invert the array so we can look up the client by id
         $clientIndexesByUuid = array_flip($uuids);
         $search = [new TokenSearchField('client_uuid', $uuids, true)];
@@ -273,7 +272,7 @@ class AssignmentRepository
                 }
             }
 
-            foreach ($recordsById as $recordId => $record) {
+            foreach ($recordsById as $record) {
                 $assignments[] = $this->hydrateAssignmentFromRecord($record);
             }
         }
@@ -652,9 +651,7 @@ class AssignmentRepository
         $sql = "SELECT uuid FROM " . self::TABLE_NAME . " WHERE appointment_id = ?";
         $assignmentUuids = QueryUtils::fetchTableColumn($sql, 'uuid', [$pc_eid]);
         if (!empty($assignmentUuids)) {
-            return array_map(function ($val) {
-                return UuidRegistry::uuidToString($val);
-            }, $assignmentUuids);
+            return array_map(fn($val) => UuidRegistry::uuidToString($val), $assignmentUuids);
         }
         return null;
     }
@@ -701,7 +698,7 @@ class AssignmentRepository
                     // need to extract the questionnaire id from the template content
                     $questionnaire = $template['template_content'];
                     $id = null;
-                    if (preg_match('/{Questionnaire:\s*(\d+)}/', $questionnaire, $matches)) {
+                    if (preg_match('/{Questionnaire:\s*(\d+)}/', (string) $questionnaire, $matches)) {
                         $id = $matches[1];
                     } else {
                         // invalid content so just continue

@@ -37,7 +37,7 @@ use Twig\Environment;
 
 class APIProxyController
 {
-    private string $baseUri;
+    private readonly string $baseUri;
 
     /**
      * @var array
@@ -476,7 +476,7 @@ class APIProxyController
         ]
     ];
 
-    public function __construct(private SystemLogger $logger, private Environment $twig, private GlobalConfig $config, private CryptoGen $cryptoGen)
+    public function __construct(private readonly SystemLogger $logger, private readonly Environment $twig, private readonly GlobalConfig $config, private readonly CryptoGen $cryptoGen)
     {
         // TODO: @adunsulag need to lazy load all this stuff.
         // TODO: @adunsulag need to have this domain URL be configurable
@@ -555,9 +555,7 @@ class APIProxyController
             $this->logger->debug(self::class . "->getCallableForApiRequest() called", ['route' => $route, 'attributes' => $attributes]);
             unset($attributes['_route']);
             $attributes['request'] = $request;
-            return function () use ($controller, $route, $attributes) {
-                return call_user_func([$controller, $route['action']], ...$attributes);
-            };
+            return fn() => call_user_func([$controller, $route['action']], ...$attributes);
         } catch (ResourceNotFoundException $e) {
             // not really anything to do since we are proxying the requests so we return null here;
             (new SystemLogger())->debug("APIProxyController() " . $e->getMessage());

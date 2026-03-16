@@ -34,7 +34,7 @@ class QuestionnaireRestController implements IRestController
      */
     private $fhirService;
 
-    public function __construct(private SystemLogger $logger, private QuestionnaireFHIRResourceService $questionnaireResourceService)
+    public function __construct(private readonly SystemLogger $logger, private readonly QuestionnaireFHIRResourceService $questionnaireResourceService)
     {
         $this->fhirService = new FhirResourcesService();
     }
@@ -99,8 +99,8 @@ class QuestionnaireRestController implements IRestController
     private function getAll($searchParams, $puuidBind = null)
     {
         $processingResult = $this->questionnaireResourceService->getAll($searchParams, $puuidBind);
-        $bundleEntries = array();
-        foreach ($processingResult->getData() as $index => $searchResult) {
+        $bundleEntries = [];
+        foreach ($processingResult->getData() as $searchResult) {
             $bundleEntry = [
                 'fullUrl' =>  $GLOBALS['site_addr_oath'] . ($_SERVER['REDIRECT_URL'] ?? '') . '/' . $searchResult->getId(),
                 'resource' => $searchResult

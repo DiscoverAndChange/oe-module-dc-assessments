@@ -20,7 +20,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class QuestionnaireAssignmentListener implements IStaticEventSubscriber
 {
-    public function __construct(private AssignmentRepository $assignmentRepository, private QuestionnaireResponseOnSiteDocumentService $questionnaireResponsePDFService)
+    public function __construct(private readonly AssignmentRepository $assignmentRepository, private readonly QuestionnaireResponseOnSiteDocumentService $questionnaireResponsePDFService)
     {
     }
 
@@ -92,7 +92,7 @@ class QuestionnaireAssignmentListener implements IStaticEventSubscriber
 
     public static function subscribeToEvents(Container $container, EventDispatcherInterface $eventDispatcher)
     {
-        $eventDispatcher->addListener(ServiceSaveEvent::EVENT_POST_SAVE, function (ServiceSaveEvent $event) use ($container) {
+        $eventDispatcher->addListener(ServiceSaveEvent::EVENT_POST_SAVE, function (ServiceSaveEvent $event) use ($container): void {
             $service = $container->get(self::class);
             if ($service instanceof self) {
                 $service->updateQuestionnaireAssignments($event);

@@ -20,13 +20,13 @@ class AssessmentResultBlobValidator extends BaseValidator
         // insert validations
         $this->validator->context(
             self::DATABASE_INSERT_CONTEXT,
-            function (Validator $context) {
+            function (Validator $context): void {
                 $context->required('id')->uuid(Uuid::UUID_V4);
                 $context->required('client_id')->uuid(Uuid::UUID_V4);
                 $context->required('data._assignmentItemId')->uuid(Uuid::UUID_V4);
                 $context->required('data._assessment._version')->numeric();
                 $context->required('data._assessment._uid')->lengthBetween(1, 32);
-                $context->required('data._answers')->isArray()->allowEmpty(true)->each(function (Validator $context) {
+                $context->required('data._answers')->isArray()->allowEmpty(true)->each(function (Validator $context): void {
                     // if we need to do any validation on the answers we can do that here
                     // the uuid's for question_id is not a valid uuid4... not even sure what format it was before...
                     // so we just go off UUID_VALID
@@ -37,7 +37,7 @@ class AssessmentResultBlobValidator extends BaseValidator
                 });
                 $context->required('data._flaggedQuestions')->isArray()->allowEmpty(true);
                 $context->required('data._scaleResults')->isArray()->allowEmpty(true)
-                    ->each(function (Validator $context) {
+                    ->each(function (Validator $context): void {
                     // if we need to do any validation on the scale results we can do that here
                         // the uuid's for scaleId,rangeId is not a valid uuid4... not even sure what format it was before...
                         // so we just go off UUID_VALID

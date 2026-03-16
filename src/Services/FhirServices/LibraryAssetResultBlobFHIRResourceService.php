@@ -44,21 +44,9 @@ class LibraryAssetResultBlobFHIRResourceService extends FhirServiceBase
 
     const CODE_DAC_LIBRARY_ASSET = 'openemr-dac-library-asset-response';
 
-    /**
-     * @var LibraryAssetResultBlobRepository
-     */
-    private $repository;
-
-    /**
-     * @var PatientService
-     */
-    private $patientService;
-
-    public function __construct(LibraryAssetResultBlobRepository $repository, PatientService $patientService, private AssignmentCompleter $completer, private AssignmentRepository $assignmentRepository)
+    public function __construct(private LibraryAssetResultBlobRepository $repository, private PatientService $patientService, private AssignmentCompleter $completer, private AssignmentRepository $assignmentRepository)
     {
         parent::__construct();
-        $this->repository = $repository;
-        $this->patientService = $patientService;
     }
 
     public function supportsCode($code)
@@ -76,7 +64,7 @@ class LibraryAssetResultBlobFHIRResourceService extends FhirServiceBase
         ];
     }
 
-    protected function createOpenEMRSearchParameters($fhirSearchParameters, $puuidBind)
+    protected function createOpenEMRSearchParameters(array $fhirSearchParameters, ?string $puuidBind = null): array
     {
         // we don't do anything with the code once we have it, so we remove it.
         if (!empty($fhirSearchParameters['questionnaire-code'])) {
@@ -93,7 +81,7 @@ class LibraryAssetResultBlobFHIRResourceService extends FhirServiceBase
         $extensions = UtilsService::getExtensionsByUrl("https://www.discoverandchange.com/fhir/" . self::CODE_DAC_LIBRARY_ASSET, $fhirResource);
         if (!empty($extensions)) { // we only care about the first one.
             $valueString = $extensions[0]->getValueString();
-            $dataRecord = json_decode($valueString, true);
+            $dataRecord = json_decode((string) $valueString, true);
             if ($dataRecord) {
                 $author = UtilsService::parseReference($fhirResource->getAuthor());
                 $dataRecord['clientId'] = $author['uuid'];
@@ -180,7 +168,7 @@ class LibraryAssetResultBlobFHIRResourceService extends FhirServiceBase
         return $client;
     }
 
-    public function parseOpenEMRRecord($dataRecord = array(), $encode = false)
+    public function parseOpenEMRRecord($dataRecord = [], $encode = false)
     {
         $fhirResource = new FHIRQuestionnaireResponse();
         $id = new FhirId();

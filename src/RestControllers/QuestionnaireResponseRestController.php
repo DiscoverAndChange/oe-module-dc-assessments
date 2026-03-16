@@ -45,18 +45,12 @@ use Symfony\Component\Serializer\Serializer;
 class QuestionnaireResponseRestController implements IRestController
 {
     /**
-     * @var QuestionnaireResponseFHIRResourceService
-     */
-    private $resourceService;
-
-    /**
      * @var FhirResourcesService
      */
     private $fhirService;
 
-    public function __construct(QuestionnaireResponseFHIRResourceService $resourceService = null)
+    public function __construct(private readonly ?\OpenEMR\Modules\DiscoverAndChange\Assessments\Services\QuestionnaireResponseFHIRResourceService $resourceService = null)
     {
-        $this->resourceService = $resourceService;
         $this->fhirService = new FhirResourcesService();
     }
 
@@ -157,8 +151,8 @@ class QuestionnaireResponseRestController implements IRestController
     private function getAll($searchParams, $puuidBind = null)
     {
         $processingResult = $this->resourceService->getAll($searchParams, $puuidBind);
-        $bundleEntries = array();
-        foreach ($processingResult->getData() as $index => $searchResult) {
+        $bundleEntries = [];
+        foreach ($processingResult->getData() as $searchResult) {
             $bundleEntry = [
                 'fullUrl' =>  $GLOBALS['site_addr_oath'] . ($_SERVER['REDIRECT_URL'] ?? '') . '/' . $searchResult->getId(),
                 'resource' => $searchResult

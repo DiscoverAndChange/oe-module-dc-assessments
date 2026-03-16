@@ -21,7 +21,7 @@ use Twig\Environment;
 
 class AssignmentEncounterController implements IStaticEventSubscriber
 {
-    public function __construct(private Environment $twig, private AssignmentRepository $repository, private GlobalConfig $globalConfig, private SystemLogger $logger)
+    public function __construct(private readonly Environment $twig, private readonly AssignmentRepository $repository, private readonly GlobalConfig $globalConfig, private readonly SystemLogger $logger)
     {
     }
 
@@ -30,7 +30,7 @@ class AssignmentEncounterController implements IStaticEventSubscriber
 
         $eventDispatcher->addListener(
             EncounterFormsListRenderEvent::EVENT_SECTION_RENDER_POST,
-            function (EncounterFormsListRenderEvent $event) use ($container) {
+            function (EncounterFormsListRenderEvent $event) use ($container): void {
                 $service = $container->get(self::class);
                 if ($service instanceof self) {
                     $service->renderAssignmentListSection($event);

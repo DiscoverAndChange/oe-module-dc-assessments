@@ -61,13 +61,10 @@ class QuestionnaireResponseFHIRResourceService extends FhirServiceBase implement
      */
     private $service;
 
-    private $dispatcher;
 
-
-    public function __construct(EventDispatcher $dispatcher, $fhirApiURL = null)
+    public function __construct(private EventDispatcher $dispatcher, $fhirApiURL = null)
     {
         parent::__construct($fhirApiURL);
-        $this->dispatcher = $dispatcher;
 
         // still debating on whether the other mapped services in this module will go here or not, it creates issues
         // when we want to decouple this resource from the module.

@@ -25,7 +25,7 @@ class APISetupController implements IStaticEventSubscriber
 
     public function addApi(Container $container, RestApiCreateEvent $event)
     {
-        foreach (APIProxyController::API_MAPPINGS as $clazz => $mapping) {
+        foreach (APIProxyController::API_MAPPINGS as $mapping) {
             $methods = $mapping['method'] ?? ['GET'];
             foreach ($methods as $method) {
                 $contexts = $mapping['context'] ?? ['user'];
@@ -60,7 +60,7 @@ class APISetupController implements IStaticEventSubscriber
 
     public function addScopes(RestApiScopeEvent $event)
     {
-        foreach (APIProxyController::API_MAPPINGS as $clazz => $mapping) {
+        foreach (APIProxyController::API_MAPPINGS as $mapping) {
             $contexts = $mapping['context'] ?? ['user'];
             foreach ($contexts as $context) {
                 $resourceScope = explode('.', $mapping['scope']);
@@ -84,19 +84,19 @@ class APISetupController implements IStaticEventSubscriber
     public static function subscribeToEvents(Container $container, EventDispatcherInterface $eventDispatcher)
     {
 
-        $eventDispatcher->addListener(RestApiCreateEvent::EVENT_HANDLE, function (RestApiCreateEvent $event) use ($container) {
+        $eventDispatcher->addListener(RestApiCreateEvent::EVENT_HANDLE, function (RestApiCreateEvent $event) use ($container): void {
             $service = $container->get(self::class);
             if ($service instanceof self) {
                 $service->addApi($container, $event);
             }
         });
-        $eventDispatcher->addListener(RestApiScopeEvent::EVENT_TYPE_GET_SUPPORTED_SCOPES, function (RestAPIScopeEvent $event) use ($container) {
+        $eventDispatcher->addListener(RestApiScopeEvent::EVENT_TYPE_GET_SUPPORTED_SCOPES, function (RestAPIScopeEvent $event) use ($container): void {
             $service = $container->get(self::class);
             if ($service instanceof self) {
                 $service->addScopes($event);
             }
         });
-        $eventDispatcher->addListener(RestApiResourceServiceEvent::EVENT_HANDLE, function (RestApiResourceServiceEvent $event) use ($container) {
+        $eventDispatcher->addListener(RestApiResourceServiceEvent::EVENT_HANDLE, function (RestApiResourceServiceEvent $event) use ($container): void {
             $service = $container->get(self::class);
             if ($service instanceof self) {
                 $service->addMetadata($event);

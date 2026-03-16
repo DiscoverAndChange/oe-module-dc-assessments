@@ -17,7 +17,7 @@ class AssessmentRepository
 
     const TABLE_VIEW_CURRENT_ASSESSMENT = "dac_view_current_assessments";
 
-    public function __construct(private SystemLogger $logger)
+    public function __construct(private readonly SystemLogger $logger)
     {
     }
     public function getAssessmentSummaryList(?int $companyId): array
@@ -91,7 +91,7 @@ class AssessmentRepository
         $result = new AssessmentSummary();
         if (empty($record['uuid'])) {
             // lazy populate these
-            $uuid = $this->updateAssessmentUuid($record['id']);
+            $uuid = static::updateAssessmentUuid($record['id']);
         } else {
             $uuid = $record['uuid'];
         }
@@ -158,12 +158,12 @@ class AssessmentRepository
         if (empty($result[0])) {
             throw new \InvalidArgumentException("Assessment not found", ErrorCode::RECORD_NOT_FOUND);
         }
-        $blobData = json_decode($result[0]['data'], true);
+        $blobData = json_decode((string) $result[0]['data'], true);
         $blobData['_version'] = $result[0]['id'];
         $blobData['_id'] = $result[0]['id'];
         if (empty($result[0]['uuid'])) {
             // let's lazy update it.
-            $uuid = $this->updateAssessmentUuid($result[0]['id']);
+            $uuid = static::updateAssessmentUuid($result[0]['id']);
         } else {
             $uuid = $result[0]['uuid'];
         }
@@ -180,7 +180,7 @@ class AssessmentRepository
 
         // TODO: @adunsulag need to sanitize question prompts, ranges, etc.
         $sql = "INSERT INTO " . self::TABLE_NAME . " (uuid, uid, name, description, data, company_id) VALUES (?, ?, ?, ?, ?, ?)";
-        $registry = $this->getUuidRegistry();
+        $registry = static::getUuidRegistry();
         $uuid = $registry->createUuid();
         $params = [$uuid, $uid, $name, $description, json_encode($jsonData), $companyId];
         QueryUtils::sqlStatementThrowException($sql, $params);

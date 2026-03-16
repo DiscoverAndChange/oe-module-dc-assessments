@@ -136,12 +136,12 @@ class QuestionnaireResponseFormFHIRResourceService extends FhirServiceBase imple
      * @param bool $encode
      * @return TaskFHIRResource|\OpenEMR\Services\FHIR\the
      */
-    public function parseOpenEMRRecord($dataRecord = array(), $encode = false)
+    public function parseOpenEMRRecord($dataRecord = [], $encode = false)
     {
         $innerData = [];
         try {
             // parse the json data in dataRecord questionnaire
-            $innerData = json_decode($dataRecord['questionnaire_response'], true, 512, JSON_THROW_ON_ERROR);
+            $innerData = json_decode((string) $dataRecord['questionnaire_response'], true, 512, JSON_THROW_ON_ERROR);
         } catch (\JsonException $exception) {
             // log the error and move on
             $innerData = []; // nothing we can do here, but skip the questionnaire data as its invalid
@@ -192,19 +192,10 @@ class QuestionnaireResponseFormFHIRResourceService extends FhirServiceBase imple
         }
         if (!empty($dataRecord['status'])) {
             // map the statii
-            switch ($dataRecord['status']) {
-                case 'completed':
-                case 'amended':
-                case 'entered-in-error':
-                case 'stopped':
-                    $fhirResource->setStatus($dataRecord['status']);
-                    break;
-                case 'incomplete':
-                case 'active':
-                default:
-                    $fhirResource->setStatus('in-progress');
-                    break;
-            }
+            match ($dataRecord['status']) {
+                'completed', 'amended', 'entered-in-error', 'stopped' => $fhirResource->setStatus($dataRecord['status']),
+                default => $fhirResource->setStatus('in-progress'),
+            };
         }
 
         return $fhirResource;

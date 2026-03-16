@@ -19,7 +19,7 @@ use Psr\Http\Message\ResponseInterface;
 
 class LibraryAssetRestController implements IRestController
 {
-    public function __construct(private SystemLogger $logger)
+    public function __construct(private readonly SystemLogger $logger)
     {
     }
 

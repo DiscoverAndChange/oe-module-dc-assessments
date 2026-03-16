@@ -26,7 +26,7 @@ use Symfony\Component\Process\Process;
 
 class AssessmentResultRestController implements IRestController
 {
-    public function __construct(private SystemLogger $logger, private AssignmentCompleter $assignmentCompleter)
+    public function __construct(private readonly SystemLogger $logger, private readonly AssignmentCompleter $assignmentCompleter)
     {
     }
 

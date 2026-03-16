@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 
 class AssessmentReportRestController implements IRestController
 {
-    public function __construct(private SystemLogger $logger)
+    public function __construct(private readonly SystemLogger $logger)
     {
     }
 
@@ -29,7 +29,7 @@ class AssessmentReportRestController implements IRestController
         $hostSiteId = 1;
         $showAllReports = $request->getQueryParams()['showAllReports'] ?? false;
         $showAllReports = $showAllReports === 'true';
-        $reports = $repo->getAll($showAllReports, $hostSiteId);
+        $reports = $repo->getAll($showAllReports);
         return $psrFactory->createResponse(200)->withBody($psrFactory->createStream(json_encode($reports)));
     }
 

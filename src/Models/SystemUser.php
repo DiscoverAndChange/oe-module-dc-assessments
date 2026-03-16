@@ -7,9 +7,6 @@ class SystemUser implements \JsonSerializable
     private string $_password;
     private int $_role;
     private array $_caps;
-    private string $_id;
-    private string $_username;
-    private ?int $_companyID;
     private string $_companyName;
     private string $_companyPrimaryContact;
     private string $_billingCustomerId;
@@ -17,11 +14,8 @@ class SystemUser implements \JsonSerializable
     private string $_lastName;
     private bool $_enabled;
 
-    public function __construct(string $id, string $username, int $companyID = null)
+    public function __construct(private string $_id, private string $_username, private ?int $_companyID = null)
     {
-        $this->_id = $id;
-        $this->_username = $username;
-        $this->_companyID = $companyID;
         $this->_enabled = true;
         $this->_role = Role::UnAuthenticated;
         $this->_companyPrimaryContact = '';

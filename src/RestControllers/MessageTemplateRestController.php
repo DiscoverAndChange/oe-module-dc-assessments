@@ -20,7 +20,7 @@ use Twig\Environment;
 
 class MessageTemplateRestController implements IRestController
 {
-    public function __construct(private SystemLogger $logger, private Environment $twig, private GlobalConfig $config)
+    public function __construct(private readonly SystemLogger $logger, private readonly Environment $twig, private readonly GlobalConfig $config)
     {
     }
 

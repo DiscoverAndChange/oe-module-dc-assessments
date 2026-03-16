@@ -31,7 +31,7 @@ use Twig\Environment;
 
 class QuestionnaireAuditController
 {
-    public function __construct(private SystemLogger $logger, private Environment $twig, private QuestionnaireService $questionnaireService, private QuestionnaireResponseService $qrService, private AssignmentRepository $assignmentRepository, private GlobalConfig $config, private string $publicPath)
+    public function __construct(private readonly SystemLogger $logger, private readonly Environment $twig, private readonly QuestionnaireService $questionnaireService, private readonly QuestionnaireResponseService $qrService, private readonly AssignmentRepository $assignmentRepository, private readonly GlobalConfig $config, private readonly string $publicPath)
     {
     }
 
@@ -235,10 +235,10 @@ class QuestionnaireAuditController
         $qrResponse = $this->qrService->fetchQuestionnaireResponseByResponseId($assignmentItem->getResultId());
 
         $qrResponseContent = $qrResponse['questionnaire_response'];
-        $qr = json_decode($qrResponseContent, true, 512, JSON_THROW_ON_ERROR);
+        $qr = json_decode((string) $qrResponseContent, true, 512, JSON_THROW_ON_ERROR);
 
         $answers = $this->qrService->flattenQuestionnaireResponse($qr, '|', '');
-        $content = $this->qrService->buildQuestionnaireResponseHtml($answers, '|');
+        $content = $this->qrService->buildQuestionnaireResponseHtml($answers);
 
         $category = $this->getCategoryList();
         $encounterService = new EncounterService();
@@ -309,7 +309,7 @@ class QuestionnaireAuditController
         try {
             $body = $this->twig->render('error/500.html.twig', ['exception' => $exception]);
             return $response->withBody($psrFactory->createStream($body));
-        } catch (\Exception $exception) {
+        } catch (\Exception) {
             // if we are having a problem with our twig rendering we are just going to return an invalid response
             return $response;
         }

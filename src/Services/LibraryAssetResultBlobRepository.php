@@ -17,7 +17,7 @@ class LibraryAssetResultBlobRepository
 {
     const TABLE_NAME = "dac_LibraryAssetResultBlob";
 
-    public function __construct(private SystemLogger $logger, private CryptoGen $cryptoGen)
+    public function __construct(private readonly SystemLogger $logger, private readonly CryptoGen $cryptoGen)
     {
     }
 

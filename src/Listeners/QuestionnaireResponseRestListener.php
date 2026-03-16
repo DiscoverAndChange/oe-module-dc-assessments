@@ -23,13 +23,13 @@ class QuestionnaireResponseRestListener implements IStaticEventSubscriber
     }
     public static function subscribeToEvents(Container $container, EventDispatcherInterface $eventDispatcher)
     {
-        $eventDispatcher->addListener('fhir.questionnaire_response.pre_insert', function (GenericEvent $event) use ($container) {
+        $eventDispatcher->addListener('fhir.questionnaire_response.pre_insert', function (GenericEvent $event) use ($container): void {
             $service = $container->get(self::class);
             if ($service instanceof self) {
                 $service->dispatchFHIRInsertEvent($event);
             }
         });
-        $eventDispatcher->addListener('fhir.questionnaire_response.search', function (GenericEvent $event) use ($container) {
+        $eventDispatcher->addListener('fhir.questionnaire_response.search', function (GenericEvent $event) use ($container): void {
             $service = $container->get(self::class);
             if ($service instanceof self) {
                 $service->dispatchFHIRSearchEvent($event);
@@ -46,7 +46,7 @@ class QuestionnaireResponseRestListener implements IStaticEventSubscriber
             // grab the extension and see if we dispatch it to our response handlers
             $extension = $fhirResource->getExtension() ?? [];
             $extension = array_filter($extension, function ($item) {
-                if (str_starts_with($item->getUrl(), "https://www.discoverandchange.com/fhir/openemr-")) {
+                if (str_starts_with((string) $item->getUrl(), "https://www.discoverandchange.com/fhir/openemr-")) {
                     return true;
                 }
                 return false;

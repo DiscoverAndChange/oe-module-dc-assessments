@@ -4,11 +4,11 @@ namespace OpenEMR\Modules\DiscoverAndChange\Assessments\DTO;
 
 class ClientSearchQueryDTO
 {
-    public ?string $firstName;
-    public ?string $lastName;
-    public ?string $id;
-    public ?string $email;
-    public ?bool $exactMatch;
+    public ?string $firstName = null;
+    public ?string $lastName = null;
+    public ?string $id = null;
+    public ?string $email = null;
+    public ?bool $exactMatch = null;
 
     public function isEmpty(): bool
     {

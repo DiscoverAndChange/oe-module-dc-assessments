@@ -12,14 +12,8 @@ use Psr\Http\Message\UriInterface;
 
 class ServerRestRequest implements ServerRequestInterface
 {
-    /**
-     * @var HttpRestRequest $httpRestRequest
-     */
-    private $httpRestRequest;
-
-    public function __construct(HttpRestRequest $httpRestRequest)
+    public function __construct(private readonly HttpRestRequest $httpRestRequest)
     {
-        $this->httpRestRequest = $httpRestRequest;
     }
 
     public function getAuthRole()

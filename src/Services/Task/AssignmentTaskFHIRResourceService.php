@@ -102,7 +102,7 @@ class AssignmentTaskFHIRResourceService extends FhirServiceBase implements IReso
         return new FhirSearchParameterDefinition('patient', SearchFieldType::REFERENCE, [new ServiceField('client_uuid', ServiceField::TYPE_UUID)]);
     }
 
-    public function parseOpenEMRRecord($dataRecord = array(), $encode = false): FHIRTask
+    public function parseOpenEMRRecord($dataRecord = [], $encode = false): FHIRTask
     {
         $fhirResource = new FHIRTask();
 
@@ -137,11 +137,7 @@ class AssignmentTaskFHIRResourceService extends FhirServiceBase implements IReso
             $fhirResource->setAuthoredOn($dataRecord['dateAssigned']);
         }
 
-        if (empty($dataRecord['dateCompleted'])) {
-            $fhirStatus = 'ready';
-        } else {
-            $fhirStatus = 'completed';
-        }
+        $fhirStatus = empty($dataRecord['dateCompleted']) ? 'ready' : 'completed';
 
         $fhirResource->setStatus($fhirStatus);
         return $fhirResource;
@@ -177,9 +173,7 @@ class AssignmentTaskFHIRResourceService extends FhirServiceBase implements IReso
             if (isset($openEMRSearchParameters['_id'])) {
                 $matchSearchId = true;
                 $values = $openEMRSearchParameters['_id']->getValues();
-                $matchedUUids = array_map(function (TokenSearchValue $value) {
-                    return $value->getCode();
-                }, $values);
+                $matchedUUids = array_map(fn(TokenSearchValue $value) => $value->getCode(), $values);
             }
             foreach ($results as $result) {
                 $resultData = $result->jsonSerialize();
@@ -251,7 +245,7 @@ class AssignmentTaskFHIRResourceService extends FhirServiceBase implements IReso
                 // TODO: @adunsulag we need to check the questionnaire response pid against the Task.for property and make sure they match
                 // if they are different then someone is trying to assign a questionnaire response to a patient that doesn't belong to them.
                 $questionnaireJSON = $response['questionnaire'];
-                $questionnaire = json_decode($questionnaireJSON, true, 512, JSON_THROW_ON_ERROR);
+                $questionnaire = json_decode((string) $questionnaireJSON, true, 512, JSON_THROW_ON_ERROR);
                 $resourceService = new TaskOnsitePortalActivityAccessService();
                 $patientService = new PatientService();
                 $puuid = UuidRegistry::uuidToString($patientService->getUuid($response['patient_id']));

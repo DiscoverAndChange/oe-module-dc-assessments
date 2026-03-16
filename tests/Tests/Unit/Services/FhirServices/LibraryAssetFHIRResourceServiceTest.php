@@ -2,8 +2,7 @@
 
 namespace OpenEMR\Modules\DiscoverAndChange\Assessments\Tests\FhirServices;
 
-use Monolog\Test\TestCase;
-use OpenEMR\Common\Uuid\UuidRegistry;
+use PHPUnit\Framework\TestCase;
 use OpenEMR\FHIR\R4\FHIRDomainResource\FHIRQuestionnaire;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\DTO\LibraryAssetBlobDTO;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Services\FhirServices\LibraryAssetFHIRResourceService;

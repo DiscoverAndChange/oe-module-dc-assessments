@@ -12,7 +12,7 @@ use OpenEMR\Modules\DiscoverAndChange\Assessments\Models\ErrorCode;
 
 class AssignmentCompleter
 {
-    public function __construct(private SystemLogger $logger, private ClientMessageDispatcher $dispatcher, private GlobalConfig $config)
+    public function __construct(private readonly SystemLogger $logger, private readonly ClientMessageDispatcher $dispatcher, private readonly GlobalConfig $config)
     {
     }
 

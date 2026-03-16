@@ -30,7 +30,7 @@ use Psr\Http\Message\ResponseInterface;
 
 class LibraryAssetResultRestController implements IRestController
 {
-    public function __construct(private SystemLogger $logger, private CryptoGen $cryptoGen, private AssignmentCompleter $completer)
+    public function __construct(private readonly SystemLogger $logger, private readonly CryptoGen $cryptoGen, private readonly AssignmentCompleter $completer)
     {
     }
 
@@ -107,9 +107,7 @@ class LibraryAssetResultRestController implements IRestController
             $createdResult = $libraryAssetResultRepo->saveLibraryAssetResultBlob(
                 $dto,
                 $asset,
-                $client['uuid'],
-                $request->getUserId(),
-                $request->getPatientUUIDString()
+                $client['uuid']
             );
 
             $item->setResultId($createdResult->getId());

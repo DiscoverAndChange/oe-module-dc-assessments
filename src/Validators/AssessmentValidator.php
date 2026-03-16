@@ -15,7 +15,7 @@ class AssessmentValidator extends BaseValidator
         // insert validations
         $this->validator->context(
             self::DATABASE_INSERT_CONTEXT,
-            function (Validator $context) {
+            function (Validator $context): void {
                 $context->required('_uid')->lengthBetween(1, 32);
                 $context->required('_name')->lengthBetween(1, 255);
                 $context->required('_description')->lengthBetween(1, 65535);
@@ -25,10 +25,10 @@ class AssessmentValidator extends BaseValidator
 
         $this->validator->context(
             self::DATABASE_UPDATE_CONTEXT,
-            function (Validator $context) {
+            function (Validator $context): void {
                 $context->copyContext(
                     self::DATABASE_INSERT_CONTEXT,
-                    function ($rules) {
+                    function ($rules): void {
                        // any update to the rules would go here
                     }
                 );

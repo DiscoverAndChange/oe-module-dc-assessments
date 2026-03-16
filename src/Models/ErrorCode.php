@@ -25,7 +25,7 @@ class ErrorCode
     const SYSTEM_ERROR = 5001;
     const RECORD_CREATE_FAILED = 5002;
 
-    const codeMap = array(
+    const codeMap = [
         ErrorCode::DUP_ENTRY => "INVALID_REQUEST",
         ErrorCode::INVALID_REQUEST => "INVALID_REQUEST",
         ErrorCode::VALIDATE_DATA_MISSING => "VALIDATE_DATA_MISSING",
@@ -37,7 +37,7 @@ class ErrorCode
         ErrorCode::RECORD_NOT_FOUND => "RECORD_NOT_FOUND",
         ErrorCode::SYSTEM_ERROR => "SYSTEM_ERROR",
         ErrorCode::RECORD_CREATE_FAILED => "RECORD_CREATE_FAILED"
-    );
+    ];
 
     public static function getErrorStringForErrorCode($code): string
     {

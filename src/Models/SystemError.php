@@ -10,12 +10,12 @@ namespace OpenEMR\Modules\DiscoverAndChange\Assessments\Models;
 
 class SystemError extends \RuntimeException
 {
-    private int $_code;
+    private readonly int $_code;
 
     /**
      * @var SystemError[]
      */
-    private array $_subErrors;
+    private readonly array $_subErrors;
 
     public function __constructor(int $code, string $message, ?array $subErrors)
     {

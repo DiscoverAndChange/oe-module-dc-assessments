@@ -61,12 +61,12 @@ class QuestionnaireFormFHIRResourceService extends FhirServiceBase implements IR
      * @param bool $encode
      * @return TaskFHIRResource|\OpenEMR\Services\FHIR\the
      */
-    public function parseOpenEMRRecord($dataRecord = array(), $encode = false)
+    public function parseOpenEMRRecord($dataRecord = [], $encode = false)
     {
         $innerData = [];
         try {
             // parse the json data in dataRecord questionnaire
-            $innerData = json_decode($dataRecord['questionnaire'], true, 512, JSON_THROW_ON_ERROR);
+            $innerData = json_decode((string) $dataRecord['questionnaire'], true, 512, JSON_THROW_ON_ERROR);
         } catch (\JsonException $exception) {
             // log the error and move on
             $innerData = []; // nothing we can do here, but skip the questionnaire data as its invalid

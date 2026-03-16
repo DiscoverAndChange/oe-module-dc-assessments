@@ -14,7 +14,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class ClientMessageDispatcher
 {
-    public function __construct(private SystemLogger $logger, private EventDispatcher $dispatcher, private HTMLSanitizer $sanitizer, private GlobalConfig $config)
+    public function __construct(private readonly SystemLogger $logger, private readonly EventDispatcher $dispatcher, private readonly HTMLSanitizer $sanitizer, private readonly GlobalConfig $config)
     {
     }
 

@@ -19,7 +19,7 @@ class LibraryAssetBlobValidator extends BaseValidator
         // insert validations
         $this->validator->context(
             self::DATABASE_INSERT_CONTEXT,
-            function (Validator $context) {
+            function (Validator $context): void {
                 $context->required('title')->lengthBetween(1, 64);
                 $context->required('description')->lengthBetween(1, 255);
                 $context->required('type')->inArray(['article', 'assignment']);
@@ -48,11 +48,11 @@ class LibraryAssetBlobValidator extends BaseValidator
         // update validations copied from insert
         $this->validator->context(
             self::DATABASE_UPDATE_CONTEXT,
-            function (Validator $context) {
+            function (Validator $context): void {
                 $context->copyContext(
                     self::DATABASE_INSERT_CONTEXT,
-                    function ($rules) {
-                        foreach ($rules as $key => $chain) {
+                    function ($rules): void {
+                        foreach ($rules as $chain) {
                             $chain->required(false);
                         }
                     }

@@ -20,9 +20,9 @@ class LibraryAssetResultBlobValidator extends BaseValidator
         // insert validations
         $this->validator->context(
             self::DATABASE_INSERT_CONTEXT,
-            function (Validator $context) {
+            function (Validator $context): void {
                 $context->required('asset.id')->numeric();
-                $context->required('answers')->isArray()->allowEmpty(true)->each(function (Validator $context) {
+                $context->required('answers')->isArray()->allowEmpty(true)->each(function (Validator $context): void {
                     $context->required('id')->uuid(Uuid::UUID_V4);
                     // the value can be anything
                 });
@@ -34,11 +34,11 @@ class LibraryAssetResultBlobValidator extends BaseValidator
         // update validations copied from insert
         $this->validator->context(
             self::DATABASE_UPDATE_CONTEXT,
-            function (Validator $context) {
+            function (Validator $context): void {
                 $context->copyContext(
                     self::DATABASE_INSERT_CONTEXT,
-                    function ($rules) {
-                        foreach ($rules as $key => $chain) {
+                    function ($rules): void {
+                        foreach ($rules as $chain) {
                             $chain->required(false);
                         }
                     }

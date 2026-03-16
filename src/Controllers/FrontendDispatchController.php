@@ -12,7 +12,7 @@ use Twig\Environment;
 
 class FrontendDispatchController
 {
-    public function __construct(private GlobalConfig $config, private SmartAppClientService $clientService, private Environment $twig, private EventDispatcher $dispatcher)
+    public function __construct(private readonly GlobalConfig $config, private readonly SmartAppClientService $clientService, private readonly Environment $twig, private readonly EventDispatcher $dispatcher)
     {
     }
 
@@ -49,7 +49,7 @@ class FrontendDispatchController
         // TODO: @adunsulag I don't like the duplicate code here and in SMARTAuthorizationController->smartAppStyles()
         // TODO: @adunsulag look at refactoring this to be more DRY
         $cssTheme = $GLOBALS['css_header'];
-        $baseNameCssTheme = basename($cssTheme);
+        $baseNameCssTheme = basename((string) $cssTheme);
         $parts = explode(".", $baseNameCssTheme);
         $coreTheme = $parts[0] ?? "style_light";
         $logoService = new LogoService();

@@ -23,7 +23,7 @@ class AssessmentGroupValidator extends BaseValidator
         // insert validations
         $this->validator->context(
             self::DATABASE_INSERT_CONTEXT,
-            function (Validator $context) {
+            function (Validator $context): void {
                 $context->required('name')->lengthBetween(1, 100);
                 $context->optional('appointmentId')->uuid();
             }
@@ -31,7 +31,7 @@ class AssessmentGroupValidator extends BaseValidator
 
         $this->validator->context(
             self::DATABASE_ADD_ASSESSMENT_CONTEXT,
-            function (Validator $context) {
+            function (Validator $context): void {
                 $context->required("uid")->lengthBetween(1, 32);
                 $context->required("groupId")->numeric();
                 $context->optional('appointmentId')->uuid();
@@ -40,7 +40,7 @@ class AssessmentGroupValidator extends BaseValidator
 
         $this->validator->context(
             self::DATABASE_UPDATE_ASSESSMENT_CONTEXT,
-            function (Validator $context) {
+            function (Validator $context): void {
                 $context->required("groupId")->numeric();
             }
         );

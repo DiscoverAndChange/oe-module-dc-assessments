@@ -21,16 +21,13 @@ use OpenEMR\Validators\ProcessingResult;
 
 class ClientSearchRepository
 {
-    private ?int $companyId;
     private $_repo;
 
     private $logger;
 
-    public function __construct(?int $companyID)
+    public function __construct(private readonly ?int $companyId)
     {
- // private dbUtils:DBUtils, private config:AppConfig, private logger:Logger, companyID?:string) {
-        $this->companyId = $companyID;
-//        this._repo = this.dbUtils.getRepository(Patient);
+ //        this._repo = this.dbUtils.getRepository(Patient);
         $this->logger = new SystemLogger();
     }
 

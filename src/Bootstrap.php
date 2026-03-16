@@ -107,11 +107,6 @@ class Bootstrap
     private $serviceContainer;
 
     /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
      * @var \OpenEMR\Modules\DiscoverAndChange\Assessments\GlobalConfig
      */
     private $globalsConfig;
@@ -120,9 +115,9 @@ class Bootstrap
 
     const MODULE_INSTALLATION_PATH = "/interface/modules/custom_modules/";
 
-    private Kernel $kernel;
+    private readonly Kernel $kernel;
 
-    public function __construct(EventDispatcherInterface $eventDispatcher, ?Kernel $kernel = null)
+    public function __construct(private readonly EventDispatcherInterface $eventDispatcher, ?Kernel $kernel = null)
     {
         if (empty($kernel)) {
             $kernel = new Kernel();
@@ -130,7 +125,6 @@ class Bootstrap
         $this->kernel = $kernel;
 
         $this->moduleDirectoryName = basename(dirname(__DIR__));
-        $this->eventDispatcher = $eventDispatcher;
 
         // we inject our globals value.
         $this->globalsConfig = new GlobalConfig($GLOBALS);
@@ -149,7 +143,7 @@ class Bootstrap
 
     public function addGlobalSettings()
     {
-        $this->eventDispatcher->addListener(GlobalsInitializedEvent::EVENT_HANDLE, [$this, 'addModuleGlobalSettings']);
+        $this->eventDispatcher->addListener(GlobalsInitializedEvent::EVENT_HANDLE, $this->addModuleGlobalSettings(...));
     }
 
     public function addModuleGlobalSettings(GlobalsInitializedEvent $event)
@@ -378,9 +372,9 @@ class Bootstrap
         $this->registerMenuItems();
         $serviceContainer = $this->getServiceContainer();
         // TODO: @adunsulag lookup syntax for injecting the actual service container into this controller so we can add it to the DI.
-        $this->eventDispatcher->addListener(ScriptFilterEvent::EVENT_NAME, [$this, 'addProviderPortalScript']);
-        $this->eventDispatcher->addListener(TemplatePageEvent::class, [$this, 'oauth2TemplatePageOverrides']);
-        $this->eventDispatcher->addListener(TwigEnvironmentEvent::EVENT_CREATED, [$this, 'addTemplateOverrideLoader']);
+        $this->eventDispatcher->addListener(ScriptFilterEvent::EVENT_NAME, $this->addProviderPortalScript(...));
+        $this->eventDispatcher->addListener(TemplatePageEvent::class, $this->oauth2TemplatePageOverrides(...));
+        $this->eventDispatcher->addListener(TwigEnvironmentEvent::EVENT_CREATED, $this->addTemplateOverrideLoader(...));
 
         // TODO: @adunsulag this has code smell all over it... until we can figure out how to better handle the twig dependency between modules we will go
         // with static instantiation and allow the classes that use listeners to retrieve themselves.
@@ -467,7 +461,7 @@ class Bootstrap
              * @global                       $eventDispatcher @see ModulesApplication::loadCustomModule
              * @global                       $module @see ModulesApplication::loadCustomModule
              */
-            $this->eventDispatcher->addListener(MenuEvent::MENU_UPDATE, [$this, 'addCustomModuleMenuItem']);
+            $this->eventDispatcher->addListener(MenuEvent::MENU_UPDATE, $this->addCustomModuleMenuItem(...));
 //        }
     }
 
@@ -487,8 +481,8 @@ class Bootstrap
         // doesn't break any modules.
 //        $menuItem->url = "/interface/modules/custom_modules/oe-module-dc-assessments/public/frontend/login";
         $menuItem->url = $GLOBALS['webroot'] . '/interface/smart/ehr-launch-client.php?client_id='
-            . urlencode($clientId) . '&intent=' . urlencode(SMARTLaunchToken::INTENT_MAIN_TAB)
-            . '&csrf_token=' . urlencode(CsrfUtils::collectCsrfToken());
+            . urlencode((string) $clientId) . '&intent=' . urlencode(SMARTLaunchToken::INTENT_MAIN_TAB)
+            . '&csrf_token=' . urlencode((string) CsrfUtils::collectCsrfToken());
         $menuItem->children = [];
 
         /**

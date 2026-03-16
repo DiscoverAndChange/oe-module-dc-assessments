@@ -15,9 +15,9 @@ use Twig\TwigFunction;
 
 class SimplifiedOAuthTwigExtension extends AbstractExtension implements GlobalsInterface
 {
-    private ?string $primaryLogo;
+    private ?string $primaryLogo = null;
 
-    public function __construct(private ScopeRepository $scopeRepository, private LogoService $logoService, private GlobalConfig $globalConfig)
+    public function __construct(private readonly ScopeRepository $scopeRepository, private readonly LogoService $logoService, private readonly GlobalConfig $globalConfig)
     {
     }
 
@@ -40,15 +40,11 @@ class SimplifiedOAuthTwigExtension extends AbstractExtension implements GlobalsI
             ),
             new TwigFunction(
                 'shouldDisplayUpdatedOAuthPages',
-                function () {
-                    return $this->globalConfig->shouldDisplayUpdatedOAuthPages();
-                }
+                fn() => $this->globalConfig->shouldDisplayUpdatedOAuthPages()
             ),
             new TwigFunction(
                 'displaySimplifiedKey',
-                function ($key) {
-                    return in_array($key, ['Patient', 'Questionnaire', 'QuestionnaireResponse', 'Task']);
-                }
+                fn($key) => in_array($key, ['Patient', 'Questionnaire', 'QuestionnaireResponse', 'Task'])
             ),
             new TwigFunction(
                 'getSimplifiedIconClassesForKey',

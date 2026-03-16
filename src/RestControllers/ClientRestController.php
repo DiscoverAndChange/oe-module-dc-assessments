@@ -35,7 +35,7 @@ use Psr\Http\Message\ResponseInterface;
 
 class ClientRestController implements IRestController
 {
-    public function __construct(private SystemLogger $logger, private ClientMessageDispatcher $messageDispatcher)
+    public function __construct(private readonly SystemLogger $logger, private readonly ClientMessageDispatcher $messageDispatcher)
     {
     }
 

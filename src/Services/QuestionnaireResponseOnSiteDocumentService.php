@@ -8,7 +8,7 @@ use OpenEMR\Services\QuestionnaireResponseService;
 
 class QuestionnaireResponseOnSiteDocumentService
 {
-    public function __construct(private QuestionnaireResponseService $qrService)
+    public function __construct(private readonly QuestionnaireResponseService $qrService)
     {
     }
 
@@ -18,7 +18,7 @@ class QuestionnaireResponseOnSiteDocumentService
         $formFilename = \convert_safe_file_dir_name($questionnaireResponse['response_id']) . '_' . \convert_safe_file_dir_name($pid) . '.pdf';
 
         $answers = $this->qrService->flattenQuestionnaireResponse($questionnaireResponse, '|', '');
-        $content = $this->qrService->buildQuestionnaireResponseHtml($answers, '|');
+        $content = $this->qrService->buildQuestionnaireResponseHtml($answers);
 
         // we could leverage Jerry's document pdf code here if we could include the classes.
         $pdfCreator = new PatientPortalPDFDocumentCreator();

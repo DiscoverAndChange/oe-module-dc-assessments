@@ -148,7 +148,7 @@ class TaskFHIRResourceService extends FhirServiceBase implements
      * @param bool $encode
      * @return TaskFHIRResource|\OpenEMR\Services\FHIR\the
      */
-    public function parseOpenEMRRecord($dataRecord = array(), $encode = false)
+    public function parseOpenEMRRecord($dataRecord = [], $encode = false)
     {
         $fhirResource = new FHIRTask();
 

@@ -14,7 +14,7 @@ class LibraryAssetBlobRepository
 {
     const TABLE_NAME = "dac_LibraryAssetBlob";
 
-    public function __construct(private SystemLogger $logger)
+    public function __construct(private readonly SystemLogger $logger)
     {
     }
 
@@ -56,7 +56,7 @@ class LibraryAssetBlobRepository
             $sql .= ", la.content, la.journal ";
         }
         $sql .= "FROM " . self::TABLE_NAME . " la ";
-        $sql .= "WHERE la.id IN (" . implode(',', array_map('intval', $ids)) . ")";
+        $sql .= "WHERE la.id IN (" . implode(',', array_map(intval(...), $ids)) . ")";
 
         $assets = $this->getAssetsForQuery($sql, []);
         foreach ($assets as $asset) {
@@ -91,11 +91,7 @@ class LibraryAssetBlobRepository
                 ->setLastUpdateDate($row['last_update_date'])
                 ->setTags($tags[$row['id']] ?? []);
 
-            if (empty($row['uuid'])) {
-                $uuid = self::updateLibraryAssetBlobUuid($row['id']);
-            } else {
-                $uuid = $row['uuid'];
-            }
+            $uuid = empty($row['uuid']) ? self::updateLibraryAssetBlobUuid($row['id']) : $row['uuid'];
             $asset->setUuid(UuidRegistry::uuidToString($uuid));
             $assets[] = $asset;
         }

@@ -108,9 +108,7 @@ class AssessmentGroupService extends BaseService
 
         $values = array_values($groupedResults);
         // sort $values by name using usort
-        usort($values, function ($a, $b) {
-            return $a['name'] <=> $b['name'];
-        });
+        usort($values, fn($a, $b) => $a['name'] <=> $b['name']);
         return $values;
     }
 

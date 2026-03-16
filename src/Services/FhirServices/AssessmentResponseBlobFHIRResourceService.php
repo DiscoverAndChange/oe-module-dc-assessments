@@ -66,7 +66,7 @@ class AssessmentResponseBlobFHIRResourceService extends FhirServiceBase
         ];
     }
 
-    protected function createOpenEMRSearchParameters($fhirSearchParameters, $puuidBind)
+    protected function createOpenEMRSearchParameters(array $fhirSearchParameters, ?string $puuidBind = null): array
     {
         // we don't do anything with the code once we have it, so we remove it.
         if (!empty($fhirSearchParameters['questionnaire-code'])) {
@@ -75,7 +75,7 @@ class AssessmentResponseBlobFHIRResourceService extends FhirServiceBase
         return parent::createOpenEMRSearchParameters($fhirSearchParameters, $puuidBind);
     }
 
-    public function parseOpenEMRRecord($dataRecord = array(), $encode = false)
+    public function parseOpenEMRRecord($dataRecord = [], $encode = false)
     {
         $fhirResource = new FHIRQuestionnaire();
         $id = new FhirId();
@@ -120,7 +120,7 @@ class AssessmentResponseBlobFHIRResourceService extends FhirServiceBase
         $extensions = UtilsService::getExtensionsByUrl("https://www.discoverandchange.com/fhir/" . self::CODE_DAC_ASSESSMENT, $fhirResource);
         if (!empty($extensions)) { // we only care about the first one.
             $valueString = $extensions[0]->getValueString();
-            $dataRecord = json_decode($valueString, true);
+            $dataRecord = json_decode((string) $valueString, true);
             if ($dataRecord) {
                 $author = UtilsService::parseReference($fhirResource->getAuthor());
                 $dataRecord['clientId'] = $author['uuid'];

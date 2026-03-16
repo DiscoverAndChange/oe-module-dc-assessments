@@ -8,7 +8,7 @@ use Twig\Environment;
 
 class MessageTemplateRepository
 {
-    public function __construct(private Environment $twig, private GlobalConfig $globalConfig)
+    public function __construct(private readonly Environment $twig, private readonly GlobalConfig $globalConfig)
     {
     }
 

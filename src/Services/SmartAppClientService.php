@@ -10,7 +10,7 @@ use OpenEMR\Common\Auth\OpenIDConnect\Repositories\ClientRepository;
 
 class SmartAppClientService
 {
-    public function __construct(private GlobalConfig $globalConfig)
+    public function __construct(private readonly GlobalConfig $globalConfig)
     {
     }
 
@@ -28,7 +28,7 @@ class SmartAppClientService
 //            $client_secret = $clientRepository->generateClientSecret();
 
             // TODO: @adunsulag wouldn't it be better to convert this into an actual Client Entity Model ?
-            $params = array(
+            $params = [
                 'client_id' => $clientId,
                 'client_role' => 'patient', // 'user', switch when we deal with confidential clients.
                 'redirect_uris' => [$this->globalConfig->getSmartAppClientPublicPathRedirectUri(), $this->globalConfig->getSmartAppAdminPublicPathRedirectUri()],
@@ -44,7 +44,7 @@ class SmartAppClientService
                 'registration_client_uri_path' => $reg_client_uri_path,
                 // as we are a module we want to skip the authentication/authorization flow.
                 'skip_ehr_launch_authorization_flow' => true
-            );
+            ];
             $clientRepository->insertNewClient($clientId, $params, $GLOBALS['site_id']);
             // make sure our client is enabled.
 

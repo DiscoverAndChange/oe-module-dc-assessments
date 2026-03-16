@@ -12,7 +12,7 @@ use OpenEMR\Services\ListService;
 
 class ClientRepository
 {
-    public function __construct(private SystemLogger $logger)
+    public function __construct(private readonly SystemLogger $logger)
     {
     }
 
@@ -26,7 +26,7 @@ class ClientRepository
             throw new \InvalidArgumentException("No uuid found for patient pid " . $clientId);
         }
         $listService = new ListService();
-        $listOption = $listService->getListOption(AssignmentRepository::TEMPLATE_PROFILE_LIST_ID, trim($profileId));
+        $listOption = $listService->getListOption(AssignmentRepository::TEMPLATE_PROFILE_LIST_ID, trim((string) $profileId));
         if (empty($listOption)) {
             throw new \InvalidArgumentException("No list option found for profile id {$profileId}");
         }

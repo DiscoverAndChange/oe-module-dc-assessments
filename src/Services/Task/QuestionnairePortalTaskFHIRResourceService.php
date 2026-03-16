@@ -44,7 +44,7 @@ class QuestionnairePortalTaskFHIRResourceService extends FhirServiceBase impleme
     }
 
     // in parsing this we need to do the following: https://build.fhir.org/ig/HL7/sdc/StructureDefinition-sdc-task.html
-    public function parseOpenEMRRecord($dataRecord = array(), $encode = false): FHIRTask
+    public function parseOpenEMRRecord($dataRecord = [], $encode = false): FHIRTask
     {
         $fhirResource = new FHIRTask();
 
@@ -109,7 +109,7 @@ class QuestionnairePortalTaskFHIRResourceService extends FhirServiceBase impleme
                 // TODO: @adunsulag we need to check the questionnaire response pid against the Task.for property and make sure they match
                 // if they are different then someone is trying to assign a questionnaire response to a patient that doesn't belong to them.
                 $questionnaireJSON = $response['questionnaire'];
-                $questionnaire = json_decode($questionnaireJSON, true, 512, JSON_THROW_ON_ERROR);
+                $questionnaire = json_decode((string) $questionnaireJSON, true, 512, JSON_THROW_ON_ERROR);
                 $resourceService = new TaskOnsitePortalActivityAccessService();
                 $patientService = new PatientService();
                 $puuid = UuidRegistry::uuidToString($patientService->getUuid($response['patient_id']));
@@ -256,7 +256,7 @@ class QuestionnairePortalTaskFHIRResourceService extends FhirServiceBase impleme
             // grab the questionnaire content and let's get the id using a regex from template {Questionnaire:id}
             $questionnaire = $template['template_content'];
             $id = null;
-            if (preg_match('/{Questionnaire:\s*(\d+)}/', $questionnaire, $matches)) {
+            if (preg_match('/{Questionnaire:\s*(\d+)}/', (string) $questionnaire, $matches)) {
                 $id = $matches[1];
             }
             if (!empty($id)) {

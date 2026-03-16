@@ -16,7 +16,7 @@ class BackendDispatchController
 
     const CONFIG_IMPORT = 'config-import';
 
-    public function __construct(private AssessmentAppointmentController $appointmentController, private ConfigController $configController)
+    public function __construct(private readonly AssessmentAppointmentController $appointmentController, private readonly ConfigController $configController)
     {
     }
 

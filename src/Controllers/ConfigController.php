@@ -11,7 +11,7 @@ class ConfigController
 {
     const DEBUG_MODE = false;
 
-    public function __construct(private GlobalConfig $configService, private Environment $twig)
+    public function __construct(private readonly GlobalConfig $configService, private readonly Environment $twig)
     {
     }
 

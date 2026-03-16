@@ -27,15 +27,9 @@ class AssessmentFHIRResourceService extends FhirServiceBase
 
     const CODE_DAC_ASSESSMENT = 'openemr-dac-assessment';
 
-    /**
-     * @var AssessmentRepository
-     */
-    private $assessmentService;
-
-    public function __construct(AssessmentRepository $repository)
+    public function __construct(private AssessmentRepository $assessmentService)
     {
         parent::__construct();
-        $this->assessmentService = $repository;
     }
 
     public function supportsCode($code)
@@ -53,7 +47,7 @@ class AssessmentFHIRResourceService extends FhirServiceBase
         ];
     }
 
-    protected function createOpenEMRSearchParameters($fhirSearchParameters, $puuidBind)
+    protected function createOpenEMRSearchParameters(array $fhirSearchParameters, ?string $puuidBind = null): array
     {
         // we don't do anything with the code once we have it, so we remove it.
         if (!empty($fhirSearchParameters['questionnaire-code'])) {
@@ -62,7 +56,7 @@ class AssessmentFHIRResourceService extends FhirServiceBase
         return parent::createOpenEMRSearchParameters($fhirSearchParameters, $puuidBind);
     }
 
-    public function parseOpenEMRRecord($dataRecord = array(), $encode = false)
+    public function parseOpenEMRRecord($dataRecord = [], $encode = false)
     {
         $fhirResource = new FHIRQuestionnaire();
         $id = new FhirId();

@@ -55,7 +55,7 @@ class SystemUserRepository
         $patientService = new PatientService();
         $mappedProviderIds = $patientService->getProviderIDsForPatientUuids($clientIds);
         // tokens are required to be strings
-        $userIds = array_map('strval', array_values($mappedProviderIds));
+        $userIds = array_map(strval(...), array_values($mappedProviderIds));
         $idSearch = new TokenSearchField('id', $userIds);
         $userRepo = new UserService();
         $userRepo->toggleSensitiveFields(['username']);

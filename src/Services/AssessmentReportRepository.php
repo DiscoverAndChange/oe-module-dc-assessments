@@ -38,7 +38,7 @@ class AssessmentReportRepository
         foreach ($results as $r) {
             $report = [];
             try {
-                $report = json_decode($r['data'], true);
+                $report = json_decode((string) $r['data'], true);
             } catch (Exception $e) {
                 $this->logger->error($e);
             }
@@ -99,7 +99,7 @@ class AssessmentReportRepository
         $reports = QueryUtils::fetchRecords($sql, $params);
         if (!empty($reports)) {
             $report = $reports[0];
-            $data = json_decode($report['data'], true);
+            $data = json_decode((string) $report['data'], true);
 
             if (!empty($report['assessmentgroup_id'])) {
                 $group = new AssessmentGroup();
