@@ -14,7 +14,7 @@ class MessageTemplateRepository
 
     /**
      * Given a client and company, retrieve the invitation message template.
-     * @param Patient $client
+     * @param array $client
      * @param Company|Facility $company
      * @return array
      */

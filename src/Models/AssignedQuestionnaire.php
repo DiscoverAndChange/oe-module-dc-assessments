@@ -35,7 +35,7 @@ class AssignedQuestionnaire extends Assignment
     }
 
     /**
-     * @param string $assetId
+     * @param string $questionnaireId
      */
     public function setQuestionnaireId(string $questionnaireId): void
     {

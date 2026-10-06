@@ -582,7 +582,7 @@ class APIProxyController
 //        if (!empty($queryVars)) {
 //            $uri .= "?" . http_build_query($queryVars);
 //        }
-        $request = $psr17Factory->createServerRequest($_SERVER['REQUEST_METHOD'], $httpRestRequest->getRequestURI());
+        $request = $psr17Factory->createServerRequest($_SERVER['REQUEST_METHOD'], $httpRestRequest->getRequestUri());
         // oddly Psr17Factory does not set the query params array.
         $request = $request->withQueryParams($queryVars);
 //        $request = $this->addAuthorizationToRequest($httpRestRequest, $request);

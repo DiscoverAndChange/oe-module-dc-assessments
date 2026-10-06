@@ -44,8 +44,8 @@ class QuestionnaireRestController implements IRestController
      * Handles the response to the API request GET /fhir/Questionnaire and returns the FHIRBundle resource
      * that was found for the given request.  Any query search parameters are processed by this method.  If the method
      * is run in the patient context (as a logged in patient) it restricts the search to just that patient.
-     * @param ServerRestRequest
-     * @return FHIRBundle
+     * @param ServerRestRequest $request
+     * @return ResponseInterface
      */
     public function list(ServerRestRequest $request): ResponseInterface
     {

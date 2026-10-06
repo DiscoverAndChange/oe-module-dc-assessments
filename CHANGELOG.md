@@ -47,6 +47,11 @@ v0.11.1 PHPStan level-10 fixes (bugs + non-ignorable) and module-local baseline
     module's src/ only — it never references OpenEMR core or other modules.
     Regenerate it with `composer phpstan -- --generate-baseline <path>` in a dev
     checkout (see the file header).
+  - Baseline burn-down (round 1): zero-ripple fixes — method/parameter name
+    casing (Client::getId/setId, Request::getRequestUri, FhirServiceBase::
+    insertOpenEmrRecord overrides) and broken PHPDoc (@param/@return prose, a
+    wrong @param name, a @return mixed/FHIRBundle mismatch, and dead @var/@global
+    tags in Bootstrap). Regenerate the baseline to drop the now-fixed entries.
 
 v0.11.0 OpenEMR 8.4.1 (PHP 8.5) compatibility
 

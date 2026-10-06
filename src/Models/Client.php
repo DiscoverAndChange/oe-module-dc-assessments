@@ -73,12 +73,12 @@ class Client implements \JsonSerializable
         $this->companyId = $v;
     }
 
-    public function getID(): string
+    public function getId(): string
     {
         return $this->id;
     }
 
-    public function setID(string $v): void
+    public function setId(string $v): void
     {
         $this->id = $v;
     }

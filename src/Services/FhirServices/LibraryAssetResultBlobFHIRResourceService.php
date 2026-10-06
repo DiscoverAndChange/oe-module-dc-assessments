@@ -111,7 +111,7 @@ class LibraryAssetResultBlobFHIRResourceService extends FhirServiceBase
         return $result;
     }
 
-    protected function insertOpenEMRRecord($openEmrRecord)
+    protected function insertOpenEmrRecord($openEmrRecord)
     {
         $validator = new LibraryAssetResultBlobValidator();
         $validation = $validator->validate($openEmrRecord, LibraryAssetResultBlobValidator::DATABASE_INSERT_CONTEXT);

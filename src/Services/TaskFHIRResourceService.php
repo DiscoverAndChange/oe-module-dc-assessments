@@ -104,7 +104,7 @@ class TaskFHIRResourceService extends FhirServiceBase implements
      * Retrieves all of the fhir task resources mapped to the underlying openemr data elements.
      * @param $fhirSearchParameters The FHIR resource search parameters
      * @param $puuidBind - Optional variable to only allow visibility of the patient with this puuid.
-     * @return processing result
+     * @return ProcessingResult
      */
     public function getAll($fhirSearchParameters, $puuidBind = null): ProcessingResult
     {
@@ -207,7 +207,7 @@ class TaskFHIRResourceService extends FhirServiceBase implements
      * Updates a FHIR resource in the system.
      * @param $fhirResourceId The FHIR Resource ID used to lookup the existing FHIR resource/OpenEMR record
      * @param $fhirResource The FHIR resource.
-     * @return The OpenEMR Service Result
+     * @return ProcessingResult The OpenEMR Service Result
      */
     public function update($fhirResourceId, FHIRDomainResource $fhirResource): ProcessingResult
     {

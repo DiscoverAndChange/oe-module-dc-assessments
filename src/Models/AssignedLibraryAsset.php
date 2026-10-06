@@ -30,7 +30,7 @@ class AssignedLibraryAsset extends Assignment
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getAssetId(): int
     {

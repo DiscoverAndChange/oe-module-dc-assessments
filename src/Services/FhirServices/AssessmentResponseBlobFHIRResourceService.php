@@ -130,7 +130,7 @@ class AssessmentResponseBlobFHIRResourceService extends FhirServiceBase
         return null;
     }
 
-    protected function insertOpenEMRRecord($openEmrRecord)
+    protected function insertOpenEmrRecord($openEmrRecord)
     {
         $validator = new AssessmentResultBlobValidator();
         $transactionCommitted = false;
