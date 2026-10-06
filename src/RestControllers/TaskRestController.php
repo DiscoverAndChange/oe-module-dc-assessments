@@ -30,7 +30,6 @@ use OpenEMR\Services\FHIR\Serialization\FhirPatientSerializer;
 use OpenEMR\Services\FHIR\UtilsService;
 use OpenEMR\Validators\ProcessingResult;
 use Psr\Http\Message\ResponseInterface;
-use RestConfig;
 
 class TaskRestController
 {
