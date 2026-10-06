@@ -51,7 +51,11 @@ v0.11.1 PHPStan level-10 fixes (bugs + non-ignorable) and module-local baseline
     casing (Client::getId/setId, Request::getRequestUri, FhirServiceBase::
     insertOpenEmrRecord overrides) and broken PHPDoc (@param/@return prose, a
     wrong @param name, a @return mixed/FHIRBundle mismatch, and dead @var/@global
-    tags in Bootstrap). Regenerate the baseline to drop the now-fixed entries.
+    tags in Bootstrap). Also type the five untyped properties (GlobalConfig
+    $globalsArray, Role $validRoles, ClientSearchRepository $logger,
+    QuestionnaireResponseFHIRResourceService $dispatcher) and drop the dead
+    ClientSearchRepository $_repo. Regenerate the baseline to drop the now-fixed
+    entries.
 
 v0.11.0 OpenEMR 8.4.1 (PHP 8.5) compatibility
 

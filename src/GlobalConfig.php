@@ -38,7 +38,8 @@ class GlobalConfig
 
     private const LOCAL_DEBUG = false;
 
-    private $globalsArray;
+    /** @var array<string, mixed> */
+    private array $globalsArray;
 
     /**
      * @var CryptoGen

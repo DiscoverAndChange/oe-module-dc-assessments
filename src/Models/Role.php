@@ -17,7 +17,8 @@ class Role
     const Client = 5;
     const UnAuthenticated = 6;
 
-    private static $validRoles = [
+    /** @var list<int> */
+    private static array $validRoles = [
         self::SuperUser,
         self::Owner,
         self::Admin,

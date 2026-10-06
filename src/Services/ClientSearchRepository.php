@@ -23,9 +23,8 @@ use OpenEMR\Validators\ProcessingResult;
 class ClientSearchRepository
 {
     private ?int $companyId;
-    private $_repo;
 
-    private $logger;
+    private SystemLogger $logger;
 
     public function __construct(?int $companyID)
     {

@@ -61,7 +61,7 @@ class QuestionnaireResponseFHIRResourceService extends FhirServiceBase implement
      */
     private $service;
 
-    private $dispatcher;
+    private EventDispatcher $dispatcher;
 
 
     public function __construct(EventDispatcher $dispatcher, $fhirApiURL = null)
