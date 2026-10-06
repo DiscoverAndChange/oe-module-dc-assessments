@@ -33,7 +33,7 @@ class SmartAppClientService
                 'client_id' => $clientId,
                 'client_role' => 'patient', // 'user', switch when we deal with confidential clients.
                 'redirect_uris' => [$this->globalConfig->getSmartAppClientPublicPathRedirectUri(), $this->globalConfig->getSmartAppAdminPublicPathRedirectUri()],
-                'post_logout_redirect_uris' => [],
+                'post_logout_redirect_uris' => null,
                 'client_name' => $this->globalConfig->getSmartAppName(),
                 // our in-ehr launch is to the admin url
                 'initiate_login_uri' => $this->globalConfig->getSmartAppAdminLoginPublicPath(),
