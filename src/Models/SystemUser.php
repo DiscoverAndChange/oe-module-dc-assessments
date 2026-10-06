@@ -165,7 +165,7 @@ class SystemUser implements \JsonSerializable
     public static function fromJSON(object $obj): SystemUser
     {
         if (!is_object($obj)) {
-            throw new Exception("Passed in object is not a JSON object");
+            throw new \Exception("Passed in object is not a JSON object");
         }
         $user = new SystemUser($obj->_id, $obj->_username, $obj->_companyID);
         $user->setRole($obj->_role);
@@ -173,7 +173,7 @@ class SystemUser implements \JsonSerializable
         // We do not hydrate caps or password
         return $user;
     }
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
             '_id' => $this->_id,

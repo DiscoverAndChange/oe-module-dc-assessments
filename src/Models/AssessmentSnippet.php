@@ -42,7 +42,7 @@ class AssessmentSnippet implements \JsonSerializable
         $this->uid = $uid;
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
             'id' => $this->getId(),

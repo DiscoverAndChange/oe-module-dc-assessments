@@ -23,6 +23,8 @@ use Psr\Log\LoggerInterface;
 
 class AssessmentGroupRestController implements IRestController
 {
+    private SystemLogger $logger;
+
     public function __construct()
     {
         $this->logger = new SystemLogger();
@@ -90,6 +92,7 @@ class AssessmentGroupRestController implements IRestController
     public function one(ServerRestRequest $httpRestRequest, $id): ResponseInterface
     {
         // TODO: Implement one() method.
+        return RestUtils::getNotFoundResponse();
     }
 
     public function create(ServerRestRequest $request): ResponseInterface
@@ -133,6 +136,7 @@ class AssessmentGroupRestController implements IRestController
     public function update(ServerRestRequest $httpRestRequest, $id): ResponseInterface
     {
         // TODO: Implement update() method.
+        return RestUtils::getNotFoundResponse();
     }
 
     public function addAssessmentToGroup(ServerRestRequest $request, $groupId): ResponseInterface

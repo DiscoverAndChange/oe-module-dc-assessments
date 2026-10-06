@@ -67,6 +67,27 @@ class RestUtils
         return $psrFactory->createResponse(404)->withBody($psrFactory->createStream(json_encode(['error' => xlt('Not Found')])));
     }
 
+    /**
+     * Access-denied response. The optional $error is accepted for call-site
+     * convenience (callers typically log it first); its detail is deliberately
+     * not leaked to the client.
+     */
+    public static function getAccessDeniedResponse(?\Throwable $error = null): ResponseInterface
+    {
+        $psrFactory = new Psr17Factory();
+        return $psrFactory->createResponse(403)->withBody($psrFactory->createStream(json_encode(['error' => xlt('Access Denied')])));
+    }
+
+    /**
+     * Generic server-error response. The optional $error is accepted for
+     * call-site convenience; its detail is deliberately not leaked to the client.
+     */
+    public static function getServerErrorResponse(?\Throwable $error = null): ResponseInterface
+    {
+        $psrFactory = new Psr17Factory();
+        return $psrFactory->createResponse(500)->withBody($psrFactory->createStream(json_encode(['error' => xl('A system error occurred.  Please try again or contact support.')])));
+    }
+
 
     public static function returnTextResponse($text): ResponseInterface
     {

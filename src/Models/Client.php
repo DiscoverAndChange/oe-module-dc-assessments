@@ -106,7 +106,7 @@ class Client implements \JsonSerializable
     public static function fromJSON(object $obj): Client
     {
         if (!is_object($obj)) {
-            throw new InvalidArgumentException("Passed in object is not a JSON object");
+            throw new \InvalidArgumentException("Passed in object is not a JSON object");
         }
 
         $client = new Client();
@@ -119,7 +119,7 @@ class Client implements \JsonSerializable
         return $client;
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         $properties = get_object_vars($this);
         if (!empty($properties['assignedUser'])) {
@@ -136,8 +136,8 @@ class Client implements \JsonSerializable
     public function sortAssignmentsByDateAssigned()
     {
         usort($this->assignments, function (Assignment $a, Assignment $b) {
-            $aTime = ($a->getDateAssigned() ?? new DateTime());
-            $bTime = ($b->getDateAssigned() ?? new DateTime());
+            $aTime = ($a->getDateAssigned() ?? new \DateTime());
+            $bTime = ($b->getDateAssigned() ?? new \DateTime());
             return $aTime < $bTime ? -1 : 1;
         });
     }

@@ -90,7 +90,7 @@ class APISetupController implements IStaticEventSubscriber
                 $service->addApi($container, $event);
             }
         });
-        $eventDispatcher->addListener(RestApiScopeEvent::EVENT_TYPE_GET_SUPPORTED_SCOPES, function (RestAPIScopeEvent $event) use ($container) {
+        $eventDispatcher->addListener(RestApiScopeEvent::EVENT_TYPE_GET_SUPPORTED_SCOPES, function (RestApiScopeEvent $event) use ($container) {
             $service = $container->get(self::class);
             if ($service instanceof self) {
                 $service->addScopes($event);

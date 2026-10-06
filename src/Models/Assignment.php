@@ -183,7 +183,7 @@ class Assignment implements \JsonSerializable
         $this->type = $v;
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         $result = [
             "id" => $this->id,

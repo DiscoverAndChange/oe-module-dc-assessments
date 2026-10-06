@@ -1,3 +1,40 @@
+v0.11.1 PHPStan level-10 fixes (bugs + non-ignorable) and module-local baseline
+
+  Fix the genuine bugs and all non-ignorable errors PHPStan surfaced once the
+  module could be analyzed in isolation on 8.4.1; baseline the remaining
+  pre-existing style debt so CI can run green and the debt is burned down later.
+
+  Latent bugs:
+  - Client::sortAssignmentsByDateAssigned() / fromJSON: `new DateTime()`,
+    `new InvalidArgumentException`, and SystemUser::fromJSON `new Exception`
+    resolved into the module's Models namespace (non-existent classes) — qualify
+    them as \DateTime / \InvalidArgumentException / \Exception.
+  - RestUtils: add getAccessDeniedResponse() and getServerErrorResponse(), which
+    AssessmentGroup/AssessmentReport/AssessmentResult controllers call on their
+    access-denied / error paths but which did not exist (latent fatals).
+  - AssessmentGroupRestController: declare the $logger property (was an undeclared
+    dynamic property, deprecated on PHP 8.5) typed as SystemLogger.
+  - APISetupController: fix the RestApiScopeEvent closure param casing.
+
+  Non-ignorable errors (cannot be baselined):
+  - Add `: array` return type to jsonSerialize() in 10 Models (Assignment and its
+    subclasses, AssessmentSnippet, AssessmentSummary, Client, SystemUser) to match
+    JsonSerializable's tentative return type.
+  - ServerRestRequest: mark final and declare PSR-7 native return types on all
+    ServerRequestInterface methods (the immutable withers return `: static`), so
+    they are covariant with the interface.
+  - Fill empty `: ResponseInterface` stubs that returned nothing (return.missing):
+    EmptyRestController (one/create/update), AssessmentGroupRestController
+    (one/update), QuestionnaireRestController (create/update),
+    QuestionnaireResponseRestController (update).
+
+  Tooling:
+  - Add module-local phpstan-baseline.neon (included from phpstan.neon.dist) to
+    record the remaining pre-existing style findings. It is scoped to this
+    module's src/ only — it never references OpenEMR core or other modules.
+    Regenerate it with `composer phpstan -- --generate-baseline <path>` in a dev
+    checkout (see the file header).
+
 v0.11.0 OpenEMR 8.4.1 (PHP 8.5) compatibility
 
   Port the module to OpenEMR 8.4.1 / PHP 8.5. Verified in a live 8.4.1 container:

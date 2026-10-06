@@ -18,7 +18,7 @@ class AssessmentSummary implements \JsonSerializable
         $this->date = new DateTime();
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
             'uuid' => $this->uuid,

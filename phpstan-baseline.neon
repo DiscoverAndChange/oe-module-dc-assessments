@@ -1,0 +1,22 @@
+# Module-local PHPStan baseline.
+#
+# Records this module's pre-existing level-10 findings so CI can run green while
+# the debt is burned down over time. It contains ONLY entries for files under
+# this module's src/ (the analysis is always scoped to src/), so nothing here
+# refers to OpenEMR core or other modules.
+#
+# (Re)generate from the OpenEMR root with:
+#   vendor/bin/phpstan analyse \
+#     -c interface/modules/custom_modules/oe-module-dc-assessments/phpstan.neon.dist \
+#        interface/modules/custom_modules/oe-module-dc-assessments/src \
+#     --generate-baseline interface/modules/custom_modules/oe-module-dc-assessments/phpstan-baseline.neon
+#
+# Paths are written relative to this file (src/...), so the baseline is portable
+# regardless of where the OpenEMR checkout lives.
+#
+# NOTE: this file starts empty. Run the command above once in an environment that
+# can execute `composer phpstan` (i.e. a real OpenEMR dev/CI checkout) to capture
+# the current findings. The genuine bugs and all non-ignorable errors were fixed
+# directly rather than baselined.
+parameters:
+    ignoreErrors: []

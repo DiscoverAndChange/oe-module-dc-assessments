@@ -143,6 +143,7 @@ class QuestionnaireResponseRestController implements IRestController
     public function update(ServerRestRequest $request, $id): ResponseInterface
     {
         // TODO: Implement update() method.
+        return RestUtils::getNotFoundResponse();
     }
 
     /**

@@ -80,11 +80,13 @@ class QuestionnaireRestController implements IRestController
     public function create(ServerRestRequest $request): ResponseInterface
     {
         // TODO: Implement create() method.
+        return RestUtils::getNotFoundResponse();
     }
 
     public function update(ServerRestRequest $request, $id): ResponseInterface
     {
         // TODO: Implement update() method.
+        return RestUtils::getNotFoundResponse();
     }
 
     /**
