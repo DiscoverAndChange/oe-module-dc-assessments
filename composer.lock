@@ -946,6 +946,57 @@
             "time": "2023-02-03T11:13:07+00:00"
         },
         {
+            "name": "openemr/oe-module-installer-plugin",
+            "version": "0.1.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/openemr/oe-module-installer-plugin.git",
+                "reference": "4803eb0e6ad07328bd0eac485d0b2ff9e075f9f6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/openemr/oe-module-installer-plugin/zipball/4803eb0e6ad07328bd0eac485d0b2ff9e075f9f6",
+                "reference": "4803eb0e6ad07328bd0eac485d0b2ff9e075f9f6",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^2.0"
+            },
+            "require-dev": {
+                "composer/composer": "^2.0"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "OpenEMR\\Composer\\ModuleInstallerPlugin\\Plugin"
+            },
+            "autoload": {
+                "psr-4": {
+                    "OpenEMR\\Composer\\ModuleInstallerPlugin\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Stephen Nielson",
+                    "email": "stephen@nielson.org",
+                    "role": "Developer"
+                }
+            ],
+            "description": "OpenEMR Module Installer plugin for installing custom modules into the OpenEMR codebase.",
+            "keywords": [
+                "openemr",
+                "openemr-module"
+            ],
+            "support": {
+                "issues": "https://github.com/openemr/oe-module-installer-plugin/issues",
+                "source": "https://github.com/openemr/oe-module-installer-plugin/tree/0.1.5"
+            },
+            "time": "2021-05-03T14:22:43+00:00"
+        },
+        {
             "name": "phpdocumentor/reflection-common",
             "version": "2.2.0",
             "source": {
