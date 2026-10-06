@@ -3,10 +3,8 @@
 // include openemr globals
 require_once(__DIR__ . "/../../../../../globals.php");
 
-// include rest config
-require_once(__DIR__ . "/../../../../../../_rest_config.php");
-
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Bootstrap;
+use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 
 // grab our bootstrap class
 /**
@@ -27,5 +25,10 @@ if (!empty($_SERVER['HTTP_APICSRFTOKEN'])) {
 // grab our twig environment
 $controller = $bootstrap->getBackendDispatchController();
 $response = $controller->dispatch($action, $queryVars);
-RestConfig::emitResponse($response);
+$httpFoundationFactory = new HttpFoundationFactory();
+
+// convert a Response
+// $psrResponse is an instance of Psr\Http\Message\ResponseInterface
+$symfonyResponse = $httpFoundationFactory->createResponse($response);
+$symfonyResponse->send();
 exit;

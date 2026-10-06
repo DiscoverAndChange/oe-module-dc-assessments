@@ -16,16 +16,16 @@
     	"openemr/oe-module-installer-plugin": "^0.1.0",
         "doctrine/orm": "^2.11.0",
         "doctrine/dbal": "^3.2",
-        "symfony/yaml": "5.4.21",
-        "symfony/cache": "^5.4",
-        "symfony/routing": "^5.4",
-        "symfony/psr-http-message-bridge": "^2.1",
-        "symfony/property-access": "^5.4",
-        "symfony/serializer": "^5.4",
+        "symfony/yaml": "~6.4.26",
+        "symfony/cache": "^6.4",
+        "symfony/routing": "^6.4",
+        "symfony/psr-http-message-bridge": "~6.4.24",
+        "symfony/property-access": "^6.4",
+        "symfony/serializer": "^6.4",
         "phpdocumentor/reflection-docblock": "^5.3"
     },
     "conflict": {
-      "openemr/openemr": "<7.0.0"
+      "openemr/openemr": "<7.0.4"
     },
     "autoload": {
 	"psr-4": {

@@ -396,7 +396,7 @@ class Bootstrap
     public function oauth2TemplatePageOverrides(TemplatePageEvent $event)
     {
         $template = $event->getPageName();
-        if ($template == 'oauth2/authorize/login') {
+        if ($template == 'oauth2/authorize/login' && $event->getTwigTemplate() != 'error/general_http_error.html.twig') {
             if ($this->globalsConfig->shouldDisplayUpdatedOAuthPages()) {
                 $event->setTwigTemplate('discoverandchange/oauth2/oauth2-login.html.twig');
             }

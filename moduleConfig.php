@@ -3,11 +3,9 @@
 namespace OpenEMR\Modules\DiscoverAndChange\Assessments;
 
 use RestConfig;
+use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 
 require_once(__DIR__ . "/../../../globals.php");
-
-// include rest config
-require_once(__DIR__ . "/../../../../_rest_config.php");
 
 /**
  * @global OpenEMR\Core\ModulesClassLoader $classLoader
@@ -18,5 +16,10 @@ $backendController = $bootstrap->getBackendDispatchController();
 $action = $_REQUEST['action'] ?? 'config';
 $response = $backendController->dispatch($action, $_REQUEST);
 
-RestConfig::emitResponse($response);
+$httpFoundationFactory = new HttpFoundationFactory();
+
+// convert a Response
+// $psrResponse is an instance of Psr\Http\Message\ResponseInterface
+$symfonyResponse = $httpFoundationFactory->createResponse($response);
+$symfonyResponse->send();
 exit;
