@@ -2,7 +2,6 @@
 
 namespace OpenEMR\Modules\DiscoverAndChange\Assessments\Utils;
 
-use Http\Message\Encoding\GzipEncodeStream;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use OpenApi\Util;
 use OpenEMR\Common\Acl\AccessDeniedException;
@@ -102,15 +101,15 @@ class RestUtils
     public static function returnSingleObjectResponse($object): ResponseInterface
     {
         $psrFactory = new Psr17Factory();
-        // should we gzip this?
-
-        $response = $psrFactory->createResponse(200);
-        $stream = $psrFactory->createStream(json_encode($object));
-        $stream->rewind(); // have to rewind the stream.
-        $encodedStream = new GzipEncodeStream($stream);
-        $response = $response->withAddedHeader('Content-Encoding', 'gzip')
+        // Return plain JSON. We intentionally do NOT gzip at the application layer:
+        // OpenEMR 8.4's ApiResponseLoggerListener logs the response body into the
+        // utf8mb4 api_log table (request_body/response columns), and binary gzip
+        // bytes trigger a SQLSTATE[22007] 1366 "Incorrect string value" error.
+        // Transport compression belongs at the web server (mod_deflate) via normal
+        // Accept-Encoding negotiation, which the browser decodes transparently.
+        $response = $psrFactory->createResponse(200)
             ->withHeader('Content-Type', 'application/json')
-            ->withBody($encodedStream);
+            ->withBody($psrFactory->createStream(json_encode($object)));
         return $response;
     }
 

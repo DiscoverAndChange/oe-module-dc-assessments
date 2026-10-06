@@ -25,6 +25,16 @@ v0.11.1 PHPStan level-10 fixes (bugs + non-ignorable) and module-local baseline
     and the global `RestConfig::emitResponse()`. Drop the dead require and emit the
     PSR-7 response via the module's own RestUtils::emitResponse(); also move the
     backend scripts' $_SESSION['authUser'] read onto the session wrapper.
+  - API response gzip vs api_log: RestUtils::returnSingleObjectResponse() wrapped
+    the body in a GzipEncodeStream with Content-Encoding: gzip. OpenEMR 8.4's
+    ApiResponseLoggerListener logs the response content into the utf8mb4 api_log
+    table (both request_body and response columns), so the binary gzip bytes threw
+    SQLSTATE[22007] 1366 "Incorrect string value" on every logged API call. Return
+    plain JSON instead and let the web server negotiate transport compression.
+  - AssessmentAppointmentController::deleteDigitalDocumentsSection(): the
+    appointment-delete cleanup used array_map() with its arguments swapped
+    (array, callback), which fatals; rewrite as a foreach side-effect loop so
+    removing an appointment actually clears its assignments.
 
   Latent bugs:
   - Client::sortAssignmentsByDateAssigned() / fromJSON: `new DateTime()`,

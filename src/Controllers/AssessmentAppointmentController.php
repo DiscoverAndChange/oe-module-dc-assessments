@@ -72,9 +72,9 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
             $apptId = $deleteEvent->getRecordId();
             try {
                 $assignments = $this->repository->getAssignmentsForAppointmentId($apptId);
-                array_map($assignments, function (Assignment $assignment) {
+                foreach ($assignments as $assignment) {
                     $this->repository->removeAssignment($assignment->getClientId(), $assignment->getId(), SessionWrapperFactory::getInstance()->getActiveSession()->get('authUserID'));
-                });
+                }
             } catch (\Exception $e) {
                 (new SystemLogger())->error(
                     'Failed to delete digital documents section for appointment id',
