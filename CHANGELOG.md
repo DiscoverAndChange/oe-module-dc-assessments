@@ -18,6 +18,13 @@ v0.11.1 PHPStan level-10 fixes (bugs + non-ignorable) and module-local baseline
     8.4 stores session data in a Symfony session bag that the $_SESSION superglobal
     no longer reflects. Also correct three reads that used the non-existent key
     'authUserId' to the canonical 'authUserID' (they had been returning null).
+  - Entry-point bootstrap: 8.4 removed the root _rest_config.php and moved
+    RestConfig into a namespace, so moduleConfig.php and the public/backend
+    entry scripts (index-backend.php, questionnaire-audit.php) fatally failed on
+    `require_once .../_rest_config.php` ("Failed opening required ... _rest_config.php")
+    and the global `RestConfig::emitResponse()`. Drop the dead require and emit the
+    PSR-7 response via the module's own RestUtils::emitResponse(); also move the
+    backend scripts' $_SESSION['authUser'] read onto the session wrapper.
 
   Latent bugs:
   - Client::sortAssignmentsByDateAssigned() / fromJSON: `new DateTime()`,
