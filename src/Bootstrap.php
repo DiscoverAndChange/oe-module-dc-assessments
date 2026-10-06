@@ -8,6 +8,7 @@ use OpenEMR\Common\Crypto\CryptoGen;
 use OpenEMR\Common\Csrf\CsrfUtils;
 use OpenEMR\Common\Logging\SystemLogger;
 use OpenEMR\Common\Twig\TwigContainer;
+use Psr\Log\LoggerInterface;
 use OpenEMR\Core\Kernel;
 use OpenEMR\Events\Core\ScriptFilterEvent;
 use OpenEMR\Events\Core\TemplatePageEvent;
@@ -191,6 +192,10 @@ class Bootstrap
             }
         }
         $container->setAlias(SystemLogger::class, 'logger');
+        // OpenEMR 8.4.1's FhirServiceBase composes PSR's LoggerAwareTrait, whose
+        // setLogger() type-hints Psr\Log\LoggerInterface. Alias it to the same
+        // synthetic SystemLogger service so #[Required] setter autowiring resolves.
+        $container->setAlias(LoggerInterface::class, 'logger');
     }
 
     private function injectSyntheticServicesIntoContainer(Container $container)

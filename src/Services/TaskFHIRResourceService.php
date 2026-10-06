@@ -135,7 +135,7 @@ class TaskFHIRResourceService extends FhirServiceBase implements
             }
         } catch (SearchFieldException $exception) {
             $systemLogger = new SystemLogger();
-            $systemLogger->errorLogCaller("exception thrown", ['message' => $exception->getMessage(),
+            $systemLogger->error("exception thrown", ['message' => $exception->getMessage(),
                 'field' => $exception->getField(), 'trace' => $exception->getTraceAsString()]);
             // put our exception information here
             $fhirSearchResult->setValidationMessages([$exception->getField() => $exception->getMessage()]);

@@ -38,7 +38,7 @@ class AssignmentCompleter
                 $this->logger->debug("Assignment has outstanding incomplete items.  Skipping completion");
             }
         } catch (\Exception $exception) {
-            $this->logger->errorLogCaller(
+            $this->logger->error(
                 "Failed to check if all assignments complete - " . $exception->getMessage(),
                 ['trace' => $exception->getTraceAsString(), 'pid' => $client['pid']]
             );

@@ -106,7 +106,7 @@ class AssessmentGroupRestController implements IRestController
             $validation = $validator->validate($data, AssessmentGroupValidator::DATABASE_INSERT_CONTEXT);
 
             if (!$validation->isValid()) {
-                $this->logger->errorLogCaller("Validation failed", ['errors' => $validation->getValidationMessages()]);
+                $this->logger->error("Validation failed", ['errors' => $validation->getValidationMessages()]);
                 throw new \InvalidArgumentException("One or more fields was invalid", ErrorCode::VALIDATION_FAILED);
             }
             $companyId = $request->getAuthRole() == Role::SuperUser ? null : $request->getCompanyId();
@@ -115,7 +115,7 @@ class AssessmentGroupRestController implements IRestController
             $transactionCommitted = true;
             return RestUtils::returnSingleObjectResponse($createdGroup);
         } catch (AccessDeniedException $exception) {
-            $this->logger->errorLogCaller($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
+            $this->logger->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             return RestUtils::getAccessDeniedResponse($exception);
         } catch (\Exception $e) {
             return RestUtils::getErrorResponse($this->logger, $e);
@@ -124,7 +124,7 @@ class AssessmentGroupRestController implements IRestController
                 try {
                     QueryUtils::rollbackTransaction();
                 } catch (\Exception $e) {
-                    $this->logger->errorLogCaller("Failed to rollback transaction", ['trace' => $e->getTraceAsString()]);
+                    $this->logger->error("Failed to rollback transaction", ['trace' => $e->getTraceAsString()]);
                 }
             }
         }
@@ -150,7 +150,7 @@ class AssessmentGroupRestController implements IRestController
             $validation = $validator->validate($data, AssessmentGroupValidator::DATABASE_ADD_ASSESSMENT_CONTEXT);
 
             if (!$validation->isValid()) {
-                $this->logger->errorLogCaller("Validation failed", ['errors' => $validation->getValidationMessages()]);
+                $this->logger->error("Validation failed", ['errors' => $validation->getValidationMessages()]);
                 throw new \InvalidArgumentException("One or more fields was invalid", ErrorCode::VALIDATION_FAILED);
             }
             $uid = $data['uid'];
@@ -165,7 +165,7 @@ class AssessmentGroupRestController implements IRestController
                 throw new \Exception("Failed to create JSON object from created group");
             }
         } catch (AccessDeniedException $exception) {
-            $this->logger->errorLogCaller($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
+            $this->logger->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             return RestUtils::getAccessDeniedResponse($exception);
         } catch (\Exception $e) {
             return RestUtils::getErrorResponse($this->logger, $e);
@@ -174,7 +174,7 @@ class AssessmentGroupRestController implements IRestController
                 try {
                     QueryUtils::rollbackTransaction();
                 } catch (\Exception $e) {
-                    $this->logger->errorLogCaller("Failed to rollback transaction", ['trace' => $e->getTraceAsString()]);
+                    $this->logger->error("Failed to rollback transaction", ['trace' => $e->getTraceAsString()]);
                 }
             }
         }
@@ -195,7 +195,7 @@ class AssessmentGroupRestController implements IRestController
             $validation = $validator->validate($data, AssessmentGroupValidator::DATABASE_UPDATE_ASSESSMENT_CONTEXT);
 
             if (!$validation->isValid()) {
-                $this->logger->errorLogCaller("Validation failed", ['errors' => $validation->getValidationMessages()]);
+                $this->logger->error("Validation failed", ['errors' => $validation->getValidationMessages()]);
                 throw new \InvalidArgumentException("One or more fields was invalid", ErrorCode::VALIDATION_FAILED);
             }
             $createdGroup = $repo->updateAssessmentVersionForGroup($groupId);
@@ -208,7 +208,7 @@ class AssessmentGroupRestController implements IRestController
                 throw new \Exception("Failed to create JSON object from created group");
             }
         } catch (AccessDeniedException $exception) {
-            $this->logger->errorLogCaller($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
+            $this->logger->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             return RestUtils::getAccessDeniedResponse($exception);
         } catch (\Exception $e) {
             return RestUtils::getErrorResponse($this->logger, $e);
@@ -217,7 +217,7 @@ class AssessmentGroupRestController implements IRestController
                 try {
                     QueryUtils::rollbackTransaction();
                 } catch (\Exception $e) {
-                    $this->logger->errorLogCaller("Failed to rollback transaction", ['trace' => $e->getTraceAsString()]);
+                    $this->logger->error("Failed to rollback transaction", ['trace' => $e->getTraceAsString()]);
                 }
             }
         }

@@ -45,11 +45,11 @@ class ClientMessageDispatcher
         $userService = new UserService();
         $user = $userService->getUser($userId);
         if (empty($user)) {
-            $this->logger->errorLogCaller("Failed to find user for assignment completion notice", ['userId' => $userId]);
+            $this->logger->error("Failed to find user for assignment completion notice", ['userId' => $userId]);
             return;
         }
         if (empty($user['email'])) {
-            $this->logger->errorLogCaller("User missing valid email address for assignment completion notice", ['userId' => $userId]);
+            $this->logger->error("User missing valid email address for assignment completion notice", ['userId' => $userId]);
             return;
         }
 
@@ -61,7 +61,7 @@ class ClientMessageDispatcher
         ];
         $template = "discoverandchange/emails/assessment-services-assignments-complete";
         if (!$this->sendMessageViaMailer($subject, $user, $template, $msg)) {
-            $this->logger->errorLogCaller("Failed to send assignment completion notice to user", ['userId' => $userId, 'puuid' => $clientId, 'pid' => $patientPid]);
+            $this->logger->error("Failed to send assignment completion notice to user", ['userId' => $userId, 'puuid' => $clientId, 'pid' => $patientPid]);
         } else {
             $this->logger->debug(self::class . "->" . __FUNCTION__ . " - sent assignment completion notice to user", ['userId' => $userId, 'puuid' => $clientId, 'pid' => $patientPid]);
         }
@@ -84,7 +84,7 @@ class ClientMessageDispatcher
 //            $nl2brMessage = nl2br($message);
 //            $sanitizedMessage = $this->sanitizeString($nl2brMessage);
         } catch (\Exception $error) {
-            $this->logger->errorLogCaller($error->getMessage(), ['trace' => $error->getTraceAsString()]);
+            $this->logger->error($error->getMessage(), ['trace' => $error->getTraceAsString()]);
             throw new \InvalidArgumentException("Failed to sanitize email text", ErrorCode::SYSTEM_ERROR);
         }
 

@@ -102,7 +102,7 @@ class QuestionnaireFHIRResourceService extends FhirServiceBase implements IResou
             }
         } catch (SearchFieldException $exception) {
             $systemLogger = new SystemLogger();
-            $systemLogger->errorLogCaller("Failed to retrieve records", ['message' => $exception->getMessage(),
+            $systemLogger->error("Failed to retrieve records", ['message' => $exception->getMessage(),
                 'field' => $exception->getField(), 'trace' => $exception->getTraceAsString()]);
             // put our exception information here
             $fhirSearchResult->setValidationMessages([$exception->getField() => $exception->getMessage()]);

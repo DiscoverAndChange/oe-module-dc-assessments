@@ -101,7 +101,7 @@ class AssessmentRestController implements IRestController
             $validation = $validator->validate($data, $context);
 
             if (!$validation->isValid()) {
-                $this->logger->errorLogCaller("Validation failed", ['errors' => $validation->getValidationMessages()]);
+                $this->logger->error("Validation failed", ['errors' => $validation->getValidationMessages()]);
                 throw new \InvalidArgumentException("One or more fields was invalid", ErrorCode::VALIDATION_FAILED);
             }
             if (!AclMain::aclCheckCore('admin', 'forms')) {
@@ -129,7 +129,7 @@ class AssessmentRestController implements IRestController
             $transactionCommitted = true;
             return RestUtils::returnSingleObjectResponse([]); // we return nothing as part of the create.
         } catch (AccessDeniedException $exception) {
-            $this->logger->errorLogCaller($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
+            $this->logger->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             return RestUtils::getAccessDeniedResponse($exception);
         } catch (\Exception $e) {
             return RestUtils::getErrorResponse($this->logger, $e);
@@ -138,7 +138,7 @@ class AssessmentRestController implements IRestController
                 try {
                     QueryUtils::rollbackTransaction();
                 } catch (\Exception $e) {
-                    $this->logger->errorLogCaller("Failed to rollback transaction", ['trace' => $e->getTraceAsString()]);
+                    $this->logger->error("Failed to rollback transaction", ['trace' => $e->getTraceAsString()]);
                 }
             }
         }

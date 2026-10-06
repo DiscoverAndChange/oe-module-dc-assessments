@@ -32,7 +32,7 @@ class RestUtils
 
     public static function getErrorResponse(SystemLogger $logger, \Exception $error): ResponseInterface
     {
-        $logger->errorLogCaller($error->getMessage(), ['trace' => $error->getTraceAsString()]);
+        $logger->error($error->getMessage(), ['trace' => $error->getTraceAsString()]);
 
         if ($error instanceof AccessDeniedException) {
             $message = xlt("Access Denied");
@@ -57,7 +57,7 @@ class RestUtils
     }
     public static function returnAccessDeniedResponse(SystemLogger $logger, $logMessage): ResponseInterface
     {
-        $logger->errorLogCaller($logMessage);
+        $logger->error($logMessage);
         $psrFactory = new Psr17Factory();
         return $psrFactory->createResponse(401)->withBody($psrFactory->createStream(json_encode(['error' => xlt('Access Denied')])));
     }

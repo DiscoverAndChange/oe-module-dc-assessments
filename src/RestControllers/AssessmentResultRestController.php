@@ -94,7 +94,7 @@ class AssessmentResultRestController implements IRestController
             $validation = $validator->validate($data, AssessmentResultBlobValidator::DATABASE_INSERT_CONTEXT);
 
             if (!$validation->isValid()) {
-                $this->logger->errorLogCaller("Validation failed", ['errors' => $validation->getValidationMessages()]);
+                $this->logger->error("Validation failed", ['errors' => $validation->getValidationMessages()]);
                 throw new \InvalidArgumentException("One or more fields was invalid", ErrorCode::VALIDATION_FAILED);
             }
             $client = $this->validateCreateAccessAndReturnClient($request->getUserId(), $request->getPatientUUIDString(), $data['clientId'] ?? null, $patientService);
@@ -122,7 +122,7 @@ class AssessmentResultRestController implements IRestController
 
             return RestUtils::returnSingleObjectResponse($savedResult);
         } catch (AccessDeniedException $exception) {
-            $this->logger->errorLogCaller($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
+            $this->logger->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             return RestUtils::getAccessDeniedResponse($exception);
         } catch (\Exception $e) {
             return RestUtils::getErrorResponse($this->logger, $e);
@@ -131,7 +131,7 @@ class AssessmentResultRestController implements IRestController
                 try {
                     QueryUtils::rollbackTransaction();
                 } catch (\Exception $e) {
-                    $this->logger->errorLogCaller("Failed to rollback transaction", ['trace' => $e->getTraceAsString()]);
+                    $this->logger->error("Failed to rollback transaction", ['trace' => $e->getTraceAsString()]);
                 }
             }
         }

@@ -128,12 +128,12 @@ class QuestionnaireResponseRestController implements IRestController
             $response = RestUtils::addFhirLocationHeader($response, 'QuestionnaireResponse', $result->getData()[0]);
             return $response->withStatus(201);
         } catch (\InvalidArgumentException $exception) {
-            (new SystemLogger())->errorLogCaller($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
+            (new SystemLogger())->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             $operationOutcome = UtilsService::createOperationOutcomeResource('fatal', 'value', $exception->getMessage());
             $response = RestUtils::returnSingleObjectResponse($operationOutcome);
             return $response->withStatus(400);
         } catch (\Exception $exception) {
-            (new SystemLogger())->errorLogCaller($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
+            (new SystemLogger())->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             $operationOutcome = UtilsService::createOperationOutcomeResource('fatal', 'transient', xlt('Server Error in creating QuestionnaireResponse resource'));
             $response = RestUtils::returnSingleObjectResponse($operationOutcome);
             return $response->withStatus(500);

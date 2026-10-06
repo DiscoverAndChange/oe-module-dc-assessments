@@ -63,7 +63,7 @@ class LibraryAssetRestController implements IRestController
                 throw new AccessDeniedException("admin", "forms", "You do not have permission to create library assets");
             }
             if (!$validation->isValid()) {
-                $this->logger->errorLogCaller("Validation failed", ['errors' => $validation->getValidationMessages()]);
+                $this->logger->error("Validation failed", ['errors' => $validation->getValidationMessages()]);
                 throw new \InvalidArgumentException("One or more fields was invalid", ErrorCode::VALIDATION_FAILED);
             }
 
@@ -81,7 +81,7 @@ class LibraryAssetRestController implements IRestController
             $transactionCommitted = true;
             return RestUtils::returnSingleObjectResponse($createdAsset);
         } catch (AccessDeniedException $exception) {
-            $this->logger->errorLogCaller($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
+            $this->logger->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             return RestUtils::getAccessDeniedResponse($exception);
         } catch (\Exception $e) {
             return RestUtils::getErrorResponse($this->logger, $e);
@@ -90,7 +90,7 @@ class LibraryAssetRestController implements IRestController
                 try {
                     QueryUtils::rollbackTransaction();
                 } catch (\Exception $e) {
-                    $this->logger->errorLogCaller("Failed to rollback transaction", ['trace' => $e->getTraceAsString()]);
+                    $this->logger->error("Failed to rollback transaction", ['trace' => $e->getTraceAsString()]);
                 }
             }
         }

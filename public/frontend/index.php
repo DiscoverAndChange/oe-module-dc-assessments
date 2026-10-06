@@ -27,7 +27,7 @@ try {
         RestUtils::emitResponse($response);
     }
 } catch (\Exception $exception) {
-    (new SystemLogger())->errorLogCaller($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
+    (new SystemLogger())->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
     $twig = (new TwigContainer(null, $GLOBALS['kernel']))->getTwig();
     $body = $twig->render('error/general_http_error.html.twig');
     die($body);

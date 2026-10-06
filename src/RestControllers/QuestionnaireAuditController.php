@@ -46,7 +46,7 @@ class QuestionnaireAuditController
                 return $this->actionNotFound($action);
             }
         } catch (\Exception $exception) {
-            $this->logger->errorLogCaller($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
+            $this->logger->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             return $this->returnError($exception);
         }
     }
@@ -123,7 +123,7 @@ class QuestionnaireAuditController
                     QueryUtils::rollbackTransaction();
                 } catch (\Exception $exception) {
                     // if we can't rollback we just log and ignore.
-                    $this->logger->errorLogCaller($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
+                    $this->logger->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
                 }
             }
         }

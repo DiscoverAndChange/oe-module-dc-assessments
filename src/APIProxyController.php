@@ -626,7 +626,7 @@ class APIProxyController
             $client = new Client();
             $response = $client->send($request);
         } catch (GuzzleException $e) {
-            (new SystemLogger())->errorLogCaller(
+            (new SystemLogger())->error(
                 $e->getMessage(),
                 ['trace' => $e->getTraceAsString(), 'apiRequest' => $_REQUEST['API_REQUEST']]
             );

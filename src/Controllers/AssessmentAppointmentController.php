@@ -75,7 +75,7 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
                     $this->repository->removeAssignment($assignment->getClientId(), $assignment->getId(), $_SESSION['authUserId']);
                 });
             } catch (\Exception $e) {
-                (new SystemLogger())->errorLogCaller(
+                (new SystemLogger())->error(
                     'Failed to delete digital documents section for appointment id',
                     ['message' => $e->getMessage(), 'trace' => $e->getTraceAsString(), 'recordId' => $apptId]
                 );
@@ -188,7 +188,7 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
                 $data
             );
         } catch (\Exception $e) {
-            (new SystemLogger())->errorLogCaller($e->getMessage(), ['trace' => $e->getTraceAsString(), 'appt' => $appt ?? '']);
+            (new SystemLogger())->error($e->getMessage(), ['trace' => $e->getTraceAsString(), 'appt' => $appt ?? '']);
         }
     }
 
@@ -280,7 +280,7 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
             $notificationEvent = new SendNotificationEvent($patientPid, ['alt_content' => $finalMessage]);
             $this->dispatcher->dispatch($notificationEvent, SendNotificationEvent::SEND_NOTIFICATION_BY_SERVICE);
         } catch (\Exception $e) {
-            (new SystemLogger())->errorLogCaller($e->getMessage(), ['trace' => $e->getTraceAsString()]);
+            (new SystemLogger())->error($e->getMessage(), ['trace' => $e->getTraceAsString()]);
             return RestUtils::returnSingleObjectResponse(['type' => 'error']);
         }
         return RestUtils::returnSingleObjectResponse(['type' => 'success']);
@@ -314,7 +314,7 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
                 ]
             );
         } catch (\Exception $e) {
-            (new SystemLogger())->errorLogCaller($e->getMessage(), ['trace' => $e->getTraceAsString(), 'appt' => $appt ?? '']);
+            (new SystemLogger())->error($e->getMessage(), ['trace' => $e->getTraceAsString(), 'appt' => $appt ?? '']);
         }
 
         $this->renderNotificationsSection($event, $appt, $assignment);

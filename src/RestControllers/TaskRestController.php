@@ -160,12 +160,12 @@ class TaskRestController
             $response = RestUtils::addFhirLocationHeader($response, self::FHIR_RESOURCE_TYPE, $result->getData()[0]);
             return $response->withStatus(201);
         } catch (\InvalidArgumentException $exception) {
-            (new SystemLogger())->errorLogCaller($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
+            (new SystemLogger())->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             $operationOutcome = UtilsService::createOperationOutcomeResource('fatal', 'transient', xlt('Invalid request body'));
             $response = RestUtils::returnSingleObjectResponse($operationOutcome);
             return $response->withStatus(400);
         } catch (\Exception $exception) {
-            (new SystemLogger())->errorLogCaller($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
+            (new SystemLogger())->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             $operationOutcome = UtilsService::createOperationOutcomeResource('fatal', 'transient', xlt('Server Error in creating QuestionnaireResponse resource'));
             $response = RestUtils::returnSingleObjectResponse($operationOutcome);
             return $response->withStatus(500);

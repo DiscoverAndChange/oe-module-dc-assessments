@@ -70,7 +70,7 @@ class QuestionnaireFormFHIRResourceService extends FhirServiceBase implements IR
         } catch (\JsonException $exception) {
             // log the error and move on
             $innerData = []; // nothing we can do here, but skip the questionnaire data as its invalid
-            (new SystemLogger())->errorLogCaller(
+            (new SystemLogger())->error(
                 "Unable to parse questionnaire json",
                 ['uuid' => $dataRecord['uuid'] ?? '', 'message' => $exception->getMessage()
                     ,

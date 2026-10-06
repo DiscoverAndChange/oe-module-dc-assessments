@@ -58,7 +58,7 @@ class QuestionnaireAssignmentListener implements IStaticEventSubscriber
                     }
                 }
             } catch (\Exception $exception) {
-                (new SystemLogger())->errorLogCaller($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
+                (new SystemLogger())->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
                 $commitTransaction = false;
             } finally {
                 if ($commitTransaction) {

@@ -122,7 +122,7 @@ class ClientRestController implements IRestController
             $transactionCommitted = true;
             return RestUtils::returnSingleObjectResponse(['assignmentId' => $id]);
         } catch (AccessDeniedException $exception) {
-            $this->logger->errorLogCaller($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
+            $this->logger->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             return RestUtils::returnAccessDeniedResponse($exception->getMessage());
         } catch (\Exception $exception) {
             // logger is handled in the utils.
@@ -132,7 +132,7 @@ class ClientRestController implements IRestController
                 try {
                     QueryUtils::rollbackTransaction();
                 } catch (\Exception $exception) {
-                    $this->logger->errorLogCaller($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
+                    $this->logger->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
                 }
             }
         }
@@ -172,7 +172,7 @@ class ClientRestController implements IRestController
             $transactionCommitted = true;
             return RestUtils::returnSingleObjectResponse(['assignment' => $createdAssignment]);
         } catch (AccessDeniedException $exception) {
-            $this->logger->errorLogCaller($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
+            $this->logger->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             return RestUtils::returnAccessDeniedResponse($exception->getMessage());
         } catch (\Exception $exception) {
             // logger is handled in the utils.
@@ -183,7 +183,7 @@ class ClientRestController implements IRestController
                     QueryUtils::rollbackTransaction();
                 } catch (\Exception $e) {
                     // if we can't rollback this is really, really bad
-                    $this->logger->errorLogCaller($e->getMessage(), ['trace' => $e->getTraceAsString()]);
+                    $this->logger->error($e->getMessage(), ['trace' => $e->getTraceAsString()]);
                 }
             }
         }
@@ -217,7 +217,7 @@ class ClientRestController implements IRestController
                     QueryUtils::rollbackTransaction();
                 } catch (\Exception $e) {
                     // if we can't rollback this is really, really bad
-                    $this->logger->errorLogCaller($e->getMessage(), ['trace' => $e->getTraceAsString()]);
+                    $this->logger->error($e->getMessage(), ['trace' => $e->getTraceAsString()]);
                 }
             }
         }
@@ -266,7 +266,7 @@ class ClientRestController implements IRestController
                     QueryUtils::rollbackTransaction();
                 } catch (\Exception $e) {
                     // if we can't rollback this is really, really bad
-                    $this->logger->errorLogCaller($e->getMessage(), ['trace' => $e->getTraceAsString()]);
+                    $this->logger->error($e->getMessage(), ['trace' => $e->getTraceAsString()]);
                 }
             }
         }

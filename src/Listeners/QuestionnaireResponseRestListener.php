@@ -79,7 +79,7 @@ class QuestionnaireResponseRestListener implements IStaticEventSubscriber
             $processingResult->addProcessingResult($result);
         } else {
             // we have something so let's return our processing result
-            $this->getLogger()->errorLogCaller("Failed to process the search request for assessment response results.");
+            $this->getLogger()->error("Failed to process the search request for assessment response results.");
             $processingResult->addInternalError(xlt("Failed to process the search request."));
         }
         if ($processingResult->isValid()) {
@@ -88,7 +88,7 @@ class QuestionnaireResponseRestListener implements IStaticEventSubscriber
                 $processingResult->addProcessingResult($result);
             } else {
                 // we have something so let's return our processing result
-                $this->getLogger()->errorLogCaller("Failed to process the search request for asset library response results.");
+                $this->getLogger()->error("Failed to process the search request for asset library response results.");
                 $processingResult->addInternalError(xlt("Failed to process the search request."));
             }
         }

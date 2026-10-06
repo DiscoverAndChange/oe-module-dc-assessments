@@ -76,7 +76,7 @@ class LibraryAssetResultBlobFHIRResourceService extends FhirServiceBase
         ];
     }
 
-    protected function createOpenEMRSearchParameters($fhirSearchParameters, $puuidBind)
+    protected function createOpenEMRSearchParameters(array $fhirSearchParameters, ?string $puuidBind = null): array
     {
         // we don't do anything with the code once we have it, so we remove it.
         if (!empty($fhirSearchParameters['questionnaire-code'])) {
@@ -146,11 +146,11 @@ class LibraryAssetResultBlobFHIRResourceService extends FhirServiceBase
             QueryUtils::commitTransaction();
             $transactionCommitted = true;
         } catch (AccessDeniedException $exception) {
-            $this->getLogger()->errorLogCaller($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
+            $this->getLogger()->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             $result = new ProcessingResult();
             $result->addInternalError(xlt("You do not have permission to create this result"));
         } catch (\Exception $exception) {
-            $this->getLogger()->errorLogCaller($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
+            $this->getLogger()->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             $result = new ProcessingResult();
             $result->addInternalError(xlt("A system error occurred in processing your request"));
         } finally {

@@ -89,7 +89,7 @@ class LibraryAssetResultRestController implements IRestController
             QueryUtils::startTransaction();
 
             if (!$validation->isValid()) {
-                $this->logger->errorLogCaller("Validation failed", ['errors' => $validation->getValidationMessages()]);
+                $this->logger->error("Validation failed", ['errors' => $validation->getValidationMessages()]);
                 throw new \InvalidArgumentException("One or more fields was invalid", ErrorCode::VALIDATION_FAILED);
             }
 
@@ -125,7 +125,7 @@ class LibraryAssetResultRestController implements IRestController
 
             return RestUtils::returnSingleObjectResponse($resultResponse);
         } catch (AccessDeniedException $exception) {
-            $this->logger->errorLogCaller($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
+            $this->logger->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             return RestUtils::getAccessDeniedResponse($exception);
         } catch (\Exception $e) {
             return RestUtils::getErrorResponse($this->logger, $e);
@@ -134,7 +134,7 @@ class LibraryAssetResultRestController implements IRestController
                 try {
                     QueryUtils::rollbackTransaction();
                 } catch (\Exception $e) {
-                    $this->logger->errorLogCaller("Failed to rollback transaction", ['trace' => $e->getTraceAsString()]);
+                    $this->logger->error("Failed to rollback transaction", ['trace' => $e->getTraceAsString()]);
                 }
             }
         }

@@ -42,7 +42,7 @@ class AssessmentReportRestController implements IRestController
             $report = $repo->getOne($id);
             return RestUtils::returnSingleObjectResponse($report);
         } catch (\Exception $exception) {
-            $this->logger->errorLogCaller($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
+            $this->logger->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             return RestUtils::getServerErrorResponse($exception);
         }
         // otherwise we return not found
@@ -63,7 +63,7 @@ class AssessmentReportRestController implements IRestController
             $validation = $validator->validate($data, AssessmentReportValidator::DATABASE_INSERT_CONTEXT);
 
             if (!$validation->isValid()) {
-                $this->logger->errorLogCaller("Validation failed", ['errors' => $validation->getValidationMessages()]);
+                $this->logger->error("Validation failed", ['errors' => $validation->getValidationMessages()]);
                 throw new \InvalidArgumentException("One or more fields was invalid", ErrorCode::VALIDATION_FAILED);
             }
 
@@ -79,7 +79,7 @@ class AssessmentReportRestController implements IRestController
             $transactionCommitted = true;
             return RestUtils::returnSingleObjectResponse($result);
         } catch (AccessDeniedException $exception) {
-            $this->logger->errorLogCaller($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
+            $this->logger->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             return RestUtils::getAccessDeniedResponse($exception);
         } catch (\Exception $e) {
             return RestUtils::getErrorResponse($this->logger, $e);
@@ -88,7 +88,7 @@ class AssessmentReportRestController implements IRestController
                 try {
                     QueryUtils::rollbackTransaction();
                 } catch (\Exception $e) {
-                    $this->logger->errorLogCaller("Failed to rollback transaction", ['trace' => $e->getTraceAsString()]);
+                    $this->logger->error("Failed to rollback transaction", ['trace' => $e->getTraceAsString()]);
                 }
             }
         }
@@ -108,7 +108,7 @@ class AssessmentReportRestController implements IRestController
             $validation = $validator->validate($data, AssessmentReportValidator::DATABASE_UPDATE_CONTEXT);
 
             if (!$validation->isValid()) {
-                $this->logger->errorLogCaller("Validation failed", ['errors' => $validation->getValidationMessages()]);
+                $this->logger->error("Validation failed", ['errors' => $validation->getValidationMessages()]);
                 throw new \InvalidArgumentException("One or more fields was invalid", ErrorCode::VALIDATION_FAILED);
             }
 
@@ -124,7 +124,7 @@ class AssessmentReportRestController implements IRestController
             $transactionCommitted = true;
             return RestUtils::returnSingleObjectResponse([]);
         } catch (AccessDeniedException $exception) {
-            $this->logger->errorLogCaller($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
+            $this->logger->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             return RestUtils::getAccessDeniedResponse($exception);
         } catch (\Exception $e) {
             return RestUtils::getErrorResponse($this->logger, $e);
@@ -133,7 +133,7 @@ class AssessmentReportRestController implements IRestController
                 try {
                     QueryUtils::rollbackTransaction();
                 } catch (\Exception $e) {
-                    $this->logger->errorLogCaller("Failed to rollback transaction", ['trace' => $e->getTraceAsString()]);
+                    $this->logger->error("Failed to rollback transaction", ['trace' => $e->getTraceAsString()]);
                 }
             }
         }

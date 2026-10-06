@@ -580,7 +580,7 @@ class AssignmentRepository
         if (!empty($item['questionnaire_uuid'])) {
             $this->hydrateAssignedQuestionnaireFromRecord($item, $assignmentItem);
         } else {
-            (new SystemLogger())->errorLogCaller("No questionnaire uuid for document template profile assignment item, data integrity error", ['id' => $item['id']]);
+            (new SystemLogger())->error("No questionnaire uuid for document template profile assignment item, data integrity error", ['id' => $item['id']]);
         }
     }
 
