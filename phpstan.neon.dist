@@ -1,0 +1,19 @@
+# Module-scoped PHPStan config.
+#
+# Inherits OpenEMR's root phpstan.neon.dist (so its bootstrap files, global-
+# function scanFiles like library/sql.inc.php, legacy class aliases, stubs and
+# level all still apply), but disables reportUnmatchedIgnoredErrors.
+#
+# OpenEMR's config turns reportUnmatchedIgnoredErrors ON and loads a repo-wide
+# baseline that contains ignore-entries for OTHER custom modules (faxsms,
+# comlink-telehealth, dashboard-context, ehi-exporter, ...). When we analyze
+# ONLY this module's src, those entries are never matched, so with the flag ON
+# PHPStan reports every one of them as an error — which looks like "errors in
+# other modules". Turning the flag off scopes the run to this module's own
+# findings. Pair this with analyzing only this module's path, e.g.:
+#   composer phpstan            (the module's script passes src/ as the path)
+#   vendor/bin/phpstan analyse -c <this file> src
+includes:
+    - ../../../../phpstan.neon.dist
+parameters:
+    reportUnmatchedIgnoredErrors: false
