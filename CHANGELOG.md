@@ -15,6 +15,13 @@ v0.11.0 OpenEMR 8.4.1 (PHP 8.5) compatibility
     signature (array $fhirSearchParameters, ?string $puuidBind = null): array.
   - Replace SystemLogger::errorLogCaller() (removed in 8.4.1) with PSR-3
     LoggerInterface::error() across the module (~70 call sites).
+  - Validators: add ': void' return type to configureValidator() in all 6
+    validators to match 8.4.1's BaseValidator::configureValidator(): void.
+  - Bootstrap: CsrfUtils::collectCsrfToken() now requires a SessionInterface —
+    pass SessionWrapperFactory::getInstance()->getActiveSession() (core's idiom).
+  - Cap psr/http-message to ^1.1 (core's version) so the module's PSR-7
+    ServerRestRequest stays compatible — psr/http-message 2.0 added return types
+    to the interfaces that the 1.x implementation does not declare.
 
   Dependency modernization (fixes the in-process class collisions that broke
   every REST/FHIR request):

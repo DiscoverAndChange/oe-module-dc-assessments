@@ -10,7 +10,7 @@ class AssessmentGroupValidator extends BaseValidator
     const DATABASE_ADD_ASSESSMENT_CONTEXT = "db-insert-assessment";
     const DATABASE_UPDATE_ASSESSMENT_CONTEXT = "db-update-assessment";
 
-    protected function configureValidator()
+    protected function configureValidator(): void
     {
         parent::configureValidator();
 

@@ -6,6 +6,7 @@ use http\Env;
 use OpenEMR\Common\Auth\OpenIDConnect\Repositories\ScopeRepository;
 use OpenEMR\Common\Crypto\CryptoGen;
 use OpenEMR\Common\Csrf\CsrfUtils;
+use OpenEMR\Common\Session\SessionWrapperFactory;
 use OpenEMR\Common\Logging\SystemLogger;
 use OpenEMR\Common\Twig\TwigContainer;
 use Psr\Log\LoggerInterface;
@@ -493,7 +494,7 @@ class Bootstrap
 //        $menuItem->url = "/interface/modules/custom_modules/oe-module-dc-assessments/public/frontend/login";
         $menuItem->url = $GLOBALS['webroot'] . '/interface/smart/ehr-launch-client.php?client_id='
             . urlencode($clientId) . '&intent=' . urlencode(SMARTLaunchToken::INTENT_MAIN_TAB)
-            . '&csrf_token=' . urlencode(CsrfUtils::collectCsrfToken());
+            . '&csrf_token=' . urlencode(CsrfUtils::collectCsrfToken(SessionWrapperFactory::getInstance()->getActiveSession()));
         $menuItem->children = [];
 
         /**
