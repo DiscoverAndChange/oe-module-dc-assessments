@@ -6,6 +6,7 @@ use OpenEMR\Common\Acl\AccessDeniedException;
 use OpenEMR\Common\Acl\AclMain;
 use OpenEMR\Common\Database\QueryUtils;
 use OpenEMR\Common\Logging\SystemLogger;
+use OpenEMR\Common\Session\SessionWrapperFactory;
 use OpenEMR\Common\Uuid\UuidRegistry;
 use OpenEMR\FHIR\Config\ServerConfig;
 use OpenEMR\FHIR\R4\FHIRDomainResource\FHIRProvenance;
@@ -142,7 +143,7 @@ class AssessmentResponseBlobFHIRResourceService extends FhirServiceBase
                 return $validation;
             }
 
-            $client = $this->validateCreateAccessAndReturnClient($openEmrRecord['clientId'], $_SESSION['authUserId'] ?? null);
+            $client = $this->validateCreateAccessAndReturnClient($openEmrRecord['clientId'], SessionWrapperFactory::getInstance()->getActiveSession()->get('authUserID'));
             $item = $assignmentRepo->getAssignmentItem($openEmrRecord['data']['_assignmentItemId'], $client['uuid']);
             if (empty($item)) {
                 throw new \InvalidArgumentException("Assignment item not found", ErrorCode::INVALID_REQUEST);

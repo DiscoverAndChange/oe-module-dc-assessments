@@ -3,6 +3,7 @@
 namespace OpenEMR\Modules\DiscoverAndChange\Assessments\Services;
 
 use OpenEMR\Common\Auth\OpenIDConnect\Repositories\ScopeRepository;
+use OpenEMR\Common\Session\SessionWrapperFactory;
 use OpenEMR\Common\Twig\TwigExtension;
 use OpenEMR\Core\Header;
 use OpenEMR\Core\Kernel;
@@ -27,8 +28,9 @@ class SimplifiedOAuthTwigExtension extends AbstractExtension implements GlobalsI
             new TwigFunction(
                 'dacShowUpdatedScopePage',
                 function ($scopesByResource) {
+                    $session = SessionWrapperFactory::getInstance()->getActiveSession();
                     // no patient set right now but user is set.
-                    if (!empty($_SESSION['user_id']) && empty($_SESSION['pid'])) {
+                    if (!empty($session->get('user_id')) && empty($session->get('pid'))) {
                         // logged in as user so we are going to bail out
                         return false;
                     }

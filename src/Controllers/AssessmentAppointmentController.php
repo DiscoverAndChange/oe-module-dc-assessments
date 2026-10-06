@@ -6,6 +6,7 @@ use Google\Service\AdMob\App;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use OpenEMR\Common\Csrf\CsrfUtils;
 use OpenEMR\Common\Logging\SystemLogger;
+use OpenEMR\Common\Session\SessionWrapperFactory;
 use OpenEMR\Common\Uuid\UuidRegistry;
 use OpenEMR\Events\Appointments\AppointmentDialogCloseEvent;
 use OpenEMR\Events\Appointments\AppointmentJavascriptEventNames;
@@ -72,7 +73,7 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
             try {
                 $assignments = $this->repository->getAssignmentsForAppointmentId($apptId);
                 array_map($assignments, function (Assignment $assignment) {
-                    $this->repository->removeAssignment($assignment->getClientId(), $assignment->getId(), $_SESSION['authUserId']);
+                    $this->repository->removeAssignment($assignment->getClientId(), $assignment->getId(), SessionWrapperFactory::getInstance()->getActiveSession()->get('authUserID'));
                 });
             } catch (\Exception $e) {
                 (new SystemLogger())->error(

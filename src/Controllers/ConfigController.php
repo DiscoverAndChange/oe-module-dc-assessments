@@ -2,6 +2,7 @@
 
 namespace OpenEMR\Modules\DiscoverAndChange\Assessments\Controllers;
 
+use OpenEMR\Common\Session\SessionWrapperFactory;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\GlobalConfig;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Services\ResourceImporterService;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Utils\RestUtils;
@@ -58,7 +59,7 @@ class ConfigController
                     throw new \InvalidArgumentException(xl("Import URL returned empty"));
                 }
                 $importer = new ResourceImporterService();
-                $importer->import($strings, $_SESSION['authUserID']);
+                $importer->import($strings, SessionWrapperFactory::getInstance()->getActiveSession()->get('authUserID'));
 
                 $data['logEntries'] = $importer->getLogEntries();
                 $data['msgSuccess'] = xl('Imported successfully');

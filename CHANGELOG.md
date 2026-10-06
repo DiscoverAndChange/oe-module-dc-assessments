@@ -4,6 +4,21 @@ v0.11.1 PHPStan level-10 fixes (bugs + non-ignorable) and module-local baseline
   module could be analyzed in isolation on 8.4.1; baseline the remaining
   pre-existing style debt so CI can run green and the debt is burned down later.
 
+  Runtime (8.4.x) fixes found during GUI testing:
+  - API route dispatch: OpenEMR >= 8.2 appends the OEGlobalsBag after the
+    HttpRestRequest when invoking a route callback, so APISetupController's closure
+    (which assumed the request was the last arg via array_pop) passed the globals
+    bag / URL id into controller methods — e.g. SystemUserRestController::one()
+    received the :id string where a ServerRestRequest was expected (TypeError).
+    Rewrite the closure to locate the HttpRestRequest among the args regardless of
+    position, drop other appended objects, and keep the scalar route params in
+    order.
+  - Session access: replace every direct $_SESSION read with the OpenEMR session
+    wrapper (SessionWrapperFactory::getInstance()->getActiveSession()->get()), since
+    8.4 stores session data in a Symfony session bag that the $_SESSION superglobal
+    no longer reflects. Also correct three reads that used the non-existent key
+    'authUserId' to the canonical 'authUserID' (they had been returning null).
+
   Latent bugs:
   - Client::sortAssignmentsByDateAssigned() / fromJSON: `new DateTime()`,
     `new InvalidArgumentException`, and SystemUser::fromJSON `new Exception`

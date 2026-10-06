@@ -408,7 +408,7 @@ class Bootstrap
             }
         } else if ($template == 'oauth2/authorize/scopes-authorize') {
             if ($this->globalsConfig->shouldDisplayUpdatedOAuthPages()) {
-                if (!empty($_SESSION['pid'])) {
+                if (!empty(SessionWrapperFactory::getInstance()->getActiveSession()->get('pid'))) {
                     $vars = $event->getTwigVariables();
                     if (!empty($vars['scopesByResource']['Questionnaire'])) {
                         $event->setTwigTemplate('discoverandchange/oauth2/scope-authorize.html.twig');
@@ -567,6 +567,6 @@ class Bootstrap
 
     public function getSmartStyleUrl()
     {
-        return $GLOBALS['site_addr_oath'] . $GLOBALS['web_root'] . "/oauth2/" . $_SESSION['site_id'] . "/" . SMARTAuthorizationController::SMART_STYLE_URL;
+        return $GLOBALS['site_addr_oath'] . $GLOBALS['web_root'] . "/oauth2/" . SessionWrapperFactory::getInstance()->getActiveSession()->get('site_id') . "/" . SMARTAuthorizationController::SMART_STYLE_URL;
     }
 }

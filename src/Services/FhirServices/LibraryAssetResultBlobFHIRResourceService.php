@@ -6,6 +6,7 @@ use OpenEMR\Common\Acl\AccessDeniedException;
 use OpenEMR\Common\Acl\AclMain;
 use OpenEMR\Common\Database\QueryUtils;
 use OpenEMR\Common\Logging\SystemLogger;
+use OpenEMR\Common\Session\SessionWrapperFactory;
 use OpenEMR\FHIR\Config\ServerConfig;
 use OpenEMR\FHIR\R4\FHIRDomainResource\FHIRProvenance;
 use OpenEMR\FHIR\R4\FHIRDomainResource\FHIRQuestionnaire;
@@ -122,7 +123,7 @@ class LibraryAssetResultBlobFHIRResourceService extends FhirServiceBase
         try {
             $assignmentRepo = $this->assignmentRepository;
             QueryUtils::startTransaction();
-            $client = $this->validateCreateAccessAndReturnClient($openEmrRecord['clientId'], $_SESSION['authUserId'] ?? null);
+            $client = $this->validateCreateAccessAndReturnClient($openEmrRecord['clientId'], SessionWrapperFactory::getInstance()->getActiveSession()->get('authUserID'));
             // use the id in the session... don't like it but its the only thing we have right now
             $resultDTO = new LibraryAssetBlobResultDTO();
             $resultDTO->fromDTO($openEmrRecord);
