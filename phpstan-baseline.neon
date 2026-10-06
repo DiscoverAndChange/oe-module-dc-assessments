@@ -13,12 +13,6 @@ parameters:
 			path: src/APIProxyController.php
 
 		-
-			message: '#^Call to method Symfony\\Component\\HttpFoundation\\Request\:\:getRequestUri\(\) with incorrect case\: getRequestURI$#'
-			identifier: method.nameCase
-			count: 1
-			path: src/APIProxyController.php
-
-		-
 			message: '#^Cannot access offset ''action'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
@@ -355,12 +349,6 @@ parameters:
 			path: src/Bootstrap.php
 
 		-
-			message: '#^Direct access to \$_SESSION is forbidden\. Use the session wrapper instead\.$#'
-			identifier: openemr.forbiddenSessionSuperglobal
-			count: 2
-			path: src/Bootstrap.php
-
-		-
 			message: '#^Direct instantiation of OpenEMR\\Common\\Logging\\SystemLogger is discouraged\. Use OpenEMR\\BC\\ServiceContainer\:\:getLogger\(\) instead\.$#'
 			identifier: openemr.forbiddenInstantiation
 			count: 1
@@ -505,12 +493,6 @@ parameters:
 			path: src/Bootstrap.php
 
 		-
-			message: '#^PHPDoc tag @var for variable \$module has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Bootstrap.php
-
-		-
 			message: '#^Parameter \#1 \$content of method Symfony\\Component\\Config\\ResourceCheckerConfigCache\:\:write\(\) expects string, array\|string given\.$#'
 			identifier: argument.type
 			count: 1
@@ -547,16 +529,10 @@ parameters:
 			path: src/Bootstrap.php
 
 		-
-			message: '#^Variable \$eventDispatcher in PHPDoc tag @var does not exist\.$#'
-			identifier: varTag.variableNotFound
+			message: '#^Argument of an invalid type array\|null supplied for foreach, only iterables are supported\.$#'
+			identifier: foreach.nonIterable
 			count: 1
-			path: src/Bootstrap.php
-
-		-
-			message: '#^Variable \$module in PHPDoc tag @var does not exist\.$#'
-			identifier: varTag.variableNotFound
-			count: 1
-			path: src/Bootstrap.php
+			path: src/Controllers/AssessmentAppointmentController.php
 
 		-
 			message: '#^Binary operation "\." between mixed and '' '' results in an error\.$#'
@@ -613,6 +589,18 @@ parameters:
 			path: src/Controllers/AssessmentAppointmentController.php
 
 		-
+			message: '#^Cannot call method getClientId\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Controllers/AssessmentAppointmentController.php
+
+		-
+			message: '#^Cannot call method getId\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Controllers/AssessmentAppointmentController.php
+
+		-
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
 			identifier: empty.notAllowed
 			count: 20
@@ -639,12 +627,6 @@ parameters:
 		-
 			message: '#^Direct access to \$_REQUEST is forbidden\. Use Symfony''s Request object instead\.$#'
 			identifier: openemr.forbiddenRequestGlobals
-			count: 1
-			path: src/Controllers/AssessmentAppointmentController.php
-
-		-
-			message: '#^Direct access to \$_SESSION is forbidden\. Use the session wrapper instead\.$#'
-			identifier: openemr.forbiddenSessionSuperglobal
 			count: 1
 			path: src/Controllers/AssessmentAppointmentController.php
 
@@ -817,12 +799,6 @@ parameters:
 			path: src/Controllers/AssessmentAppointmentController.php
 
 		-
-			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(mixed\)\: mixed\)\|null, array\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Controllers/AssessmentAppointmentController.php
-
-		-
 			message: '#^Parameter \#1 \$category of method OpenEMR\\Services\\DocumentTemplates\\DocumentTemplateService\:\:getTemplateListByCategory\(\) expects null, string given\.$#'
 			identifier: argument.type
 			count: 2
@@ -856,12 +832,6 @@ parameters:
 			message: '#^Parameter \#1 \$string of function urlencode expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 6
-			path: src/Controllers/AssessmentAppointmentController.php
-
-		-
-			message: '#^Parameter \#2 \$array of function array_map expects array, Closure given\.$#'
-			identifier: argument.type
-			count: 1
 			path: src/Controllers/AssessmentAppointmentController.php
 
 		-
@@ -994,12 +964,6 @@ parameters:
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
 			identifier: empty.notAllowed
 			count: 3
-			path: src/Controllers/ConfigController.php
-
-		-
-			message: '#^Direct access to \$_SESSION is forbidden\. Use the session wrapper instead\.$#'
-			identifier: openemr.forbiddenSessionSuperglobal
-			count: 1
 			path: src/Controllers/ConfigController.php
 
 		-
@@ -1519,12 +1483,6 @@ parameters:
 			path: src/GlobalConfig.php
 
 		-
-			message: '#^Cannot access offset mixed on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 2
-			path: src/GlobalConfig.php
-
-		-
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
 			identifier: empty.notAllowed
 			count: 2
@@ -1765,14 +1723,20 @@ parameters:
 			path: src/GlobalConfig.php
 
 		-
+			message: '#^Possibly invalid array key type mixed\.$#'
+			identifier: offsetAccess.invalidOffset
+			count: 2
+			path: src/GlobalConfig.php
+
+		-
 			message: '#^Property OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\GlobalConfig\:\:\$cryptoGen is never read, only written\.$#'
 			identifier: property.onlyWritten
 			count: 1
 			path: src/GlobalConfig.php
 
 		-
-			message: '#^Property OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\GlobalConfig\:\:\$globalsArray has no type specified\.$#'
-			identifier: missingType.property
+			message: '#^Property OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\GlobalConfig\:\:\$globalsArray \(array\<string, mixed\>\) does not accept array\.$#'
+			identifier: assign.propertyType
 			count: 1
 			path: src/GlobalConfig.php
 
@@ -2200,12 +2164,6 @@ parameters:
 			path: src/Models/AssignedLibraryAsset.php
 
 		-
-			message: '#^PHPDoc tag @return with type mixed is not subtype of native type int\.$#'
-			identifier: return.phpDocType
-			count: 1
-			path: src/Models/AssignedLibraryAsset.php
-
-		-
 			message: '#^Parameter \#1 \$assetId of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Models\\AssignedLibraryAsset\:\:setAssetId\(\) expects int, mixed given\.$#'
 			identifier: argument.type
 			count: 1
@@ -2238,12 +2196,6 @@ parameters:
 		-
 			message: '#^Method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Models\\AssignedQuestionnaire\:\:setResultId\(\) has no return type specified\.$#'
 			identifier: missingType.return
-			count: 1
-			path: src/Models/AssignedQuestionnaire.php
-
-		-
-			message: '#^PHPDoc tag @param references unknown parameter\: \$assetId$#'
-			identifier: parameter.notFound
 			count: 1
 			path: src/Models/AssignedQuestionnaire.php
 
@@ -2492,18 +2444,6 @@ parameters:
 			identifier: missingType.return
 			count: 1
 			path: src/Models/Import/ImportLogEntry.php
-
-		-
-			message: '#^Parameter \#2 \$haystack of function array_search expects array, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Models/Role.php
-
-		-
-			message: '#^Property OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Models\\Role\:\:\$validRoles has no type specified\.$#'
-			identifier: missingType.property
-			count: 1
-			path: src/Models/Role.php
 
 		-
 			message: '#^Call to an undefined method OpenEMR\\Common\\Http\\HttpRestRequest\:\:getRequestTarget\(\)\.$#'
@@ -4822,18 +4762,6 @@ parameters:
 			path: src/RestControllers/QuestionnaireResponseRestController.php
 
 		-
-			message: '#^PHPDoc tag @param has invalid value \(ServerRestRequest\)\: Unexpected token "\\n     \* ", expected variable at offset 369 on line 5$#'
-			identifier: phpDoc.parseError
-			count: 1
-			path: src/RestControllers/QuestionnaireResponseRestController.php
-
-		-
-			message: '#^PHPDoc tag @return with type OpenEMR\\FHIR\\R4\\FHIRResource\\FHIRBundle is not subtype of native type Psr\\Http\\Message\\ResponseInterface\.$#'
-			identifier: return.phpDocType
-			count: 1
-			path: src/RestControllers/QuestionnaireResponseRestController.php
-
-		-
 			message: '#^Parameter \#1 \$fhirResource of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\QuestionnaireResponseFHIRResourceService\:\:insert\(\) expects OpenEMR\\FHIR\\R4\\FHIRResource\\FHIRDomainResource, mixed given\.$#'
 			identifier: argument.type
 			count: 1
@@ -4980,18 +4908,6 @@ parameters:
 		-
 			message: '#^Method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\RestControllers\\QuestionnaireRestController\:\:update\(\) has parameter \$id with no type specified\.$#'
 			identifier: missingType.parameter
-			count: 1
-			path: src/RestControllers/QuestionnaireRestController.php
-
-		-
-			message: '#^PHPDoc tag @param has invalid value \(ServerRestRequest\)\: Unexpected token "\\n     \* ", expected variable at offset 369 on line 5$#'
-			identifier: phpDoc.parseError
-			count: 1
-			path: src/RestControllers/QuestionnaireRestController.php
-
-		-
-			message: '#^PHPDoc tag @return with type OpenEMR\\FHIR\\R4\\FHIRResource\\FHIRBundle is not subtype of native type Psr\\Http\\Message\\ResponseInterface\.$#'
-			identifier: return.phpDocType
 			count: 1
 			path: src/RestControllers/QuestionnaireRestController.php
 
@@ -5208,18 +5124,6 @@ parameters:
 		-
 			message: '#^Method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\RestControllers\\TaskRestController\:\:update\(\) has parameter \$fhirId with no type specified\.$#'
 			identifier: missingType.parameter
-			count: 1
-			path: src/RestControllers/TaskRestController.php
-
-		-
-			message: '#^PHPDoc tag @param has invalid value \(ServerRestRequest\)\: Unexpected token "\\n     \* ", expected variable at offset 360 on line 5$#'
-			identifier: phpDoc.parseError
-			count: 1
-			path: src/RestControllers/TaskRestController.php
-
-		-
-			message: '#^PHPDoc tag @return with type OpenEMR\\FHIR\\R4\\FHIRResource\\FHIRBundle is not subtype of native type Psr\\Http\\Message\\ResponseInterface\.$#'
-			identifier: return.phpDocType
 			count: 1
 			path: src/RestControllers/TaskRestController.php
 
@@ -6115,12 +6019,6 @@ parameters:
 			message: '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\.$#'
 			identifier: foreach.nonIterable
 			count: 4
-			path: src/Services/AssignmentRepository.php
-
-		-
-			message: '#^Call to method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Models\\Client\:\:getID\(\) with incorrect case\: getId$#'
-			identifier: method.nameCase
-			count: 1
 			path: src/Services/AssignmentRepository.php
 
 		-
@@ -7210,18 +7108,6 @@ parameters:
 			path: src/Services/ClientSearchRepository.php
 
 		-
-			message: '#^Call to method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Models\\Client\:\:getID\(\) with incorrect case\: getId$#'
-			identifier: method.nameCase
-			count: 1
-			path: src/Services/ClientSearchRepository.php
-
-		-
-			message: '#^Call to method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Models\\Client\:\:setID\(\) with incorrect case\: setId$#'
-			identifier: method.nameCase
-			count: 1
-			path: src/Services/ClientSearchRepository.php
-
-		-
 			message: '#^Cannot access offset ''email'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
@@ -7248,12 +7134,6 @@ parameters:
 		-
 			message: '#^Cannot access offset ''uuid'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/Services/ClientSearchRepository.php
-
-		-
-			message: '#^Cannot call method error\(\) on mixed\.$#'
-			identifier: method.nonObject
 			count: 1
 			path: src/Services/ClientSearchRepository.php
 
@@ -7300,7 +7180,7 @@ parameters:
 			path: src/Services/ClientSearchRepository.php
 
 		-
-			message: '#^Parameter \#1 \$v of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Models\\Client\:\:setID\(\) expects string, mixed given\.$#'
+			message: '#^Parameter \#1 \$v of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Models\\Client\:\:setId\(\) expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Services/ClientSearchRepository.php
@@ -7318,26 +7198,8 @@ parameters:
 			path: src/Services/ClientSearchRepository.php
 
 		-
-			message: '#^Property OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\ClientSearchRepository\:\:\$_repo has no type specified\.$#'
-			identifier: missingType.property
-			count: 1
-			path: src/Services/ClientSearchRepository.php
-
-		-
-			message: '#^Property OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\ClientSearchRepository\:\:\$_repo is unused\.$#'
-			identifier: property.unused
-			count: 1
-			path: src/Services/ClientSearchRepository.php
-
-		-
 			message: '#^Property OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\ClientSearchRepository\:\:\$companyId is never read, only written\.$#'
 			identifier: property.onlyWritten
-			count: 1
-			path: src/Services/ClientSearchRepository.php
-
-		-
-			message: '#^Property OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\ClientSearchRepository\:\:\$logger has no type specified\.$#'
-			identifier: missingType.property
 			count: 1
 			path: src/Services/ClientSearchRepository.php
 
@@ -7432,12 +7294,6 @@ parameters:
 			path: src/Services/FhirServices/AssessmentFHIRResourceService.php
 
 		-
-			message: '#^Call to method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\FhirServices\\AssessmentResponseBlobFHIRResourceService\:\:insertOpenEMRRecord\(\) with incorrect case\: insertOpenEmrRecord$#'
-			identifier: method.nameCase
-			count: 1
-			path: src/Services/FhirServices/AssessmentResponseBlobFHIRResourceService.php
-
-		-
 			message: '#^Cannot access offset ''_assignmentItemId'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
@@ -7492,12 +7348,6 @@ parameters:
 			path: src/Services/FhirServices/AssessmentResponseBlobFHIRResourceService.php
 
 		-
-			message: '#^Direct access to \$_SESSION is forbidden\. Use the session wrapper instead\.$#'
-			identifier: openemr.forbiddenSessionSuperglobal
-			count: 1
-			path: src/Services/FhirServices/AssessmentResponseBlobFHIRResourceService.php
-
-		-
 			message: '#^Instanceof between OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Models\\AssignedAssessment and OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Models\\AssignedAssessment will always evaluate to true\.$#'
 			identifier: instanceof.alwaysTrue
 			count: 1
@@ -7510,7 +7360,7 @@ parameters:
 			path: src/Services/FhirServices/AssessmentResponseBlobFHIRResourceService.php
 
 		-
-			message: '#^Method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\FhirServices\\AssessmentResponseBlobFHIRResourceService\:\:insertOpenEMRRecord\(\) has parameter \$openEmrRecord with no type specified\.$#'
+			message: '#^Method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\FhirServices\\AssessmentResponseBlobFHIRResourceService\:\:insertOpenEmrRecord\(\) has parameter \$openEmrRecord with no type specified\.$#'
 			identifier: missingType.parameter
 			count: 1
 			path: src/Services/FhirServices/AssessmentResponseBlobFHIRResourceService.php
@@ -7792,12 +7642,6 @@ parameters:
 			path: src/Services/FhirServices/LibraryAssetFHIRResourceService.php
 
 		-
-			message: '#^Call to method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\FhirServices\\LibraryAssetResultBlobFHIRResourceService\:\:insertOpenEMRRecord\(\) with incorrect case\: insertOpenEmrRecord$#'
-			identifier: method.nameCase
-			count: 1
-			path: src/Services/FhirServices/LibraryAssetResultBlobFHIRResourceService.php
-
-		-
 			message: '#^Cannot access offset ''asset'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
@@ -7846,19 +7690,13 @@ parameters:
 			path: src/Services/FhirServices/LibraryAssetResultBlobFHIRResourceService.php
 
 		-
-			message: '#^Direct access to \$_SESSION is forbidden\. Use the session wrapper instead\.$#'
-			identifier: openemr.forbiddenSessionSuperglobal
-			count: 1
-			path: src/Services/FhirServices/LibraryAssetResultBlobFHIRResourceService.php
-
-		-
 			message: '#^Method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\FhirServices\\LibraryAssetResultBlobFHIRResourceService\:\:createOpenEMRSearchParameters\(\) has parameter \$fhirSearchParameters with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: src/Services/FhirServices/LibraryAssetResultBlobFHIRResourceService.php
 
 		-
-			message: '#^Method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\FhirServices\\LibraryAssetResultBlobFHIRResourceService\:\:insertOpenEMRRecord\(\) has parameter \$openEmrRecord with no type specified\.$#'
+			message: '#^Method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\FhirServices\\LibraryAssetResultBlobFHIRResourceService\:\:insertOpenEmrRecord\(\) has parameter \$openEmrRecord with no type specified\.$#'
 			identifier: missingType.parameter
 			count: 1
 			path: src/Services/FhirServices/LibraryAssetResultBlobFHIRResourceService.php
@@ -9040,20 +8878,8 @@ parameters:
 			path: src/Services/MessageTemplateRepository.php
 
 		-
-			message: '#^PHPDoc tag @param for parameter \$client with type OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\Patient is incompatible with native type array\.$#'
-			identifier: parameter.phpDocType
-			count: 1
-			path: src/Services/MessageTemplateRepository.php
-
-		-
 			message: '#^Parameter \#2 \$company of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\MessageTemplateRepository\:\:getTemplateSettingsForFacility\(\) expects array\|null, OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\Company\|OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\Facility\|null given\.$#'
 			identifier: argument.type
-			count: 1
-			path: src/Services/MessageTemplateRepository.php
-
-		-
-			message: '#^Parameter \$client of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\MessageTemplateRepository\:\:getTemplateForClient\(\) has invalid type OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\Patient\.$#'
-			identifier: class.notFound
 			count: 1
 			path: src/Services/MessageTemplateRepository.php
 
@@ -9184,12 +9010,6 @@ parameters:
 			path: src/Services/QuestionnaireFHIRResourceService.php
 
 		-
-			message: '#^Method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\QuestionnaireFHIRResourceService\:\:getAll\(\) has invalid return type OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\processing\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/Services/QuestionnaireFHIRResourceService.php
-
-		-
 			message: '#^Method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\QuestionnaireFHIRResourceService\:\:getAll\(\) has parameter \$fhirSearchParameters with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -9204,12 +9024,6 @@ parameters:
 		-
 			message: '#^Method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\QuestionnaireFHIRResourceService\:\:loadSearchParameters\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
-			count: 1
-			path: src/Services/QuestionnaireFHIRResourceService.php
-
-		-
-			message: '#^PHPDoc tag @return with type OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\processing is not subtype of native type OpenEMR\\Validators\\ProcessingResult\.$#'
-			identifier: return.phpDocType
 			count: 1
 			path: src/Services/QuestionnaireFHIRResourceService.php
 
@@ -9283,12 +9097,6 @@ parameters:
 			path: src/Services/QuestionnaireResponseFHIRResourceService.php
 
 		-
-			message: '#^Cannot call method dispatch\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 2
-			path: src/Services/QuestionnaireResponseFHIRResourceService.php
-
-		-
 			message: '#^Cannot call method isValid\(\) on mixed\.$#'
 			identifier: method.nonObject
 			count: 1
@@ -9345,12 +9153,6 @@ parameters:
 		-
 			message: '#^Parameter \#2 \$puuidBind \(string\|null\) of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\QuestionnaireResponseFHIRResourceService\:\:getAll\(\) should be contravariant with parameter \$puuidBind \(mixed\) of method OpenEMR\\Services\\FHIR\\IResourceReadableService\:\:getAll\(\)$#'
 			identifier: method.childParameterType
-			count: 1
-			path: src/Services/QuestionnaireResponseFHIRResourceService.php
-
-		-
-			message: '#^Property OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\QuestionnaireResponseFHIRResourceService\:\:\$dispatcher has no type specified\.$#'
-			identifier: missingType.property
 			count: 1
 			path: src/Services/QuestionnaireResponseFHIRResourceService.php
 
@@ -9994,12 +9796,6 @@ parameters:
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
 			identifier: empty.notAllowed
 			count: 3
-			path: src/Services/SimplifiedOAuthTwigExtension.php
-
-		-
-			message: '#^Direct access to \$_SESSION is forbidden\. Use the session wrapper instead\.$#'
-			identifier: openemr.forbiddenSessionSuperglobal
-			count: 2
 			path: src/Services/SimplifiedOAuthTwigExtension.php
 
 		-
@@ -10807,12 +10603,6 @@ parameters:
 			path: src/Services/TaskFHIRResourceService.php
 
 		-
-			message: '#^Method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\TaskFHIRResourceService\:\:getAll\(\) has invalid return type OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\processing\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/Services/TaskFHIRResourceService.php
-
-		-
 			message: '#^Method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\TaskFHIRResourceService\:\:getAll\(\) has parameter \$fhirSearchParameters with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -10861,26 +10651,8 @@ parameters:
 			path: src/Services/TaskFHIRResourceService.php
 
 		-
-			message: '#^Method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\TaskFHIRResourceService\:\:update\(\) has invalid return type OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\The\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/Services/TaskFHIRResourceService.php
-
-		-
 			message: '#^Negated boolean expression is always false\.$#'
 			identifier: booleanNot.alwaysFalse
-			count: 1
-			path: src/Services/TaskFHIRResourceService.php
-
-		-
-			message: '#^PHPDoc tag @return with type OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\The is not subtype of native type OpenEMR\\Validators\\ProcessingResult\.$#'
-			identifier: return.phpDocType
-			count: 1
-			path: src/Services/TaskFHIRResourceService.php
-
-		-
-			message: '#^PHPDoc tag @return with type OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\processing is not subtype of native type OpenEMR\\Validators\\ProcessingResult\.$#'
-			identifier: return.phpDocType
 			count: 1
 			path: src/Services/TaskFHIRResourceService.php
 
