@@ -15,6 +15,19 @@ v0.11.1 PHPStan level-10 fixes (bugs + non-ignorable) and module-local baseline
   - AssessmentGroupRestController: declare the $logger property (was an undeclared
     dynamic property, deprecated on PHP 8.5) typed as SystemLogger.
   - APISetupController: fix the RestApiScopeEvent closure param casing.
+  - SystemError: its constructor was misspelled `__constructor` (so `new
+    SystemError($code, $message)` silently dropped its arguments and left the
+    typed `$_code`/`$_subErrors` properties uninitialized) — rename to
+    `__construct`, assign both properties, default `$subErrors` to null, and
+    correct `code()` to return int. This also unbreaks the live
+    `throw new SystemError(...)` in ClientSearchRepository::getClientList(), which
+    additionally lacked a `use` import (it resolved to a non-existent class).
+  - HTTPResponseUtils::jsonErrorResponseHandler(): add the missing SystemLogger /
+    SystemError / ErrorCodeStatus imports and \Throwable qualifier, drop the
+    getName() call (RuntimeException has none), look the HTTP status up from the
+    numeric code (not the translated name), replace the non-existent
+    ErrorCode::name() with getErrorStringForErrorCode(), and wrap the JSON body in
+    a stream for withBody(). ClientRestController now passes $this->logger to it.
 
   Non-ignorable errors (cannot be baselined):
   - Add `: array` return type to jsonSerialize() in 10 Models (Assignment and its

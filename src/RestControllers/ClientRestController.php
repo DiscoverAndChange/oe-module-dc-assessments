@@ -17,6 +17,7 @@ use OpenEMR\Modules\DiscoverAndChange\Assessments\Models\AssignedLibraryAsset;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Models\Assignment;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Models\ErrorCode;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Models\ServerRestRequest;
+use OpenEMR\Modules\DiscoverAndChange\Assessments\Models\SystemError;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Services\AssignmentSerializer;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Services\ClientMessageDispatcher;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Services\ClientRepository;
@@ -69,13 +70,13 @@ class ClientRestController implements IRestController
         $search = new ClientSearchQueryDTO();
         $search->populateFromRequest($params);
         if ($search->firstName && strlen($search->firstName) < 1) {
-            return HTTPResponseUtils::jsonErrorResponseHandler(new SystemError(
+            return HTTPResponseUtils::jsonErrorResponseHandler($this->logger, new SystemError(
                 ErrorCode::VALIDATE_DATA_MISSING,
                 "First name requires at least 1 character for search"
             ));
         }
         if ($search->lastName && strlen($search->lastName) < 1) {
-            return HTTPResponseUtils::jsonErrorResponseHandler(new SystemError(
+            return HTTPResponseUtils::jsonErrorResponseHandler($this->logger, new SystemError(
                 ErrorCode::VALIDATE_DATA_MISSING,
                 "Last name requires at least 1 character for search"
             ));

@@ -3,7 +3,10 @@
 namespace OpenEMR\Modules\DiscoverAndChange\Assessments\Services;
 
 use Nyholm\Psr7\Factory\Psr17Factory;
+use OpenEMR\Common\Logging\SystemLogger;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Models\ErrorCode;
+use OpenEMR\Modules\DiscoverAndChange\Assessments\Models\ErrorCodeStatus;
+use OpenEMR\Modules\DiscoverAndChange\Assessments\Models\SystemError;
 use Psr\Http\Message\ResponseInterface;
 
 class HTTPResponseUtils
@@ -12,27 +15,23 @@ class HTTPResponseUtils
     {
         $psrFactory = new Psr17Factory();
 
-        if ($error instanceof Throwable) {
-            // make sure we get the stack trace here, not sure why winston isn't handling this properly.
-            $logger->error($error->getMessage(), ['name' => $error->getName(), 'stack' => $error->getTraceAsString()]);
-        } else {
-            $logger->error($error); // TODO: in some cases we are getting duplicate errors here, but we need to log them for now until we can refactor.
-        }
+        // SystemError is a Throwable, so capture the message and stack trace.
+        $logger->error($error->getMessage(), ['class' => get_class($error), 'stack' => $error->getTraceAsString()]);
+
+        $code = $error->getCode() ?: ErrorCode::SYSTEM_ERROR;
+        $statusCode = ErrorCodeStatus::getStatusForErrorCode($code);
 
         $err = [
-            '_code' => $error->getCode() ?: ErrorCode::SYSTEM_ERROR,
+            '_code' => ErrorCode::getErrorStringForErrorCode($code),
             '_message' => $error->getMessage() ?: 'An error has occurred see code for details',
             'error' => $error->getMessage() ?: 'An error has occurred see code for details', // make sure to be backwards compatible for old code.
         ];
 
-        $err['_code'] = ErrorCode::name($err['_code']);
-        $statusCode = ErrorCodeStatus::getStatusForErrorCode($err['_code']);
-
-// don't reveal details of the error to the frontend.
+        // don't reveal details of the error to the frontend.
         if ($statusCode >= 500) {
             $err['error'] = $err['_message'] = 'A system error occurred. Please try again or contact support.';
         }
 
-        return $psrFactory->createResponse($statusCode)->withBody(json_encode($err));
+        return $psrFactory->createResponse($statusCode)->withBody($psrFactory->createStream(json_encode($err)));
     }
 }
