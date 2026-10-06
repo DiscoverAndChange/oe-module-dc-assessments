@@ -1,23 +1,37 @@
-v0.11.0 OpenEMR 8.4.1 (PHP 8.5) compatibility — phase 1 (module load + logging)
+v0.11.0 OpenEMR 8.4.1 (PHP 8.5) compatibility
 
-  Make the module load and bootstrap cleanly on OpenEMR 8.4.1 / PHP 8.5, and
-  restore logging against the 8.4.1 core API. The patient-facing frontend entry
-  point now loads on 8.4.1.
+  Port the module to OpenEMR 8.4.1 / PHP 8.5. Verified in a live 8.4.1 container:
+  the module registers and bootstraps, the FHIR capability endpoint serves with
+  the module's Questionnaire/QuestionnaireResponse resources, and the patient
+  frontend and backend config pages load — with no fatals or module deprecations.
+
+  Core API alignment:
   - LoggerAwareTrait: type the $logger property as ?Psr\Log\LoggerInterface and
-    align setLogger() to PSR's signature, so it no longer clashes with the
-    PSR LoggerAwareTrait that 8.4.1's FhirServiceBase now composes.
+    align setLogger() to PSR's setLogger(LoggerInterface): void, so it no longer
+    clashes with the PSR LoggerAwareTrait that 8.4.1's FhirServiceBase composes.
   - Bootstrap: alias Psr\Log\LoggerInterface to the synthetic SystemLogger
-    service so the #[Required] setLogger() setter autowires on 8.4.1.
+    service so the #[Required] setLogger() setter autowires.
   - FHIR services: match 8.4.1's typed FhirServiceBase::createOpenEMRSearchParameters
     signature (array $fhirSearchParameters, ?string $puuidBind = null): array.
-  - Replace SystemLogger::errorLogCaller() (removed in 8.4.1) with the PSR-3
-    LoggerInterface::error() method across the module (~70 call sites).
-  NOTE: This phase targets OpenEMR >= 8.4 and is NOT backward-compatible with
-  7.0.2 (8.4.1 tightened FhirServiceBase with typed signatures that 7.0.x's
-  untyped base rejects). REST/FHIR endpoints are NOT yet functional on 8.4.1 —
-  the module still bundles Symfony 5.4 / Doctrine 2-3, which collide in-process
-  with core's Symfony 7.4 / Doctrine 3.6+dbal 4. See PORTING-8.4.1.md. That
-  dependency modernization is phase 2.
+  - Replace SystemLogger::errorLogCaller() (removed in 8.4.1) with PSR-3
+    LoggerInterface::error() across the module (~70 call sites).
+
+  Dependency modernization (fixes the in-process class collisions that broke
+  every REST/FHIR request):
+  - Pin bundled Symfony to the same major core ships (^7.4) and cap the
+    transitive packages (http-foundation, string, console, type-info,
+    var-exporter) so they cannot drift onto Symfony 8.
+  - symfony/serializer: upgrade to ^7.4; update FhirObjectDenormalizer to the
+    Symfony 7 DenormalizerInterface (typed signatures + getSupportedTypes()).
+  - Drop Doctrine entirely (ORM/DBAL) — the module uses OpenEMR QueryUtils / raw
+    SQL, not Doctrine; removed the unused OpenEMRDatabaseConnectionWrapper and the
+    dead Doctrine\ORM\Query imports.
+
+  NOTE: targets OpenEMR >= 8.4 and is NOT backward-compatible with 7.0.2 (8.4.1
+  tightened FhirServiceBase with typed signatures that 7.0.x's untyped base
+  rejects). Authenticated FHIR read/write, the full provider UI, and the patient
+  portal assignment flow still need end-to-end QA on a populated 8.4.1 instance.
+  See PORTING-8.4.1.md.
 
 v0.10.0 Add developer tooling, CLAUDE.md, and project conventions
 

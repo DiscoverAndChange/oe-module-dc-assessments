@@ -2,7 +2,6 @@
 
 namespace OpenEMR\Modules\DiscoverAndChange\Assessments\RestControllers;
 
-use Doctrine\ORM\Query;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use OpenEMR\Common\Acl\AccessDeniedException;
 use OpenEMR\Common\Acl\AclMain;

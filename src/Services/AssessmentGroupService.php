@@ -2,7 +2,6 @@
 
 namespace OpenEMR\Modules\DiscoverAndChange\Assessments\Services;
 
-use Doctrine\ORM\Query;
 use OpenEMR\Common\Database\QueryUtils;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Models\AssessmentGroup;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Validators\AssessmentGroupValidator;

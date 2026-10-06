@@ -12,20 +12,26 @@
   ],
   "keywords": ["openemr", "openemr-module"],
   "minimum-stability": "stable",
+    "comment-require": "Symfony is pinned to the SAME major OpenEMR 8.4.1 core ships (7.4) so the module's bundled copies stay ABI-compatible with core's in-process. The explicit caps on http-foundation/string/console/type-info/var-exporter stop transitive drift onto Symfony 8, which would collide fatally with core. (Doctrine was dropped entirely — the module uses OpenEMR QueryUtils/raw SQL, not Doctrine.)",
     "require": {
-    	"openemr/oe-module-installer-plugin": "^0.1.0",
-        "doctrine/orm": "^2.11.0",
-        "doctrine/dbal": "^3.2",
-        "symfony/yaml": "5.4.21",
-        "symfony/cache": "^5.4",
-        "symfony/routing": "^5.4",
-        "symfony/psr-http-message-bridge": "^2.1",
-        "symfony/property-access": "^5.4",
-        "symfony/serializer": "^5.4",
-        "phpdocumentor/reflection-docblock": "^5.3"
+        "php": ">=8.2",
+        "openemr/oe-module-installer-plugin": "^0.1.0",
+        "symfony/yaml": "^7.4",
+        "symfony/cache": "^7.4",
+        "symfony/console": "^7.4",
+        "symfony/string": "^7.4",
+        "symfony/routing": "^7.4",
+        "symfony/http-foundation": "^7.4",
+        "symfony/type-info": "^7.4",
+        "symfony/var-exporter": "^7.4",
+        "symfony/psr-http-message-bridge": "^7.0",
+        "symfony/property-access": "^7.4",
+        "symfony/property-info": "^7.4",
+        "symfony/serializer": "^7.4",
+        "phpdocumentor/reflection-docblock": "^5.4"
     },
     "conflict": {
-      "openemr/openemr": "<7.0.0"
+      "openemr/openemr": "<8.4.0"
     },
     "autoload": {
 	"psr-4": {

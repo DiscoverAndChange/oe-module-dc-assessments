@@ -32,31 +32,44 @@ Phase 1 targets **OpenEMR >= 8.4**. It is **not** backward-compatible with 7.0.2
 PHP will not let a subclass narrow 7.0.x's untyped parameters. Do not deploy this
 branch on a 7.0.2 server.
 
-## Phase 2 — TODO: dependency modernization (REST/FHIR still 500s without it)
-The module bundles its own `vendor/` with **Symfony 5.4** and **Doctrine 2–3**.
-In OpenEMR's single PHP process these collide with core's **Symfony 7.4** /
-**Doctrine 3.6 / DBAL 4.4** — e.g. the confirmed fatal on any REST/FHIR request:
+## Phase 2 — DONE: dependency modernization
+The module bundled its own `vendor/` with **Symfony 5.4 / Doctrine 2–3**, which
+collided in OpenEMR's single PHP process with core's **Symfony 7.4 / Doctrine
+3.6 / DBAL 4.4** — the confirmed fatal on every REST/FHIR request was the
+module's 5.4 `ResponseHeaderBag` extending core's 7.4 `HeaderBag`.
 
-```
-Declaration of Symfony\...\ResponseHeaderBag::all(?string $key = null) must be
-compatible with Symfony\...\HeaderBag::all(?string $key = null): array
-```
-(module's Symfony 5.4 `ResponseHeaderBag` extending core's Symfony 7.4 `HeaderBag`).
+What was done (`composer.json`):
+- Pin bundled Symfony to core's major (`^7.4`) and **cap the drift-prone
+  transitives** (`http-foundation`, `string`, `console`, `type-info`,
+  `var-exporter`) so composer can't pull Symfony 8. Same-major copies are
+  ABI-compatible with core, and core's autoloader (registered first) wins at
+  runtime anyway, so there is no fatal collision.
+- `symfony/serializer` ^7.4 (core doesn't ship it); `FhirObjectDenormalizer`
+  updated to the Symfony 7 `DenormalizerInterface` (typed `denormalize`/
+  `supportsDenormalization` + new required `getSupportedTypes()`).
+- **Dropped Doctrine entirely.** The module used only a dead DBAL `Connection`
+  stub (`OpenEMRDatabaseConnectionWrapper`, removed) and two unused
+  `Doctrine\ORM\Query` imports (removed); repositories use OpenEMR
+  `QueryUtils` / raw SQL. This removes a whole collision vector.
+- Regenerated `composer.lock` against PHP 8.5; bundled set trimmed from 42 to
+  ~31 packages (serializer, property-info, reflection-docblock + Symfony 7.4
+  runtime + unique sub-deps).
 
-Required work:
-- Bump `composer.json` to the versions 8.4.1 core uses so the bundled copies are
-  identical to core (no collision): `symfony/* ^7.4`, `symfony/psr-http-message-bridge ^7.4`.
-  `symfony/serializer` and `phpdocumentor/reflection-docblock` are **not** in core,
-  so keep bundling them — but at Symfony 7.
-- Doctrine: core has ORM 3.6 / DBAL 4.4. Reconcile `src/Doctrine/OpenEMRDatabaseConnectionWrapper.php`
-  and any ORM/DBAL usage; bump to ORM ^3 / DBAL ^4 (or drop if unused — repositories
-  otherwise use OpenEMR `QueryUtils`/raw SQL).
-- `composer update` to regenerate the lock against PHP 8.5 + the new constraints.
-- Code audit for Symfony 5.4 → 7 API changes, focus areas by import count:
-  Serializer (14), DependencyInjection (12), Routing (5), PropertyInfo (2),
-  EventDispatcher (21, mostly stable), `HttpFoundationFactory` in `APIProxyController.php`.
-- Re-run the module's PHPUnit suite and exercise FHIR (Questionnaire,
-  QuestionnaireResponse, Task) + the provider UI + patient portal end to end.
+Verified live (8.4.1 container): bootstrap compiles, `fhir/metadata` → 200 with
+the module's Questionnaire/QuestionnaireResponse resources, patient frontend →
+200, `moduleConfig.php` → 200, no fatals/deprecations.
+
+## Still needs human QA (can't be scripted here)
+- Authenticated FHIR read/write (OAuth) for Questionnaire/QuestionnaireResponse/Task.
+- Provider UI (appointment assignment, encounter screen) and the patient-portal
+  assignment completion flow, end to end on populated data.
+- Confirm the `Task` resource advertises/behaves as intended (it is not in the
+  default capability statement — unchanged by this port).
+- Run the module's PHPUnit suite against an 8.4.1 checkout.
+- Symfony property-access note: core pins `property-access` at v4.4 while the
+  bundled Serializer expects v7; at runtime core's v4.4 loads first. The common
+  accessor API is stable, metadata/frontend work, but watch for edge cases in
+  serializer-heavy paths during QA.
 
 ## How this was tested
 OpenEMR 8.4.1 container + MariaDB, module bind-mounted into
