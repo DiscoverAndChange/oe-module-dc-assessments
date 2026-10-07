@@ -104,8 +104,17 @@ class TaskRestController
             array_push($bundleEntries, $fhirBundleEntry);
         }
         $bundleSearchResult = $this->fhirService->createBundle(self::FHIR_RESOURCE_TYPE, $bundleEntries, false);
-        $searchResponseBody = RestControllerHelper::responseHandler($bundleSearchResult, null, 200);
-        return $searchResponseBody;
+        // Return the FHIR bundle itself. Do NOT route it through
+        // RestControllerHelper::responseHandler(): on OpenEMR 8.x that returns a
+        // Symfony Response, which returnSingleObjectResponse() then json_encodes to
+        // just {"headers":...} instead of the bundle. Also, FHIRBundle omits the
+        // `entry` key entirely when there are no results, but the SPA expects an
+        // array — so normalize the empty case to a plain array with entry: [].
+        if (empty($bundleEntries)) {
+            $bundleSearchResult = json_decode(json_encode($bundleSearchResult), true);
+            $bundleSearchResult['entry'] = [];
+        }
+        return $bundleSearchResult;
     }
 
     /**

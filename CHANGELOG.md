@@ -31,6 +31,15 @@ v0.11.1 PHPStan level-10 fixes (bugs + non-ignorable) and module-local baseline
     table (both request_body and response columns), so the binary gzip bytes threw
     SQLSTATE[22007] 1366 "Incorrect string value" on every logged API call. Return
     plain JSON instead and let the web server negotiate transport compression.
+  - FHIR Task search returned {"headers":...} instead of a bundle: TaskRest
+    Controller::getAll() routed the bundle through RestControllerHelper::
+    responseHandler(), which on OpenEMR 8.x returns a Symfony Response — and
+    returnSingleObjectResponse() then json_encode()'d that object, emitting only
+    its public $headers property. Return the bundle directly (like the sibling
+    Questionnaire controllers). Additionally, FHIRBundle omits the `entry` key
+    entirely when there are no results, but the SPA expects an array, so the empty
+    case is normalized to entry: [] on the Task, Questionnaire, and Questionnaire
+    Response list endpoints.
   - AssessmentAppointmentController::deleteDigitalDocumentsSection(): the
     appointment-delete cleanup used array_map() with its arguments swapped
     (array, callback), which fatals; rewrite as a foreach side-effect loop so
