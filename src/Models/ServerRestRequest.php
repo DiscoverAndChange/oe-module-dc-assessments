@@ -169,24 +169,28 @@ final class ServerRestRequest implements ServerRequestInterface
         return $this->httpRestRequest;
     }
 
+    /** @return array<mixed> */
     public function getServerParams(): array
     {
         // TODO: Implement getServerParams() method.
         return $this->httpRestRequest->getServerParams();
     }
 
+    /** @return array<mixed> */
     public function getCookieParams(): array
     {
         // TODO: Implement getCookieParams() method.
         return $this->httpRestRequest->getCookieParams();
     }
 
+    /** @param array<mixed> $cookies */
     public function withCookieParams(array $cookies): static
     {
         // TODO: Implement withCookieParams() method.
         return new ServerRestRequest($this->httpRestRequest->withCookieParams($cookies));
     }
 
+    /** @return array<mixed> */
     public function getQueryParams(): array
     {
         $queryParams = $this->httpRestRequest->getQueryParams();
@@ -199,31 +203,37 @@ final class ServerRestRequest implements ServerRequestInterface
         return $queryParams;
     }
 
+    /** @param array<mixed> $query */
     public function withQueryParams(array $query): static
     {
         return new ServerRestRequest($this->httpRestRequest->withQueryParams($query));
     }
 
+    /** @return array<mixed> */
     public function getUploadedFiles(): array
     {
         return $this->httpRestRequest->getUploadedFiles();
     }
 
+    /** @param array<mixed> $uploadedFiles */
     public function withUploadedFiles(array $uploadedFiles): static
     {
         return new ServerRestRequest($this->httpRestRequest->withUploadedFiles($uploadedFiles));
     }
 
+    /** @return array<mixed>|object|null */
     public function getParsedBody()
     {
         return $this->httpRestRequest->getParsedBody();
     }
 
+    /** @param array<mixed>|object|null $data */
     public function withParsedBody($data): static
     {
         return new ServerRestRequest($this->httpRestRequest->withParsedBody($data));
     }
 
+    /** @return array<mixed> */
     public function getAttributes(): array
     {
         return $this->httpRestRequest->getAttributes();

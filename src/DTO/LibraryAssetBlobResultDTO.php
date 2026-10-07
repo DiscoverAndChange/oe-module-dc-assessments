@@ -8,6 +8,7 @@ class LibraryAssetBlobResultDTO implements \JsonSerializable
 {
     private ?string $id = null;
     private ?int $assetId = null;
+    /** @var array<mixed> */
     private array $answers = [];
     private ?string $assignmentItemId = null;
     private ?string $journal = null;
@@ -45,7 +46,7 @@ class LibraryAssetBlobResultDTO implements \JsonSerializable
     }
 
     /**
-     * @return array
+     * @return array<mixed>
      */
     public function getAnswers(): array
     {
@@ -53,7 +54,7 @@ class LibraryAssetBlobResultDTO implements \JsonSerializable
     }
 
     /**
-     * @param array $answers
+     * @param array<mixed> $answers
      * @return LibraryAssetBlobResultDTO
      */
     public function setAnswers(array $answers): LibraryAssetBlobResultDTO
@@ -145,6 +146,7 @@ class LibraryAssetBlobResultDTO implements \JsonSerializable
         return $this;
     }
 
+    /** @return array<mixed> */
     public function jsonSerialize(): array
     {
         $dto = [
@@ -156,6 +158,7 @@ class LibraryAssetBlobResultDTO implements \JsonSerializable
         return $dto;
     }
 
+    /** @param array<mixed> $data */
     public function fromDTO(array $data)
     {
         $this->setId($data['id'] ?? null);
