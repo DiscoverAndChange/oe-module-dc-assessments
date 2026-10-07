@@ -103,7 +103,25 @@ final class ServerRestRequest implements ServerRequestInterface
 
     public function getBodyAsJson()
     {
-        return $this->httpRestRequest->getRequestBodyJSON();
+        // Read the raw request body as a string and decode it ourselves. We do NOT
+        // delegate to HttpRestRequest::getRequestBodyJSON(): on OpenEMR 8.x that
+        // calls $this->getContent(true)->getContents(), but HttpRestRequest extends
+        // Symfony's Request without overriding getContent(), so getContent(true)
+        // returns a PHP resource — which has no getContents() — and every module
+        // POST fatals ("Call to a member function getContents() on resource").
+        $content = $this->httpRestRequest->getContent();
+        if (!is_string($content) || $content === '') {
+            return null;
+        }
+        // Support gzip-encoded request bodies (the SPA may send Content-Encoding: gzip).
+        $encoding = $this->httpRestRequest->headers->get('Content-Encoding');
+        if ($encoding !== null && stripos($encoding, 'gzip') !== false) {
+            $decoded = @gzdecode($content);
+            if ($decoded !== false) {
+                $content = $decoded;
+            }
+        }
+        return json_decode($content, true);
     }
 
     public function withBody(StreamInterface $body): static

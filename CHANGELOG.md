@@ -31,6 +31,15 @@ v0.11.1 PHPStan level-10 fixes (bugs + non-ignorable) and module-local baseline
     table (both request_body and response columns), so the binary gzip bytes threw
     SQLSTATE[22007] 1366 "Incorrect string value" on every logged API call. Return
     plain JSON instead and let the web server negotiate transport compression.
+  - Every module POST/create/update fataled with "Call to a member function
+    getContents() on resource": ServerRestRequest::getBodyAsJson() delegated to
+    core HttpRestRequest::getRequestBodyJSON(), which on 8.x does
+    $this->getContent(true)->getContents() — but HttpRestRequest extends Symfony's
+    Request without overriding getContent(), so getContent(true) returns a PHP
+    resource (no getContents()). Read the body directly instead: Symfony
+    getContent() as a string, gzip-decoded when Content-Encoding: gzip, then
+    json_decode. Fixes all 12 getBodyAsJson() call sites (assignment create,
+    group/report create+update, client assignment/message, etc.).
   - FHIR Task search returned {"headers":...} instead of a bundle: TaskRest
     Controller::getAll() routed the bundle through RestControllerHelper::
     responseHandler(), which on OpenEMR 8.x returns a Symfony Response — and
