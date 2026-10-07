@@ -40,7 +40,7 @@ class APIProxyController
     private string $baseUri;
 
     /**
-     * @var array
+     * @var array<mixed>
      */
     private $controllers;
 
@@ -50,7 +50,7 @@ class APIProxyController
     private $routes;
 
     /**
-     * @var array
+     * @var array<mixed>
      */
     const API_MAPPINGS = [
         'questionnaire.list' => [

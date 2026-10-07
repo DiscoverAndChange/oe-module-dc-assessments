@@ -114,9 +114,16 @@ v0.11.1 PHPStan level-10 fixes (bugs + non-ignorable) and module-local baseline
     ClientSearchRepository $_repo. Round 3: specify iterable value types
     (array<mixed>, with |null where the native type is ?array) on ServerRestRequest's
     PSR-7 array accessors and the LibraryAssetBlob/LibraryAssetBlobResult DTO
-    tag/result/answer arrays — 23 missingType.iterableValue findings, all
-    semantically identical to the bare `array` they annotate (zero inference
-    change). Regenerate the baseline to drop the now-fixed entries.
+    tag/result/answer arrays. Rounds 4a/4b and the follow-up extend this across
+    the rest of the module — all Models, the FHIR resource services (matching the
+    FhirServiceBase/ResourceServiceSearchTrait parent `@param array`), and the
+    repositories/controllers/services — ELIMINATING the entire
+    missingType.iterableValue category (0 remaining module-wide, was ~125).
+    Values are array<mixed> (|null where the native type is ?array; the specific
+    element type AssessmentSnippet[]/Assignment[]/SystemError[] where the backing
+    property is typed), so no inference change. Verified with a local phpstan
+    (OpenEMR 8.4.0 + the module's vendor) and the unit tests: 0 unbaselined errors.
+    Regenerate the baseline to drop the now-fixed entries.
 
 v0.11.0 OpenEMR 8.4.1 (PHP 8.5) compatibility
 

@@ -12,6 +12,7 @@ class QuestionnaireResponseOnSiteDocumentService
     {
     }
 
+    /** @param array<mixed> $questionnaireResponse */
     public function createDocument($templateId, $documentCategory, array $questionnaireResponse, $questionnaireName)
     {
         $pid = $questionnaireResponse['patient_id'];

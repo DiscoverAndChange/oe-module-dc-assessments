@@ -47,6 +47,7 @@ class GlobalConfig
     private $cryptoGen;
 
 
+    /** @param array<string, mixed> $globalsArray */
     public function __construct(array $globalsArray)
     {
         $this->globalsArray = $globalsArray;

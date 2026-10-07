@@ -115,6 +115,7 @@ class AssessmentReportRepository
         }
     }
 
+    /** @param array<mixed> $data */
     public function updateReport(string $id, string $name, int $userId, array $data, ?int $assessmentGroupID, ?string $assessmentUid)
     {
         if (!empty($data['token'])) {

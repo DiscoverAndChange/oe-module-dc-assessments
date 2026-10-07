@@ -16,6 +16,7 @@ class AssignmentCompleter
     {
     }
 
+    /** @param array<mixed> $client */
     public function markAssignmentComplete(Assignment $item, array $client)
     {
         if (empty($item->getId())) {
@@ -64,6 +65,7 @@ class AssignmentCompleter
         return $repo->getAssignmentForItem($item->getId());
     }
 
+    /** @param array<mixed> $client */
     private function dispatchNotifications(array $client)
     {
         $this->dispatcher->sendAssignmentsCompleteNotification($client['uuid'], $client['pid']);

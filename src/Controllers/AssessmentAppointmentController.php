@@ -322,6 +322,7 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
     }
 
 
+    /** @param array<mixed> $appt */
     public function renderNotificationsSection(AppointmentRenderEvent $event, array $appt, ?Assignment $assignment)
     {
         echo $this->twig->render("discoverandchange/appointment/add_edit_event_notifications.html.twig", []);

@@ -20,6 +20,7 @@ class AssessmentRepository
     public function __construct(private SystemLogger $logger)
     {
     }
+    /** @return array<mixed> */
     public function getAssessmentSummaryList(?int $companyId): array
     {
         // TODO: stephen not sure I like this as it implicitly assumes that the highest autoincrement id
@@ -171,6 +172,7 @@ class AssessmentRepository
         return $blobData;
     }
 
+    /** @param array<mixed> $jsonData */
     public function createAssessment(string $uid, string $name, string $description, array $jsonData, ?int $companyId)
     {
         $htmlSanitizer = new HTMLSanitizer();

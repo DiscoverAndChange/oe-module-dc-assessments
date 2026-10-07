@@ -35,6 +35,7 @@ class QuestionnaireAuditController
     {
     }
 
+    /** @param array<mixed> $queryVars */
     public function dispatch($action, array $queryVars)
     {
         try {

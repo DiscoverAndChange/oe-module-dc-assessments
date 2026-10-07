@@ -14,6 +14,7 @@ class AssignmentSerializer
     {
         return $assignment->jsonSerialize();
     }
+    /** @param array<mixed> $assignmentJSON */
     public function deserialize(array $assignmentJSON, $depth = 0)
     {
         if ($depth > 5) {

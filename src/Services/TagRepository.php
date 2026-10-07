@@ -9,6 +9,10 @@ class TagRepository
     const TABLE_NAME = "dac_Tag";
     public const TABLE_NAME_LIBRARY_ASSET_JOIN_TAG = "dac_LibraryAssetBlobTag";
 
+    /**
+     * @param array<mixed> $assetIds
+     * @return array<mixed>
+     */
     public function getTagsForAssetIds(array $assetIds): array
     {
         // nothing to return if we get an empty array

@@ -31,6 +31,7 @@ class SystemUserRepository
         }
         return $systemUsers;
     }
+    /** @param array<mixed> $user */
     public function hydrateUser(array $user, $primaryEntity)
     {
         $companyId = $primaryEntity['id'] ?? null;
@@ -50,6 +51,7 @@ class SystemUserRepository
         return $systemUser;
     }
 
+    /** @param array<mixed> $clientIds */
     public function getUsersForClients(array $clientIds)
     {
         $patientService = new PatientService();

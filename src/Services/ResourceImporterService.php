@@ -31,6 +31,7 @@ class ResourceImporterService
         $resources = json_decode($resource, true, 512, JSON_THROW_ON_ERROR);
         $this->importResources($resources, $importerUserId);
     }
+    /** @param array<mixed> $resources */
     public function importResources(array $resources, $importerUserId)
     {
         $index = 0;
@@ -72,6 +73,7 @@ class ResourceImporterService
         return $this->assessmentGroupService;
     }
 
+    /** @param array<mixed> $assessmentBlobs */
     public function importAssessmentBlobResources(array $assessmentBlobs, &$index)
     {
         $validator = new AssessmentValidator();
@@ -115,6 +117,7 @@ class ResourceImporterService
         return $this->importLog;
     }
 
+    /** @param array<mixed> $assets */
     public function importLibraryAssetResources(array $assets, $importerUserId, &$index)
     {
         $validator = new LibraryAssetBlobValidator();
@@ -158,6 +161,7 @@ class ResourceImporterService
         }
     }
 
+    /** @param array<mixed> $groups */
     public function importAssessmentGroupResources(array $groups, $importerId, &$index)
     {
         $repo = $this->getAssessmentGroupService();
@@ -193,6 +197,7 @@ class ResourceImporterService
         }
     }
 
+    /** @param array<mixed> $reports */
     public function importReports(array $reports, $importerId, &$index)
     {
         $repo = new AssessmentReportRepository();

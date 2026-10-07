@@ -280,6 +280,7 @@ class AssignmentRepository
         return $assignments;
     }
 
+    /** @param array<mixed> $record */
     private function hydrateAssignmentFromRecord(array $record): Assignment
     {
         if (isset($record['assessmentgroup_id'])) {
@@ -330,6 +331,7 @@ class AssignmentRepository
         }
     }
 
+    /** @param array<mixed> $record */
     private function hydrateAssignedAssessmentFromRecord(array $record, AssignedAssessment $assessment)
     {
         $assessment->setItemId($record['id']);
@@ -348,6 +350,7 @@ class AssignmentRepository
             $assessment->setResultId($record['assessmentresultblob_id']);
         }
     }
+    /** @param array<mixed> $record */
     private function hydrateAssignedAssessmentGroupFromRecord(array $record, AssignedAssessmentGroup $assessmentGroup)
     {
         $assessmentGroup->setAssessmentGroupId($record['assessmentgroup_id']);
@@ -360,6 +363,7 @@ class AssignmentRepository
         }
     }
 
+    /** @param array<mixed> $record */
     private function hydrateAssignedTemplateProfileFromRecord(array $record, AssignedTemplateProfile $profile)
     {
         $profile->setProfileId($record['profile_id']);
@@ -401,6 +405,7 @@ class AssignmentRepository
         return $assignmentItem;
     }
 
+    /** @param array<mixed> $item */
     private function hydrateAssignedLibraryAssetFromRecord(array $item, AssignedLibraryAsset $asset)
     {
         $this->populateDatesForAssignment($item, $asset);
@@ -615,6 +620,7 @@ class AssignmentRepository
         return $assignmentItems;
     }
 
+    /** @param array<mixed> $record */
     private function getItemArrayFromAssignmentItemRecord(array $record)
     {
         $item = [
@@ -659,6 +665,7 @@ class AssignmentRepository
         return null;
     }
 
+    /** @return array<mixed>|null */
     public function getAssignmentsForAppointmentId(?int $pc_eid): ?array
     {
         if (empty($pc_eid)) {

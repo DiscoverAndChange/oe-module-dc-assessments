@@ -31,6 +31,7 @@ class PaginatedResultsService
         $psrFactory = new Psr17Factory();
         return $psrFactory->createResponse(200)->withBody($psrFactory->createStream(json_encode($data)));
     }
+    /** @param array<mixed> $results */
     public static function returnedPaginatedResultsResponse(array $results, QueryPagination $pagination)
     {
         $psrFactory = new Psr17Factory();

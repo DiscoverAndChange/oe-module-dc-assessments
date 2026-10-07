@@ -21,6 +21,7 @@ class FrontendDispatchController
         return $this->clientService->isClientEnabled($clientId);
     }
 
+    /** @param array<mixed> $queryVars */
     public function dispatch(array $queryVars)
     {
         $clientId = $this->config->getSmartAppClientId();

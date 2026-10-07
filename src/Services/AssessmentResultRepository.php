@@ -48,6 +48,7 @@ class AssessmentResultRepository
         return $processingResult;
     }
 
+    /** @param array<mixed> $resultIds */
     public function getResultListForPatient(string $clientId, array $resultIds)
     {
         if (empty($resultIds)) {
@@ -126,6 +127,7 @@ class AssessmentResultRepository
         return $records;
     }
 
+    /** @param array<mixed> $resultData */
     public function createResult(string $resultId, array $resultData, int $clientId, int $assessmentId)
     {
 

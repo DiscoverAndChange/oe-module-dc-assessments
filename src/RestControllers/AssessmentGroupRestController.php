@@ -227,6 +227,7 @@ class AssessmentGroupRestController implements IRestController
         }
     }
 
+    /** @param array<mixed> $profiles */
     private function mapProfilesToGroups(DocumentTemplateService $documentTemplateService, array $profiles)
     {
         $groups = [];

@@ -18,6 +18,7 @@ class LibraryAssetBlobRepository
     {
     }
 
+    /** @return array<mixed> */
     public function listAssets($tag = "", $summaryOnly = true): array
     {
         $sql = "SELECT uuid, id, title, type, description, original_creator, creation_date, last_update_date";
