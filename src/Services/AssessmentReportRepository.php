@@ -48,7 +48,7 @@ class AssessmentReportRepository
             if ($r['assessmentgroup_id']) {
                 $report['linkedGroup'] = $group;
             }
-            if ($r['assessment_uid']) {
+            if ($r['assessment_uid'] ?? null) {
                 $report['linkedAssessments'] = [$r['assessment_uid']];
             }
             $hydratedResults[] = $report;
