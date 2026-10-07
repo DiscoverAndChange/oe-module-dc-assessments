@@ -17,7 +17,7 @@ class SystemError extends \RuntimeException
      */
     private array $_subErrors;
 
-    /** @param array<mixed>|null $subErrors */
+    /** @param SystemError[]|null $subErrors */
     public function __construct(int $code, string $message, ?array $subErrors = null)
     {
         parent::__construct($message, $code);

@@ -97,7 +97,7 @@ class Assignment implements \JsonSerializable
         return null;
     }
 
-    /** @param array<mixed> $v */
+    /** @param Assignment[] $v */
     public function setItems(array $v): void
     {
         $this->items = $v;

@@ -110,7 +110,7 @@ final class ServerRestRequest implements ServerRequestInterface
         // returns a PHP resource — which has no getContents() — and every module
         // POST fatals ("Call to a member function getContents() on resource").
         $content = $this->httpRestRequest->getContent();
-        if (!is_string($content) || $content === '') {
+        if ($content === '') {
             return null;
         }
         // Support gzip-encoded request bodies (the SPA may send Content-Encoding: gzip).

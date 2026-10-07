@@ -56,13 +56,13 @@ class AssessmentGroup implements \JsonSerializable
         $this->name = $name;
     }
 
-    /** @return array<mixed> */
+    /** @return AssessmentSnippet[] */
     public function getAssessments(): array
     {
         return $this->assessments;
     }
 
-    /** @param array<mixed> $assessments */
+    /** @param AssessmentSnippet[] $assessments */
     public function setAssessments(array $assessments): void
     {
         $this->assessments = $assessments;
