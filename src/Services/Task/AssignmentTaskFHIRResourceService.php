@@ -76,7 +76,7 @@ class AssignmentTaskFHIRResourceService extends FhirServiceBase implements IReso
      * Search fields can be combined as Composite fields and represent a host of search options.
      * @see https://www.hl7.org/fhir/search.html to see the types of search operations, and search types that are available
      * for use.
-     * @return array
+     * @return array<mixed>
      */
     protected function loadSearchParameters()
     {
@@ -102,6 +102,7 @@ class AssignmentTaskFHIRResourceService extends FhirServiceBase implements IReso
         return new FhirSearchParameterDefinition('patient', SearchFieldType::REFERENCE, [new ServiceField('client_uuid', ServiceField::TYPE_UUID)]);
     }
 
+    /** @param array<mixed> $dataRecord */
     public function parseOpenEMRRecord($dataRecord = array(), $encode = false): FHIRTask
     {
         $fhirResource = new FHIRTask();
@@ -147,6 +148,7 @@ class AssignmentTaskFHIRResourceService extends FhirServiceBase implements IReso
         return $fhirResource;
     }
 
+    /** @param array<mixed> $openEMRSearchParameters */
     protected function searchForOpenEMRRecords($openEMRSearchParameters): ProcessingResult
     {
         if (isset($openEMRSearchParameters['code']) && $openEMRSearchParameters['code'] instanceof TokenSearchField) {

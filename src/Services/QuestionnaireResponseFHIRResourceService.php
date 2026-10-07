@@ -91,6 +91,7 @@ class QuestionnaireResponseFHIRResourceService extends FhirServiceBase implement
         }
     }
 
+    /** @param array<mixed> $fhirSearchParameters */
     public function getAll($fhirSearchParameters, $puuidBind = null): ProcessingResult
     {
         $result = new ProcessingResult();

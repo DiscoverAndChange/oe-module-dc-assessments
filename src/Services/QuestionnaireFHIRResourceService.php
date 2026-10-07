@@ -63,7 +63,7 @@ class QuestionnaireFHIRResourceService extends FhirServiceBase implements IResou
      * Search fields can be combined as Composite fields and represent a host of search options.
      * @see https://www.hl7.org/fhir/search.html to see the types of search operations, and search types that are available
      * for use.
-     * @return array
+     * @return array<mixed>
      */
     protected function loadSearchParameters()
     {
@@ -78,7 +78,7 @@ class QuestionnaireFHIRResourceService extends FhirServiceBase implements IResou
 
     /**
      * Retrieves all of the fhir observation resources mapped to the underlying openemr data elements.
-     * @param $fhirSearchParameters The FHIR resource search parameters
+     * @param array<mixed> $fhirSearchParameters The FHIR resource search parameters
      * @param $puuidBind - Optional variable to only allow visibility of the patient with this puuid.
      * @return ProcessingResult
      */

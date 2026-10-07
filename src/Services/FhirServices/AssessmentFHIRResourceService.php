@@ -53,6 +53,7 @@ class AssessmentFHIRResourceService extends FhirServiceBase
         ];
     }
 
+    /** @param array<mixed> $fhirSearchParameters */
     protected function createOpenEMRSearchParameters(array $fhirSearchParameters, ?string $puuidBind = null): array
     {
         // we don't do anything with the code once we have it, so we remove it.
@@ -62,6 +63,7 @@ class AssessmentFHIRResourceService extends FhirServiceBase
         return parent::createOpenEMRSearchParameters($fhirSearchParameters, $puuidBind);
     }
 
+    /** @param array<mixed> $dataRecord */
     public function parseOpenEMRRecord($dataRecord = array(), $encode = false)
     {
         $fhirResource = new FHIRQuestionnaire();
@@ -95,6 +97,7 @@ class AssessmentFHIRResourceService extends FhirServiceBase
         return $fhirResource;
     }
 
+    /** @param array<mixed> $openEMRSearchParameters */
     protected function searchForOpenEMRRecords($openEMRSearchParameters): ProcessingResult
     {
         return $this->assessmentService->search($openEMRSearchParameters);

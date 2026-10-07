@@ -63,6 +63,7 @@ class QuestionnaireResponseFormFHIRResourceService extends FhirServiceBase imple
         $this->service = new QuestionnaireResponseService();
     }
 
+    /** @return array<mixed> */
     public function parseFhirResource(FHIRDomainResource $fhirResource)
     {
         if (!($fhirResource instanceof FHIRQuestionnaireResponse)) {
@@ -132,7 +133,7 @@ class QuestionnaireResponseFormFHIRResourceService extends FhirServiceBase imple
     }
 
     /**
-     * @param array $dataRecord
+     * @param array<mixed> $dataRecord
      * @param bool $encode
      * @return TaskFHIRResource|\OpenEMR\Services\FHIR\the
      */
@@ -216,7 +217,7 @@ class QuestionnaireResponseFormFHIRResourceService extends FhirServiceBase imple
      * Search fields can be combined as Composite fields and represent a host of search options.
      * @see https://www.hl7.org/fhir/search.html to see the types of search operations, and search types that are available
      * for use.
-     * @return array
+     * @return array<mixed>
      */
     protected function loadSearchParameters()
     {
@@ -240,6 +241,7 @@ class QuestionnaireResponseFormFHIRResourceService extends FhirServiceBase imple
         ];
     }
 
+    /** @param array<mixed> $openEMRSearchParameters */
     protected function searchForOpenEMRRecords($openEMRSearchParameters): ProcessingResult
     {
         return $this->service->search($openEMRSearchParameters);

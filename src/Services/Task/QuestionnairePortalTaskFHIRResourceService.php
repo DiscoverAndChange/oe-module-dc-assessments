@@ -44,6 +44,7 @@ class QuestionnairePortalTaskFHIRResourceService extends FhirServiceBase impleme
     }
 
     // in parsing this we need to do the following: https://build.fhir.org/ig/HL7/sdc/StructureDefinition-sdc-task.html
+    /** @param array<mixed> $dataRecord */
     public function parseOpenEMRRecord($dataRecord = array(), $encode = false): FHIRTask
     {
         $fhirResource = new FHIRTask();
@@ -139,7 +140,7 @@ class QuestionnairePortalTaskFHIRResourceService extends FhirServiceBase impleme
      * Search fields can be combined as Composite fields and represent a host of search options.
      * @see https://www.hl7.org/fhir/search.html to see the types of search operations, and search types that are available
      * for use.
-     * @return array
+     * @return array<mixed>
      */
     protected function loadSearchParameters()
     {
@@ -165,6 +166,7 @@ class QuestionnairePortalTaskFHIRResourceService extends FhirServiceBase impleme
     }
 
 
+    /** @param array<mixed> $openEMRSearchParameters */
     protected function searchForOpenEMRRecords($openEMRSearchParameters): ProcessingResult
     {
         $processingResult = new ProcessingResult();
