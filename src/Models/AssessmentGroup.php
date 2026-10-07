@@ -56,11 +56,13 @@ class AssessmentGroup implements \JsonSerializable
         $this->name = $name;
     }
 
+    /** @return array<mixed> */
     public function getAssessments(): array
     {
         return $this->assessments;
     }
 
+    /** @param array<mixed> $assessments */
     public function setAssessments(array $assessments): void
     {
         $this->assessments = $assessments;
@@ -112,6 +114,7 @@ class AssessmentGroup implements \JsonSerializable
     }
 
 
+    /** @return array<mixed> */
     public function jsonSerialize(): array
     {
         return [

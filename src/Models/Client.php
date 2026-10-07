@@ -5,6 +5,7 @@ namespace OpenEMR\Modules\DiscoverAndChange\Assessments\Models;
 class Client implements \JsonSerializable
 {
     private string $id = "";
+    /** @var array<mixed> */
     private array $assignments = [];
     private string $customField1 = "";
     private int $companyId;
@@ -93,11 +94,13 @@ class Client implements \JsonSerializable
         $this->customField1 = $v;
     }
 
+    /** @return array<mixed> */
     public function getAssignments(): array
     {
         return $this->assignments;
     }
 
+    /** @param array<mixed> $v */
     public function setAssignments(array $v): void
     {
         $this->assignments = $v;
@@ -119,6 +122,7 @@ class Client implements \JsonSerializable
         return $client;
     }
 
+    /** @return array<mixed> */
     public function jsonSerialize(): array
     {
         $properties = get_object_vars($this);

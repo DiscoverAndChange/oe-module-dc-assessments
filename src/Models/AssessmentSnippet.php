@@ -42,6 +42,7 @@ class AssessmentSnippet implements \JsonSerializable
         $this->uid = $uid;
     }
 
+    /** @return array<mixed> */
     public function jsonSerialize(): array
     {
         return [

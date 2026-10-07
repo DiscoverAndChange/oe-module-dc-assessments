@@ -6,6 +6,7 @@ class SystemUser implements \JsonSerializable
 {
     private string $_password;
     private int $_role;
+    /** @var array<mixed> */
     private array $_caps;
     private string $_id;
     private string $_username;
@@ -147,11 +148,13 @@ class SystemUser implements \JsonSerializable
         $this->_billingCustomerId = $value;
     }
 
+    /** @return array<mixed> */
     public function getCapabilities(): array
     {
         return $this->_caps;
     }
 
+    /** @param array<mixed> $v */
     public function setCapabilities(array $v): void
     {
         $this->_caps = $v;
@@ -173,6 +176,7 @@ class SystemUser implements \JsonSerializable
         // We do not hydrate caps or password
         return $user;
     }
+    /** @return array<mixed> */
     public function jsonSerialize(): array
     {
         return [

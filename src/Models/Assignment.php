@@ -97,6 +97,7 @@ class Assignment implements \JsonSerializable
         return null;
     }
 
+    /** @param array<mixed> $v */
     public function setItems(array $v): void
     {
         $this->items = $v;
@@ -183,6 +184,7 @@ class Assignment implements \JsonSerializable
         $this->type = $v;
     }
 
+    /** @return array<mixed> */
     public function jsonSerialize(): array
     {
         $result = [
@@ -211,6 +213,7 @@ class Assignment implements \JsonSerializable
         return $result;
     }
 
+    /** @param array<mixed> $assignmentJSON */
     public function fromJSON(array $assignmentJSON)
     {
         $dateFormat = "Y-m-d\TH:i:s.uP";

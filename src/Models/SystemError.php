@@ -17,6 +17,7 @@ class SystemError extends \RuntimeException
      */
     private array $_subErrors;
 
+    /** @param array<mixed>|null $subErrors */
     public function __construct(int $code, string $message, ?array $subErrors = null)
     {
         parent::__construct($message, $code);
@@ -30,6 +31,7 @@ class SystemError extends \RuntimeException
         return $this->_code;
     }
 
+    /** @return array<mixed> */
     public function subErrors(): array
     {
         return $this->_subErrors;
