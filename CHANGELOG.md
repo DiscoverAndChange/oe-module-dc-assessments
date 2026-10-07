@@ -55,6 +55,13 @@ v0.11.1 PHPStan level-10 fixes (bugs + non-ignorable) and module-local baseline
     removing an appointment actually clears its assignments.
 
   Latent bugs:
+  - AssessmentRepository::getAssessmentForAssignmentItem(): the query selected
+    `ab1.status`, but this query's FROM aliases the tables item/assessment/
+    assignment — there is no `ab1` alias here (that alias belongs to the other
+    methods). So the query raised "Unknown column 'ab1.status'" (MySQL 1054)
+    whenever an assessment was fetched for an assignment item. The status column
+    is on the assessment-blob table, aliased `assessment` here → use
+    assessment.status.
   - Client::sortAssignmentsByDateAssigned() / fromJSON: `new DateTime()`,
     `new InvalidArgumentException`, and SystemUser::fromJSON `new Exception`
     resolved into the module's Models namespace (non-existent classes) — qualify

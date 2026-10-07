@@ -117,7 +117,7 @@ class AssessmentRepository
             throw new \InvalidArgumentException("Missing assignmentUuid", ErrorCode::VALIDATE_DATA_MISSING);
         }
         // TODO: @adunsulag need to validate against $clientId
-        $sql = "SELECT assessment.id,assessment.data,assessment.uid, ab1.status "
+        $sql = "SELECT assessment.id,assessment.data,assessment.uid, assessment.status "
             . "FROM " . AssignmentRepository::TABLE_NAME_ASSIGNMENT_ITEM . " item "
             . "LEFT JOIN " . self::TABLE_NAME . " assessment ON item.assessmentblob_id = assessment.id "
             . "LEFT JOIN " . AssignmentRepository::TABLE_NAME . " assignment ON assignment.id = item.assignment_id AND (assignment.client_id = ? OR assignment.client_id IS NULL)"
