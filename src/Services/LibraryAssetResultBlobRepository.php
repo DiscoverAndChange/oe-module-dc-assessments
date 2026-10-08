@@ -148,14 +148,14 @@ class LibraryAssetResultBlobRepository
     }
 
     /**
-     * @return LibraryAssetBlobResultDTO
+     * @return ?LibraryAssetBlobResultDTO null when no row matches the id (and pid, if given)
      */
     public function getDecryptedAssetResultBlob(string $id, ?int $pid = null)
     {
         $sql = "SELECT larb.id, larb.answers, larb.journal_entry, larb.creation_date, larb.asset_id, larb.client_id "
             . ", ai.id AS assignmentitem_id, pd.patient_uuid"
         . " FROM " . self::TABLE_NAME . " larb "
-        . " LEFT JOIN (SELECT pid AS patient_pid, uuid AS patient_uuid FROM " . PatientService::TABLE_NAME . ") pd ON pd.pid = larb.client_id "
+        . " LEFT JOIN (SELECT pid AS patient_pid, uuid AS patient_uuid FROM " . PatientService::TABLE_NAME . ") pd ON pd.patient_pid = larb.client_id "
         . " LEFT JOIN " . AssignmentRepository::TABLE_NAME_ASSIGNMENT_ITEM . " ai ON ai.assetresultblob_id = larb.id WHERE larb.id = ?";
         $params = [$id];
         if (!empty($pid)) {
@@ -164,7 +164,10 @@ class LibraryAssetResultBlobRepository
         }
 
         $results = $this->getRecordsForQuery($sql, $params);
-        return $results[0];
+        // was `return $results[0]` which, for a missing id, raised an "Undefined array key 0"
+        // warning (escalated to an exception by OpenEMR's error handler -> a 500 instead of
+        // the controller's intended 404). Return null so callers' empty() check handles it.
+        return $results[0] ?? null;
     }
 
     /**

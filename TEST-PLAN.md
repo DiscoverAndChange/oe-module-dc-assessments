@@ -277,10 +277,40 @@ Deliberately NOT fixed (documented, not one-line bugs):
 - `AssessmentGroup::getId(): int` vs `int|string` property — pure return-type smell, no
   runtime failure in practice (ids are ints); risky to widen, left as-is.
 
-## Coverage build-out (Scope B) — IN PROGRESS
+## Coverage build-out (Scope B) — BATCH 2 DONE
 Goal (per decision): pure no-DB classes + raise partial repos + DB-backed repos
 (Client/ClientSearch/Tag/Token/MessageTemplate) + REST controller live actions. Excludes
 FHIR resource services and Bootstrap/DI.
+
+Batch 2 DONE (349 -> 409 tests, coverage ~27% -> ~38% lines, phpstan clean):
+- REST controllers: Empty, Announcement, Token, Tag (DB), SystemUser (DB), Assessment (DB),
+  AssessmentGroup (DB), AssessmentReport (DB), MessageTemplate (mocked deps),
+  LibraryAssetResult (DB + patient branch). ServerRestRequest is final -> tests wrap a mocked
+  HttpRestRequest in a real ServerRestRequest.
+- DB repo CRUD/lifecycle: AssignmentRepository (save/read/complete/remove),
+  AssessmentReportRepository (getOne/getAll/create/update + null), AssessmentResultRepository
+  (createResult + read), ClientSearchRepository (name/email/uuid search),
+  LibraryAssetResultBlobRepository (getDecryptedAssetResultBlob join path).
+
+Latent bugs fixed in batch 2 (all on LIVE routes, each with a regression test):
+- [FIXED v0.12.4] ServerRestRequest::getUri() — returned a raw string under a UriInterface
+  signature -> TypeError on every call; broke SystemUserRestController::list (assessment-users
+  route). Now wraps the string in a PSR-7 Uri.
+- [FIXED v0.12.4] LibraryAssetResultBlobRepository::getDecryptedAssetResultBlob — the LEFT
+  JOIN referenced pd.pid but the derived table aliased it patient_pid, so EVERY call errored
+  (library-asset-results.one always 500'd); and `$results[0]` on empty warned->500 for a
+  missing id. Fixed join column + return null (controller -> 404).
+- [FIXED v0.12.4] AssessmentReportRestController::one() — returned 200/null for an unknown id
+  (dead getNotFoundResponse); now 404.
+- [documented, not fixed] AssessmentReportRestController::list()/one() call getAll()/pass a
+  $hostSiteId that AssessmentReportRepository::getAll($showAllReports) does not accept -> the
+  arg is silently ignored (no host-site filtering). Not a crash; host sites are a SaaS concept
+  unused in the OpenEMR deployment.
+
+Scope B NOT done (explicitly out of scope / future): FHIR resource-service layer
+(Questionnaire/QuestionnaireResponse/Task + FhirServices/*), Bootstrap/DI wiring,
+QuestionnaireAuditController, ClientRepository happy paths (deep group/profile DB fixtures),
+AssignmentRepository profile/appointment branches.
 
 Batch 1 DONE (177 -> 349 tests, coverage ~18% -> ~27% lines, phpstan clean):
 - Pure no-DB: 4 validators, Utils (RestUtils, FhirObjectDenormalizer), PaginatedResultsService,
@@ -306,11 +336,13 @@ More latent bugs surfaced during batch 1:
 - [documented] AssessmentGroupValidator "db-update" context defines no rules (validates
   anything as valid).
 
-Batch 1 NOT yet done (next): ClientSearchRepository + ClientRepository happy paths
-(DB fixtures), REST controller live actions (list/one/create the SPA calls), and raising
-the partially-covered repos (AssignmentRepository/AssessmentResultRepository CRUD).
 
 ## Progress log
+- 2026-10-08: Scope B batch 2 — REST controller + DB-repo CRUD tests (349 -> 409 tests,
+  coverage ~27% -> ~38% lines). Fixed 3 live-route bugs found while testing (getUri TypeError,
+  the library-asset-results SQL join + null, assessment-reports one() 404). phpstan clean.
+  v0.12.4 on branch ai/coverage-batch-2.
+
 - 2026-10-08: Plan created. phpunit.xml given a `<source>`/testsuite so coverage can
   target `src/`. First pure-unit test (`Models/AssignmentTest`) added as the pattern.
 - 2026-10-08: PR #5 (the 8.4.1 port) merged to main; stale PRs #3/#4 closed. This
