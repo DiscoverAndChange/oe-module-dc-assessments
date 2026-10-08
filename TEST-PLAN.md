@@ -101,11 +101,11 @@ SAFE path; none of these were "fixed" while writing tests):
   AssignmentSerializer calls Assignment/AssignedX::fromJSON), so no production impact —
   it's dead code. Rewrite or remove during the source-typing pass; test is
   `markTestIncomplete` until then.
-- **`Models/SystemUser::jsonSerialize()` crashes on a fresh object** — `$_companyName`
+- [FIXED v0.11.2] **`Models/SystemUser::jsonSerialize()` crashed on a fresh object** — `$_companyName`
   has no default/initializer, so serialize-before-setCompanyName() throws. Give it `''`.
 - `DTO/ClientSearchQueryDTO` — the 5 typed properties have no defaults, so `isEmpty()`
   before `populateFromRequest()` throws "must not be accessed before initialization".
-- `Models/ErrorCode::getErrorStringForErrorCode()` checks membership against the WRONG
+- [FIXED v0.11.2] `Models/ErrorCode::getErrorStringForErrorCode()` checked membership against the WRONG
   map (`ErrorCodeStatus::codeMap`) then reads `ErrorCode::codeMap` — works only because
   the two maps share keys today; silently misbehaves if they diverge.
 - `DTO/LibraryAssetBlobResultDTO::fromDTO()` — `setCreationDate($data['creationDate']
@@ -127,7 +127,7 @@ SAFE path; none of these were "fixed" while writing tests):
   calls `setResultId()` last; `AssignedLibraryAsset::setResultId(non-null)` resets
   `dateCompleted` to now, clobbering the record's parsed `date_completed`. Masked in the
   full path by a trailing re-population, but wrong on a direct call. Order-of-operations bug.
-- (P2) `createFromFormat(...)` returns `false` on an absent/invalid date and is assigned to
+- [FIXED v0.11.2] (P2) `createFromFormat(...)` returned `false` on an absent/invalid date and is assigned to
   a NON-NULL typed `\DateTime` → `TypeError`: `AssessmentRepository::hydrateAssessmentSummary
   FromDatabaseRecord` (`$result->date`) and `LibraryAssetResultBlobRepository::hydrateResult
   BlobFromRecord` (`setCreationDate`). Nullable/absent date column into a non-null property.

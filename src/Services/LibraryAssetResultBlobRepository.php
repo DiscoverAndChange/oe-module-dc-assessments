@@ -211,7 +211,11 @@ class LibraryAssetResultBlobRepository
             $blob->setClientId(UuidRegistry::uuidToString($record['patient_uuid']));
         }
         $dateFormat = "Y-m-d H:i:s.u";
-        $blob->setCreationDate(\DateTime::createFromFormat($dateFormat, (string) $record['creation_date']));
+        $parsedDate = \DateTime::createFromFormat($dateFormat, (string) ($record['creation_date'] ?? ''));
+        if ($parsedDate !== false) {
+            // leave the DTO's constructor default when creation_date is absent/unparseable
+            $blob->setCreationDate($parsedDate);
+        }
         return $blob;
     }
 }

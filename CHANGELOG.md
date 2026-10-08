@@ -1,3 +1,32 @@
+v0.11.2 Test suite expansion + latent-bug fixes surfaced by it
+
+  Begin building out automated test coverage (see TEST-PLAN.md) as a safety net
+  before the PHPStan source-typing refactor and for keeping the module in sync
+  with OpenEMR core. Added pure-unit characterization tests across the Models,
+  the Assigned* subclasses, the DTOs, the error/code maps, and the repository
+  hydration methods (private hydrate*FromRecord, exercised via reflection on the
+  no-DB path). Coverage ~9% -> ~18%; suite 8 -> 176 tests. Added a coverage-ready
+  phpunit.xml (`<source>` = src/, module testsuite) for PCOV reports.
+
+  Fixes for real runtime bugs the characterization tests surfaced:
+  - SystemUser::$_companyName had no initializer, so jsonSerialize() on a freshly
+    constructed user threw "typed property must not be accessed before
+    initialization". Default it to ''.
+  - AssessmentRepository::hydrateAssessmentSummaryFromDatabaseRecord and
+    LibraryAssetResultBlobRepository::hydrateResultBlobFromRecord assigned
+    \DateTime::createFromFormat()'s result straight into a non-null \DateTime
+    (property / setCreationDate) — a missing or unparseable date column makes
+    createFromFormat() return false, so hydrating such a row threw a TypeError.
+    Guard the parse and keep the existing constructor-default date on failure.
+  - ErrorCode::getErrorStringForErrorCode() tested code membership against
+    ErrorCodeStatus::codeMap but read the value from ErrorCode::codeMap; it worked
+    only because the two maps share keys today. Check self::codeMap.
+
+  Known issues documented in TEST-PLAN.md for the upcoming source-typing pass
+  (not changed here): Client::fromJSON() is dead/broken (unused), and several
+  fromJSON/hydrators have type-coercion smells (string setters fed `?? 0`, a
+  parent::fromJSON type reset, property/accessor type mismatches).
+
 v0.11.1 PHPStan level-10 fixes (bugs + non-ignorable) and module-local baseline
 
   Fix the genuine bugs and all non-ignorable errors PHPStan surfaced once the

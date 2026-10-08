@@ -11,7 +11,7 @@ class SystemUser implements \JsonSerializable
     private string $_id;
     private string $_username;
     private ?int $_companyID;
-    private string $_companyName;
+    private string $_companyName = '';
     private string $_companyPrimaryContact;
     private string $_billingCustomerId;
     private string $_firstName;

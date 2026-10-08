@@ -44,7 +44,7 @@ class ErrorCode
     {
 
         $status = self::codeMap[ErrorCode::SYSTEM_ERROR];
-        if (array_key_exists($code, ErrorCodeStatus::codeMap)) {
+        if (array_key_exists($code, self::codeMap)) {
             $status = ErrorCode::codeMap[$code];
         }
 

@@ -111,7 +111,11 @@ class AssessmentRepository
         $result->name = $record['name'] ?? '';
         $result->description = $record['description'] ?? '';
         $result->data = $record['data'] ?? '';
-        $result->date = \DateTime::createFromFormat('Y-m-d H:i:s.u', ($record['date'] ?? ''));
+        $parsedDate = \DateTime::createFromFormat('Y-m-d H:i:s.u', ($record['date'] ?? ''));
+        if ($parsedDate !== false) {
+            // leave the constructor default when the column is absent/unparseable
+            $result->date = $parsedDate;
+        }
         $result->isPublic = empty($record['company_id']);
         return $result;
     }
