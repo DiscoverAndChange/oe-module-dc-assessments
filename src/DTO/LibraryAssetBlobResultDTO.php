@@ -174,6 +174,21 @@ class LibraryAssetBlobResultDTO implements \JsonSerializable
         $this->setAssignmentItemId($data['assignmentItemId'] ?? null);
         $this->setJournal(($data['journal'] ?? ''));
         $this->setClientId($data['clientId'] ?? null);
-        $this->setCreationDate($data['creationDate'] ?? new \DateTime());
+        // creationDate may arrive as a \DateTime (pre-hydrated) or, realistically from a
+        // JSON payload, as an ISO-8601 string. The setter is non-null \DateTime, so a raw
+        // string previously TypeErrored; parse strings and fall back to now otherwise.
+        $creationDate = $data['creationDate'] ?? null;
+        if ($creationDate instanceof \DateTime) {
+            $this->setCreationDate($creationDate);
+        } elseif (is_string($creationDate) && $creationDate !== '') {
+            $timestamp = strtotime($creationDate);
+            $parsed = new \DateTime();
+            if ($timestamp !== false) {
+                $parsed->setTimestamp($timestamp);
+            }
+            $this->setCreationDate($parsed);
+        } else {
+            $this->setCreationDate(new \DateTime());
+        }
     }
 }

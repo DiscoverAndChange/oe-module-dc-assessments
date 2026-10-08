@@ -55,17 +55,16 @@ class AssignedAssessmentGroupTest extends TestCase
     }
 
     /**
-     * CHARACTERIZATION of a suspected latent bug: with no 'type' key,
-     * parent::fromJSON()'s "Assessment" default overwrites the "AssessmentGroup"
-     * set by the constructor, so isGroupType() flips to false after hydration.
+     * REGRESSION (fixed v0.12.3): with no 'type' key, parent::fromJSON() no longer
+     * overwrites the "AssessmentGroup" the constructor set, so isGroupType() stays true.
      */
-    public function testFromJsonWithoutTypeKeyResetsTypeToAssessment(): void
+    public function testFromJsonWithoutTypeKeyPreservesGroupType(): void
     {
         $g = new AssignedAssessmentGroup();
         $g->fromJSON(['id' => 'x', 'name' => 'n', 'assessmentGroupId' => 1]);
 
-        $this->assertSame('Assessment', $g->getType());
-        $this->assertFalse($g->isGroupType());
+        $this->assertSame('AssessmentGroup', $g->getType());
+        $this->assertTrue($g->isGroupType());
     }
 
     public function testSetAssessmentGroupId(): void

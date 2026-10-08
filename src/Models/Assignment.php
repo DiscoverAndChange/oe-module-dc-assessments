@@ -226,7 +226,13 @@ class Assignment implements \JsonSerializable
         $dateFormat = "Y-m-d\TH:i:s.uP";
         $this->setId(($assignmentJSON["id"] ?? ''));
         $this->setName(($assignmentJSON["name"] ?? ""));
-        $this->setType(($assignmentJSON["type"] ?? "Assessment"));
+        // Only override the type when the payload carries one. Previously an absent
+        // "type" key reset it to "Assessment", silently flipping isGroupType() false
+        // for subclasses (AssignedAssessmentGroup/AssignedTemplateProfile) that set
+        // their type in the constructor.
+        if (isset($assignmentJSON["type"]) && $assignmentJSON["type"] !== '') {
+            $this->setType($assignmentJSON["type"]);
+        }
         if (!empty($assignmentJSON['dateCompleted'])) {
             $this->setDateCompleted(\DateTime::createFromFormat($dateFormat, $assignmentJSON['dateCompleted']));
         }

@@ -78,6 +78,17 @@ class ClientSearchQueryDTOTest extends TestCase
         $this->assertTrue($dto->isEmpty());
     }
 
+    /**
+     * REGRESSION (fixed v0.12.3): the typed properties now default to null/false, so
+     * isEmpty() on a freshly-constructed DTO no longer throws "typed property ... must
+     * not be accessed before initialization".
+     */
+    public function testIsEmptyOnFreshDtoDoesNotThrow(): void
+    {
+        $dto = new ClientSearchQueryDTO();
+        $this->assertTrue($dto->isEmpty());
+    }
+
     public function testIsEmptyFalseWhenIdPresent(): void
     {
         $dto = new ClientSearchQueryDTO();

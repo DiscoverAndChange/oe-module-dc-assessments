@@ -131,12 +131,18 @@ class AssessmentResultRepository
         $records = [];
         foreach ($result as $resultBlob) {
             /** @var array<string, ?string> $resultBlob */
-            /** @var array<string, mixed> $resultData */
+            /** @var mixed $resultData */
             $resultData = json_decode(($resultBlob['result_data'] ?? '{}'), true);
+            // result_data could decode to a scalar/list (or null on invalid JSON); the
+            // merge below assumes an associative array, so normalize non-arrays to [].
+            if (!is_array($resultData)) {
+                $resultData = [];
+            }
+            /** @var array<string, mixed> $resultData */
             $assessmentData = json_decode(($resultBlob['assessment_data'] ?? '{}'), true);
             $resultData['_assessment'] = $assessmentData;
-            $resultData['_assignmentItemId'] = $resultBlob['assignmentitem_id'];
-            $resultData['_dateCompleted'] = $resultBlob['date'];
+            $resultData['_assignmentItemId'] = $resultBlob['assignmentitem_id'] ?? null;
+            $resultData['_dateCompleted'] = $resultBlob['date'] ?? null;
             $records[] = $resultData;
         }
         return $records;

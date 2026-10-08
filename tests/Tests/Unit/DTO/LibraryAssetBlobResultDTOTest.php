@@ -135,6 +135,24 @@ class LibraryAssetBlobResultDTOTest extends TestCase
         $this->assertSame($creationDate, $dto->getCreationDate());
     }
 
+    /**
+     * REGRESSION (fixed v0.12.3): a creationDate arriving as an ISO-8601 string (the
+     * realistic JSON payload) previously TypeErrored against the non-null \DateTime
+     * setter. It is now parsed; an invalid/empty string falls back to "now".
+     */
+    public function testFromDtoParsesStringCreationDate(): void
+    {
+        $dto = new LibraryAssetBlobResultDTO();
+        $dto->fromDTO(['creationDate' => '2026-03-04T05:06:07+00:00']);
+
+        $this->assertInstanceOf(\DateTime::class, $dto->getCreationDate());
+        $this->assertSame('2026-03-04T05:06:07+00:00', $dto->getCreationDate()->format(DATE_ATOM));
+
+        $dtoInvalid = new LibraryAssetBlobResultDTO();
+        $dtoInvalid->fromDTO(['creationDate' => 'not-a-date']);
+        $this->assertInstanceOf(\DateTime::class, $dtoInvalid->getCreationDate());
+    }
+
     public function testFromDtoDefaultsWhenKeysAbsent(): void
     {
         $dto = new LibraryAssetBlobResultDTO();

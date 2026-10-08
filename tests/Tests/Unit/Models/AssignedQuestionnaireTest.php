@@ -50,12 +50,12 @@ class AssignedQuestionnaireTest extends TestCase
     }
 
     /**
-     * CHARACTERIZATION of a suspected latent bug: fromJSON() does NOT hydrate
-     * resultId / documentId / documentTemplateId even when those keys are
-     * present in the input array — they remain the constructor nulls. Locked in
-     * so the upcoming refactor must consciously decide to change it.
+     * REGRESSION (fixed v0.12.3): fromJSON() now hydrates resultId / documentId /
+     * documentTemplateId when present, giving a symmetric serialize -> fromJSON round
+     * trip (jsonSerialize() has always emitted these keys). A non-null resultId also
+     * marks the item complete via setResultId()'s side effect.
      */
-    public function testFromJsonIgnoresResultAndDocumentFields(): void
+    public function testFromJsonHydratesResultAndDocumentFields(): void
     {
         $q = new AssignedQuestionnaire();
         $q->fromJSON([
@@ -68,23 +68,42 @@ class AssignedQuestionnaireTest extends TestCase
             'documentTemplateId' => 7,
         ]);
 
-        $this->assertNull($q->getResultId());
-        $this->assertNull($q->getDocumentId());
-        $this->assertNull($q->getDocumentTemplateId());
-        $this->assertFalse($q->getIsComplete());
+        $this->assertSame('res-9', $q->getResultId());
+        $this->assertSame('doc-9', $q->getDocumentId());
+        $this->assertSame(7, $q->getDocumentTemplateId());
+        $this->assertTrue($q->getIsComplete());
     }
 
     /**
-     * CHARACTERIZATION of a suspected latent bug: with no 'type' key,
-     * parent::fromJSON() applies its "Assessment" default and overwrites the
-     * "Questionnaire" set by the constructor.
+     * REGRESSION (fixed v0.12.3): resultId hydration must not clobber the payload's
+     * dateCompleted. setResultId(non-null) resets dateCompleted to "now"; fromJSON
+     * restores the parsed value when the payload carries one.
      */
-    public function testFromJsonWithoutTypeKeyResetsTypeToAssessment(): void
+    public function testFromJsonResultIdDoesNotClobberDateCompleted(): void
+    {
+        $q = new AssignedQuestionnaire();
+        $q->fromJSON([
+            'id' => 'x',
+            'name' => 'n',
+            'type' => 'Questionnaire',
+            'questionnaireId' => 'q-1',
+            'resultId' => 'res-9',
+            'dateCompleted' => '2026-01-02T03:04:05.000000+00:00',
+        ]);
+
+        $this->assertSame('2026-01-02', $q->getDateCompleted()->format('Y-m-d'));
+    }
+
+    /**
+     * REGRESSION (fixed v0.12.3): with no 'type' key, parent::fromJSON() no longer
+     * overwrites the "Questionnaire" type the constructor set.
+     */
+    public function testFromJsonWithoutTypeKeyPreservesConstructorType(): void
     {
         $q = new AssignedQuestionnaire();
         $q->fromJSON(['id' => 'x', 'name' => 'n', 'questionnaireId' => 'q-1']);
 
-        $this->assertSame('Assessment', $q->getType());
+        $this->assertSame('Questionnaire', $q->getType());
     }
 
     public function testDocumentSettersAreFluent(): void

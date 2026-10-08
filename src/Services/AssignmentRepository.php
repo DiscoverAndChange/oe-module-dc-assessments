@@ -460,9 +460,8 @@ class AssignmentRepository
      */
     private function hydrateAssignedLibraryAssetFromRecord(array $item, AssignedLibraryAsset $asset)
     {
-        $this->populateDatesForAssignment($item, $asset);
         /** @var int|string $assetId */
-        $assetId = $item['asset_id'];
+        $assetId = $item['asset_id'] ?? 0;
         $asset->setAssetId((int) $assetId);
         if (empty($item['asset_uuid'])) {
             $uuid = LibraryAssetBlobRepository::updateLibraryAssetBlobUuid((int) $assetId);
@@ -475,8 +474,11 @@ class AssignmentRepository
         $assetName = $item['asset_name'];
         $asset->setName($assetName);
         /** @var string|null $assetResultBlobId */
-        $assetResultBlobId = $item['assetresultblob_id'];
+        $assetResultBlobId = $item['assetresultblob_id'] ?? null;
         $asset->setResultId($assetResultBlobId);
+        // Populate dates AFTER setResultId: setResultId(non-null) resets dateCompleted
+        // to "now", so running it before this would clobber the record's parsed date.
+        $this->populateDatesForAssignment($item, $asset);
     }
     /**
      * @param int $assignmentId
