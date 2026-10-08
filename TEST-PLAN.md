@@ -136,6 +136,34 @@ SAFE path; none of these were "fixed" while writing tests):
   `result_data` yields an associative array (a scalar/list payload would break the merge).
 - (P2) `(int) $record['asset_id']` casts a null asset_id to 0 (no default protection).
 
+## Phase 2: the source-typing pass (next)
+Target the "mixed-at-boundary" cluster — **771 errors (~54% of 1418)**, all one root:
+`mixed` from DB rows / `json_decode` / request payloads flowing into typed slots.
+Identifiers: argument.type 353, offsetAccess.nonOffsetAccessible 212, return.type 49,
+binaryOp.invalid 41, method.nonObject 40, offsetAccess.invalidOffset 30,
+foreach.nonIterable 22, nullCoalesce.* 24.
+
+Approach — type at the SOURCE (NOT casts; casting `mixed` just relabels to cast.* here,
+see [[phpstan-baseline-regen]]):
+- DB rows: `/** @var array<string, ?string> $record */` at the `QueryUtils::fetch*` site
+  (OpenEMR PDO returns strings/null). Use `array<string,string>` only for provably
+  NOT-NULL columns; ids read as `(int) $row['id']` (string→int cast is allowed).
+- `json_decode(...)` locals: `/** @var array<string,mixed> $data */` (or a shaped array).
+- request payloads (`getBodyAsJson()`, query vars): shape at the entry point.
+- Verify each file both ways: it must CLEAR the target errors AND not introduce new
+  cast.*/return.type/childType ripple (argument.type pass showed ripple is real — budget
+  a correction round). Run the phpunit suite after each batch; the P1/P2 tests cover the
+  model+hydration layer this pass rewrites.
+
+Top files (cluster-error counts): ResourceImporterService 55, AssignmentRepository 50,
+QuestionnairePortalTaskFHIRResourceService 46, AssessmentGroupRestController 44,
+QuestionnaireResponseFormFHIRResourceService 42, ClientRestController 33,
+AssessmentAppointmentController 31, AssessmentResponseBlobFHIRResourceService 28, ...
+
+Also fold in the deferred type-smell findings above (string setters fed `?? 0`,
+AssessmentGroup::getId int-vs-int|string, AssignedAssessment assessmentId, parent::fromJSON
+type reset, Client::fromJSON rewrite/removal) since this pass touches those exact lines.
+
 ## Progress log
 - 2026-10-08: Plan created. phpunit.xml given a `<source>`/testsuite so coverage can
   target `src/`. First pure-unit test (`Models/AssignmentTest`) added as the pattern.
