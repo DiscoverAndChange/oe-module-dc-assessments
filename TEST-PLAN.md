@@ -206,15 +206,54 @@ Also fold in the deferred type-smell findings above (string setters fed `?? 0`,
 AssessmentGroup::getId int-vs-int|string, AssignedAssessment assessmentId, parent::fromJSON
 type reset, Client::fromJSON rewrite/removal) since this pass touches those exact lines.
 
+## SPA route audit — DONE (2026-10-08)
+Method: `public/frontend/*.js.map` embed full original TypeScript (`sourcesContent`),
+479 files — extracted them and enumerated every request the SPA issues. Two transports:
+(1) SMART FHIR client (`fhirService.getFhirClient().request/create`) for
+Questionnaire/QuestionnaireResponse/Task/Patient; (2) `HTTPService` (`generateUrl` →
+`api_url + "api/"|"portal/" + path`) for the custom `/api/v1/...` REST routes. Call-site
+inventory saved to session scratchpad (`allcalls.txt`). Provider-side JS
+(`providerPortal.js`, `questionnaire-audit.js`) calls NONE of the API_MAPPINGS routes
+(only opens `questionnaire-audit.php` dialogs + SMART launches) — so these 39 routes have
+exactly one consumer: the SPA. No internal backend cross-callers of the candidate actions;
+no tests reference them (both grep-checked).
+
+**7 of 39 routes are never called by the shipped SPA** (dead-code removal candidates):
+| Route | Verb/Path | Why unused | Risk |
+|---|---|---|---|
+| `task.update` | PUT `/Task/:id` | `client.update<Task>` commented out; feature unimplemented (graceful stub since v0.12.1) | none (confirmed dead) |
+| `library-assets.list` | GET `/library-assets` | SPA reads assets via FHIR `Questionnaire?questionnaire-code=` | low |
+| `library-assets.one` | GET `/library-assets/:id` | same — FHIR `Questionnaire?_id=` | low |
+| `library-asset-results.create` | POST `/library-asset-results` | `saveAssetResult()` POSTs a FHIR QuestionnaireResponse instead | low |
+| `assessment-results.create` | POST `/assessment-results` | SPA only GETs `assessment-results`; results created server-side via the QR listener | low |
+| `clients.one` | GET `/clients/:id` | `getClient()` reads FHIR `Patient/:id`; old `_dac$http.get("clients/"+id)` commented out | low |
+| `task.one` | GET `/Task/:id` | SPA only gets Tasks via search (`Task?patient=`); never by id | medium — standard FHIR read; external SMART clients could use it |
+
+Per-controller impact (classes stay; only the unused action + its API_MAPPINGS entry go):
+- `TaskRestController` — drop `one` (medium) + `update` (dead); keeps `list`. Removing the
+  `update` route also makes `TaskFHIRResourceService::update`→`AssignmentTaskFHIRResourceService::update`
+  delegation unreachable (already stubbed).
+- `LibraryAssetRestController` — drop `list` + `one`; keeps `create`.
+- `LibraryAssetResultRestController` — drop `create`; keeps `one`.
+- `AssessmentResultRestController` — drop `create`; keeps `list`.
+- `ClientRestController` — drop `one`; keeps `list` + assignment/message actions.
+
+Also still-dead (from prior sessions, independent of the route audit): APIProxyController
+proxy fallback (`sendRequestAndReturnResponse`/`getUriForApiRequest`/`addAuthorizationToRequest`
++ the dead `baseUri` localhost:8000) — every live route has a callable so the Guzzle fallback
+never fires; `Client::fromJSON()` (no callers). NOTE: many SPA calls hit paths with NO
+OpenEMR route at all (`/admin/billing`, `/admin/companies`, `/orders`, `/items`, `/login`,
+`sso`, `utils/generateClientId`, `tokens/purchase`, POST `clients/`, POST `assessment-users/`,
+`users/check-username`, POST assignment update) — these are SaaS-only features of the shared
+Angular codebase, inactive in the OpenEMR deployment; they are NOT backend dead code (there's
+nothing to remove), just unreachable frontend paths.
+
 ## Next / roadmap (planned)
-- **Dead-code audit driven by the SPA.** Traverse the patient frontend (public/frontend)
-  to enumerate which FHIR/REST routes it actually calls vs. which are unused, then
-  deprecate/remove the unused backend classes and methods. Known-dead already found:
-  APIProxyController's proxy methods (only its API_MAPPINGS constant is used), the
-  Task item-update path (frontend's `client.update<Task>` is commented out), and
-  Client::fromJSON() (no callers). The route map to check against is
-  APIProxyController::API_MAPPINGS (fhir/user/portal route maps). Lean on the test
-  suite as the safety net before removing anything.
+- **Execute the dead-route removals** above. Suggested split: (A) low-risk batch — the 6
+  custom non-FHIR routes + `task.update` (confirmed dead); (B) hold `task.one` pending a
+  decision on preserving FHIR read semantics for external SMART clients. New `ai/` branch,
+  version bump (minor — behavior change to the API surface), CHANGELOG entry, run `composer
+  test` + phpstan after. The 177-test suite + hydration coverage is the safety net.
 
 ## Progress log
 - 2026-10-08: Plan created. phpunit.xml given a `<source>`/testsuite so coverage can
@@ -229,6 +268,10 @@ type reset, Client::fromJSON rewrite/removal) since this pass touches those exac
 - 2026-10-08: Source-typing pass (Phase 2) complete — proof (SystemUserRepository) +
   5-agent fan-out over the mixed-at-boundary cluster. Baseline 1418 -> 882; zero cast.*;
   176 tests green. v0.12.0. Several real bugs fixed, more logged above for follow-up.
+- 2026-10-08: SPA route audit complete — extracted the full original TS from the frontend
+  source maps (479 files), inventoried every request, cross-referenced all 39 API_MAPPINGS
+  routes. 7 routes unused by the shipped SPA (6 low-risk + `task.one` medium). Recorded the
+  matrix + per-controller impact above. No removals made yet (awaiting scope decision).
 - 2026-10-08: P2 repository-hydration batch complete — 5 new test files (AssignmentRepository
   + AssessmentRepository/AssessmentResultRepository/LibraryAssetResultBlobRepository/
   SystemUserRepository), reflection into the private hydrators on the pure no-DB path.

@@ -71,6 +71,11 @@ class TaskRestController
     /**
      * Retrieves a single api resource.  Handles the response to the API request GET /fhir/Questionnaire/:fhirId
      * The $fhirId is populated from the API request by the rest route dispatcher.
+     *
+     * @deprecated Unused by the shipped patient SPA (see TEST-PLAN.md "SPA route audit",
+     *   2026-10-08): the frontend only loads Tasks via search (Task?patient=...), never by
+     *   id. Retained for now as a standard FHIR read for external SMART clients; candidate
+     *   for removal (route task.one) in a future release.
      * @see HttpRestRouteHandler::dispatch to see how this parsing is done.
      * @param string $id The unique id of the resource to be returned.
      * @param ServerRestRequest $request
@@ -127,6 +132,12 @@ class TaskRestController
 
     /**
      * Updates an existing FHIR patient resource.  If no Prefer header is specified it returns the representation default.
+     *
+     * @deprecated Dead by design (see TEST-PLAN.md "SPA route audit", 2026-10-08): the SPA's
+     *   TaskService builds a completed Task but the `client.update<Task>` call is commented
+     *   out — there is no active PUT /Task/:id. Item completion flows through a
+     *   QuestionnaireResponse create instead. Already a graceful "not yet supported" stub
+     *   since v0.12.1; candidate for removal (route task.update) in a future release.
      * @param $request ServerRestRequest The http request.
      * @param string $fhirId The FHIR patient resource id (uuid)
      * @returns 200 if the resource is created, 400 if the resource is invalid

@@ -91,6 +91,10 @@ class ClientRestController implements IRestController
     }
 
     /**
+     * @deprecated Unused by the shipped patient SPA (see TEST-PLAN.md "SPA route audit",
+     *   2026-10-08): ClientService::getClient() reads the FHIR Patient/:id resource; the
+     *   old `_dac$http.get("clients/"+id)` call is commented out. Candidate for removal
+     *   (route clients.one) in a future release.
      * @param string $id
      */
     public function one(ServerRestRequest $request, $id): ResponseInterface
