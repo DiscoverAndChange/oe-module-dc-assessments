@@ -240,6 +240,30 @@ class AssignmentRepositoryHydrationTest extends TestCase
         $this->assertSame('2026-03-04', $asset->getDateAssigned()->format('Y-m-d'));
     }
 
+    /**
+     * REGRESSION (fixed v0.12.3): with a non-null assetresultblob_id, the record's
+     * parsed date_completed must survive. setResultId(non-null) resets dateCompleted
+     * to "now"; the hydrator previously ran it AFTER populateDatesForAssignment, so a
+     * direct call clobbered the real completion date. Dates are now populated last.
+     */
+    public function testHydrateAssignedLibraryAssetKeepsParsedDateCompleted(): void
+    {
+        $record = [
+            'asset_id' => 500,
+            'asset_uuid' => self::bytes(self::ASSET_UUID),
+            'asset_name' => 'Coping Worksheet',
+            'assetresultblob_id' => 'result-xyz',
+            'date_assigned' => '2026-03-04 05:06:07.000000',
+            'date_completed' => '2026-03-09 10:11:12.000000',
+        ];
+        /** @var AssignedLibraryAsset $asset */
+        $asset = $this->invoke('hydrateAssignedLibraryAssetFromRecord', $record, new AssignedLibraryAsset());
+
+        $this->assertSame('result-xyz', $asset->getResultId());
+        $this->assertInstanceOf(\DateTime::class, $asset->getDateCompleted());
+        $this->assertSame('2026-03-09 10:11:12', $asset->getDateCompleted()->format('Y-m-d H:i:s'));
+    }
+
     // ---------------------------------------------------------------------
     // hydrateAssignedQuestionnaireFromRecord
     // ---------------------------------------------------------------------

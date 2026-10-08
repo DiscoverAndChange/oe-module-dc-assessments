@@ -1,0 +1,30 @@
+{
+    "Report": [
+        {
+            "id": "phptest-spa-report-group",
+            "name": "phptest SPA Group Report",
+            "linkedGroup": "phptest-SPA Group",
+            "linkedAssessments": [],
+            "data": {
+                "id": "phptest-spa-report-group",
+                "name": "phptest SPA Group Report",
+                "variables": [],
+                "computedResults": [],
+                "items": []
+            }
+        },
+        {
+            "id": "phptest-spa-report-assessment",
+            "name": "phptest SPA Assessment Report",
+            "linkedGroup": "",
+            "linkedAssessments": ["phptest-spa-5"],
+            "data": {
+                "id": "phptest-spa-report-assessment",
+                "name": "phptest SPA Assessment Report",
+                "variables": [],
+                "computedResults": [],
+                "items": []
+            }
+        }
+    ]
+}

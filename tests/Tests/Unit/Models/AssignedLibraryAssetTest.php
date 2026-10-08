@@ -58,16 +58,15 @@ class AssignedLibraryAssetTest extends TestCase
     }
 
     /**
-     * CHARACTERIZATION of a suspected latent bug: with no 'type' key,
-     * parent::fromJSON()'s "Assessment" default overwrites the "LibraryAsset"
-     * set by the constructor.
+     * REGRESSION (fixed v0.12.3): with no 'type' key, parent::fromJSON() no longer
+     * overwrites the "LibraryAsset" the constructor set.
      */
-    public function testFromJsonWithoutTypeKeyResetsTypeToAssessment(): void
+    public function testFromJsonWithoutTypeKeyPreservesLibraryAssetType(): void
     {
         $l = new AssignedLibraryAsset();
         $l->fromJSON(['id' => 'x', 'name' => 'n', 'assetId' => 1]);
 
-        $this->assertSame('Assessment', $l->getType());
+        $this->assertSame('LibraryAsset', $l->getType());
     }
 
     public function testSetResultIdMarksComplete(): void

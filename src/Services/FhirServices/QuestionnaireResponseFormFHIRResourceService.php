@@ -91,7 +91,7 @@ class QuestionnaireResponseFormFHIRResourceService extends FhirServiceBase imple
             /** @var array{localResource: bool, uuid: ?string, type: ?string} $parsedReference */
             $parsedReference = UtilsService::parseReference($fhirResource->getSubject());
             if ($parsedReference['localResource']) {
-                if (!empty($parsedReference['type']) == 'Patient') {
+                if (($parsedReference['type'] ?? null) === 'Patient') {
                     $parsedResource['puuid'] = $parsedReference['uuid'];
                 } else {
                     // handle something different here... if we are working with organization or anything
@@ -104,16 +104,19 @@ class QuestionnaireResponseFormFHIRResourceService extends FhirServiceBase imple
             /** @var array{localResource: bool, uuid: ?string, type: ?string} $parsedReference */
             $parsedReference = UtilsService::parseReference($fhirResource->getEncounter());
             if ($parsedReference['localResource']) {
-                $parsedReference['encounter_uuid'] = $parsedResource['uuid'];
+                // was: wrote into the throwaway $parsedReference using the RESPONSE uuid,
+                // so a submitted Encounter reference was silently dropped. Store the
+                // encounter's own uuid into the parsed record the insert path reads.
+                $parsedResource['encounter_uuid'] = $parsedReference['uuid'];
             } else {
-                throw new \InvalidArgumentException("Subject does not exist on local server. Cannot save QuestionnaireResponse.");
+                throw new \InvalidArgumentException("Encounter does not exist on local server. Cannot save QuestionnaireResponse.");
             }
         }
         if (!empty($fhirResource->getSource())) {
             /** @var array{localResource: bool, uuid: ?string, type: ?string} $parsedReference */
             $parsedReference = UtilsService::parseReference($fhirResource->getSource());
             if ($parsedReference['localResource']) {
-                if (!empty($parsedReference['type']) == 'Practitioner') {
+                if (($parsedReference['type'] ?? null) === 'Practitioner') {
                     $parsedResource['creator_user_uuid'] = $parsedReference['uuid'];
                 } else {
                     // handle something different here... if we are working with organization or anything

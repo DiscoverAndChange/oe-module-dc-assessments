@@ -23,6 +23,10 @@ class TagRepository
         $assetIds = array_filter(array_map(intval(...), $assetIds), function ($id) {
             return $id > 0; // make sure we only have values greater than 0 for our ids
         });
+        // if nothing survived the filter, bail out rather than build an invalid "IN ()"
+        if ($assetIds === []) {
+            return [];
+        }
 
         $sql = "SELECT labt.library_asset_blob_id, t.tag FROM " . self::TABLE_NAME_LIBRARY_ASSET_JOIN_TAG
             . " labt JOIN " . self::TABLE_NAME . " t ON labt.tag_id = t.id "

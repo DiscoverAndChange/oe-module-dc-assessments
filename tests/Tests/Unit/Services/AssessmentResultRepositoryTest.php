@@ -97,4 +97,38 @@ class AssessmentResultRepositoryTest extends TestCase
     {
         $this->assertSame([], $this->hydrate([]));
     }
+
+    /**
+     * REGRESSION (fixed v0.12.3): result_data that decodes to a non-array (a JSON
+     * scalar/list, or null from invalid JSON) previously broke the associative-array
+     * merge below. Such payloads are now normalized to an empty array so the meta
+     * keys still attach cleanly.
+     */
+    public function testHydrateNormalizesNonArrayResultData(): void
+    {
+        $out = $this->hydrate([
+            ['result_data' => '42', 'assessment_data' => '{}', 'assignmentitem_id' => 7, 'date' => '2026-03-03 03:03:03'],
+            ['result_data' => 'not valid json', 'assessment_data' => '{}', 'assignmentitem_id' => 8, 'date' => '2026-04-04 04:04:04'],
+        ]);
+
+        $this->assertCount(2, $out);
+        $this->assertSame(['_assessment', '_assignmentItemId', '_dateCompleted'], array_keys($out[0]));
+        $this->assertSame(7, $out[0]['_assignmentItemId']);
+        $this->assertSame(8, $out[1]['_assignmentItemId']);
+    }
+
+    /**
+     * REGRESSION (fixed v0.12.3): assignmentitem_id / date are read with a null
+     * coalesce, so an absent key no longer raises an undefined-key warning.
+     */
+    public function testHydrateToleratesMissingMetaKeys(): void
+    {
+        $out = $this->hydrate([
+            ['result_data' => '{"n":1}', 'assessment_data' => '{}'],
+        ]);
+
+        $this->assertCount(1, $out);
+        $this->assertNull($out[0]['_assignmentItemId']);
+        $this->assertNull($out[0]['_dateCompleted']);
+    }
 }

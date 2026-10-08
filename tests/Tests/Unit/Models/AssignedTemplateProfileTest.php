@@ -47,17 +47,16 @@ class AssignedTemplateProfileTest extends TestCase
     }
 
     /**
-     * CHARACTERIZATION of a suspected latent bug: with no 'type' key,
-     * parent::fromJSON()'s "Assessment" default overwrites the "TemplateProfile"
-     * set by the constructor, so isGroupType() flips to false after hydration.
+     * REGRESSION (fixed v0.12.3): with no 'type' key, parent::fromJSON() no longer
+     * overwrites the "TemplateProfile" the constructor set, so isGroupType() stays true.
      */
-    public function testFromJsonWithoutTypeKeyResetsTypeToAssessment(): void
+    public function testFromJsonWithoutTypeKeyPreservesTemplateProfileType(): void
     {
         $p = new AssignedTemplateProfile();
         $p->fromJSON(['id' => 'x', 'name' => 'n', 'profileId' => 'prof-1']);
 
-        $this->assertSame('Assessment', $p->getType());
-        $this->assertFalse($p->isGroupType());
+        $this->assertSame('TemplateProfile', $p->getType());
+        $this->assertTrue($p->isGroupType());
     }
 
     public function testSetProfileId(): void

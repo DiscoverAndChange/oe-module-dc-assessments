@@ -116,5 +116,28 @@ class AssignedQuestionnaire extends Assignment
         /** @var string $questionnaireId */
         $questionnaireId = $assignmentJSON['questionnaireId'] ?? '';
         $this->setQuestionnaireId($questionnaireId);
+        // Previously resultId/documentId/documentTemplateId were emitted by
+        // jsonSerialize() but never read back here, so a serialize -> fromJSON round
+        // trip silently dropped them. Hydrate them for a symmetric round trip.
+        if (array_key_exists('documentId', $assignmentJSON)) {
+            /** @var string|null $documentId */
+            $documentId = $assignmentJSON['documentId'];
+            $this->setDocumentId($documentId);
+        }
+        if (array_key_exists('documentTemplateId', $assignmentJSON)) {
+            $documentTemplateId = $assignmentJSON['documentTemplateId'];
+            $this->setDocumentTemplateId(is_numeric($documentTemplateId) ? (int)$documentTemplateId : null);
+        }
+        if (array_key_exists('resultId', $assignmentJSON)) {
+            /** @var string|null $resultId */
+            $resultId = $assignmentJSON['resultId'];
+            // setResultId(non-null) resets dateCompleted to "now", so preserve the value
+            // the parent already parsed from the payload and restore it afterwards.
+            $preservedDateCompleted = $this->getDateCompleted();
+            $this->setResultId($resultId);
+            if ($preservedDateCompleted !== null) {
+                $this->setDateCompleted($preservedDateCompleted);
+            }
+        }
     }
 }

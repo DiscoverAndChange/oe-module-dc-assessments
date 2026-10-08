@@ -137,4 +137,61 @@ class ResourceImporterServiceTest extends TestCase
         $report2 = $reportService->getOne($reports[1]['_id']);
         $this->assertNotEmpty($report2, "Report 2 should exist");
     }
+
+    /**
+     * REGRESSION: the real export (DiscoverAndChangeResources.json) writes reports with the
+     * SPA key convention (id/name/data/linkedGroup/linkedAssessments[]) rather than the
+     * underscore form the importer originally required. Every report there links to a group
+     * via linkedGroup, so importReports() hit the generic "Failed to find assessment or
+     * assessment group" and all report imports failed. importReports() now normalizes both
+     * conventions.
+     */
+    public function testImportReportSpaExportFormat()
+    {
+        $contents = file_get_contents(__DIR__ . "/../../../data/Unit/Services/import-reports-spa-format.json");
+        $json = json_decode($contents, true);
+        $reports = $json['Report'];
+
+        $companyId = null;
+        $assessmentRepository = new AssessmentRepository(new SystemLogger());
+        $assessmentRepository->createAssessment("phptest-spa-5", "phptest-spa5", 'phptest-spa5', [], $companyId);
+        $groupService = new AssessmentGroupService();
+        $groupService->createGroup("phptest-SPA Group", $companyId);
+
+        $importer = new ResourceImporterService();
+        $index = 0;
+        $importer->importReports($reports, self::IMPORTER_USER_ID, $index);
+        $logEntries = $importer->getLogEntries();
+
+        $this->assertEquals(count($reports), $index, "All reports should have been processed");
+        $this->assertEquals("success", $logEntries[0]->importStatus, "linkedGroup report should import: " . $logEntries[0]->error);
+        $this->assertEquals("success", $logEntries[1]->importStatus, "linkedAssessments report should import: " . $logEntries[1]->error);
+
+        $reportService = new AssessmentReportRepository();
+        $this->assertNotEmpty($reportService->getOne('phptest-spa-report-group'), "group-linked report should exist");
+        $this->assertNotEmpty($reportService->getOne('phptest-spa-report-assessment'), "assessment-linked report should exist");
+    }
+
+    /**
+     * A report that links to neither an assessment nor a group (in either key convention)
+     * is still a hard failure, not a silent import.
+     */
+    public function testImportReportWithNoLinkageFails()
+    {
+        $reports = [[
+            'id' => 'phptest-spa-report-orphan',
+            'name' => 'phptest Orphan Report',
+            'data' => ['id' => 'phptest-spa-report-orphan'],
+            'linkedGroup' => '',
+            'linkedAssessments' => [],
+        ]];
+
+        $importer = new ResourceImporterService();
+        $index = 0;
+        $importer->importReports($reports, self::IMPORTER_USER_ID, $index);
+        $logEntries = $importer->getLogEntries();
+
+        $this->assertEquals("failure", $logEntries[0]->importStatus);
+        $this->assertStringContainsString("Failed to find assessment or assessment group", $logEntries[0]->error);
+    }
 }

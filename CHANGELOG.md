@@ -1,3 +1,38 @@
+v0.12.3 Fix latent bugs surfaced by the audit; raise test coverage
+
+  Honest fixes (no cast-to-silence; phpstan stays clean), each with a regression test:
+  - QuestionnaireResponseFormFHIRResourceService::parseFhirResource: two operator-
+    precedence bugs (`!empty($ref['type']) == 'Patient'` / `== 'Practitioner'` are always
+    true, so subject/source type was never actually checked) plus an Encounter block that
+    wrote into a throwaway variable using the response's own uuid, silently dropping a
+    submitted Encounter reference.
+  - Assignment::fromJSON: an absent "type" key no longer resets the type to "Assessment"
+    (which had flipped isGroupType() false for AssignedAssessmentGroup/TemplateProfile).
+  - AssignedQuestionnaire::fromJSON: hydrates resultId/documentId/documentTemplateId for a
+    symmetric round trip and preserves the payload's dateCompleted against setResultId().
+  - AssignmentRepository::hydrateAssignedLibraryAssetFromRecord: populate dates after
+    setResultId so the parsed date_completed is not clobbered; tolerate missing keys.
+  - AssessmentResultRepository::hydrateRecordsFromResult: normalize a non-array result_data
+    payload; null-coalesce the assignmentitem_id/date meta keys.
+  - LibraryAssetBlobResultDTO::fromDTO: parse an ISO-string creationDate (was a TypeError).
+  - ClientSearchQueryDTO: default the typed properties so isEmpty() is safe before populate.
+  - RestUtils::getResponseForProcessingResult: the internal-errors branch never set the
+    status var, so the response builder hit an undefined variable; now returns 500.
+  - TagRepository::getTagsForAssetIds: ids that all fail the positive-int filter no longer
+    build an invalid "IN ()" clause; returns [] without querying.
+  - ResourceImporterService::importReports: the real export (DiscoverAndChangeResources.json)
+    writes reports with the SPA key convention (id/name/data/linkedGroup/linkedAssessments[])
+    rather than the underscore form (_id/_name/_data/_assessment/_assessmentgroup). Every
+    report there links to a group via linkedGroup, so the importer hit "Failed to find
+    assessment or assessment group" and all report imports failed. importReports() now
+    normalizes both conventions.
+
+  Test coverage raised ~18% -> ~27% lines (177 -> 349 tests): pure-unit tests for the
+  validators, Utils (RestUtils/FhirObjectDenormalizer), PaginatedResultsService,
+  HTTPResponseUtils, AssignmentSerializer, Role/Capability/ServerRestRequest/GlobalConfig,
+  the DTO/model fixes above, plus DB-backed/mocked repository tests (Tag/Token/
+  MessageTemplate/Client).
+
 v0.12.2 Deprecate REST/FHIR routes unused by the patient SPA
 
   Document-only change (no behavior change; all routes stay wired). An audit of the
