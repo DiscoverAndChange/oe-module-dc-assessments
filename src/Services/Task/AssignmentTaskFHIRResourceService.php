@@ -118,7 +118,9 @@ class AssignmentTaskFHIRResourceService extends FhirServiceBase implements IReso
         $fhirResource->setMeta($meta);
 
         $id = new FhirId();
-        $id->setValue($dataRecord['id']); // TODO: @adunsulag this should be a uuid for DC stuff.
+        /** @var string $idValue */
+        $idValue = $dataRecord['id'];
+        $id->setValue($idValue); // TODO: @adunsulag this should be a uuid for DC stuff.
         $fhirResource->setId($id);
         $code = UtilsService::createCodeableConcept(
             [self::DAC_ASSIGNMENT => []],
@@ -129,7 +131,9 @@ class AssignmentTaskFHIRResourceService extends FhirServiceBase implements IReso
 
         // now we need to create the input
         $fhirTaskInput = new FHIRTaskInput();
-        $fhirTaskInput->setType(UtilsService::createCodeableConcept([$dataRecord['type'] => []], '', xl("Complete " . $dataRecord['type']))); // not sure why we specify this twice
+        /** @var string $typeValue */
+        $typeValue = $dataRecord['type'];
+        $fhirTaskInput->setType(UtilsService::createCodeableConcept([$typeValue => []], '', xl("Complete " . $typeValue))); // not sure why we specify this twice
         $fhirTaskInput->setValueString(json_encode($dataRecord));
         $fhirResource->addInput($fhirTaskInput);
         // we are only working in the portal for assignments here so this is something for the patient to do.
@@ -157,11 +161,12 @@ class AssignmentTaskFHIRResourceService extends FhirServiceBase implements IReso
     protected function searchForOpenEMRRecords($openEMRSearchParameters): ProcessingResult
     {
         if (isset($openEMRSearchParameters['code']) && $openEMRSearchParameters['code'] instanceof TokenSearchField) {
+            /** @var TokenSearchValue[] $codes */
             $codes = $openEMRSearchParameters['code']->getValues();
 
             // if we only have assessment but not group
             foreach ($codes as $code) {
-                $codeValue = $code->getCode();
+                $codeValue = (string) $code->getCode();
                 if (isset(self::COLUMN_MAPPINGS[$codeValue])) {
                     $column = self::COLUMN_MAPPINGS[$codeValue]['column'];
                     $openEMRSearchParameters[$column] = new TokenSearchField($column, [new TokenSearchValue(false)]);
@@ -181,7 +186,7 @@ class AssignmentTaskFHIRResourceService extends FhirServiceBase implements IReso
         $matchedUUids = [];
         $matchSearchId = false;
         if (!empty($results)) {
-            if (isset($openEMRSearchParameters['_id'])) {
+            if (isset($openEMRSearchParameters['_id']) && $openEMRSearchParameters['_id'] instanceof \OpenEMR\Services\Search\ISearchField) {
                 $matchSearchId = true;
                 /** @var TokenSearchValue[] $values */
                 $values = $openEMRSearchParameters['_id']->getValues();
@@ -196,7 +201,9 @@ class AssignmentTaskFHIRResourceService extends FhirServiceBase implements IReso
                 }
                 // add the individual sub tasks as part of the search
                 if ($result->isGroupType()) { // group items
-                    foreach ($resultData['items'] as $item) {
+                    /** @var list<array<string, mixed>> $resultItems */
+                    $resultItems = $resultData['items'];
+                    foreach ($resultItems as $item) {
                         $item['assignment_uuid'] = $result->getId();
                         if (!$matchSearchId || in_array($item['id'], $matchedUUids)) {
                             $processingResult->addData($item);
@@ -222,17 +229,22 @@ class AssignmentTaskFHIRResourceService extends FhirServiceBase implements IReso
         // grab the assignment
         $assignment = $this->repository->getAssignmentByUuid($fhirResourceId);
         $assignmentForItem = $this->repository->getAssignmentForAssignmentItemUuid($fhirResourceId);
-        if ($assignment === null || $assignmentForItem == null) {
+        // The resource id addresses EITHER a whole assignment OR an individual
+        // assignment item — normally exactly one of these lookups succeeds, so only
+        // error when NEITHER did (the original `||` threw whenever one was null).
+        if ($assignmentForItem !== null) {
+            // TODO: updating an individual assignment item via a Task is not yet
+            // implemented — updateAssignmentItem() was never defined (see TEST-PLAN.md).
+            // Fail cleanly rather than with a fatal undefined-method error.
+            throw new \InvalidArgumentException("Updating an individual assignment item via a Task is not yet supported");
+        }
+        if ($assignment === null) {
             throw new \InvalidArgumentException("Invalid FHIR resource id passed to update");
         }
-        if (!empty($assignmentForItem)) {
-            return $this->updateAssignmentItem($assignmentForItem, $fhirResourceId, $fhirResource);
-        } else {
-            return $this->updateAssignment($assignment, $fhirResourceId, $fhirResource);
-        }
+        return $this->updateAssignment($assignment, $fhirResourceId, $fhirResource);
     }
 
-    /** @return mixed */
+    /** @return ProcessingResult */
     private function updateAssignment(Assignment $assignment, string $fhirResourceId, FHIRTask $fhirResource)
     {
         $qrService = new QuestionnaireResponseService();
@@ -250,9 +262,11 @@ class AssignmentTaskFHIRResourceService extends FhirServiceBase implements IReso
             // grab the output
             // TODO: @adunsulag validate that the outputs exist
             $output = $fhirResource->getOutput()[0]->getValueReference();
+            /** @var array{localResource: bool, uuid: ?string, type: ?string} $parsedReference */
             $parsedReference = UtilsService::parseReference($output);
             if ($parsedReference['localResource']) {
                 $qrUuid = $parsedReference['uuid'];
+                /** @var array{questionnaire: string, patient_id: string, title?: string} $response */
                 $response = $qrService->fetchQuestionnaireResponseByResponseId($qrUuid);
                 if (empty($response)) {
                     throw new \InvalidArgumentException("FHIRTask.output[0].valueReference is invalid");
@@ -260,11 +274,14 @@ class AssignmentTaskFHIRResourceService extends FhirServiceBase implements IReso
                 // TODO: @adunsulag we need to check the questionnaire response pid against the Task.for property and make sure they match
                 // if they are different then someone is trying to assign a questionnaire response to a patient that doesn't belong to them.
                 $questionnaireJSON = $response['questionnaire'];
+                /** @var array<string, mixed> $questionnaire */
                 $questionnaire = json_decode($questionnaireJSON, true, 512, JSON_THROW_ON_ERROR);
                 $resourceService = new TaskOnsitePortalActivityAccessService();
                 $patientService = new PatientService();
                 $puuid = UuidRegistry::uuidToString($patientService->getUuid($response['patient_id']));
-                $portalAuditId = $resourceService->createOnSitePortalActivity($puuid, 'questionnaire', $questionnaire['title'], $qrUuid);
+                /** @var string $questionnaireTitle */
+                $questionnaireTitle = $questionnaire['title'];
+                $portalAuditId = $resourceService->createOnSitePortalActivity($puuid, 'questionnaire', $questionnaireTitle, $qrUuid);
 
                 // now create the pdf document
                 // we stuff it in the In Review category

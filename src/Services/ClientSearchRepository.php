@@ -59,7 +59,7 @@ class ClientSearchRepository
             if (UuidRegistry::isValidStringUUID($searchQueryDTO->id)) {
                 $searchParams['uuid'] = new TokenSearchField('uuid', [$searchQueryDTO->id], true);
             } else {
-                return []; // invalid id so we are going to return nothing.
+                return new ProcessingResult(); // invalid id so we are going to return nothing.
             }
         }
 
@@ -72,13 +72,16 @@ class ClientSearchRepository
             return new ProcessingResult();
         }
         $facilityService = new FacilityService();
+        /** @var array{id?: int, name?: string}|null $primaryEntity */
         $primaryEntity = $facilityService->getPrimaryBusinessEntity();
         // now we need to return the data model
         $clients = [];
         $indexByPids = [];
         $count = 0;
         $idsByClient = [];
-        foreach ($processingResult->getData() as $record) {
+        /** @var list<array{uuid: string, fname: ?string, lname: ?string, email: ?string}> $records */
+        $records = $processingResult->getData();
+        foreach ($records as $record) {
             $client = new Client();
             $client->setId($record['uuid']);
             $client->setFirstName($record['fname']);

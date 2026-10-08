@@ -46,7 +46,9 @@ class QuestionnaireResponseRestListener implements IStaticEventSubscriber
         $result = null;
         if ($fhirResource instanceof FHIRQuestionnaireResponse) {
             // grab the extension and see if we dispatch it to our response handlers
-            $extension = $fhirResource->getExtension() ?? [];
+            // getExtension() already returns a (possibly empty) array, so the
+            // ?? [] fallback was dead; drop it to satisfy the null-coalesce rule.
+            $extension = $fhirResource->getExtension();
             $extension = array_filter($extension, function ($item) {
                 if (str_starts_with($item->getUrl(), "https://www.discoverandchange.com/fhir/openemr-")) {
                     return true;
@@ -83,7 +85,7 @@ class QuestionnaireResponseRestListener implements IStaticEventSubscriber
             $processingResult->addProcessingResult($result);
         } else {
             // we have something so let's return our processing result
-            $this->getLogger()->error("Failed to process the search request for assessment response results.");
+            $this->getLogger()?->error("Failed to process the search request for assessment response results.");
             $processingResult->addInternalError(xlt("Failed to process the search request."));
         }
         if ($processingResult->isValid()) {
@@ -92,7 +94,7 @@ class QuestionnaireResponseRestListener implements IStaticEventSubscriber
                 $processingResult->addProcessingResult($result);
             } else {
                 // we have something so let's return our processing result
-                $this->getLogger()->error("Failed to process the search request for asset library response results.");
+                $this->getLogger()?->error("Failed to process the search request for asset library response results.");
                 $processingResult->addInternalError(xlt("Failed to process the search request."));
             }
         }

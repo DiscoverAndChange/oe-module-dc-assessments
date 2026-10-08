@@ -3,6 +3,7 @@
 namespace OpenEMR\Modules\DiscoverAndChange\Assessments\Services;
 
 use OpenEMR\Common\Database\QueryUtils;
+use OpenEMR\Common\Logging\SystemLogger;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Models\AssessmentGroup;
 
 class AssessmentReportRepository
@@ -36,6 +37,7 @@ class AssessmentReportRepository
         }
 
         $sql .= "ORDER BY r.name";
+        /** @var list<array{data: string, assessmentgroup_id: ?string, assessmentgroup_name: ?string, assessment_uid?: ?string, ...}> $results */
         $results = QueryUtils::fetchRecords($sql, []);
 
         $hydratedResults = [];
@@ -43,9 +45,10 @@ class AssessmentReportRepository
             $report = [];
             try {
                 $report = json_decode($r['data'], true);
-            } catch (Exception $e) {
-                $this->logger->error($e);
+            } catch (\Exception $e) {
+                (new SystemLogger())->error($e);
             }
+            /** @var array<string, mixed> $report */
             $group = new AssessmentGroup();
             $group->setId(($r['assessmentgroup_id'] ?? 0));
             $group->setName(($r['assessmentgroup_name'] ?? ''));
@@ -108,9 +111,11 @@ class AssessmentReportRepository
             . " WHERE r.id = ? and rv.version IN (SELECT max(rv2.version) FROM " . self::TABLE_VERSION_NAME . " rv2 WHERE rv2.report_id = ?) "
             . " ORDER BY rv.creation_date DESC LIMIT 1";
         $params = [$id, $id];
+        /** @var list<array{data: string, assessmentgroup_id: ?string, assessmentgroup_name: ?string, assessment_uid: ?string, reportpermission_id: ?string, show: ?string}> $reports */
         $reports = QueryUtils::fetchRecords($sql, $params);
         if (!empty($reports)) {
             $report = $reports[0];
+            /** @var array<string, mixed> $data */
             $data = json_decode($report['data'], true);
 
             if (!empty($report['assessmentgroup_id'])) {

@@ -37,6 +37,8 @@ class MessageTemplateRepository
     {
         // for now until we make it DB driven we are going to put this here
         // TODO: stephen make this driven by a value from the database.
+        // $client is a patient record row; name columns are nullable strings.
+        /** @var array{fname?: ?string, lname?: ?string} $client */
         $data = [
             "client_display_name" => trim(($client['fname'] ?? '') . ' ' . ($client['lname'] ?? '')),
             "patient_portal_url" => $this->globalConfig->getSmartAppPatientLaunchUri()

@@ -90,15 +90,21 @@ class TaskRestController
      * - date {gt|lt|ge|le}
      * @param array<mixed> $searchParams
      * @param string|null $puuidBind - Optional variable to only allow visibility of the patient with this puuid.
-     * @return FHIR bundle with query results, if found
+     * @return \OpenEMR\FHIR\R4\FHIRResource\FHIRBundle|array<string,mixed> FHIR bundle with query results, if found
      */
     public function getAll($searchParams, $puuidBind = null)
     {
         $processingResult = $this->taskResourceService->getAll($searchParams, $puuidBind);
         $bundleEntries = array();
-        foreach ($processingResult->getData() as $index => $searchResult) {
+        /** @var list<FHIRTask> $searchResults */
+        $searchResults = $processingResult->getData();
+        /** @var string $siteAddr */
+        $siteAddr = $GLOBALS['site_addr_oath'];
+        /** @var string $redirectUrl */
+        $redirectUrl = $_SERVER['REDIRECT_URL'] ?? '';
+        foreach ($searchResults as $index => $searchResult) {
             $bundleEntry = [
-                'fullUrl' =>  $GLOBALS['site_addr_oath'] . ($_SERVER['REDIRECT_URL'] ?? '') . '/' . $searchResult->getId(),
+                'fullUrl' =>  $siteAddr . $redirectUrl . '/' . $searchResult->getId(),
                 'resource' => $searchResult
             ];
             $fhirBundleEntry = new FHIRBundleEntry($bundleEntry);
@@ -112,6 +118,7 @@ class TaskRestController
         // `entry` key entirely when there are no results, but the SPA expects an
         // array — so normalize the empty case to a plain array with entry: [].
         if (empty($bundleEntries)) {
+            /** @var array<string,mixed> $bundleSearchResult */
             $bundleSearchResult = json_decode((string) json_encode($bundleSearchResult), true);
             $bundleSearchResult['entry'] = [];
         }
@@ -151,7 +158,9 @@ class TaskRestController
                 // task exists and can be acessed in the patient context.
                 // override the patient here to be the one that was found in the task, there isn't any other way to
                 // handle the search at this point.
-                $decodedTask->setFor($foundTask->getData()[0]->getFor());
+                /** @var list<FHIRTask> $foundTaskData */
+                $foundTaskData = $foundTask->getData();
+                $decodedTask->setFor($foundTaskData[0]->getFor());
                 $result = $this->taskResourceService->update($fhirId, $decodedTask);
             } else {
                 // do we want to treat this as a 404, or a 401?
@@ -159,15 +168,18 @@ class TaskRestController
             }
             if (!$result->isValid() || !($returnType === 'representation' || $returnType === 'OperationOutcome')) {
                 return RestUtils::getFhirCreateResponseForProcessingResult(self::FHIR_RESOURCE_TYPE, $result);
-            } else if ($returnType == 'representation') {
-                $response = $this->one($request, $result->getData()[0]);
+            }
+            /** @var list<string> $resultData */
+            $resultData = $result->getData();
+            if ($returnType == 'representation') {
+                $response = $this->one($request, $resultData[0]);
                 if ($response->getStatusCode() !== 200) {
                     return $response; // error code
                 }
             } else if ($returnType == 'OperationOutcome') {
-                $response = RestUtils::getFhirOperationOutcomeSuccessResponse(self::FHIR_RESOURCE_TYPE, $result->getData()[0]);
+                $response = RestUtils::getFhirOperationOutcomeSuccessResponse(self::FHIR_RESOURCE_TYPE, $resultData[0]);
             }
-            $response = RestUtils::addFhirLocationHeader($response, self::FHIR_RESOURCE_TYPE, $result->getData()[0]);
+            $response = RestUtils::addFhirLocationHeader($response, self::FHIR_RESOURCE_TYPE, $resultData[0]);
             return $response->withStatus(201);
         } catch (\InvalidArgumentException $exception) {
             (new SystemLogger())->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
@@ -197,6 +209,8 @@ class TaskRestController
 
     private function decodeRequest(string $requestBody): FHIRTask
     {
-        return RestUtils::hydrateFhirObjectFromJson($requestBody, FHIRTask::class);
+        /** @var FHIRTask $task */
+        $task = RestUtils::hydrateFhirObjectFromJson($requestBody, FHIRTask::class);
+        return $task;
     }
 }

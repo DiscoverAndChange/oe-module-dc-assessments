@@ -72,7 +72,9 @@ class AssessmentFHIRResourceService extends FhirServiceBase
     {
         $fhirResource = new FHIRQuestionnaire();
         $id = new FhirId();
-        $id->setValue($dataRecord['uuid']);
+        /** @var string $uuidValue */
+        $uuidValue = $dataRecord['uuid'];
+        $id->setValue($uuidValue);
         $fhirResource->setId($id);
 
         $meta = new FHIRMeta();

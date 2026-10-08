@@ -7,7 +7,7 @@ use DateTime;
 class AssignedAssessment extends Assignment
 {
     private string $assessmentUuid;
-    private string $assessmentId;
+    private int $assessmentId;
     private string $uid;
     private ?string $resultId;
     private ?int $itemId;

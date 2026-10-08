@@ -126,7 +126,7 @@ class Client implements \JsonSerializable
     public function jsonSerialize(): array
     {
         $properties = get_object_vars($this);
-        if (!empty($properties['assignedUser'])) {
+        if ($this->assignedUser !== null) {
             $properties['assignedUser'] = $this->assignedUser->jsonSerialize();
         }
         return $properties;

@@ -11,7 +11,7 @@ class SystemUser implements \JsonSerializable
     private string $_id;
     private string $_username;
     private ?int $_companyID;
-    private string $_companyName;
+    private string $_companyName = '';
     private string $_companyPrimaryContact;
     private string $_billingCustomerId;
     private string $_firstName;
@@ -170,8 +170,16 @@ class SystemUser implements \JsonSerializable
         if (!is_object($obj)) {
             throw new \Exception("Passed in object is not a JSON object");
         }
-        $user = new SystemUser($obj->_id, $obj->_username, isset($obj->_companyID) ? $obj->_companyID : null);
-        $user->setRole($obj->_role);
+        /** @var string $id */
+        $id = $obj->_id;
+        /** @var string $username */
+        $username = $obj->_username;
+        /** @var int|null $companyID */
+        $companyID = isset($obj->_companyID) ? $obj->_companyID : null;
+        $user = new SystemUser($id, $username, $companyID);
+        /** @var int $role */
+        $role = $obj->_role;
+        $user->setRole($role);
 
         // We do not hydrate caps or password
         return $user;

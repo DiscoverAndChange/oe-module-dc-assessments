@@ -38,7 +38,9 @@ class AssessmentGroup implements \JsonSerializable
 
     public function getId(): int
     {
-        return $this->id;
+        // $id is int|string (DB auto-increment ids arrive as numeric strings);
+        // string->int cast is a concrete (non-mixed) narrowing, allowed here.
+        return (int) $this->id;
     }
 
     public function setId(int|string $id): void

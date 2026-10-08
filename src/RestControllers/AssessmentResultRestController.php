@@ -43,6 +43,7 @@ class AssessmentResultRestController implements IRestController
         // first we grab the client and need to check if the current user even has access to this client
         $patientRepo = new PatientService();
         try {
+            /** @var list<array<string,mixed>>|null $patientData */
             $patientData = ProcessingResult::extractDataArray($patientRepo->getOne($clientId));
             if (empty($patientData)) {
                 throw new \InvalidArgumentException("Invalid client id");
@@ -103,17 +104,23 @@ class AssessmentResultRestController implements IRestController
                 $this->logger->error("Validation failed", ['errors' => $validation->getValidationMessages()]);
                 throw new \InvalidArgumentException("One or more fields was invalid", ErrorCode::VALIDATION_FAILED);
             }
-            $client = $this->validateCreateAccessAndReturnClient($request->getUserId(), $request->getPatientUUIDString(), ($data['clientId'] ?? null), $patientService);
+            /** @var string|null $createClientId */
+            $createClientId = $data['clientId'] ?? null;
+            $client = $this->validateCreateAccessAndReturnClient($request->getUserId(), $request->getPatientUUIDString(), $createClientId, $patientService);
 
             $assignmentRepo = new AssignmentRepository();
-            $item = $assignmentRepo->getAssignmentItem($data['data']['_assignmentItemId'], UuidRegistry::uuidToString($client['uuid']));
+            /** @var array{_assignmentItemId: string} $itemData */
+            $itemData = $data['data'];
+            $item = $assignmentRepo->getAssignmentItem($itemData['_assignmentItemId'], UuidRegistry::uuidToString($client['uuid']));
             if (empty($item)) {
                 throw new \InvalidArgumentException("Assignment item not found", ErrorCode::INVALID_REQUEST);
             } else if (!($item instanceof AssignedAssessment)) {
                 throw new \InvalidArgumentException("Assignment item is not an assessment", ErrorCode::INVALID_REQUEST);
             }
 
-            $item->setResultId($data['id']);
+            /** @var string|null $resultIdValue */
+            $resultIdValue = $data['id'];
+            $item->setResultId($resultIdValue);
 
             // now we can insert the result
             $resultRepo = new AssessmentResultRepository();
@@ -121,6 +128,7 @@ class AssessmentResultRestController implements IRestController
             // TODO: @adunsulag if we allow external embeds w/o client assignment we would handle that here..
 
 
+            /** @var \OpenEMR\Modules\DiscoverAndChange\Assessments\Models\Assignment $updatedItem */
             $updatedItem = $this->assignmentCompleter->markAssignmentComplete($item, $client);
             $savedResult['date'] = $updatedItem->getDateCompleted()->format(DATE_ATOM);
             QueryUtils::commitTransaction();
@@ -171,11 +179,14 @@ class AssessmentResultRestController implements IRestController
             if (!$result->hasData()) {
                 throw new \InvalidArgumentException("Patient uuid in request does not exist", ErrorCode::SYSTEM_ERROR);
             } else {
-                $client = $result->getData()[0];
+                /** @var list<array<string,mixed>> $resultData */
+                $resultData = $result->getData();
+                $client = $resultData[0];
             }
         } else if (empty($clientId)) { // if we are a user and creating results we need a valid client_id
             throw new \InvalidArgumentException("clientId is required", ErrorCode::VALIDATION_FAILED);
         } else {
+            /** @var list<array<string,mixed>>|null $client */
             $client = ProcessingResult::extractDataArray($patientService->getOne($clientId));
             if (empty($client)) {
                 throw new \InvalidArgumentException("Invalid client_id in request", ErrorCode::VALIDATION_FAILED);

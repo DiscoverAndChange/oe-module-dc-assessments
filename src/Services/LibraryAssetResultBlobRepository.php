@@ -42,6 +42,7 @@ class LibraryAssetResultBlobRepository
             $answers = $resultBlob->getAnswers();
 
             $cleanedAnswers = array_map(function ($answer) use ($sanitizer) {
+                /** @var array<string, mixed> $answer */
                 if (!empty($answer['value'])) {
                     $answer['value'] = $sanitizer->sanitize($answer['value']);
                 }
@@ -175,7 +176,7 @@ class LibraryAssetResultBlobRepository
     {
         $records = QueryUtils::fetchRecords($sql, $params);
         if (empty($records)) {
-            return null;
+            return [];
         }
         $results = [];
         foreach ($records as $record) {
@@ -211,7 +212,11 @@ class LibraryAssetResultBlobRepository
             $blob->setClientId(UuidRegistry::uuidToString($record['patient_uuid']));
         }
         $dateFormat = "Y-m-d H:i:s.u";
-        $blob->setCreationDate(\DateTime::createFromFormat($dateFormat, (string) $record['creation_date']));
+        $parsedDate = \DateTime::createFromFormat($dateFormat, (string) ($record['creation_date'] ?? ''));
+        if ($parsedDate !== false) {
+            // leave the DTO's constructor default when creation_date is absent/unparseable
+            $blob->setCreationDate($parsedDate);
+        }
         return $blob;
     }
 }

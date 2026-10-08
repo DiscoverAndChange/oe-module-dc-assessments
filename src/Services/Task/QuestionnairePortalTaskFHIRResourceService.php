@@ -104,9 +104,11 @@ class QuestionnairePortalTaskFHIRResourceService extends FhirServiceBase impleme
             // grab the output
             // TODO: @adunsulag validate that the outputs exist
             $output = $fhirResource->getOutput()[0]->getValueReference();
+            /** @var array{localResource: bool, uuid: ?string, type: ?string} $parsedReference */
             $parsedReference = UtilsService::parseReference($output);
             if ($parsedReference['localResource']) {
                 $qrUuid = $parsedReference['uuid'];
+                /** @var array{questionnaire: ?string, patient_id: ?string, ...} $response */
                 $response = $qrService->fetchQuestionnaireResponseByResponseId($qrUuid);
                 if (empty($response)) {
                     throw new \InvalidArgumentException("FHIRTask.output[0].valueReference is invalid");
@@ -114,6 +116,7 @@ class QuestionnairePortalTaskFHIRResourceService extends FhirServiceBase impleme
                 // TODO: @adunsulag we need to check the questionnaire response pid against the Task.for property and make sure they match
                 // if they are different then someone is trying to assign a questionnaire response to a patient that doesn't belong to them.
                 $questionnaireJSON = $response['questionnaire'];
+                /** @var array<string, mixed> $questionnaire */
                 $questionnaire = json_decode($questionnaireJSON, true, 512, JSON_THROW_ON_ERROR);
                 $resourceService = new TaskOnsitePortalActivityAccessService();
                 $patientService = new PatientService();
@@ -174,6 +177,7 @@ class QuestionnairePortalTaskFHIRResourceService extends FhirServiceBase impleme
     protected function searchForOpenEMRRecords($openEMRSearchParameters): ProcessingResult
     {
         $processingResult = new ProcessingResult();
+        /** @var array<string, \OpenEMR\Services\Search\ISearchField> $openEMRSearchParameters */
 
         $docTemplateService = new DocumentTemplateService();
         // TODO: @adunsulag need to handle both the owner_id search field here as well as the patient search field piece here
@@ -188,6 +192,7 @@ class QuestionnairePortalTaskFHIRResourceService extends FhirServiceBase impleme
         $patientPids = [];
         $patientField = $openEMRSearchParameters['patient'];
 
+        /** @var \OpenEMR\Services\Search\ReferenceSearchValue[] $patientIds */
         $patientIds = $patientField->getValues();
         foreach ($patientIds as $id) {
             $patientService = new PatientService();
@@ -196,7 +201,9 @@ class QuestionnairePortalTaskFHIRResourceService extends FhirServiceBase impleme
         }
         // super inefficient, but the only way to grab a single task is by hitting the patients right now
         if (!empty($openEMRSearchParameters['_id'])) {
-            $filterByTemplateId = $openEMRSearchParameters['_id']->getValues()[0]->getCode();
+            /** @var \OpenEMR\Services\Search\TokenSearchValue[] $idValues */
+            $idValues = $openEMRSearchParameters['_id']->getValues();
+            $filterByTemplateId = $idValues[0]->getCode();
 //            $template = $docTemplateService->fetchTemplate($filterByTemplateId);
 //            if (!empty($template)) {
 //                if (in_array($template['pid'], $patientPids)) {
@@ -211,6 +218,7 @@ class QuestionnairePortalTaskFHIRResourceService extends FhirServiceBase impleme
             foreach ($patientPids as $pid) {
                 // TODO: @adunsulag the current approach does not as far as I can tell give us any unique identifier for the
                 // task when its a repeating doc template.  We need to figure out how to handle this.
+                /** @var array<string, list<array{id: int|string, pid: int|string, ...}>> $templates_call */
                 $templates_call = $docTemplateService->getPortalAssignedTemplates($pid, 'questionnaire', true);
                 $questionnaires = $templates_call['questionnaire'] ?? []; // make sure we only deal with questionnaires.
                 foreach ($questionnaires as $questionnaire) {
@@ -228,10 +236,9 @@ class QuestionnairePortalTaskFHIRResourceService extends FhirServiceBase impleme
     }
 
     /**
-     * @param mixed $docTemplateService
-     * @param array<mixed> $templates
+     * @param list<array{id: int|string, pid: int|string, ...}> $templates
      */
-    private function getTaskDataForTemplates($docTemplateService, ProcessingResult $processingResult, $templates): ProcessingResult
+    private function getTaskDataForTemplates(DocumentTemplateService $docTemplateService, ProcessingResult $processingResult, $templates): ProcessingResult
     {
 
 
@@ -246,6 +253,7 @@ class QuestionnairePortalTaskFHIRResourceService extends FhirServiceBase impleme
         $filePathRepeat = str_repeat('?,', count($ids) - 1) . '?';
         $sql = "SELECT * FROM `onsite_documents` WHERE `pid` IN (" . $pidsRepeat . ") AND `file_path` IN ("
             . $filePathRepeat . ") ORDER BY `create_date` DESC";
+        /** @var list<array{id: string, pid: string, file_path: string, denial_reason: string, ...}> $docs */
         $docs = QueryUtils::fetchRecords($sql, array_merge($pids, $ids));
         $docMap = [];
         // TODO: @adunsulag I'm not sure how repeat of the same document are handled here...
@@ -256,6 +264,7 @@ class QuestionnairePortalTaskFHIRResourceService extends FhirServiceBase impleme
             $docMap[$doc['pid']][$doc['file_path']] = $doc;
         }
         $repeat = str_repeat('?,', count($pids) - 1) . '?';
+        /** @var list<array{pid: int|string, uuid: string}> $patients */
         $patients = QueryUtils::fetchRecords("SELECT uuid,pid FROM `" . PatientService::TABLE_NAME . "` WHERE `pid` IN (" . $repeat . ") ", $pids);
         $patientMap = [];
         foreach ($patients as $patient) {

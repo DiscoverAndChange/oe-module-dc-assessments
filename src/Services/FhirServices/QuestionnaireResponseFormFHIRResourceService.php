@@ -78,6 +78,7 @@ class QuestionnaireResponseFormFHIRResourceService extends FhirServiceBase imple
         }
         // required value so should be here
         if (!empty($fhirResource->getQuestionnaire())) {
+            /** @var array{localResource: bool, validUrl: bool, resource: ?string, uuid: ?string} $parsedUrl */
             $parsedUrl = UtilsService::parseCanonicalUrl($fhirResource->getQuestionnaire());
             if ($parsedUrl['localResource']) {
                 $parsedResource['questionnaire_id'] = $parsedUrl['uuid'];
@@ -87,6 +88,7 @@ class QuestionnaireResponseFormFHIRResourceService extends FhirServiceBase imple
         }
         // our subjects at this point should really only be the patient...
         if (!empty($fhirResource->getSubject())) {
+            /** @var array{localResource: bool, uuid: ?string, type: ?string} $parsedReference */
             $parsedReference = UtilsService::parseReference($fhirResource->getSubject());
             if ($parsedReference['localResource']) {
                 if (!empty($parsedReference['type']) == 'Patient') {
@@ -99,6 +101,7 @@ class QuestionnaireResponseFormFHIRResourceService extends FhirServiceBase imple
             }
         }
         if (!empty($fhirResource->getEncounter())) {
+            /** @var array{localResource: bool, uuid: ?string, type: ?string} $parsedReference */
             $parsedReference = UtilsService::parseReference($fhirResource->getEncounter());
             if ($parsedReference['localResource']) {
                 $parsedReference['encounter_uuid'] = $parsedResource['uuid'];
@@ -107,6 +110,7 @@ class QuestionnaireResponseFormFHIRResourceService extends FhirServiceBase imple
             }
         }
         if (!empty($fhirResource->getSource())) {
+            /** @var array{localResource: bool, uuid: ?string, type: ?string} $parsedReference */
             $parsedReference = UtilsService::parseReference($fhirResource->getSource());
             if ($parsedReference['localResource']) {
                 if (!empty($parsedReference['type']) == 'Practitioner') {
@@ -127,7 +131,7 @@ class QuestionnaireResponseFormFHIRResourceService extends FhirServiceBase imple
         $parsedResource['questionnaire_response'] = json_encode($fhirResource);
         if (!empty($fhirResource->getMeta())) {
             if (!empty($fhirResource->getMeta()->getId())) {
-                $parsedResource['version'] = $fhirResource->getMeta()->getVersionId()->getValue() ?? 1;
+                $parsedResource['version'] = $fhirResource->getMeta()->getVersionId()->getValue();
             }
         }
         return $parsedResource;
@@ -136,14 +140,16 @@ class QuestionnaireResponseFormFHIRResourceService extends FhirServiceBase imple
     /**
      * @param array<mixed> $dataRecord
      * @param bool $encode
-     * @return TaskFHIRResource|\OpenEMR\Services\FHIR\the
+     * @return FHIRQuestionnaireResponse
      */
     public function parseOpenEMRRecord($dataRecord = array(), $encode = false)
     {
         $innerData = [];
         try {
             // parse the json data in dataRecord questionnaire
-            $innerData = json_decode($dataRecord['questionnaire_response'], true, 512, JSON_THROW_ON_ERROR);
+            /** @var string $questionnaireResponseJson */
+            $questionnaireResponseJson = $dataRecord['questionnaire_response'];
+            $innerData = json_decode($questionnaireResponseJson, true, 512, JSON_THROW_ON_ERROR);
         } catch (\JsonException $exception) {
             // log the error and move on
             $innerData = []; // nothing we can do here, but skip the questionnaire data as its invalid
@@ -163,7 +169,9 @@ class QuestionnaireResponseFormFHIRResourceService extends FhirServiceBase imple
         $fhirResource->setMeta($meta);
 
         $id = new FhirId();
-        $id->setValue($dataRecord['questionnaire_response_uuid']);
+        /** @var string $questionnaireResponseUuid */
+        $questionnaireResponseUuid = $dataRecord['questionnaire_response_uuid'];
+        $id->setValue($questionnaireResponseUuid);
         $fhirResource->setId($id);
 
         // we trust the db records rather than the JSON as our master record if we have it.
@@ -254,7 +262,7 @@ class QuestionnaireResponseFormFHIRResourceService extends FhirServiceBase imple
      * The ownership and AUDIT trail in FHIR is done via the Provenance record.
      * @param FHIRDomainResource $dataRecord The record we are generating a provenance from
      * @param bool $encode Whether to serialize the record or not
-     * @return FHIRProvenance
+     * @return FHIRProvenance|string|false|null
      */
     public function createProvenanceResource($dataRecord, $encode = false)
     {
@@ -293,8 +301,10 @@ class QuestionnaireResponseFormFHIRResourceService extends FhirServiceBase imple
         $add_report = false,
         $scores = []
          */
+        /** @var array<string, mixed> $openEmrRecord */
         $patientId = null;
         $patientService = new PatientService();
+        /** @var list<array<string,mixed>>|null $patientRecords */
         $patientRecords = ProcessingResult::extractDataArray($patientService->getOne($openEmrRecord['puuid']));
         if (empty($patientRecords)) {
             throw new \InvalidArgumentException("Patient does not exist");
@@ -303,11 +313,12 @@ class QuestionnaireResponseFormFHIRResourceService extends FhirServiceBase imple
         $encounterId = null;
         if (!empty($openEmrRecord['encounter_uuid'])) {
             $encounterService = new EncounterService();
+            /** @var list<array{eid: string}>|null $encounterRecords */
             $encounterRecords = ProcessingResult::extractDataArray($encounterService->getEncounter($openEmrRecord['encounter_uuid']));
             if (empty($encounterRecords)) {
                 throw new \InvalidArgumentException("Encounter does not exist");
             }
-            $encounterId = $encounterRecords[0]['eid'];
+            $encounterId = (int) $encounterRecords[0]['eid'];
         }
         // note https://build.fhir.org/http.html#create specification states that an id SHALL be ignored for our create
         // operation so we ignore any record ids here.
@@ -316,6 +327,7 @@ class QuestionnaireResponseFormFHIRResourceService extends FhirServiceBase imple
         $q = null;
         $questionnaireService = new QuestionnaireService();
         $tokenSearchValue = new TokenSearchField('uuid', [$openEmrRecord['questionnaire_id']], true);
+        /** @var list<array{questionnaire: string}>|null $questionnaireRecords */
         $questionnaireRecords = ProcessingResult::extractDataArray($questionnaireService->search(['uuid' => $tokenSearchValue]));
         if (empty($questionnaireRecords)) {
             throw new \InvalidArgumentException("Questionnaire does not exist");
@@ -325,6 +337,9 @@ class QuestionnaireResponseFormFHIRResourceService extends FhirServiceBase imple
         $form_response = null; // not sure why we are saving this off...
         $add_report = true; // I think we want to always generate a narrative here.
 
+        /** @var string $questionnaireId */
+        $questionnaireId = $openEmrRecord['questionnaire_id'];
+        /** @var array<string,mixed> $saved */
         $saved = $this->service->saveQuestionnaireResponse(
             $openEmrRecord['questionnaire_response'],
             $patientId,
@@ -332,7 +347,7 @@ class QuestionnaireResponseFormFHIRResourceService extends FhirServiceBase imple
             $qr_id,
             $qr_record_id,
             $questionnaire['questionnaire'],
-            $openEmrRecord['questionnaire_id'],
+            $questionnaireId,
             $form_response,
             $add_report
         );

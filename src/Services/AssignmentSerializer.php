@@ -32,7 +32,9 @@ class AssignmentSerializer
             $assignment = new AssignedAssessmentGroup();
             $assignment->fromJSON($assignmentJSON);
             if (!empty($assignmentJSON['items'])) {
-                foreach ($assignmentJSON['items'] as $item) {
+                /** @var array<mixed> $items */
+                $items = $assignmentJSON['items'];
+                foreach ($items as $item) {
                     /** @var array<mixed> $item */
                     $assignment->addItem($this->deserialize($item, $depth + 1));
                 }
@@ -52,8 +54,10 @@ class AssignmentSerializer
             }
             $assignment->fromJSON($assignmentJSON);
             if (!empty($assignmentJSON['items'])) {
+                /** @var array<mixed> $items */
+                $items = $assignmentJSON['items'];
                 /** @var array<mixed> $jsonItem */
-                $jsonItem = $assignmentJSON['items'][0];
+                $jsonItem = $items[0];
                 $subItem->fromJSON($jsonItem);
                 $assignment->addItem($subItem);
             }

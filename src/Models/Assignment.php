@@ -222,8 +222,9 @@ class Assignment implements \JsonSerializable
      */
     public function fromJSON(array $assignmentJSON)
     {
+        /** @var array{id?: string, name?: string, type?: string, dateCompleted?: string, dateAssigned?: string, appointmentId?: string, ...} $assignmentJSON */
         $dateFormat = "Y-m-d\TH:i:s.uP";
-        $this->setId(($assignmentJSON["id"] ?? 0));
+        $this->setId(($assignmentJSON["id"] ?? ''));
         $this->setName(($assignmentJSON["name"] ?? ""));
         $this->setType(($assignmentJSON["type"] ?? "Assessment"));
         if (!empty($assignmentJSON['dateCompleted'])) {

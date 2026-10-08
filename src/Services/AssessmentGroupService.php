@@ -79,10 +79,14 @@ class AssessmentGroupService extends BaseService
     /**
      * @param string $sql
      * @param array<mixed> $params
-     * @return array<mixed>
+     * @return list<array<string, mixed>>
      */
     private function getGroupsForSql($sql, $params)
     {
+        // ag.id is the NOT-NULL primary key (used as an array key below); the
+        // LEFT-JOINed columns are nullable, hence ?string. OpenEMR PDO returns
+        // every column as string|null.
+        /** @var list<array{id: string, name: ?string, date_created: ?string, date_updated: ?string, assessmentblob_name: ?string, uid: ?string, assessmentblob_id: ?string, assessmentgroup_id: ?string, display_order: ?string, company_id: ?string, company_name: ?string}> $results */
         $results = QueryUtils::fetchRecords($sql, $params);
 
         // we're going to group things

@@ -28,6 +28,7 @@ class SimplifiedOAuthTwigExtension extends AbstractExtension implements GlobalsI
             new TwigFunction(
                 'dacShowUpdatedScopePage',
                 function ($scopesByResource) {
+                    /** @var array<string, mixed> $scopesByResource */
                     $session = SessionWrapperFactory::getInstance()->getActiveSession();
                     // no patient set right now but user is set.
                     if (!empty($session->get('user_id')) && empty($session->get('pid'))) {
@@ -106,7 +107,7 @@ class SimplifiedOAuthTwigExtension extends AbstractExtension implements GlobalsI
     {
         // so we don't grab this call
         if (!isset($this->primaryLogo)) {
-            $this->primaryLogo = $this->logoService->getLogo("core/login/primary") ?? "";
+            $this->primaryLogo = $this->logoService->getLogo("core/login/primary");
         }
         return [
             'dacPrimaryLogo' => $this->primaryLogo

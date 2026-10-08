@@ -40,7 +40,7 @@ class APIProxyController
     private string $baseUri;
 
     /**
-     * @var array<mixed>
+     * @var array<class-string, object>
      */
     private $controllers;
 
@@ -559,7 +559,13 @@ class APIProxyController
         $matcher = new UrlMatcher($this->routes, $context);
         try {
             $attributes = $matcher->match($symfonyRequest->getPathInfo());
-            $route = $this->routeMappings[$attributes['_route']];
+            // NOTE: this previously referenced the undefined property $this->routeMappings
+            // (always null at runtime). The real route map is the API_MAPPINGS constant,
+            // keyed by the matched route name.
+            /** @var string $routeName */
+            $routeName = $attributes['_route'];
+            /** @var array{controller: class-string, action: string} $route */
+            $route = self::API_MAPPINGS[$routeName];
             $controller = $this->controllers[$route['controller']];
             $this->logger->debug(self::class . "->getCallableForApiRequest() called", ['route' => $route, 'attributes' => $attributes]);
             unset($attributes['_route']);
@@ -594,7 +600,9 @@ class APIProxyController
 //        if (!empty($queryVars)) {
 //            $uri .= "?" . http_build_query($queryVars);
 //        }
-        $request = $psr17Factory->createServerRequest($_SERVER['REQUEST_METHOD'], $httpRestRequest->getRequestUri());
+        /** @var string $requestMethod */
+        $requestMethod = $_SERVER['REQUEST_METHOD'];
+        $request = $psr17Factory->createServerRequest($requestMethod, $httpRestRequest->getRequestUri());
         // oddly Psr17Factory does not set the query params array.
         $request = $request->withQueryParams($queryVars);
 //        $request = $this->addAuthorizationToRequest($httpRestRequest, $request);

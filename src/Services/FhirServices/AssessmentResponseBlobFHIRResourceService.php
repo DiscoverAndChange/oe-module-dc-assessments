@@ -119,17 +119,20 @@ class AssessmentResponseBlobFHIRResourceService extends FhirServiceBase
         return $result;
     }
 
-    /** @return array<mixed> */
+    /** @return array<mixed>|null */
     public function parseFhirResource(FHIRDomainResource $fhirResource)
     {
         if (!($fhirResource instanceof FHIRQuestionnaireResponse)) {
             throw new \BadMethodCallException("FHIR resource should be correct instance class");
         }
+        /** @var \OpenEMR\FHIR\R4\FHIRElement\FHIRExtension[] $extensions */
         $extensions = UtilsService::getExtensionsByUrl("https://www.discoverandchange.com/fhir/" . self::CODE_DAC_ASSESSMENT, $fhirResource);
         if (!empty($extensions)) { // we only care about the first one.
             $valueString = $extensions[0]->getValueString();
+            /** @var array<string, mixed> $dataRecord */
             $dataRecord = json_decode($valueString, true);
             if ($dataRecord) {
+                /** @var array{localResource: bool, uuid: ?string, type: ?string} $author */
                 $author = UtilsService::parseReference($fhirResource->getAuthor());
                 $dataRecord['clientId'] = $author['uuid'];
                 return $dataRecord;
@@ -141,6 +144,7 @@ class AssessmentResponseBlobFHIRResourceService extends FhirServiceBase
     /** @param mixed $openEmrRecord */
     protected function insertOpenEmrRecord($openEmrRecord)
     {
+        /** @var array{data?: array<string, mixed>, ...} $openEmrRecord */
         $validator = new AssessmentResultBlobValidator();
         $transactionCommitted = false;
         try {
@@ -218,7 +222,7 @@ class AssessmentResponseBlobFHIRResourceService extends FhirServiceBase
     }
 
 
-    /** @return mixed */
+    /** @return array<string, mixed> */
     private function validateCreateAccessAndReturnClient(string $patientUuidString, ?int $userId)
     {
 
@@ -232,7 +236,9 @@ class AssessmentResponseBlobFHIRResourceService extends FhirServiceBase
             if (!$result->hasData()) {
                 throw new \InvalidArgumentException("Patient uuid in request does not exist", ErrorCode::SYSTEM_ERROR);
             } else {
-                $client = $result->getData()[0];
+                $clientData = $result->getData();
+                /** @var list<array<string, mixed>> $clientData */
+                $client = $clientData[0];
             }
         }
         return $client;

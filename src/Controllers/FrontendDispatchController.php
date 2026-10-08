@@ -30,6 +30,7 @@ class FrontendDispatchController
      */
     public function dispatch(array $queryVars)
     {
+        /** @var string|null $clientId */
         $clientId = $this->config->getSmartAppClientId();
         if (empty($clientId) || !$this->isClientEnabled($clientId)) {
             // if the client is not enabled we need to present a message to the user
@@ -58,13 +59,18 @@ class FrontendDispatchController
     {
         // TODO: @adunsulag I don't like the duplicate code here and in SMARTAuthorizationController->smartAppStyles()
         // TODO: @adunsulag look at refactoring this to be more DRY
+        /** @var string $cssTheme */
         $cssTheme = $GLOBALS['css_header'];
         $baseNameCssTheme = basename($cssTheme);
         $parts = explode(".", $baseNameCssTheme);
-        $coreTheme = $parts[0] ?? "style_light";
+        $coreTheme = $parts[0];
         $logoService = new LogoService();
         // do we want to expose each of the logos?  These really need to be cached instead of hitting FS each time...
-        $primaryLogo = $GLOBALS['site_addr_oath'] . $GLOBALS['web_root'] . $logoService->getLogo("core/login/primary");
+        /** @var string $siteAddrOauth */
+        $siteAddrOauth = $GLOBALS['site_addr_oath'];
+        /** @var string $webRoot */
+        $webRoot = $GLOBALS['web_root'];
+        $primaryLogo = $siteAddrOauth . $webRoot . $logoService->getLogo("core/login/primary");
         $context = [
             'logo' => [
                 'primary' => $primaryLogo
@@ -82,6 +88,7 @@ class FrontendDispatchController
         $stringVar = $resolvedTemplate->render($vars);
         $json = [];
         if (!empty($stringVar)) {
+            /** @var array<mixed> $json */
             $json = json_decode($stringVar, true) ?? [];
         }
         return $json;

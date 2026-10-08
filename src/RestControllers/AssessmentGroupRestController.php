@@ -38,9 +38,10 @@ class AssessmentGroupRestController implements IRestController
             $showAllGroups = false;
         }
         $facilityService = new FacilityService();
+        /** @var array{id?: int, name?: string}|null $primaryFacility */
         $primaryFacility = $facilityService->getPrimaryBusinessEntity();
         $groupService = new AssessmentGroupService();
-        $results = $groupService->getAllGroups($showAllGroups, $primaryFacility['id']);
+        $results = $groupService->getAllGroups($showAllGroups, $primaryFacility['id'] ?? null);
 
         if (empty($results)) {
             return RestUtils::getEmptyResponse();
@@ -60,12 +61,13 @@ class AssessmentGroupRestController implements IRestController
     /**
      * @param array<mixed> $results
      * @param bool $showAllGroups
-     * @return AssessmentGroup[]|null
+     * @return AssessmentGroup[]
      */
     private function createAssessmentGroupsFromEntities($results, $showAllGroups, LoggerInterface $logger)
     {
         $groups = [];
         foreach ($results as $result) {
+            /** @var array{id: string, name: string, date_created: ?string, date_updated: ?string, company: array{id: string, name: ?string}|null, assessmentGroupAssessmentBlobs: list<array{assessmentBlob: array{id: string, name: string, uid: string}}>} $result */
             $group = new AssessmentGroup();
             $group->setName($result['name']);
             $group->setId($result['id']);
@@ -76,16 +78,16 @@ class AssessmentGroupRestController implements IRestController
                 $group->setUpdated(\DateTime::createFromFormat('Y-m-d H:i:s.u', $result['date_updated']));
             }
             if ($showAllGroups && !empty($result['company'])) {
-                $group->setCompanyId($result['company']['id']);
+                $group->setCompanyId((int) $result['company']['id']);
             }
             foreach ($result['assessmentGroupAssessmentBlobs'] as $agab) {
                 if (empty($agab['assessmentBlob'])) {
                     $logger->error("AssessmentGroupAssessmentBlob has no AssessmentBlob entry for group ", ["group" => "group"]);
-                    return;
+                    continue;
                 }
                 $snippet = new AssessmentSnippet();
                 $snippet->setName($agab['assessmentBlob']['name']);
-                $snippet->setId($agab['assessmentBlob']['id']);
+                $snippet->setId((int) $agab['assessmentBlob']['id']);
                 $snippet->setUid($agab['assessmentBlob']['uid']);
                 $group->addAssessmentSnippet($snippet);
             }
@@ -109,6 +111,7 @@ class AssessmentGroupRestController implements IRestController
         $validator = new AssessmentGroupValidator();
         $repo = new AssessmentGroupService();
         try {
+            /** @var array<string, mixed> $data */
             $data = $request->getBodyAsJson();
             if (!AclMain::aclCheckCore("encounters", "forms")) {
                 throw new AccessDeniedException("encounters", "forms", "Access denied to create this resource");
@@ -159,6 +162,7 @@ class AssessmentGroupRestController implements IRestController
         $validator = new AssessmentGroupValidator();
         $repo = new AssessmentGroupService();
         try {
+            /** @var array<string, mixed> $data */
             $data = $request->getBodyAsJson();
             if (!AclMain::aclCheckCore("encounters", "forms")) {
                 throw new AccessDeniedException("encounters", "forms", "Access denied to create this resource");
@@ -207,6 +211,7 @@ class AssessmentGroupRestController implements IRestController
         $validator = new AssessmentGroupValidator();
         $repo = new AssessmentGroupService();
         try {
+            /** @var array<string, mixed> $data */
             $data = $request->getBodyAsJson();
             if (!AclMain::aclCheckCore("encounters", "forms")) {
                 throw new AccessDeniedException("encounters", "forms", "Access denied to create this resource");
@@ -245,7 +250,7 @@ class AssessmentGroupRestController implements IRestController
     }
 
     /**
-     * @param array<mixed> $profiles
+     * @param list<array{option_id: string, title: string, seq?: string}> $profiles
      * @return AssessmentGroup[]
      */
     private function mapProfilesToGroups(DocumentTemplateService $documentTemplateService, array $profiles)
@@ -256,7 +261,8 @@ class AssessmentGroupRestController implements IRestController
             $group->setId($profile['option_id']);
             $group->setProfileId($profile['option_id']);
             $group->setName($profile['title']);
-            $templates = $documentTemplateService->getTemplateListByProfile($profile['option_id']) ?? [];
+            /** @var array<string, list<array{id: string, template_name: string}>> $templates */
+            $templates = $documentTemplateService->getTemplateListByProfile($profile['option_id']);
             // if a profile has no templates, we don't want to work with it.
             if (!empty($templates)) {
                 $templateItems = [];
@@ -268,7 +274,7 @@ class AssessmentGroupRestController implements IRestController
 
                     foreach ($templates as $template) {
                         $item = new AssessmentSnippet();
-                        $item->setId($template['id']);
+                        $item->setId((int) $template['id']);
                         $item->setName($template['template_name']);
                         $item->setUid($template['id']);
                         $templateItems[] = $item;

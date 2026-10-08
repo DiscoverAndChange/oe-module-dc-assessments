@@ -84,9 +84,11 @@ class QuestionnaireFHIRResourceService extends FhirServiceBase implements IResou
      */
     public function getAll($fhirSearchParameters, $puuidBind = null): ProcessingResult
     {
+        /** @var array<string, mixed> $fhirSearchParameters */
         $fhirSearchResult = new ProcessingResult();
         try {
             if (isset($fhirSearchParameters['questionnaire-code'])) {
+                /** @var \OpenEMR\Services\FHIR\FhirServiceBase $service */
                 $service = $this->getServiceForCode(
                     new TokenSearchField('questionnaire-code', $fhirSearchParameters['questionnaire-code']),
                     ''
@@ -114,7 +116,7 @@ class QuestionnaireFHIRResourceService extends FhirServiceBase implements IResou
      * The ownership and AUDIT trail in FHIR is done via the Provenance record.
      * @param FHIRDomainResource $dataRecord The record we are generating a provenance from
      * @param bool $encode Whether to serialize the record or not
-     * @return FHIRProvenance
+     * @return FHIRProvenance|string|false|null
      */
     public function createProvenanceResource($dataRecord, $encode = false)
     {

@@ -3,6 +3,7 @@
 namespace OpenEMR\Modules\DiscoverAndChange\Assessments\RestControllers;
 
 use Nyholm\Psr7\Factory\Psr17Factory;
+use OpenEMR\Common\Logging\SystemLogger;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\IRestController;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Models\ServerRestRequest;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Services\TagRepository;
@@ -15,10 +16,10 @@ class TagRestController implements IRestController
     {
         $tagRepository = new TagRepository();
         try {
-            $tags = $tagRepository->listTags() ?? [];
+            $tags = $tagRepository->listTags();
             return RestUtils::returnSingleObjectResponse($tags);
         } catch (\Exception $e) {
-            return RestUtils::getErrorResponse($this->logger, $e);
+            return RestUtils::getErrorResponse(new SystemLogger(), $e);
         }
     }
 

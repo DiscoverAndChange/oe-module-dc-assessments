@@ -21,20 +21,21 @@ class SystemUserRepository
 
         $userRepo = new UserService();
         $userRepo->toggleSensitiveFields(['username']);
+        /** @var list<array{uuid: string, username: string, active: string|int, fname?: string|null, lname?: string|null}> $users */
         $users = $userRepo->getAll();
         // now we need to hydrate them and convert them to SystemUser classes
         $systemUsers = [];
         $facRepo = new FacilityService();
-        /** @var array<string,mixed>|null $primaryEntity */
+        /** @var array{id?: int, name?: string}|null $primaryEntity */
         $primaryEntity = $facRepo->getPrimaryBusinessEntity();
         foreach ($users as $user) {
-            $systemUsers[] = $this->hydrateUser((array) $user, $primaryEntity);
+            $systemUsers[] = $this->hydrateUser($user, $primaryEntity);
         }
         return $systemUsers;
     }
     /**
-     * @param array<mixed> $user
-     * @param array<mixed>|null $primaryEntity
+     * @param array{uuid: string, username: string, active: string|int, fname?: string|null, lname?: string|null} $user
+     * @param array{id?: int, name?: string}|null $primaryEntity
      * @return SystemUser
      */
     public function hydrateUser(array $user, $primaryEntity)
@@ -63,12 +64,14 @@ class SystemUserRepository
     public function getUsersForClients(array $clientIds)
     {
         $patientService = new PatientService();
+        /** @var array<int|string, int|string> $mappedProviderIds */
         $mappedProviderIds = $patientService->getProviderIDsForPatientUuids($clientIds);
         // tokens are required to be strings
-        $userIds = array_map('strval', array_values((array) $mappedProviderIds));
+        $userIds = array_map(strval(...), array_values($mappedProviderIds));
         $idSearch = new TokenSearchField('id', $userIds);
         $userRepo = new UserService();
         $userRepo->toggleSensitiveFields(['username']);
+        /** @var list<array{uuid: string, username: string, active: string|int, id: int|string, fname?: string|null, lname?: string|null}> $users */
         $users = $userRepo->getAll(['id' => $idSearch]);
         $mappedProviderUuids = [];
         foreach ($users as $user) {
@@ -78,11 +81,11 @@ class SystemUserRepository
         // now we need to hydrate them and convert them to SystemUser classes
         $systemUsers = [];
         $facRepo = new FacilityService();
-        /** @var array<string,mixed>|null $primaryEntity */
+        /** @var array{id?: int, name?: string}|null $primaryEntity */
         $primaryEntity = $facRepo->getPrimaryBusinessEntity();
         $userIdIndex = [];
         foreach ($users as $user) {
-            $systemUser = $this->hydrateUser((array) $user, $primaryEntity);
+            $systemUser = $this->hydrateUser($user, $primaryEntity);
             $providerId = $mappedProviderUuids[$systemUser->getId()];
             $userIdIndex[$providerId] = $systemUser;
         }

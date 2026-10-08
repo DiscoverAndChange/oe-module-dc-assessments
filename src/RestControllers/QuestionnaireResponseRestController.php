@@ -116,17 +116,19 @@ class QuestionnaireResponseRestController implements IRestController
             $decodedQuestionnaire = $this->decodeRequest($stream->getContents());
 
             $result = $this->resourceService->insert($decodedQuestionnaire);
+            /** @var array<int, mixed> $resultData */
+            $resultData = $result->getData();
             if (!$result->isValid() || !($returnType === 'representation' || $returnType === 'OperationOutcome')) {
                 return RestUtils::getFhirCreateResponseForProcessingResult('QuestionnaireResponse', $result);
             } else if ($returnType == 'representation') {
-                $response = $this->one($request, $result->getData()[0]);
+                $response = $this->one($request, $resultData[0]);
                 if ($response->getStatusCode() !== 200) {
                     return $response; // error code
                 }
             } else if ($returnType == 'OperationOutcome') {
-                $response = RestUtils::getFhirOperationOutcomeSuccessResponse('QuestionnaireResponse', $result->getData()[0]);
+                $response = RestUtils::getFhirOperationOutcomeSuccessResponse('QuestionnaireResponse', $resultData[0]);
             }
-            $response = RestUtils::addFhirLocationHeader($response, 'QuestionnaireResponse', $result->getData()[0]);
+            $response = RestUtils::addFhirLocationHeader($response, 'QuestionnaireResponse', $resultData[0]);
             return $response->withStatus(201);
         } catch (\InvalidArgumentException $exception) {
             (new SystemLogger())->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
@@ -155,13 +157,15 @@ class QuestionnaireResponseRestController implements IRestController
      * - date {gt|lt|ge|le}
      * @param array<mixed> $searchParams
      * @param string|null $puuidBind - Optional variable to only allow visibility of the patient with this puuid.
-     * @return FHIR bundle with query results, if found
+     * @return \OpenEMR\FHIR\R4\FHIRResource\FHIRBundle|array<string, mixed> FHIR bundle with query results, if found
      */
     private function getAll($searchParams, $puuidBind = null)
     {
         $processingResult = $this->resourceService->getAll($searchParams, $puuidBind);
         $bundleEntries = array();
-        foreach ($processingResult->getData() as $index => $searchResult) {
+        /** @var array<int, \OpenEMR\FHIR\R4\FHIRResource\FHIRDomainResource> $resultData */
+        $resultData = $processingResult->getData();
+        foreach ($resultData as $index => $searchResult) {
             $bundleEntry = [
                 'fullUrl' =>  $GLOBALS['site_addr_oath'] . ($_SERVER['REDIRECT_URL'] ?? '') . '/' . $searchResult->getId(),
                 'resource' => $searchResult
@@ -173,6 +177,7 @@ class QuestionnaireResponseRestController implements IRestController
         // FHIRBundle omits the `entry` key when empty, but the SPA expects an
         // array; normalize the empty case to a plain array with entry: [].
         if (empty($bundleEntries)) {
+            /** @var array<string, mixed> $bundleSearchResult */
             $bundleSearchResult = json_decode((string) json_encode($bundleSearchResult), true);
             $bundleSearchResult['entry'] = [];
         }

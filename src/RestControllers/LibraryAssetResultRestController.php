@@ -59,7 +59,9 @@ class LibraryAssetResultRestController implements IRestController
                 if (!$patientResult->hasData()) {
                     throw new \RuntimeException("Patient not found for uuid " . $request->getPatientUUIDString());
                 }
-                $patient = $patientResult->getData()[0];
+                $patientData = $patientResult->getData();
+                /** @var list<array<string, mixed>> $patientData */
+                $patient = $patientData[0];
                 // make sure we only grab an asset for the current client
                 $result = $repo->getDecryptedAssetResultBlob($id, $patient['pid']);
             } else if (AclMain::aclCheckCore("encounters", "notes")) {
@@ -83,7 +85,7 @@ class LibraryAssetResultRestController implements IRestController
 
     public function create(ServerRestRequest $request): ResponseInterface
     {
-        /** @var array<string, mixed> $data */
+        /** @var array{asset?: array<string, mixed>, ...} $data */
         $data = $request->getBodyAsJson();
         $validator = new LibraryAssetResultBlobValidator();
         $validation = $validator->validate($data, LibraryAssetResultBlobValidator::DATABASE_INSERT_CONTEXT);
@@ -169,11 +171,14 @@ class LibraryAssetResultRestController implements IRestController
             if (!$result->hasData()) {
                 throw new \InvalidArgumentException("Patient uuid in request does not exist", ErrorCode::SYSTEM_ERROR);
             } else {
-                $client = $result->getData()[0];
+                $resultData = $result->getData();
+                /** @var list<array<string, mixed>> $resultData */
+                $client = $resultData[0];
             }
         } else if (empty($clientId)) { // if we are a user and creating results we need a valid client_id
             throw new \InvalidArgumentException("clientId is required", ErrorCode::VALIDATION_FAILED);
         } else {
+            /** @var list<array<string, mixed>>|null $client */
             $client = ProcessingResult::extractDataArray($patientService->getOne($clientId));
             if (empty($client)) {
                 throw new \InvalidArgumentException("Invalid client_id in request", ErrorCode::VALIDATION_FAILED);

@@ -1,3 +1,104 @@
+v0.12.1 Fix latent runtime bugs surfaced by the source-typing pass
+
+  Fix the clear, safe runtime bugs the v0.12.0 type analysis exposed:
+  - TagRestController::list() referenced an undefined $this->logger on its DB-error
+    path (fatal when listTags() throws); log via a SystemLogger instance (the
+    module's ad-hoc logging idiom).
+  - AssessmentReportRepository::getAll() referenced an undefined $this->logger in a
+    catch that also caught an unqualified `Exception` (resolved to a non-existent
+    class in this namespace); use a SystemLogger instance and `\Exception`.
+  - AssessmentGroupRestController::createAssessmentGroupsFromEntities() used `return;`
+    inside its inner loop when an AssessmentGroupAssessmentBlob had no blob — aborting
+    the whole method and dropping ALL groups (returning null); `continue;` to skip just
+    the malformed row. Return type tightened to AssessmentGroup[] (no longer nullable).
+  - Assignment::fromJSON() defaulted a missing `id` to int 0 into the string setId()
+    (TypeError under strict_types); default to ''.
+  - ClientRepository: setAssessmentId() received the possibly-null result of
+    getMostRecentAssessmentIdForUid() (TypeError when a uid has no published
+    assessment); throw a clear InvalidArgumentException instead.
+  - AssignmentTaskFHIRResourceService::update(): the guard threw whenever EITHER the
+    assignment OR the item lookup was null (normally exactly one is), and the item
+    branch called a never-defined updateAssignmentItem() (fatal undefined-method).
+    Restructure so an assignment-item resource id fails cleanly ("not yet supported"),
+    an assignment id routes to updateAssignment(), and only a wholly-unknown id errors.
+
+  Still open (need author decisions; recorded in TEST-PLAN.md, NOT changed here): the
+  FHIR Task item-update feature itself (updateAssignmentItem), QuestionnaireResponse
+  FormFHIRResourceService's half-built encounter/source linkage (dead stores into an
+  undefined var), saveLibraryAssetResultBlob() silently dropping two caller args, and
+  the dead/broken Client::fromJSON(). APIProxyController's proxy methods are dead code
+  (only its API_MAPPINGS constant is still used).
+
+v0.12.0 PHPStan source-typing pass (mixed-at-boundary cluster)
+
+  Burn down the largest remaining PHPStan class: ~771 errors rooted in `mixed`
+  values from DB rows, json_decode, and request payloads flowing into typed slots
+  (argument.type, offsetAccess, return.type, binaryOp, method.nonObject,
+  foreach.nonIterable, nullCoalesce.*). Fix by typing at the SOURCE — inline
+  `/** @var <shape> */` on the DB-row / decoded-json / request-payload / in-code-map
+  assignments, with honest shapes (nullable columns -> ?string; ids read via
+  string->int casts, never mixed casts). NOT by casting mixed (this build's strict
+  rules reject casting mixed, which would only relabel the error as cast.*).
+
+  Per the honesty rule, genuinely-nullable or genuinely-mixed values flowing into
+  non-null params were left for the baseline rather than force-typed — those are
+  real "handle the null/narrow the value" points, not noise. Baseline: 1418 -> 882
+  errors (523 entries); the cluster's container-mixed errors (offsetAccess/foreach/
+  invalidOffset) are essentially eliminated (offsetAccess 212->2, foreach 22->0,
+  invalidOffset 30->0), with argument.type 353->192 and return.type 49->10. Zero
+  cast.int/cast.string introduced; no new non-ignorable errors. Applying the baseline
+  reports zero errors and the test suite stays green (176 tests / 589 assertions).
+
+  Real bugs found and fixed along the way (type analysis made them visible):
+  - APIProxyController referenced an undefined `$this->routeMappings` property
+    (always null -> proxy routing dead); use the real `self::API_MAPPINGS` source.
+  - ResourceImporterService referenced an undefined `$report` on its import-error
+    logging paths (loop var is `$blob`).
+  - AssessmentAppointmentController referenced an undefined `$appt` when building a
+    notification payload (should be `$appointment`).
+  - AssignedQuestionnaire::fromJSON defaulted a missing questionnaireId to int `0`
+    into a string setter (TypeError under strict_types); default to ''.
+  - QuestionnaireResponseFHIRResourceService::getAll called setInternalErrors() on a
+    non-ProcessingResult event value in one branch; refactored to the real result.
+
+  Known issues recorded in TEST-PLAN.md for follow-up (NOT changed here): a handful
+  of residual typing ripples baselined (shapes missing an optional key, a couple of
+  over-typed empty() guards) to clean up; and several latent runtime bugs the pass
+  surfaced but that need author decisions — AssignmentTaskFHIRResourceService::update()
+  calls a non-existent updateAssignmentItem() (runtime fatal on that branch),
+  AssessmentReportRepository / TagRestController reference an undefined `$this->logger`,
+  ClientRepository::... setAssessmentId() with no null guard, createAssessmentGroups
+  FromEntities `return;` that should be `continue`, and Client::fromJSON() dead/broken.
+
+v0.11.2 Test suite expansion + latent-bug fixes surfaced by it
+
+  Begin building out automated test coverage (see TEST-PLAN.md) as a safety net
+  before the PHPStan source-typing refactor and for keeping the module in sync
+  with OpenEMR core. Added pure-unit characterization tests across the Models,
+  the Assigned* subclasses, the DTOs, the error/code maps, and the repository
+  hydration methods (private hydrate*FromRecord, exercised via reflection on the
+  no-DB path). Coverage ~9% -> ~18%; suite 8 -> 176 tests. Added a coverage-ready
+  phpunit.xml (`<source>` = src/, module testsuite) for PCOV reports.
+
+  Fixes for real runtime bugs the characterization tests surfaced:
+  - SystemUser::$_companyName had no initializer, so jsonSerialize() on a freshly
+    constructed user threw "typed property must not be accessed before
+    initialization". Default it to ''.
+  - AssessmentRepository::hydrateAssessmentSummaryFromDatabaseRecord and
+    LibraryAssetResultBlobRepository::hydrateResultBlobFromRecord assigned
+    \DateTime::createFromFormat()'s result straight into a non-null \DateTime
+    (property / setCreationDate) — a missing or unparseable date column makes
+    createFromFormat() return false, so hydrating such a row threw a TypeError.
+    Guard the parse and keep the existing constructor-default date on failure.
+  - ErrorCode::getErrorStringForErrorCode() tested code membership against
+    ErrorCodeStatus::codeMap but read the value from ErrorCode::codeMap; it worked
+    only because the two maps share keys today. Check self::codeMap.
+
+  Known issues documented in TEST-PLAN.md for the upcoming source-typing pass
+  (not changed here): Client::fromJSON() is dead/broken (unused), and several
+  fromJSON/hydrators have type-coercion smells (string setters fed `?? 0`, a
+  parent::fromJSON type reset, property/accessor type mismatches).
+
 v0.11.1 PHPStan level-10 fixes (bugs + non-ignorable) and module-local baseline
 
   Fix the genuine bugs and all non-ignorable errors PHPStan surfaced once the

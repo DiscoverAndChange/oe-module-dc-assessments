@@ -124,12 +124,14 @@ class AssessmentResultRepository
 
     /**
      * @param array<mixed> $result
-     * @return array<mixed>
+     * @return list<array<string, mixed>>
      */
     private function hydrateRecordsFromResult($result)
     {
         $records = [];
         foreach ($result as $resultBlob) {
+            /** @var array<string, ?string> $resultBlob */
+            /** @var array<string, mixed> $resultData */
             $resultData = json_decode(($resultBlob['result_data'] ?? '{}'), true);
             $assessmentData = json_decode(($resultBlob['assessment_data'] ?? '{}'), true);
             $resultData['_assessment'] = $assessmentData;
@@ -152,16 +154,23 @@ class AssessmentResultRepository
         $sanitizer = new HTMLSanitizer();
         if (!empty($resultData['_answers'])) {
             $answers = [];
-            foreach ($resultData['_answers'] as $answer) {
+            /** @var list<array<string, mixed>> $inputAnswers */
+            $inputAnswers = $resultData['_answers'];
+            foreach ($inputAnswers as $answer) {
+                /** @var string $answerText */
+                $answerText = $answer['_answer'];
                 $answers[] = [
-                    '_answer' => $sanitizer->sanitize($answer['_answer'])
+                    '_answer' => $sanitizer->sanitize($answerText)
                     ,'_score' => $answer['_score']
                     ,'_question_id' => $answer['_question_id']
                 ];
             }
             $resultData['_answers'] = $answers;
         }
-        $resultData['data']['_id'] = $resultId; // make sure we use the server id, not what is sent from the client.
+        /** @var array<string, mixed> $dataArr */
+        $dataArr = $resultData['data'] ?? [];
+        $dataArr['_id'] = $resultId; // make sure we use the server id, not what is sent from the client.
+        $resultData['data'] = $dataArr;
         $resultBlob = json_encode($resultData['data'], JSON_THROW_ON_ERROR);
         $params = [$resultId, $assessmentId, $clientId,$resultBlob];
         // we don't do an insert here as we don't need an insert id since we are using string uuids here.

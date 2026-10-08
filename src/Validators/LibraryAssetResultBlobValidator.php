@@ -38,6 +38,7 @@ class LibraryAssetResultBlobValidator extends BaseValidator
                 $context->copyContext(
                     self::DATABASE_INSERT_CONTEXT,
                     function ($rules) {
+                        /** @var array<string, \Particle\Validator\Chain> $rules */
                         foreach ($rules as $key => $chain) {
                             $chain->required(false);
                         }

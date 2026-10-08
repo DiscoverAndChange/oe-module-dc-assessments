@@ -29,7 +29,7 @@ final class ServerRestRequest implements ServerRequestInterface
         $this->httpRestRequest = $httpRestRequest;
     }
 
-    /** @return Role */
+    /** @return int */
     public function getAuthRole()
     {
         if ($this->httpRestRequest->isPatientRequest()) {
