@@ -85,14 +85,29 @@ class ServerRestRequestTest extends TestCase
     {
         // NOTE: getRequestTarget()/withRequestTarget() delegate to the wrapped request but
         // are not declared on HttpRestRequest, so they cannot be stubbed on its mock.
-        // getUri() is also excluded: ServerRestRequest::getUri() declares a UriInterface
-        // return but delegates to HttpRestRequest::getUri() which returns string, so it
-        // TypeErrors whenever called (a latent source bug; see TEST-PLAN).
         $inner = $this->makeRequest();
         $inner->method('getMethod')->willReturn('POST');
 
         $request = new ServerRestRequest($inner);
         $this->assertSame('POST', $request->getMethod());
+    }
+
+    /**
+     * REGRESSION (fixed v0.12.4): HttpRestRequest::getUri() returns a raw string, but
+     * ServerRestRequest::getUri() declares UriInterface. It previously returned the string
+     * directly and TypeErrored whenever called (e.g. SystemUserRestController::list does
+     * $request->getUri()->getQuery()). It now wraps the string in a PSR-7 Uri.
+     */
+    public function testGetUriWrapsStringInUriInterface(): void
+    {
+        $inner = $this->makeRequest();
+        $inner->method('getUri')->willReturn('/api/v1/assessment-users?_limit=10&_offset=20');
+
+        $uri = (new ServerRestRequest($inner))->getUri();
+
+        $this->assertInstanceOf(UriInterface::class, $uri);
+        $this->assertSame('/api/v1/assessment-users', $uri->getPath());
+        $this->assertSame('_limit=10&_offset=20', $uri->getQuery());
     }
 
     public function testGetBodyDelegates(): void
