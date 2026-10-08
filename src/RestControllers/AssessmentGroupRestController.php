@@ -46,7 +46,7 @@ class AssessmentGroupRestController implements IRestController
         if (empty($results)) {
             return RestUtils::getEmptyResponse();
         } else {
-            $groups = $this->createAssessmentGroupsFromEntities($results, $showAllGroups, $this->logger) ?? [];
+            $groups = $this->createAssessmentGroupsFromEntities($results, $showAllGroups, $this->logger);
 
             $documentTemplateService = new DocumentTemplateService();
             $profiles = $documentTemplateService->fetchDefaultProfiles();
@@ -61,7 +61,7 @@ class AssessmentGroupRestController implements IRestController
     /**
      * @param array<mixed> $results
      * @param bool $showAllGroups
-     * @return AssessmentGroup[]|null
+     * @return AssessmentGroup[]
      */
     private function createAssessmentGroupsFromEntities($results, $showAllGroups, LoggerInterface $logger)
     {
@@ -83,7 +83,7 @@ class AssessmentGroupRestController implements IRestController
             foreach ($result['assessmentGroupAssessmentBlobs'] as $agab) {
                 if (empty($agab['assessmentBlob'])) {
                     $logger->error("AssessmentGroupAssessmentBlob has no AssessmentBlob entry for group ", ["group" => "group"]);
-                    return;
+                    continue;
                 }
                 $snippet = new AssessmentSnippet();
                 $snippet->setName($agab['assessmentBlob']['name']);

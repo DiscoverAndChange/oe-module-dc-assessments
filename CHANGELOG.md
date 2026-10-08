@@ -1,3 +1,34 @@
+v0.12.1 Fix latent runtime bugs surfaced by the source-typing pass
+
+  Fix the clear, safe runtime bugs the v0.12.0 type analysis exposed:
+  - TagRestController::list() referenced an undefined $this->logger on its DB-error
+    path (fatal when listTags() throws); log via a SystemLogger instance (the
+    module's ad-hoc logging idiom).
+  - AssessmentReportRepository::getAll() referenced an undefined $this->logger in a
+    catch that also caught an unqualified `Exception` (resolved to a non-existent
+    class in this namespace); use a SystemLogger instance and `\Exception`.
+  - AssessmentGroupRestController::createAssessmentGroupsFromEntities() used `return;`
+    inside its inner loop when an AssessmentGroupAssessmentBlob had no blob — aborting
+    the whole method and dropping ALL groups (returning null); `continue;` to skip just
+    the malformed row. Return type tightened to AssessmentGroup[] (no longer nullable).
+  - Assignment::fromJSON() defaulted a missing `id` to int 0 into the string setId()
+    (TypeError under strict_types); default to ''.
+  - ClientRepository: setAssessmentId() received the possibly-null result of
+    getMostRecentAssessmentIdForUid() (TypeError when a uid has no published
+    assessment); throw a clear InvalidArgumentException instead.
+  - AssignmentTaskFHIRResourceService::update(): the guard threw whenever EITHER the
+    assignment OR the item lookup was null (normally exactly one is), and the item
+    branch called a never-defined updateAssignmentItem() (fatal undefined-method).
+    Restructure so an assignment-item resource id fails cleanly ("not yet supported"),
+    an assignment id routes to updateAssignment(), and only a wholly-unknown id errors.
+
+  Still open (need author decisions; recorded in TEST-PLAN.md, NOT changed here): the
+  FHIR Task item-update feature itself (updateAssignmentItem), QuestionnaireResponse
+  FormFHIRResourceService's half-built encounter/source linkage (dead stores into an
+  undefined var), saveLibraryAssetResultBlob() silently dropping two caller args, and
+  the dead/broken Client::fromJSON(). APIProxyController's proxy methods are dead code
+  (only its API_MAPPINGS constant is still used).
+
 v0.12.0 PHPStan source-typing pass (mixed-at-boundary cluster)
 
   Burn down the largest remaining PHPStan class: ~771 errors rooted in `mixed`

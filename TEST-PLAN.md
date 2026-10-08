@@ -150,18 +150,25 @@ a few over-typed empty()/isset() guards now flagged "always truthy" (ClientRepos
 39/66, the *FHIRResourceService $result/$response/$item/$service guards). Each is a
 1-line shape tweak (add the optional key / loosen the shape so the guard stays live).
 
-Latent runtime bugs surfaced by the pass — need author decisions (NOT fixed):
-- `AssignmentTaskFHIRResourceService::update()` calls `$this->updateAssignmentItem(...)`
-  which does not exist -> runtime fatal on the assignment-item branch.
-- `AssessmentReportRepository` and `RestControllers/TagRestController` reference an
-  undefined `$this->logger` (fatal on their error paths; no logger property/DI).
-- `ClientRepository` setAssessmentId() with no null guard (getMostRecentAssessmentIdForUid
-  can return null); `saveLibraryAssetResultBlob` arity mismatch with its caller.
-- `AssessmentGroupRestController::createAssessmentGroupsFromEntities` uses `return;`
-  where `continue;` is meant (one bad blob aborts the whole loop, losing all groups).
-- `QuestionnaireResponseFormFHIRResourceService` L104 dead store into the wrong array.
-(Fixed in v0.12.0: APIProxyController routeMappings, ResourceImporterService $report,
-AssessmentAppointmentController $appt, AssignedQuestionnaire ?? 0, QRespFHIR getAll.)
+Latent runtime bugs surfaced by the pass:
+- [FIXED v0.12.1] `TagRestController` / `AssessmentReportRepository` undefined
+  `$this->logger` -> use a SystemLogger instance (+ `\Exception` qualifier).
+- [FIXED v0.12.1] `AssessmentGroupRestController::createAssessmentGroupsFromEntities`
+  `return;` -> `continue;` (was dropping all groups on one bad blob).
+- [FIXED v0.12.1] `Assignment::fromJSON` `?? 0` -> `?? ''` into string setId().
+- [FIXED v0.12.1] `ClientRepository` setAssessmentId(null) -> explicit throw when a
+  uid has no published assessment.
+- [FIXED v0.12.1] `AssignmentTaskFHIRResourceService::update()` guard (`||`->correct
+  routing) and the never-defined `updateAssignmentItem()` -> fails cleanly instead of
+  a fatal; the item-update FEATURE itself is still unimplemented (see below).
+- [FIXED v0.12.0] APIProxyController routeMappings, ResourceImporterService $report,
+  AssessmentAppointmentController $appt, AssignedQuestionnaire ?? 0, QRespFHIR getAll.
+- [OPEN — author decision] FHIR Task item-update feature (implement updateAssignmentItem);
+  `QuestionnaireResponseFormFHIRResourceService` half-built encounter/source linkage
+  (dead stores into an undefined `$parsedResource` + a `!empty(...) == 'Practitioner'`
+  precedence bug); `saveLibraryAssetResultBlob()` silently drops two caller args
+  (userId, patientUUID) — audit/ownership data lost; `Client::fromJSON()` dead/broken
+  (unused); APIProxyController proxy methods are dead code (only API_MAPPINGS is used).
 
 ## Phase 2 (original notes)
 Target the "mixed-at-boundary" cluster — **771 errors (~54% of 1418)**, all one root:

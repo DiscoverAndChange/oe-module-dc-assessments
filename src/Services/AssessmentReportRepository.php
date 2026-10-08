@@ -3,6 +3,7 @@
 namespace OpenEMR\Modules\DiscoverAndChange\Assessments\Services;
 
 use OpenEMR\Common\Database\QueryUtils;
+use OpenEMR\Common\Logging\SystemLogger;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Models\AssessmentGroup;
 
 class AssessmentReportRepository
@@ -44,8 +45,8 @@ class AssessmentReportRepository
             $report = [];
             try {
                 $report = json_decode($r['data'], true);
-            } catch (Exception $e) {
-                $this->logger->error($e);
+            } catch (\Exception $e) {
+                (new SystemLogger())->error($e);
             }
             /** @var array<string, mixed> $report */
             $group = new AssessmentGroup();

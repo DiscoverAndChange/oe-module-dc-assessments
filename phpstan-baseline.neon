@@ -619,12 +619,6 @@ parameters:
 			path: src/Models/Assignment.php
 
 		-
-			message: '#^Parameter \#1 \$v of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Models\\Assignment\:\:setId\(\) expects string, int\|string given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Models/Assignment.php
-
-		-
 			message: '#^Call to function is_object\(\) with object will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1
@@ -741,18 +735,6 @@ parameters:
 		-
 			message: '#^Direct instantiation of OpenEMR\\Common\\Logging\\SystemLogger is discouraged\. Use OpenEMR\\BC\\ServiceContainer\:\:getLogger\(\) instead\.$#'
 			identifier: openemr.forbiddenInstantiation
-			count: 1
-			path: src/RestControllers/AssessmentGroupRestController.php
-
-		-
-			message: '#^Method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\RestControllers\\AssessmentGroupRestController\:\:createAssessmentGroupsFromEntities\(\) never returns null so it can be removed from the return type\.$#'
-			identifier: return.unusedType
-			count: 1
-			path: src/RestControllers/AssessmentGroupRestController.php
-
-		-
-			message: '#^Method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\RestControllers\\AssessmentGroupRestController\:\:createAssessmentGroupsFromEntities\(\) should return array\<OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Models\\AssessmentGroup\>\|null but empty return statement found\.$#'
-			identifier: return.empty
 			count: 1
 			path: src/RestControllers/AssessmentGroupRestController.php
 
@@ -1489,14 +1471,8 @@ parameters:
 			path: src/RestControllers/QuestionnaireRestController.php
 
 		-
-			message: '#^Access to an undefined property OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\RestControllers\\TagRestController\:\:\$logger\.$#'
-			identifier: property.notFound
-			count: 1
-			path: src/RestControllers/TagRestController.php
-
-		-
-			message: '#^Parameter \#1 \$logger of static method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Utils\\RestUtils\:\:getErrorResponse\(\) expects OpenEMR\\Common\\Logging\\SystemLogger, mixed given\.$#'
-			identifier: argument.type
+			message: '#^Direct instantiation of OpenEMR\\Common\\Logging\\SystemLogger is discouraged\. Use OpenEMR\\BC\\ServiceContainer\:\:getLogger\(\) instead\.$#'
+			identifier: openemr.forbiddenInstantiation
 			count: 1
 			path: src/RestControllers/TagRestController.php
 
@@ -1561,19 +1537,13 @@ parameters:
 			path: src/Services/AssessmentGroupService.php
 
 		-
-			message: '#^Caught class OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\Exception not found\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/Services/AssessmentReportRepository.php
-
-		-
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
 			identifier: empty.notAllowed
 			count: 7
 			path: src/Services/AssessmentReportRepository.php
 
 		-
-			message: '#^Dead catch \- OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\Exception is never thrown in the try block\.$#'
+			message: '#^Dead catch \- Exception is never thrown in the try block\.$#'
 			identifier: catch.neverThrown
 			count: 1
 			path: src/Services/AssessmentReportRepository.php
@@ -1581,6 +1551,12 @@ parameters:
 		-
 			message: '#^Offset ''assessmentgroup_id'' on array\{data\: string, assessmentgroup_id\: non\-falsy\-string, assessmentgroup_name\: string\|null, assessment_uid\: string\|null, reportpermission_id\: string\|null, show\: string\|null\} on left side of \?\? always exists and is not nullable\.$#'
 			identifier: nullCoalesce.offset
+			count: 1
+			path: src/Services/AssessmentReportRepository.php
+
+		-
+			message: '#^catch \(Exception\) would suppress ErrorException, which is forbidden\.$#'
+			identifier: openemr.forbiddenCatchType
 			count: 1
 			path: src/Services/AssessmentReportRepository.php
 
@@ -1744,12 +1720,6 @@ parameters:
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
 			identifier: empty.notAllowed
 			count: 7
-			path: src/Services/ClientRepository.php
-
-		-
-			message: '#^Parameter \#1 \$v of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Models\\AssignedAssessment\:\:setAssessmentId\(\) expects int, mixed given\.$#'
-			identifier: argument.type
-			count: 1
 			path: src/Services/ClientRepository.php
 
 		-
@@ -2755,12 +2725,6 @@ parameters:
 			path: src/Services/TagRepository.php
 
 		-
-			message: '#^Call to an undefined method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\Task\\AssignmentTaskFHIRResourceService\:\:updateAssignmentItem\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/Services/Task/AssignmentTaskFHIRResourceService.php
-
-		-
 			message: '#^Call to method createDocument\(\) on an unknown class OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\Task\\QuestionnaireResponseOnSiteDocumentService\.$#'
 			identifier: class.notFound
 			count: 1
@@ -2781,7 +2745,7 @@ parameters:
 		-
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
 			identifier: empty.notAllowed
-			count: 6
+			count: 5
 			path: src/Services/Task/AssignmentTaskFHIRResourceService.php
 
 		-
@@ -2793,12 +2757,6 @@ parameters:
 		-
 			message: '#^Instantiated class OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\Task\\QuestionnaireResponseService not found\.$#'
 			identifier: class.notFound
-			count: 1
-			path: src/Services/Task/AssignmentTaskFHIRResourceService.php
-
-		-
-			message: '#^Method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\Task\\AssignmentTaskFHIRResourceService\:\:update\(\) should return OpenEMR\\Validators\\ProcessingResult but returns mixed\.$#'
-			identifier: return.type
 			count: 1
 			path: src/Services/Task/AssignmentTaskFHIRResourceService.php
 
@@ -2853,12 +2811,6 @@ parameters:
 		-
 			message: '#^Parameter \#1 \$versionId of method OpenEMR\\FHIR\\R4\\FHIRElement\\FHIRMeta\:\:setVersionId\(\) expects OpenEMR\\FHIR\\R4\\FHIRElement\\FHIRId, string given\.$#'
 			identifier: argument.type
-			count: 1
-			path: src/Services/Task/AssignmentTaskFHIRResourceService.php
-
-		-
-			message: '#^Variable \$assignmentForItem in empty\(\) always exists and is not falsy\.$#'
-			identifier: empty.variable
 			count: 1
 			path: src/Services/Task/AssignmentTaskFHIRResourceService.php
 

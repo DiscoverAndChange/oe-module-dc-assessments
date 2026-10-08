@@ -229,14 +229,19 @@ class AssignmentTaskFHIRResourceService extends FhirServiceBase implements IReso
         // grab the assignment
         $assignment = $this->repository->getAssignmentByUuid($fhirResourceId);
         $assignmentForItem = $this->repository->getAssignmentForAssignmentItemUuid($fhirResourceId);
-        if ($assignment === null || $assignmentForItem == null) {
+        // The resource id addresses EITHER a whole assignment OR an individual
+        // assignment item — normally exactly one of these lookups succeeds, so only
+        // error when NEITHER did (the original `||` threw whenever one was null).
+        if ($assignmentForItem !== null) {
+            // TODO: updating an individual assignment item via a Task is not yet
+            // implemented — updateAssignmentItem() was never defined (see TEST-PLAN.md).
+            // Fail cleanly rather than with a fatal undefined-method error.
+            throw new \InvalidArgumentException("Updating an individual assignment item via a Task is not yet supported");
+        }
+        if ($assignment === null) {
             throw new \InvalidArgumentException("Invalid FHIR resource id passed to update");
         }
-        if (!empty($assignmentForItem)) {
-            return $this->updateAssignmentItem($assignmentForItem, $fhirResourceId, $fhirResource);
-        } else {
-            return $this->updateAssignment($assignment, $fhirResourceId, $fhirResource);
-        }
+        return $this->updateAssignment($assignment, $fhirResourceId, $fhirResource);
     }
 
     /** @return ProcessingResult */

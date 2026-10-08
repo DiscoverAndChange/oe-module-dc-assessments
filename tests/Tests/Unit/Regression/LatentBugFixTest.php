@@ -83,4 +83,14 @@ class LatentBugFixTest extends TestCase
         $this->assertInstanceOf(\DateTime::class, $blob->getCreationDate());
         $this->assertSame(7, $blob->getAssetId());
     }
+    /**
+     * Before: Assignment::fromJSON used `$json['id'] ?? 0`, passing int 0 to the
+     * string setId() when 'id' was absent -> TypeError under strict_types. Now ''.
+     */
+    public function testAssignmentFromJsonMissingIdDefaultsToEmptyString(): void
+    {
+        $a = new \OpenEMR\Modules\DiscoverAndChange\Assessments\Models\Assignment();
+        $a->fromJSON(['name' => 'n', 'type' => 'Assessment']);
+        $this->assertSame('', $a->getId());
+    }
 }

@@ -108,8 +108,12 @@ class ClientRepository
                 throw new \InvalidArgumentException("Assessment id must be set");
             } else {
                 $assessmentRepo = new AssessmentRepository($this->logger);
+                /** @var int|string|null $assessmentId */
                 $assessmentId = $assessmentRepo->getMostRecentAssessmentIdForUid($item->getUid());
-                $item->setAssessmentId($assessmentId);
+                if ($assessmentId === null) {
+                    throw new \InvalidArgumentException("No published assessment found for uid " . $item->getUid());
+                }
+                $item->setAssessmentId((int) $assessmentId);
             }
         }
         if ($item instanceof AssignedLibraryAsset && empty($item->getAssetId())) {
