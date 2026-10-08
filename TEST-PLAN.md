@@ -277,6 +277,39 @@ Deliberately NOT fixed (documented, not one-line bugs):
 - `AssessmentGroup::getId(): int` vs `int|string` property — pure return-type smell, no
   runtime failure in practice (ids are ints); risky to widen, left as-is.
 
+## Coverage build-out (Scope B) — BATCH 3 DONE (FHIR layer + Bootstrap)
+Batch 3 (409 -> 453 tests, coverage ~38% -> ~45% lines, phpstan clean):
+- FHIR delegation services (Questionnaire/QuestionnaireResponse/Task): loadSearchParameters,
+  code-based getAll delegation + search-all fan-out, QuestionnaireResponse event short-circuit,
+  createProvenance type guards, Task parseOpenEMRRecord.
+- Leaf FhirServices (Assessment, QuestionnaireForm, AssessmentResponseBlob,
+  LibraryAssetResultBlob): supportsCode + parseOpenEMRRecord/parseFhirResource mapping (mocked
+  repos, no DB). QuestionnaireResponseFormFHIRResourceService already covered in the bug-fix pass.
+- Task sub-services (AssignmentTask, QuestionnairePortalTask): supportsCode, FHIRTask build,
+  update() guard/clean-fail branches. Completed-path DB writes deferred to integration.
+- Bootstrap: container compiles, wires the public controllers, subscribeToEvents() registers
+  listeners (constructed directly to avoid the singleton/Twig-runtime; Twig-dependent services
+  asserted via container has() rather than get()).
+
+Bug fixed in batch 3 (with regression test):
+- [FIXED v0.12.5] QuestionnaireFHIRResourceService / TaskFHIRResourceService caught
+  SearchFieldException without importing it -> the catch named a nonexistent module-namespaced
+  class and the real OpenEMR\Services\Search\SearchFieldException escaped uncaught (unsupported
+  questionnaire-code -> 500 instead of validation messages). Added the import.
+
+Documented, not fixed (future hardening):
+- Task services' update() completed path reads getOutput()[0] with no existence check.
+- parseOpenEMRRecord methods (Task services, AssessmentFHIRResourceService isPublic) read
+  required record keys by direct offset without isset guards (undefined-key warnings on
+  malformed input).
+- getServiceForCode() never returns null, so the `else searchAllServices` branch in
+  QuestionnaireFHIRResourceService::getAll is unreachable; createProvenanceResource methods have
+  harmless dead code after an if/else that both return.
+
+Still not done (future batch 4, if wanted): QuestionnaireAuditController (provider audit/chart
+flow), FHIR services' insert()/update() completed DB paths, ClientRepository happy paths and
+AssignmentRepository profile/appointment branches (deep group/profile/document fixtures).
+
 ## Coverage build-out (Scope B) — BATCH 2 DONE
 Goal (per decision): pure no-DB classes + raise partial repos + DB-backed repos
 (Client/ClientSearch/Tag/Token/MessageTemplate) + REST controller live actions. Excludes
@@ -338,6 +371,10 @@ More latent bugs surfaced during batch 1:
 
 
 ## Progress log
+- 2026-10-08: Scope B batch 3 — FHIR resource-service layer (delegation + leaf + Task
+  sub-services) + Bootstrap container/DI smoke tests (409 -> 453 tests, coverage ~38% -> ~45%
+  lines). Fixed the uncaught SearchFieldException (missing import) in the two delegation
+  services. phpstan clean. v0.12.5 on branch ai/coverage-batch-3.
 - 2026-10-08: Scope B batch 2 — REST controller + DB-repo CRUD tests (349 -> 409 tests,
   coverage ~27% -> ~38% lines). Fixed 3 live-route bugs found while testing (getUri TypeError,
   the library-asset-results SQL join + null, assessment-reports one() 404). phpstan clean.
