@@ -56,7 +56,10 @@ class QuestionnaireResponseRestListener implements IStaticEventSubscriber
                 return false;
             });
             if (!empty($extension)) {
-                $extension = $extension[0];
+                // array_filter preserves original keys, so the matching extension is not
+                // necessarily at index 0 (a non-DAC extension may precede it). Reindex
+                // before taking the first match, otherwise routing silently fails.
+                $extension = array_values($extension)[0];
                 // we only go off the first one
                 if ($extension->getUrl() == "https://www.discoverandchange.com/fhir/" . AssessmentResponseBlobFHIRResourceService::CODE_DAC_ASSESSMENT) {
                     $result = $this->assessmentResponseBlobFHIRResourceService->insert($fhirResource);
