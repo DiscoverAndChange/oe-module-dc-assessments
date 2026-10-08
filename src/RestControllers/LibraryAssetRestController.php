@@ -23,6 +23,12 @@ class LibraryAssetRestController implements IRestController
     {
     }
 
+    /**
+     * @deprecated Unused by the shipped patient SPA (see TEST-PLAN.md "SPA route audit",
+     *   2026-10-08): AssetService reads library assets via the FHIR
+     *   Questionnaire?questionnaire-code= search, not this route. Candidate for removal
+     *   (route library-assets.list) in a future release.
+     */
     public function list(ServerRestRequest $request): ResponseInterface
     {
         try {
@@ -38,6 +44,10 @@ class LibraryAssetRestController implements IRestController
     }
 
     /**
+     * @deprecated Unused by the shipped patient SPA (see TEST-PLAN.md "SPA route audit",
+     *   2026-10-08): AssetService reads a single asset via the FHIR Questionnaire?_id=
+     *   search, not this route. Candidate for removal (route library-assets.one) in a
+     *   future release.
      * @param string $id
      */
     public function one(ServerRestRequest $request, $id): ResponseInterface

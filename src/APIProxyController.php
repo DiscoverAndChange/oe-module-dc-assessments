@@ -121,6 +121,8 @@ class APIProxyController
             'scope' => 'Task.read',
             'isFhir' => true
         ],
+        // @deprecated Unused by the shipped SPA (TEST-PLAN.md "SPA route audit", 2026-10-08):
+        // Tasks are only loaded via search, never by id. Kept as a standard FHIR read for now.
         'task.one' => [
             'path' => '/Task/:id',
             'controller' => TaskRestController::class,
@@ -132,6 +134,8 @@ class APIProxyController
             'scope' => 'Task.read',
             'isFhir' => true
         ],
+        // @deprecated Dead by design (TEST-PLAN.md "SPA route audit", 2026-10-08): the SPA's
+        // client.update<Task> call is commented out; completion flows via QuestionnaireResponse.
         'task.update' => [
             'path' => '/Task/:id',
             'controller' => TaskRestController::class,
@@ -154,6 +158,8 @@ class APIProxyController
             ],
             'scope' => 'reports.read'
         ],
+        // @deprecated Unused by the shipped SPA (TEST-PLAN.md "SPA route audit", 2026-10-08):
+        // ClientService reads the FHIR Patient/:id resource instead of this route.
         'clients.one' => [
             'path' => '/clients/:id',
             'controller' => ClientRestController::class,
@@ -305,6 +311,8 @@ class APIProxyController
             ],
             'scope' => 'assessment-results.read'
         ],
+        // @deprecated Unused by the shipped SPA (TEST-PLAN.md "SPA route audit", 2026-10-08):
+        // results are created server-side via the QuestionnaireResponse save listener.
         'assessment-results.create' => [
             'path' => '/assessment-results'
             ,'controller' => AssessmentResultRestController::class,
@@ -356,6 +364,8 @@ class APIProxyController
             ],
             'scope' => 'assessment-users.read'
         ],
+        // @deprecated Unused by the shipped SPA (TEST-PLAN.md "SPA route audit", 2026-10-08):
+        // AssetService lists assets via the FHIR Questionnaire?questionnaire-code= search.
         'library-assets.list' => [
             'path' => '/library-assets'
             ,'controller' => LibraryAssetRestController::class,
@@ -367,6 +377,8 @@ class APIProxyController
             ],
             'scope' => 'library-assets.read'
         ],
+        // @deprecated Unused by the shipped SPA (TEST-PLAN.md "SPA route audit", 2026-10-08):
+        // AssetService reads a single asset via the FHIR Questionnaire?_id= search.
         'library-assets.one' => [
             'path' => '/library-assets/:id'
             ,'controller' => LibraryAssetRestController::class,
@@ -389,6 +401,8 @@ class APIProxyController
             ],
             'scope' => 'library-assets.write'
         ],
+        // @deprecated Unused by the shipped SPA (TEST-PLAN.md "SPA route audit", 2026-10-08):
+        // AssetService::saveAssetResult() POSTs a FHIR QuestionnaireResponse instead.
         'library-asset-results.create' => [
             'path' => '/library-asset-results'
             ,'controller' => LibraryAssetResultRestController::class,

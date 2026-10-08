@@ -87,6 +87,12 @@ class AssessmentResultRestController implements IRestController
         return RestUtils::getNotFoundResponse();
     }
 
+    /**
+     * @deprecated Unused by the shipped patient SPA (see TEST-PLAN.md "SPA route audit",
+     *   2026-10-08): the frontend only GETs assessment-results; results are created
+     *   server-side via the QuestionnaireResponse save listener, not this route. Candidate
+     *   for removal (route assessment-results.create) in a future release.
+     */
     public function create(ServerRestRequest $request): ResponseInterface
     {
         /** @var array<string, mixed> $data */

@@ -1,3 +1,18 @@
+v0.12.2 Deprecate REST/FHIR routes unused by the patient SPA
+
+  Document-only change (no behavior change; all routes stay wired). An audit of the
+  patient SPA (reconstructed from the public/frontend source maps) cross-referenced every
+  request the frontend issues against APIProxyController::API_MAPPINGS. 7 of 39 routes are
+  never called by the shipped SPA; each is marked @deprecated on both the API_MAPPINGS entry
+  and the controller method, pointing at the TEST-PLAN.md "SPA route audit" record:
+  - task.one / task.update (Tasks loaded only via search; client.update<Task> commented out)
+  - clients.one (ClientService reads FHIR Patient/:id instead)
+  - library-assets.list / library-assets.one (assets read via FHIR Questionnaire search)
+  - library-asset-results.create (saveAssetResult POSTs a FHIR QuestionnaireResponse)
+  - assessment-results.create (results created server-side via the QR save listener)
+  Deletion deferred to a future release; task.one is retained as a standard FHIR read for
+  external SMART clients.
+
 v0.12.1 Fix latent runtime bugs surfaced by the source-typing pass
 
   Fix the clear, safe runtime bugs the v0.12.0 type analysis exposed:

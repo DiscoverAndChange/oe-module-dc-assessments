@@ -83,6 +83,12 @@ class LibraryAssetResultRestController implements IRestController
         }
     }
 
+    /**
+     * @deprecated Unused by the shipped patient SPA (see TEST-PLAN.md "SPA route audit",
+     *   2026-10-08): AssetService::saveAssetResult() now POSTs a FHIR QuestionnaireResponse
+     *   instead of calling this route. Candidate for removal (route
+     *   library-asset-results.create) in a future release.
+     */
     public function create(ServerRestRequest $request): ResponseInterface
     {
         /** @var array{asset?: array<string, mixed>, ...} $data */
