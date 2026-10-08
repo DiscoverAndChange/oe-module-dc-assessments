@@ -70,6 +70,10 @@ v0.11.1 PHPStan level-10 fixes (bugs + non-ignorable) and module-local baseline
     whenever an assessment was fetched for an assignment item. The status column
     is on the assessment-blob table, aliased `assessment` here → use
     assessment.status.
+  - AssessmentAppointmentController::onServiceDelete() foreach'd the result of
+    AssignmentRepository::getAssignmentsForAppointmentId(), which returns ?array
+    (null when the appointment id is empty) — a foreach over null warns and skips
+    the cleanup. Null-coalesce to [] so the delete-cleanup loop is null-safe.
   - Client::sortAssignmentsByDateAssigned() / fromJSON: `new DateTime()`,
     `new InvalidArgumentException`, and SystemUser::fromJSON `new Exception`
     resolved into the module's Models namespace (non-existent classes) — qualify
@@ -129,9 +133,25 @@ v0.11.1 PHPStan level-10 fixes (bugs + non-ignorable) and module-local baseline
     missingType.iterableValue category (0 remaining module-wide, was ~125).
     Values are array<mixed> (|null where the native type is ?array; the specific
     element type AssessmentSnippet[]/Assignment[]/SystemError[] where the backing
-    property is typed), so no inference change. Verified with a local phpstan
-    (OpenEMR 8.4.0 + the module's vendor) and the unit tests: 0 unbaselined errors.
-    Regenerate the baseline to drop the now-fixed entries.
+    property is typed), so no inference change — EXCEPT on the FhirServiceBase
+    overrides, where a plain array<mixed> is wrong both ways: the parent
+    loadSearchParameters() returns array<string, FhirSearchParameterDefinition>
+    (array<mixed> is a wider, non-covariant return → method.childReturnType) and
+    IResourceReadableService::getAll()'s parameter is mixed (array<mixed> is a
+    narrower, non-contravariant param → method.childParameterType). Match the
+    parent exactly on those: array<string, FhirSearchParameterDefinition> returns
+    and a mixed getAll() parameter. (These nine covariance regressions were missed
+    at first because the whole-module self-check was silently aborting on an
+    undefined-sqlStatement bootstrap error — the OpenEMR root phpstan.neon.dist
+    must be inherited from inside the OpenEMR tree so its relative scanFiles
+    library/sql.inc.php resolves; running it through an out-of-tree merge config
+    left the SQL globals undefined and the analysis incomplete.)
+  - Regenerate the committed baseline from a full local environment (the OpenEMR
+    8.4.0 worktree with the module installed under interface/modules/custom_modules,
+    its nested vendor, and a seeded MariaDB): 2289 errors / 1691 entries, scoped to
+    this module's src/ only, every path relative. Verified end to end — applying
+    the baseline reports zero errors, and the DB-backed phpunit suite passes
+    (8 tests, 40 assertions).
 
 v0.11.0 OpenEMR 8.4.1 (PHP 8.5) compatibility
 

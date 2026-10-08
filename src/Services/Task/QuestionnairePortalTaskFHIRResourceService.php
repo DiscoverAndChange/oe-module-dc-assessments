@@ -140,7 +140,7 @@ class QuestionnairePortalTaskFHIRResourceService extends FhirServiceBase impleme
      * Search fields can be combined as Composite fields and represent a host of search options.
      * @see https://www.hl7.org/fhir/search.html to see the types of search operations, and search types that are available
      * for use.
-     * @return array<mixed>
+     * @return array<string, FhirSearchParameterDefinition>
      */
     protected function loadSearchParameters()
     {

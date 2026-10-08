@@ -15,6 +15,7 @@ class ClientSearchQueryDTO
         return !($this->id || $this->email || ($this->firstName && $this->lastName));
     }
 
+    /** @param array<mixed> $request */
     public function populateFromRequest(array $request): void
     {
         $this->id = $request['id'] ?? null;
