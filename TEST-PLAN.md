@@ -73,11 +73,15 @@ Controller (151), AssessmentGroupRestController (146).
 - [x] `DTO/LibraryAssetBlobResultDTO` — fromDTO + generateId + jsonSerialize
 - [x] `DTO/ClientSearchQueryDTO` — populateFromRequest, isEmpty (note: no isValid() exists)
 - [x] `Models/SystemError`, `ErrorCode`/`ErrorCodeStatus` — code→status/string mapping
-### P2 — repository hydration (crafted row arrays)
-- [ ] `AssignmentRepository::hydrateAssignedFromRecord` / `hydrateItemFromRecord`
-- [ ] `AssessmentRepository::hydrateAssessmentSummaryFromDatabaseRecord`
-- [ ] `SystemUserRepository::hydrateUser`
-- [ ] `LibraryAssetBlobRepository` / `LibraryAssetResultBlobRepository` `hydrate*`
+### P2 — repository hydration (crafted row arrays via reflection) — DONE
+- [x] `AssignmentRepository` — all hydrators (hydrateItemFromRecord routing + the five
+      Assigned* leaf mappers + hydrateDocumentTemplateProfile + populateDatesForAssignment)
+- [x] `AssessmentRepository::hydrateAssessmentSummaryFromDatabaseRecord` + getAssessmentSummaryFromRecords
+- [x] `AssessmentResultRepository::hydrateRecordsFromResult`
+- [x] `SystemUserRepository::hydrateUser` (runs under harness ACL; role asserted loosely)
+- [x] `LibraryAssetResultBlobRepository::hydrateResultBlobFromRecord` (no-decrypt path;
+      decrypt branch deferred to P3 — needs encryption keys)
+- [~] `LibraryAssetBlobRepository` hydration only covered incidentally (~36%); dedicated test later
 ### P3 — DB-backed integration (oe-test-db)
 - [ ] `ResourceImporterService` — extend beyond the current happy paths
 - [ ] `AssignmentRepository` — create / get / complete lifecycle
@@ -93,7 +97,10 @@ Candidates for the source-typing pass / follow-up fixes (tests characterize the
 SAFE path; none of these were "fixed" while writing tests):
 - **`Models/Client::fromJSON()` is dead** — `array_merge($client, (array)$obj)` with
   `$client` a Client *object* throws `TypeError` on every call. No working path.
-  HIGH priority to rewrite; its test is `markTestIncomplete` until then.
+  Confirmed UNUSED: grep of src/, public/, moduleConfig.php finds no caller (only
+  AssignmentSerializer calls Assignment/AssignedX::fromJSON), so no production impact —
+  it's dead code. Rewrite or remove during the source-typing pass; test is
+  `markTestIncomplete` until then.
 - **`Models/SystemUser::jsonSerialize()` crashes on a fresh object** — `$_companyName`
   has no default/initializer, so serialize-before-setCompanyName() throws. Give it `''`.
 - `DTO/ClientSearchQueryDTO` — the 5 typed properties have no defaults, so `isEmpty()`
@@ -116,6 +123,18 @@ SAFE path; none of these were "fixed" while writing tests):
   `AssignedAssessment` `string $assessmentId` vs `setAssessmentId(int)`/`getAssessmentId(): int`.
 - Several Models read required typed properties in `jsonSerialize()` with no defaults —
   serialize-before-hydrate throws (uninitialized typed property).
+- (P2) `AssignmentRepository::hydrateAssignedLibraryAssetFromRecord` populates dates then
+  calls `setResultId()` last; `AssignedLibraryAsset::setResultId(non-null)` resets
+  `dateCompleted` to now, clobbering the record's parsed `date_completed`. Masked in the
+  full path by a trailing re-population, but wrong on a direct call. Order-of-operations bug.
+- (P2) `createFromFormat(...)` returns `false` on an absent/invalid date and is assigned to
+  a NON-NULL typed `\DateTime` → `TypeError`: `AssessmentRepository::hydrateAssessmentSummary
+  FromDatabaseRecord` (`$result->date`) and `LibraryAssetResultBlobRepository::hydrateResult
+  BlobFromRecord` (`setCreationDate`). Nullable/absent date column into a non-null property.
+- (P2) `AssessmentResultRepository::hydrateRecordsFromResult` reads `assignmentitem_id`/`date`
+  with no null-coalesce (undefined-key warning on absent keys) and assumes `json_decode` of
+  `result_data` yields an associative array (a scalar/list payload would break the merge).
+- (P2) `(int) $record['asset_id']` casts a null asset_id to 0 (no default protection).
 
 ## Progress log
 - 2026-10-08: Plan created. phpunit.xml given a `<source>`/testsuite so coverage can
@@ -126,4 +145,9 @@ SAFE path; none of these were "fixed" while writing tests):
 - 2026-10-08: P1 pure-unit hydration batch complete — 15 new test files (Models,
   Assigned* subclasses, DTOs, error/code models). Suite 15 → 136 tests / 428
   assertions, 2 incomplete. Coverage 9.3% → **15.0%**; the P1 classes are now ~100%.
-  Latent bugs above were surfaced in the process. Next: P2 repository hydration.
+  Latent bugs above were surfaced in the process.
+- 2026-10-08: P2 repository-hydration batch complete — 5 new test files (AssignmentRepository
+  + AssessmentRepository/AssessmentResultRepository/LibraryAssetResultBlobRepository/
+  SystemUserRepository), reflection into the private hydrators on the pure no-DB path.
+  Suite 136 → 173 tests / 583 assertions. Coverage 15.0% → **17.7%** (repo CRUD bulk is
+  P3). `Client::fromJSON` confirmed dead/unused. Next: P3 DB-backed integration.
