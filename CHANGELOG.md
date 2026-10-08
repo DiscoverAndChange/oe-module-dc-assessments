@@ -16,6 +16,16 @@ v0.12.3 Fix latent bugs surfaced by the audit; raise test coverage
     payload; null-coalesce the assignmentitem_id/date meta keys.
   - LibraryAssetBlobResultDTO::fromDTO: parse an ISO-string creationDate (was a TypeError).
   - ClientSearchQueryDTO: default the typed properties so isEmpty() is safe before populate.
+  - RestUtils::getResponseForProcessingResult: the internal-errors branch never set the
+    status var, so the response builder hit an undefined variable; now returns 500.
+  - TagRepository::getTagsForAssetIds: ids that all fail the positive-int filter no longer
+    build an invalid "IN ()" clause; returns [] without querying.
+
+  Test coverage raised ~18% -> ~27% lines (177 -> 349 tests): pure-unit tests for the
+  validators, Utils (RestUtils/FhirObjectDenormalizer), PaginatedResultsService,
+  HTTPResponseUtils, AssignmentSerializer, Role/Capability/ServerRestRequest/GlobalConfig,
+  the DTO/model fixes above, plus DB-backed/mocked repository tests (Tag/Token/
+  MessageTemplate/Client).
 
 v0.12.2 Deprecate REST/FHIR routes unused by the patient SPA
 

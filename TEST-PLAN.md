@@ -282,6 +282,34 @@ Goal (per decision): pure no-DB classes + raise partial repos + DB-backed repos
 (Client/ClientSearch/Tag/Token/MessageTemplate) + REST controller live actions. Excludes
 FHIR resource services and Bootstrap/DI.
 
+Batch 1 DONE (177 -> 349 tests, coverage ~18% -> ~27% lines, phpstan clean):
+- Pure no-DB: 4 validators, Utils (RestUtils, FhirObjectDenormalizer), PaginatedResultsService,
+  HTTPResponseUtils, AssignmentSerializer, Models/Role, Models/Capability,
+  Models/ServerRestRequest, GlobalConfig.
+- Repos: TagRepository (DB-backed), TokenRepository (stub), MessageTemplateRepository (mocked
+  Twig/GlobalConfig), ClientRepository (guard branches; happy paths need deeper DB fixtures).
+
+More latent bugs surfaced during batch 1:
+- [FIXED v0.12.3] RestUtils::getResponseForProcessingResult — internal-errors branch left
+  $status undefined (response builder crashed); now 500.
+- [FIXED v0.12.3] TagRepository::getTagsForAssetIds — all-invalid ids built an invalid
+  "IN ()"; now returns [] early.
+- [documented, not fixed] ServerRestRequest::getUri(): UriInterface delegates to
+  HttpRestRequest::getUri(): string -> TypeErrors whenever called. Return-type fix is a
+  signature change; left for a focused follow-up.
+- [documented] AssignmentSerializer::deserialize throws "Invalid assignment type" for
+  TemplateProfile even though it is a valid group type in Assignment::ASSIGNMENT_TYPES
+  (asymmetry); and leaf types return a PLAIN Assignment at top level with the concrete
+  subclass only as items[0] (discarded when no items). Characterized as-is.
+- [documented] Models/Capability is an orphaned abstract class in the GLOBAL namespace,
+  unreferenced and not PSR-4 autoloadable (dead code).
+- [documented] AssessmentGroupValidator "db-update" context defines no rules (validates
+  anything as valid).
+
+Batch 1 NOT yet done (next): ClientSearchRepository + ClientRepository happy paths
+(DB fixtures), REST controller live actions (list/one/create the SPA calls), and raising
+the partially-covered repos (AssignmentRepository/AssessmentResultRepository CRUD).
+
 ## Progress log
 - 2026-10-08: Plan created. phpunit.xml given a `<source>`/testsuite so coverage can
   target `src/`. First pure-unit test (`Models/AssignmentTest`) added as the pattern.

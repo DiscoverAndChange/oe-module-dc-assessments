@@ -132,6 +132,9 @@ class RestUtils
         } elseif (count((array) $processingResult->getData()) <= 0) {
             return RestUtils::getNotFoundResponse();
         } elseif ($processingResult->hasInternalErrors()) {
+            // was: $status was never set on this branch, so createResponse($status) below
+            // hit an undefined variable. Internal errors map to a 500.
+            $status = 500;
             $httpResponseBody["internalErrors"] = $processingResult->getInternalErrors();
         } else {
             return RestUtils::returnSingleObjectResponse(((array) $processingResult->getData())[0]);
