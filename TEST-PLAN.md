@@ -494,6 +494,14 @@ proceed on the 489 exercised-method errors; keep deprecated/dead baselined; the 
 integration-heavy remainder is a future batch (or fix conservatively/PHPDoc-only).
 
 ## Progress log
+- 2026-10-08: Fixed a production SMART-app crash (v0.12.8): SystemUserRepository::getUsers fed
+  NULL usernames (OpenEMR "address book" / non-login user rows) into SystemUser(string
+  $username) -> TypeError on GET /api/assessment-users/:uuid. getUsers() now skips username-less
+  rows; hydrateUser() coalesces; annotations -> ?string. Added SystemUserRepositoryAddressBookTest
+  (+2 tests, seeds a NULL-username row). The getUsers path was already incidentally exercised
+  (so the phpstan-readiness metric is unchanged); the value is the fix + a targeted regression
+  test that would have caught it, plus SystemUserRepository's own flagged errors dropping via
+  the ?string annotations.
 - 2026-10-08: Batch 5 (pre-phpstan test build-out) — AclIntegration trait unblocks ACL-gated
   controller integration tests; added DB-backed write-action tests (AssessmentReport/
   AssessmentGroup/Assessment/Client controllers), QR-form parseOpenEMRRecord, and no-ACL
