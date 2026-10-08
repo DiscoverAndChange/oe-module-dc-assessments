@@ -75,4 +75,55 @@ class QuestionnaireResponseFormFHIRResourceServiceTest extends TestCase
 
         $this->assertArrayNotHasKey('creator_user_uuid', $parsed);
     }
+
+    /**
+     * parseOpenEMRRecord (read direction) builds a FHIR QuestionnaireResponse from a DB record.
+     * Assertions go through json_encode so they are robust to the FHIR getters' wrapper shapes.
+     *
+     * @param array<string, mixed> $record
+     * @return array<string, mixed>
+     */
+    private function parseOut(array $record): array
+    {
+        $service = new QuestionnaireResponseFormFHIRResourceService();
+        return json_decode((string) json_encode($service->parseOpenEMRRecord($record, false)), true);
+    }
+
+    public function testParseOpenEMRRecordPatientAuthored(): void
+    {
+        $out = $this->parseOut([
+            'questionnaire_response' => '{}',
+            'version' => '2',
+            'questionnaire_response_uuid' => 'qr-uuid',
+            'questionnaire_id' => 'q-uuid',
+            'encounter_uuid' => 'enc-uuid',
+            'puuid' => 'pat-uuid',
+            'creator_user_id' => null,   // empty -> source is the Patient
+            'create_time' => '2026-03-04 05:06:07',
+            'status' => 'completed',
+        ]);
+
+        $this->assertSame('qr-uuid', $out['id']);
+        $this->assertSame('completed', $out['status']);
+        $this->assertStringContainsString('Patient/pat-uuid', $out['subject']['reference']);
+        $this->assertStringContainsString('Patient/pat-uuid', $out['source']['reference']);
+        $this->assertStringContainsString('Encounter/enc-uuid', $out['encounter']['reference']);
+        $this->assertStringContainsString('Questionnaire/q-uuid', $out['questionnaire']);
+        $this->assertNotEmpty($out['authored']);
+    }
+
+    public function testParseOpenEMRRecordPractitionerAuthoredMapsIncompleteStatus(): void
+    {
+        $out = $this->parseOut([
+            'questionnaire_response' => '{}',
+            'questionnaire_response_uuid' => 'qr-2',
+            'puuid' => 'pat-2',
+            'creator_user_id' => 7,              // non-empty -> source is the Practitioner
+            'creator_user_uuid' => 'prac-uuid',
+            'status' => 'incomplete',            // maps to in-progress
+        ]);
+
+        $this->assertStringContainsString('Practitioner/prac-uuid', $out['source']['reference']);
+        $this->assertSame('in-progress', $out['status']);
+    }
 }

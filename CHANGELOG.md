@@ -1,3 +1,23 @@
+v0.12.7 Integration tests for ACL-gated write paths (pre-phpstan coverage build-out)
+
+  Test-only change (no src changes). Before the planned aggressive PHPStan refactor, this
+  builds DB-backed integration coverage for the controller write actions that were previously
+  untestable because the bare test DB grants no ACL.
+  - New tests/Tests/Support/AclIntegration.php trait: installs OpenEMR's default ACL tree once
+    (idempotent) with the seeded user in the Administrators group and logs that user into the
+    session, so AclMain::aclCheckCore() passes and the controllers' create/update bodies run.
+  - Integration tests (seed -> run -> clean up, phptest% prefix): AssessmentReportRestController,
+    AssessmentGroupRestController, AssessmentRestController, ClientRestController write actions.
+  - Plus QuestionnaireResponseFormFHIRResourceService::parseOpenEMRRecord (read direction) and
+    non-ACL service/repo methods (LibraryAssetResultBlobRepository save/search/saveTags,
+    QuestionnairePortalTask search guards).
+  Suite 478 -> 507 tests; line coverage ~47% -> ~54%; PHPStan-flagged errors in test-exercised
+  methods rose from 42% to 58%. Module PHPStan still clean.
+
+  Latent bugs surfaced (documented in TEST-PLAN, deliberately NOT fixed here): the
+  QuestionnairePortalTask getTaskDataForTemplates $docMap keying bug; ClientRestController::
+  sendMessageToClient returning null on success and lacking an ACL check.
+
 v0.12.6 Provider audit + repo-branch coverage (Scope B batch 4); fix appointment-id lookup crash
 
   Coverage raised ~45% -> ~47% lines (453 -> 478 tests, phpstan clean):
