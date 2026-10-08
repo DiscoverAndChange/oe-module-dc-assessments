@@ -401,22 +401,43 @@ Method: ran phpstan with the module baseline OFF (846 current errors, with line 
 mapped each error to its enclosing method, and checked that method's coverage via clover.
 Regenerate with: `<scratchpad>/precision.py <clover.xml> <phpstan-errors.json> <DEST>/src`.
 
-Where the 846 flagged errors live:
-- **355 (42%) in methods EXERCISED by tests** -> safe to do aggressive phpstan fixes now.
-- **450 (53%) in methods NOT exercised** -> write a test BEFORE fixing (list below).
+Where the 846 flagged errors live (UPDATED after batch 5 — ACL-gated write bodies now netted):
+- **489 (58%) in methods EXERCISED by tests** -> safe to do aggressive phpstan fixes now.
+  (was 355/42% before batch 5; the AclIntegration trait unblocked ~134 write-body errors.)
+- **316 (37%) in methods NOT exercised** -> integration-heavy remainder (list below).
 - 34 (4%) in @deprecated methods -> leave in the baseline, do not test/fix.
 - 7 class-level (use/property/docblock) -> n/a.
 
+RESOLVED (batch 5): the ACL blocker. tests/Tests/Support/AclIntegration.php installs OpenEMR's
+default ACL tree ONCE (idempotent) with the seeded user in the Administrators group and logs
+that user into the active session, so AclMain::aclCheckCore() passes and the controller
+create/update bodies run against the DB. Use it via `use AclIntegration;` + loginAsAdmin().
+
 ### "Need a test" targets (method : #errors), grouped by tranche
-TRANCHE A — high-value + unit-testable (do first, ~130 errors):
-- RestControllers/ClientRestController: list 7, addAssignmentGroupToClient 9, sendMessageToClient 8,
-  removeAssignmentFromClient 6, addAssignmentToClient 5  (0% covered today)
-- RestControllers/AssessmentReportRestController: create 12, update 11
-- RestControllers/AssessmentGroupRestController: create 6, addAssessmentToGroup 6, updateAssessmentVersionForGroup 6
-- RestControllers/AssessmentRestController: createAssessmentForContext 10, update 1
-- RestControllers/QuestionnaireResponseRestController: create 8, getAll 5, getOne 1, __construct 1
-- Services/FhirServices/QuestionnaireResponseFormFHIRResourceService: parseOpenEMRRecord 22
-  (read direction; parseFhirResource already covered) — easy win, mostly pure.
+IMPORTANT (empirical, 2026-10-08): the unit harness has NO ACL — gacl_* tables are EMPTY, so
+AclMain::aclCheckCore(...) returns FALSE for everything (verified with and without a seeded
+user session). Every REST controller WRITE action gates on `if (!AclMain::aclCheckCore(...))
+throw AccessDenied` early, so a unit test only reaches the ACL-DENIED path, never the
+error-bearing create/update body. Granting ACL would require installing the full phpGACL
+structure into the shared test DB (fragile) -> NOT worth it. Therefore the ACL-gated write
+bodies are INTEGRATION-ONLY: cover them via end-to-end API tests, or (for the phpstan pass)
+fix them conservatively / PHPDoc-only and leave their errors baselined.
+
+TRANCHE A — genuinely unit-testable (no ACL gate):
+- [DONE] Services/FhirServices/QuestionnaireResponseFormFHIRResourceService::parseOpenEMRRecord
+  22 (read direction; parseFhirResource already covered) — pure mapping.
+- Services/Task/QuestionnairePortalTaskFHIRResourceService: searchForOpenEMRRecords 6,
+  getTaskDataForTemplates 6 (service layer, no ACL).
+- Services/LibraryAssetResultBlobRepository: saveLibraryAssetResultBlob 10 (+ search/saveTags).
+
+ACL-GATED write bodies — INTEGRATION-ONLY, leave baselined for the phpstan pass (~95 errors):
+- RestControllers/ClientRestController write actions (list/addAssignmentGroupToClient/
+  sendMessageToClient/removeAssignmentFromClient/addAssignmentToClient) ~35.
+- RestControllers/AssessmentReportRestController create/update ~23.
+- RestControllers/AssessmentGroupRestController create/add/update ~18.
+- RestControllers/AssessmentRestController createAssessmentForContext/update ~11.
+- RestControllers/QuestionnaireResponseRestController create ~8.
+(Only the ACL-denied path of each is unit-reachable; the create/update body is not.)
 
 TRANCHE B — integration-heavy (real fixtures; cover where cheap, else leave baselined):
 - FHIR insert/insertOpenEmrRecord (QuestionnaireResponse-create DB flow):
@@ -440,10 +461,44 @@ LEAVE BASELINED (dead/deprecated):
   rest of APIProxyController (proxyGet/Post/getCallableForApiRequest, ~15) is live-but-untested
   and belongs in a test tranche, not here.
 
-Plan: build Tranche A (and cheap parts of B) FIRST, THEN start the aggressive phpstan fixes on
-the now-netted methods; keep deprecated/dead errors baselined.
+### DONE in batch 5 (v0.12.7)
+- AclIntegration trait (ACL install + login) — unblocks ACL-gated controller integration tests.
+- Integration tests (DB-backed, seed/run/clean): AssessmentReportRestController create/update,
+  AssessmentGroupRestController create/add/updateVersion, AssessmentRestController create/update,
+  ClientRestController list/addAssignmentGroup/addAssignment/remove/sendMessage.
+- QuestionnaireResponseFormFHIRResourceService::parseOpenEMRRecord (read direction, 22 errors).
+- LibraryAssetResultBlobRepository save/search/saveTags; QuestionnairePortalTask search guards.
+
+### Remaining "need a test" (316 errors) — integration-heavy, deep fixtures:
+- Controllers/AssessmentAppointmentController 51 (appointment wizard/notification/documents;
+  needs appointment + document-template fixtures).
+- RestControllers/QuestionnaireAuditController actionChartAssignmentToEncounter 13 + render 11
+  (php://input body, encounter, form save).
+- FHIR insert/insertOpenEmrRecord DB flow (AssessmentResponseBlob 17, LibraryAssetResultBlob,
+  QuestionnaireResponseForm) and QuestionnaireResponseRestController::create (the QR-create
+  pipeline — creates a QuestionnaireResponse + completes the assignment).
+- Listeners (QuestionnaireResponseRestListener, QuestionnaireAssignmentListener) — event glue.
+
+### Latent bugs surfaced in batch 5 (documented, NOT fixed — for a later targeted pass):
+- Services/Task/QuestionnairePortalTaskFHIRResourceService::getTaskDataForTemplates: the empty()
+  guard checks $docMap[$doc['id']] but the map is keyed by $doc['pid'], so it resets per row and
+  discards earlier file_path entries when a pid has multiple onsite_documents. Real bug.
+- RestControllers/ClientRestController::sendMessageToClient: returns null on the success path
+  (no ResponseInterface) AND performs NO AclMain check, unlike every sibling write action -
+  a possible authorization gap. Needs an author decision (fix could change SPA behavior).
+- Models/ServerRestRequest::getCompanyId() hard-returns 1 (TODO); only the SuperUser/null path
+  is exercised today.
+
+Plan: Tranche A + no-ACL + ACL-gated write bodies are now netted. Aggressive phpstan fixes can
+proceed on the 489 exercised-method errors; keep deprecated/dead baselined; the 316
+integration-heavy remainder is a future batch (or fix conservatively/PHPDoc-only).
 
 ## Progress log
+- 2026-10-08: Batch 5 (pre-phpstan test build-out) — AclIntegration trait unblocks ACL-gated
+  controller integration tests; added DB-backed write-action tests (AssessmentReport/
+  AssessmentGroup/Assessment/Client controllers), QR-form parseOpenEMRRecord, and no-ACL
+  service/repo methods. Suite 478 -> 507; coverage ~47% -> ~54% lines. phpstan-flagged errors
+  in test-exercised methods: 355/42% -> 489/58%. phpstan clean. v0.12.7 on ai/coverage-batch-5.
 - 2026-10-08: Scope B batch 4 — QuestionnaireAuditController guards + ClientRepository happy
   paths + AssignmentRepository remaining branches (453 -> 478 tests, coverage ~45% -> ~47%
   lines). Fixed the getAssignmentsForAppointmentId int-into-TokenSearchField crash on the
