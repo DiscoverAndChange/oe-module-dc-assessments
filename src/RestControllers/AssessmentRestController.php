@@ -32,6 +32,7 @@ class AssessmentRestController implements IRestController
     public function list(ServerRestRequest $request): ResponseInterface
     {
         $facilityRepo = new FacilityService();
+        /** @var array{id?: int, name?: string}|null $facility */
         $facility = $facilityRepo->getPrimaryBusinessEntity();
         $facilityId = $facility['id'] ?? null;
         $repo = new AssessmentRepository(new SystemLogger());
@@ -82,7 +83,9 @@ class AssessmentRestController implements IRestController
     {
         try {
             $facRepo = new FacilityService();
-            $companyId = $request->getAuthRole() == Role::SuperUser ? null : $facRepo->getPrimaryBusinessEntity()['id'];
+            /** @var array{id?: int, name?: string}|null $primaryBusinessEntity */
+            $primaryBusinessEntity = $facRepo->getPrimaryBusinessEntity();
+            $companyId = $request->getAuthRole() == Role::SuperUser ? null : ($primaryBusinessEntity['id'] ?? null);
             // first we need to do some checking on whether the current user can edit this assessment
             $assessmentRepo = new AssessmentRepository($this->logger);
             if (!$assessmentRepo->canEditAssessment((int) $id, $companyId)) {
@@ -125,10 +128,11 @@ class AssessmentRestController implements IRestController
                 // cleanup routine
                 unset($data['token']);
             }
+            /** @var array{id?: int, name?: string}|null $primaryBusinessEntity */
             $primaryBusinessEntity = $companyRepo->getPrimaryBusinessEntity();
             // super users can create assessments for any company, otherwise we use the primary business entity for now
             // TODO: @adunsulag if we restrict companies down by facility we would handle that here.
-            $companyId = $request->getAuthRole() == Role::SuperUser ? null : $primaryBusinessEntity['id'];
+            $companyId = $request->getAuthRole() == Role::SuperUser ? null : ($primaryBusinessEntity['id'] ?? null);
             $primaryBusinessEntity = $companyRepo->getPrimaryBusinessEntity();
             $repo = new AssessmentRepository(new SystemLogger());
             // can't have duplicates on an insert

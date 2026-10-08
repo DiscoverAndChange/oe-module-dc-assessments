@@ -57,6 +57,7 @@ class AssessmentReportRestController implements IRestController
         $validator = new AssessmentReportValidator();
         $transactionCommitted = false;
         try {
+            /** @var array{linkedGroup?: array<string, mixed>, ...} $data */
             $data = $request->getBodyAsJson();
             if (!AclMain::aclCheckCore("encounters", "forms")) {
                 throw new AccessDeniedException("encounters", "forms", "Access denied to create this resource");
@@ -105,6 +106,7 @@ class AssessmentReportRestController implements IRestController
         $validator = new AssessmentReportValidator();
         $transactionCommitted = false;
         try {
+            /** @var array{linkedGroup?: array<string, mixed>, ...} $data */
             $data = $request->getBodyAsJson();
             if (!AclMain::aclCheckCore("encounters", "forms")) {
                 throw new AccessDeniedException("encounters", "forms", "Access denied to create this resource");

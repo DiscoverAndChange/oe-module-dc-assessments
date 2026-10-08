@@ -38,7 +38,7 @@ class ResourceImporterService
         $this->importResources($resources, $importerUserId);
     }
     /**
-     * @param array<mixed> $resources
+     * @param array<string, array<mixed>> $resources
      * @param mixed $importerUserId
      * @return void
      */
@@ -113,7 +113,9 @@ class ResourceImporterService
             $this->importLog[] = $logEntry;
             $validation = $validator->validate($blob, AssessmentValidator::DATABASE_INSERT_CONTEXT);
             if (!$validation->isValid()) {
-                $logEntry->error = "assessment " . ($report['_name'] ?? '<unknown>') . ' ' . implode(" ", (array) $validation->getValidationMessages());
+                // $report was an undefined variable here (copy/paste bug); the
+                // loop item in this method is $blob.
+                $logEntry->error = "assessment " . ($blob['_name'] ?? '<unknown>') . ' ' . implode(" ", (array) $validation->getValidationMessages());
             } else if ($repo->existsAssessment($blob['_uid'])) {
                 $logEntry->error = "Assessment already exists with uid " . $blob['_uid'];
             } else {
@@ -130,7 +132,8 @@ class ResourceImporterService
                     $logEntry->importStatus = "success";
                     $logEntry->successMessage = "Successfully imported assessment with uid " . $uid . " and name " . $name;
                 } catch (\Exception $e) {
-                    $logEntry->error = "assessment " . ($report['_name'] ?? '<unknown>') . ' ' . $e->getMessage();
+                    // $report was an undefined variable here (copy/paste bug).
+                    $logEntry->error = "assessment " . ($blob['_name'] ?? '<unknown>') . ' ' . $e->getMessage();
                     $logEntry->importStatus = "failure";
                 }
             }
@@ -166,7 +169,9 @@ class ResourceImporterService
             $validation = $validator->validate($assetBlob, LibraryAssetBlobValidator::DATABASE_INSERT_CONTEXT);
             if (!$validation->isValid()) {
                 $errorMessage = "asset " . ($assetBlob['title'] ?? '<unknown>') . ' ';
-                foreach ($validation->getValidationMessages() as $key => $value) {
+                /** @var array<string, mixed> $validationMessages */
+                $validationMessages = $validation->getValidationMessages();
+                foreach ($validationMessages as $key => $value) {
                     $errorMessage .= "Validation failed for key $key with messages " . implode(";", (array) $value) . ".";
                 }
                 $logEntry->error = $errorMessage;
@@ -206,6 +211,7 @@ class ResourceImporterService
         $repo = $this->getAssessmentGroupService();
         $assessmentRepo = $this->getAssessmentRepository();
         foreach ($groups as $group) {
+            /** @var array<string, mixed> $group */
             $logEntry = new ImportLogEntry();
             $logEntry->index = $index++;
             $logEntry->importResource = json_encode($group, JSON_PRETTY_PRINT);
@@ -219,7 +225,9 @@ class ResourceImporterService
                     throw new \InvalidArgumentException("Group with name " . $group['_name'] . " already exists");
                 }
                 $createdGroup = $repo->createGroup($group['_name'], $companyId);
-                foreach ($group['_assessments'] as $uid) {
+                /** @var array<mixed> $groupAssessments */
+                $groupAssessments = $group['_assessments'];
+                foreach ($groupAssessments as $uid) {
                     if (!$assessmentRepo->existsAssessment($uid)) {
                         throw new \InvalidArgumentException("Failed to find assessment with uid " . $uid);
                     }
@@ -249,6 +257,7 @@ class ResourceImporterService
         $assessmentRepo = $this->getAssessmentRepository();
 
         foreach ($reports as $report) {
+            /** @var array<string, mixed> $report */
             $logEntry = new ImportLogEntry();
             $logEntry->index = $index++;
             $logEntry->importResource = json_encode($report, JSON_PRETTY_PRINT);
@@ -269,7 +278,9 @@ class ResourceImporterService
                     if (!$result->hasData()) {
                         throw new \InvalidArgumentException("Failed to find assessment group with name " . $report['_assessmentgroup']);
                     }
-                    $groupId = ProcessingResult::extractDataArray($result)[0]['id'];
+                    /** @var array<int, array<string, mixed>> $groupResultData */
+                    $groupResultData = ProcessingResult::extractDataArray($result) ?? [];
+                    $groupId = $groupResultData[0]['id'];
                 } else {
                     throw new \InvalidArgumentException("Failed to find assessment or assessment group");
                 }

@@ -54,6 +54,7 @@ class ConfigController
         ];
 
         try {
+            /** @var string $importUrl */
             $importUrl = $queryVars['importUrl'];
 
             if (empty($importUrl)) {

@@ -109,6 +109,7 @@ class TaskFHIRResourceService extends FhirServiceBase implements
      */
     public function getAll($fhirSearchParameters, $puuidBind = null): ProcessingResult
     {
+        /** @var array<string, mixed> $fhirSearchParameters */
         $fhirSearchResult = new ProcessingResult();
         try {
             if (isset($puuidBind)) {
@@ -123,6 +124,7 @@ class TaskFHIRResourceService extends FhirServiceBase implements
                 );
                 // if we have a service let's search on that
                 if (isset($service)) {
+                    /** @var \OpenEMR\Services\FHIR\FhirServiceBase $service */
                     $fhirSearchResult = $service->getAll($fhirSearchParameters, $puuidBind);
                 } else {
                     $fhirSearchResult = $this->searchAllServices($fhirSearchParameters, $puuidBind);
@@ -149,7 +151,7 @@ class TaskFHIRResourceService extends FhirServiceBase implements
     /**
      * @param array<mixed> $dataRecord
      * @param bool $encode
-     * @return TaskFHIRResource|\OpenEMR\Services\FHIR\the
+     * @return \OpenEMR\FHIR\R4\FHIRDomainResource\FHIRTask
      */
     public function parseOpenEMRRecord($dataRecord = array(), $encode = false)
     {
@@ -220,6 +222,7 @@ class TaskFHIRResourceService extends FhirServiceBase implements
         if (!$fhirResource->getFor()) {
             throw new \InvalidArgumentException("Missing Task.for");
         }
+        /** @var array<string, mixed> $patientRef */
         $patientRef = UtilsService::parseReference($fhirResource->getFor());
         if ($patientRef['localResource'] != true || empty($patientRef['uuid'])) {
             throw new \InvalidArgumentException("Invalid Task.for");
@@ -260,7 +263,9 @@ class TaskFHIRResourceService extends FhirServiceBase implements
         if (!empty($dataRecord->getRequester()) && $dataRecord->getRequester()->getType() == 'Practitioner') {
             $who = $dataRecord->getRequester();
         }
-        return $provenanceService->createProvenanceForDomainResource($dataRecord, $who);
+        /** @var FHIRProvenance $provenance */
+        $provenance = $provenanceService->createProvenanceForDomainResource($dataRecord, $who);
+        return $provenance;
     }
 
     /** @return ProcessingResult */

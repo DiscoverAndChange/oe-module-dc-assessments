@@ -91,17 +91,20 @@ class LibraryAssetResultBlobFHIRResourceService extends FhirServiceBase
         return parent::createOpenEMRSearchParameters($fhirSearchParameters, $puuidBind);
     }
 
-    /** @return array<mixed> */
+    /** @return array<string, mixed>|null */
     public function parseFhirResource(FHIRDomainResource $fhirResource)
     {
         if (!($fhirResource instanceof FHIRQuestionnaireResponse)) {
             throw new \BadMethodCallException("FHIR resource should be correct instance class");
         }
+        /** @var \OpenEMR\FHIR\R4\FHIRElement\FHIRExtension[] $extensions */
         $extensions = UtilsService::getExtensionsByUrl("https://www.discoverandchange.com/fhir/" . self::CODE_DAC_LIBRARY_ASSET, $fhirResource);
         if (!empty($extensions)) { // we only care about the first one.
             $valueString = $extensions[0]->getValueString();
+            /** @var array<string, mixed>|null $dataRecord */
             $dataRecord = json_decode($valueString, true);
             if ($dataRecord) {
+                /** @var array<string, mixed> $author */
                 $author = UtilsService::parseReference($fhirResource->getAuthor());
                 $dataRecord['clientId'] = $author['uuid'];
                 return $dataRecord;
@@ -126,6 +129,8 @@ class LibraryAssetResultBlobFHIRResourceService extends FhirServiceBase
         if (!$validation->isValid()) {
             return $validation;
         }
+        // validation passed, so the record is a populated associative array.
+        /** @var array<string, mixed> $openEmrRecord */
         $transactionCommitted = false;
         try {
             $assignmentRepo = $this->assignmentRepository;
@@ -133,7 +138,7 @@ class LibraryAssetResultBlobFHIRResourceService extends FhirServiceBase
             $client = $this->validateCreateAccessAndReturnClient($openEmrRecord['clientId'], SessionWrapperFactory::getInstance()->getActiveSession()->get('authUserID'));
             // use the id in the session... don't like it but its the only thing we have right now
             $resultDTO = new LibraryAssetBlobResultDTO();
-            $resultDTO->fromDTO((array) $openEmrRecord);
+            $resultDTO->fromDTO($openEmrRecord);
             $assetDTO = new LibraryAssetBlobDTO();
             if (!empty($openEmrRecord['asset'])) {
                 $assetDTO->fromDTO((array) $openEmrRecord['asset']);
@@ -150,15 +155,15 @@ class LibraryAssetResultBlobFHIRResourceService extends FhirServiceBase
             $item->setResultId($resultDTO->getId());
             $result = new ProcessingResult();
             $result->addData($resultDTO->getId());
-            $this->completer->markAssignmentComplete($item, (array) $client);
+            $this->completer->markAssignmentComplete($item, $client);
             QueryUtils::commitTransaction();
             $transactionCommitted = true;
         } catch (AccessDeniedException $exception) {
-            $this->getLogger()->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
+            $this->getLogger()?->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             $result = new ProcessingResult();
             $result->addInternalError(xlt("You do not have permission to create this result"));
         } catch (\Exception $exception) {
-            $this->getLogger()->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
+            $this->getLogger()?->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             $result = new ProcessingResult();
             $result->addInternalError(xlt("A system error occurred in processing your request"));
         } finally {
@@ -169,7 +174,7 @@ class LibraryAssetResultBlobFHIRResourceService extends FhirServiceBase
         return $result;
     }
 
-    /** @return mixed */
+    /** @return array<string, mixed> */
     private function validateCreateAccessAndReturnClient(string $patientUuidString, ?int $userId)
     {
 
@@ -183,7 +188,9 @@ class LibraryAssetResultBlobFHIRResourceService extends FhirServiceBase
             if (!$result->hasData()) {
                 throw new \InvalidArgumentException("Patient uuid in request does not exist", ErrorCode::SYSTEM_ERROR);
             } else {
-                $client = $result->getData()[0];
+                /** @var array<int, array<string, mixed>> $clientData */
+                $clientData = $result->getData();
+                $client = $clientData[0];
             }
         }
         return $client;

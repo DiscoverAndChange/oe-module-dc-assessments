@@ -99,10 +99,11 @@ class AssessmentRepository
         ,date: i.date
         ,isPublic: i.company_id === null
          */
+        /** @var array{id: string, uuid?: ?string, uid?: ?string, name?: ?string, description?: ?string, data?: ?string, date?: ?string, company_id?: ?string, ...} $record */
         $result = new AssessmentSummary();
         if (empty($record['uuid'])) {
             // lazy populate these
-            $uuid = $this->updateAssessmentUuid($record['id']);
+            $uuid = $this->updateAssessmentUuid((int) $record['id']);
         } else {
             $uuid = $record['uuid'];
         }
@@ -190,16 +191,18 @@ class AssessmentRepository
      */
     private function getAssessmentFromSQL($sql, $params)
     {
+        /** @var list<array{id: string, data: ?string, uid?: ?string, uuid?: ?string, status?: ?string, ...}> $result */
         $result = QueryUtils::fetchRecords($sql, $params);
         if (empty($result[0])) {
             throw new \InvalidArgumentException("Assessment not found", ErrorCode::RECORD_NOT_FOUND);
         }
+        /** @var array<string, mixed> $blobData */
         $blobData = json_decode($result[0]['data'], true);
         $blobData['_version'] = $result[0]['id'];
         $blobData['_id'] = $result[0]['id'];
         if (empty($result[0]['uuid'])) {
             // let's lazy update it.
-            $uuid = $this->updateAssessmentUuid($result[0]['id']);
+            $uuid = $this->updateAssessmentUuid((int) $result[0]['id']);
         } else {
             $uuid = $result[0]['uuid'];
         }

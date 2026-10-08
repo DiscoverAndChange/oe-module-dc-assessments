@@ -17,12 +17,16 @@ class QuestionnaireResponseOnSiteDocumentService
      * @param string $documentCategory
      * @param array<mixed> $questionnaireResponse
      * @param string $questionnaireName
-     * @return mixed
+     * @return \Document
      */
     public function createDocument($templateId, $documentCategory, array $questionnaireResponse, $questionnaireName)
     {
         $pid = $questionnaireResponse['patient_id'];
-        $formFilename = \convert_safe_file_dir_name($questionnaireResponse['response_id']) . '_' . \convert_safe_file_dir_name($pid) . '.pdf';
+        /** @var string $responseIdPart */
+        $responseIdPart = \convert_safe_file_dir_name($questionnaireResponse['response_id']);
+        /** @var string $pidPart */
+        $pidPart = \convert_safe_file_dir_name($pid);
+        $formFilename = $responseIdPart . '_' . $pidPart . '.pdf';
 
         $answers = $this->qrService->flattenQuestionnaireResponse($questionnaireResponse, '|', '');
         $content = $this->qrService->buildQuestionnaireResponseHtml($answers, '|');

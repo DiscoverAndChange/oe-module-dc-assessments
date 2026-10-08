@@ -43,6 +43,10 @@ class QuestionnaireFormFHIRResourceService extends FhirServiceBase implements IR
      */
     use FhirServiceBaseEmptyTrait;
 
+    /**
+     * @var QuestionnaireService
+     */
+    private $service;
 
     /** @param string $fhirApiURL */
     public function __construct($fhirApiURL = null)
@@ -64,14 +68,16 @@ class QuestionnaireFormFHIRResourceService extends FhirServiceBase implements IR
     /**
      * @param array<mixed> $dataRecord
      * @param bool $encode
-     * @return TaskFHIRResource|\OpenEMR\Services\FHIR\the
+     * @return FHIRQuestionnaire
      */
     public function parseOpenEMRRecord($dataRecord = array(), $encode = false)
     {
         $innerData = [];
         try {
             // parse the json data in dataRecord questionnaire
-            $innerData = json_decode($dataRecord['questionnaire'], true, 512, JSON_THROW_ON_ERROR);
+            /** @var string $questionnaireJson */
+            $questionnaireJson = $dataRecord['questionnaire'];
+            $innerData = json_decode($questionnaireJson, true, 512, JSON_THROW_ON_ERROR);
         } catch (\JsonException $exception) {
             // log the error and move on
             $innerData = []; // nothing we can do here, but skip the questionnaire data as its invalid
@@ -96,7 +102,9 @@ class QuestionnaireFormFHIRResourceService extends FhirServiceBase implements IR
         }
 
         $id = new FhirId();
-        $id->setValue($dataRecord['uuid']);
+        /** @var string $uuid */
+        $uuid = $dataRecord['uuid'];
+        $id->setValue($uuid);
         $fhirResource->setId($id);
 
         return $fhirResource;
@@ -124,6 +132,7 @@ class QuestionnaireFormFHIRResourceService extends FhirServiceBase implements IR
     /** @param array<mixed> $openEMRSearchParameters */
     protected function searchForOpenEMRRecords($openEMRSearchParameters): ProcessingResult
     {
+        /** @var array<string, \OpenEMR\Services\Search\ISearchField> $openEMRSearchParameters */
         return $this->service->search($openEMRSearchParameters);
     }
 
@@ -132,7 +141,7 @@ class QuestionnaireFormFHIRResourceService extends FhirServiceBase implements IR
      * The ownership and AUDIT trail in FHIR is done via the Provenance record.
      * @param FHIRDomainResource $dataRecord The record we are generating a provenance from
      * @param bool $encode Whether to serialize the record or not
-     * @return FHIRProvenance
+     * @return FHIRProvenance|string|false|null
      */
     public function createProvenanceResource($dataRecord, $encode = false)
     {

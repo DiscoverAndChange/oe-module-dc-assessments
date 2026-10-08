@@ -113,6 +113,8 @@ class AssignedQuestionnaire extends Assignment
     public function fromJSON(array $assignmentJSON)
     {
         parent::fromJSON($assignmentJSON);
-        $this->setQuestionnaireId(($assignmentJSON['questionnaireId'] ?? 0));
+        /** @var string $questionnaireId */
+        $questionnaireId = $assignmentJSON['questionnaireId'] ?? '';
+        $this->setQuestionnaireId($questionnaireId);
     }
 }

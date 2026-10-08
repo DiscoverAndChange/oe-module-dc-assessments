@@ -75,6 +75,7 @@ class QuestionnaireAuditController
             $encounterService = new EncounterService();
             QueryUtils::startTransaction();
 
+            /** @var array<string, mixed> $phpInput */
             $phpInput = json_decode((string) file_get_contents('php://input'), true, 512, JSON_THROW_ON_ERROR);
             $auditRecordId = $phpInput['auditRecordId'] ?? null;
             $encounterId = $phpInput['encounterId'] ?? null;
@@ -116,7 +117,9 @@ class QuestionnaireAuditController
 
             $questionnaire = $this->questionnaireService->fetchQuestionnaireById(null, UuidRegistry::uuidToBytes($qr['questionnaire_id']));
 //            $qJSON = json_decode($questionnaire['questionnaire'], true, 512, JSON_THROW_ON_ERROR);
-            $formId = $this->saveEncounterForm($auditRecord, $questionnaire, $qr, $result->getData()[0]['pid'], $encounterId);
+            /** @var non-empty-list<array{pid: string}> $encounterData */
+            $encounterData = $result->getData();
+            $formId = $this->saveEncounterForm($auditRecord, $questionnaire, $qr, $encounterData[0]['pid'], $encounterId);
 
             // now we need to mark the audit record as locked and saved.
             $this->updateOnSitePortalActivityWithCompletion($auditRecord['id']);
@@ -139,10 +142,10 @@ class QuestionnaireAuditController
     }
 
     /**
-     * @param array<mixed> $auditRecord
+     * @param array<string, ?string> $auditRecord
      * @param array<mixed> $questionnaire
      * @param array<mixed> $questionnaireResponse
-     * @param mixed $pid
+     * @param string $pid
      * @param mixed $encounterId
      * @return mixed
      */
@@ -152,7 +155,7 @@ class QuestionnaireAuditController
         $metaData = $this->qrService->extractResponseMetaData($questionnaireResponse, true);
         $formQuestionnaireAssessment = new FormQuestionnaireAssessment();
         $formQuestionnaireAssessment->setEncounter($encounterId);
-        $formQuestionnaireAssessment->setPid($pid);
+        $formQuestionnaireAssessment->setPid((int) $pid);
         $formQuestionnaireAssessment->setCopyright($qJSON['copyright'] ?? '');
         $formQuestionnaireAssessment->setFormName(($auditRecord['narrative'] ?? ''));
         $formQuestionnaireAssessment->setResponseMeta($metaData);
@@ -266,6 +269,7 @@ class QuestionnaireAuditController
 
         $psrFactory = new Psr17Factory();
         $response = $psrFactory->createResponse(200, 'OK');
+        /** @var array{questionnaire_response: string, questionnaire_name: ?string} $qrResponse */
         $qrResponse = $this->qrService->fetchQuestionnaireResponseByResponseId($assignmentItem->getResultId());
 
         $qrResponseContent = $qrResponse['questionnaire_response'];
@@ -305,20 +309,23 @@ class QuestionnaireAuditController
         // bunch of node conversions anyways... we want the flexibility of using twig to render the tree so we'll just
         // keep it the way we have right now.
         $category = new \CategoryTree(1);
-        $root = $this->getCategoryTree($category, 1, (array) $category->tree[1], 0);
+        /** @var array<array-key, mixed> $categoryTreeNodes */
+        $categoryTreeNodes = $category->tree;
+        $root = $this->getCategoryTree($category, 1, (array) $categoryTreeNodes[1], 0);
         // we want to skip over the 'Categories' folder and just return the children
-        return $root['tree'] ?? [];
+        return $root['tree'];
     }
 
     /**
      * @param mixed $currentNode
      * @param array<mixed> $children
      * @param int $depth
-     * @return array<mixed>
+     * @return array{id: mixed, name: mixed, depth: int, tree: array<array-key, mixed>}
      */
     private function getCategoryTree(\CategoryTree $obj, $currentNode, $children, $depth = 0)
     {
         // do a breadth first descent of the tree
+        /** @var array<string, mixed> $info */
         $info = $obj->get_node_info($currentNode);
         $transformedTree = [
             'id' => $currentNode

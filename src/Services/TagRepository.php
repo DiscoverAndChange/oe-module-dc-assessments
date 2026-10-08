@@ -20,13 +20,14 @@ class TagRepository
             return [];
         }
         // make sure they are all integers and remove any that are not
-        $assetIds = array_filter(array_map('intval', $assetIds), function ($id) {
+        $assetIds = array_filter(array_map(intval(...), $assetIds), function ($id) {
             return $id > 0; // make sure we only have values greater than 0 for our ids
         });
 
         $sql = "SELECT labt.library_asset_blob_id, t.tag FROM " . self::TABLE_NAME_LIBRARY_ASSET_JOIN_TAG
             . " labt JOIN " . self::TABLE_NAME . " t ON labt.tag_id = t.id "
         . " WHERE labt.library_asset_blob_id IN (" . implode(',', $assetIds) . ")";
+        /** @var list<array{library_asset_blob_id: string, tag: string}> $records */
         $records = QueryUtils::fetchRecords($sql, []);
         $tags = [];
         // go through each record and group them by asset_id

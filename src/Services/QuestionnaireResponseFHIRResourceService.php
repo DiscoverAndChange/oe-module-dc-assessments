@@ -85,6 +85,7 @@ class QuestionnaireResponseFHIRResourceService extends FhirServiceBase implement
         // TODO: @adunsulag we originally had events then needed to switch to the mapped service for searching, do we drop the event?
         $event = $this->dispatcher->dispatch(new GenericEvent($fhirResource), 'fhir.questionnaire_response.pre_insert');
         if ($event instanceof GenericEvent && $event->isPropagationStopped()) {
+            /** @var ProcessingResult $result */
             $result = $event->getArgument('result');
             return $result;
         } else {
@@ -98,8 +99,9 @@ class QuestionnaireResponseFHIRResourceService extends FhirServiceBase implement
         $result = new ProcessingResult();
         $event = $this->dispatcher->dispatch(new GenericEvent($fhirSearchParameters), 'fhir.questionnaire_response.search');
         if ($event instanceof GenericEvent) {
-            $result = $event->getArgument('result');
-            if ($result instanceof ProcessingResult) {
+            $eventResult = $event->getArgument('result');
+            if ($eventResult instanceof ProcessingResult) {
+                $result = $eventResult;
                 if ($event->isPropagationStopped() || !$result->isValid()) {
                     return $result;
                 }

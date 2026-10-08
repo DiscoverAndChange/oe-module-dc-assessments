@@ -34,6 +34,7 @@ class ClientRepository
             throw new \InvalidArgumentException("No uuid found for patient pid " . $clientId);
         }
         $listService = new ListService();
+        /** @var array{title: string, option_id: string} $listOption */
         $listOption = $listService->getListOption(AssignmentRepository::TEMPLATE_PROFILE_LIST_ID, trim($profileId));
         if (empty($listOption)) {
             throw new \InvalidArgumentException("No list option found for profile id {$profileId}");
@@ -60,6 +61,7 @@ class ClientRepository
         }
 
         $assessmentGroupService = new AssessmentGroupService();
+        /** @var array{name: string, assessmentGroupAssessmentBlobs: list<array{assessmentBlob: array{id: string, name: ?string, uid: string}}>} $group */
         $group = $assessmentGroupService->getGroup($groupId);
         if (empty($group)) {
             throw new \InvalidArgumentException("Invalid group id " . $groupId);
@@ -70,7 +72,7 @@ class ClientRepository
             $assignmentItem->setDateAssigned($dateAssigned);
             $assignmentItem->setName($blob['assessmentBlob']['name']);
             $assignmentItem->setUid($blob['assessmentBlob']['uid']);
-            $assignmentItem->setAssessmentId($blob['assessmentBlob']['id']);
+            $assignmentItem->setAssessmentId((int) $blob['assessmentBlob']['id']);
             $assignment->addItem($assignmentItem);
         }
         $assignmentRepository = new AssignmentRepository();

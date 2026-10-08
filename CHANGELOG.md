@@ -1,3 +1,44 @@
+v0.12.0 PHPStan source-typing pass (mixed-at-boundary cluster)
+
+  Burn down the largest remaining PHPStan class: ~771 errors rooted in `mixed`
+  values from DB rows, json_decode, and request payloads flowing into typed slots
+  (argument.type, offsetAccess, return.type, binaryOp, method.nonObject,
+  foreach.nonIterable, nullCoalesce.*). Fix by typing at the SOURCE — inline
+  `/** @var <shape> */` on the DB-row / decoded-json / request-payload / in-code-map
+  assignments, with honest shapes (nullable columns -> ?string; ids read via
+  string->int casts, never mixed casts). NOT by casting mixed (this build's strict
+  rules reject casting mixed, which would only relabel the error as cast.*).
+
+  Per the honesty rule, genuinely-nullable or genuinely-mixed values flowing into
+  non-null params were left for the baseline rather than force-typed — those are
+  real "handle the null/narrow the value" points, not noise. Baseline: 1418 -> 882
+  errors (523 entries); the cluster's container-mixed errors (offsetAccess/foreach/
+  invalidOffset) are essentially eliminated (offsetAccess 212->2, foreach 22->0,
+  invalidOffset 30->0), with argument.type 353->192 and return.type 49->10. Zero
+  cast.int/cast.string introduced; no new non-ignorable errors. Applying the baseline
+  reports zero errors and the test suite stays green (176 tests / 589 assertions).
+
+  Real bugs found and fixed along the way (type analysis made them visible):
+  - APIProxyController referenced an undefined `$this->routeMappings` property
+    (always null -> proxy routing dead); use the real `self::API_MAPPINGS` source.
+  - ResourceImporterService referenced an undefined `$report` on its import-error
+    logging paths (loop var is `$blob`).
+  - AssessmentAppointmentController referenced an undefined `$appt` when building a
+    notification payload (should be `$appointment`).
+  - AssignedQuestionnaire::fromJSON defaulted a missing questionnaireId to int `0`
+    into a string setter (TypeError under strict_types); default to ''.
+  - QuestionnaireResponseFHIRResourceService::getAll called setInternalErrors() on a
+    non-ProcessingResult event value in one branch; refactored to the real result.
+
+  Known issues recorded in TEST-PLAN.md for follow-up (NOT changed here): a handful
+  of residual typing ripples baselined (shapes missing an optional key, a couple of
+  over-typed empty() guards) to clean up; and several latent runtime bugs the pass
+  surfaced but that need author decisions — AssignmentTaskFHIRResourceService::update()
+  calls a non-existent updateAssignmentItem() (runtime fatal on that branch),
+  AssessmentReportRepository / TagRestController reference an undefined `$this->logger`,
+  ClientRepository::... setAssessmentId() with no null guard, createAssessmentGroups
+  FromEntities `return;` that should be `continue`, and Client::fromJSON() dead/broken.
+
 v0.11.2 Test suite expansion + latent-bug fixes surfaced by it
 
   Begin building out automated test coverage (see TEST-PLAN.md) as a safety net

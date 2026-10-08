@@ -88,7 +88,7 @@ class APISetupController implements IStaticEventSubscriber
             $contexts = $mapping['context'] ?? ['user'];
             foreach ($contexts as $context) {
                 $resourceScope = explode('.', $mapping['scope']);
-                $resource = $resourceScope[0] ?? '';
+                $resource = $resourceScope[0];
                 $permission = $resourceScope[1] ?? '';
                 if ($context == 'user') {
                     $event->addScope($context, $resource, $permission);

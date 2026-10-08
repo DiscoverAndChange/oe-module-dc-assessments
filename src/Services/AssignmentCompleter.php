@@ -35,7 +35,9 @@ class AssignmentCompleter
         // we wrap in a try as we want the user to be able to continue even if emails don't go out or if the overall
         // assignment is not completed
         try {
-            $allAssignmentsComplete = $this->checkIfAllAssignmentCompleted($client['pid']);
+            /** @var int|string $clientPid */
+            $clientPid = $client['pid'];
+            $allAssignmentsComplete = $this->checkIfAllAssignmentCompleted((int) $clientPid);
             if ($allAssignmentsComplete) {
                 $this->dispatchNotifications($client);
             } else {
@@ -77,6 +79,10 @@ class AssignmentCompleter
      */
     private function dispatchNotifications(array $client)
     {
-        $this->dispatcher->sendAssignmentsCompleteNotification($client['uuid'], $client['pid']);
+        /** @var string $clientUuid */
+        $clientUuid = $client['uuid'];
+        /** @var int|string $clientPid */
+        $clientPid = $client['pid'];
+        $this->dispatcher->sendAssignmentsCompleteNotification($clientUuid, (int) $clientPid);
     }
 }

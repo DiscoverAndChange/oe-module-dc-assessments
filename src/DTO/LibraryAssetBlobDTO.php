@@ -228,6 +228,7 @@ class LibraryAssetBlobDTO implements \JsonSerializable
      */
     public function fromDTO(array $data)
     {
+        /** @var array{id?: int, title?: string, type?: string, description?: string, content?: string, journal?: ?string, originalCreator?: ?string, creatorLink?: ?string, creationDate?: string, lastUpdateDate?: string} $data */
         $this->setId(($data['id'] ?? 0));
         $this->setTitle(($data['title'] ?? ''));
         $this->setType(($data['type'] ?? 'article'));

@@ -166,6 +166,7 @@ class LibraryAssetBlobResultDTO implements \JsonSerializable
     public function fromDTO(array $data)
     {
         $this->setId(($data['id'] ?? null));
+        /** @var array<string, mixed> $asset */
         $asset = $data['asset'] ?? [];
         $assetId = $asset['id'] ?? null;
         $this->setAssetId($assetId);

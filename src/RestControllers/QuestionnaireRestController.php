@@ -97,15 +97,21 @@ class QuestionnaireRestController implements IRestController
      * - date {gt|lt|ge|le}
      * @param array<mixed> $searchParams
      * @param string|null $puuidBind - Optional variable to only allow visibility of the patient with this puuid.
-     * @return FHIR bundle with query results, if found
+     * @return \OpenEMR\FHIR\R4\FHIRResource\FHIRBundle|array<string,mixed> FHIR bundle with query results, if found
      */
     private function getAll($searchParams, $puuidBind = null)
     {
         $processingResult = $this->questionnaireResourceService->getAll($searchParams, $puuidBind);
         $bundleEntries = array();
-        foreach ($processingResult->getData() as $index => $searchResult) {
+        /** @var list<FHIRQuestionnaire> $searchResults */
+        $searchResults = $processingResult->getData();
+        /** @var string $siteAddr */
+        $siteAddr = $GLOBALS['site_addr_oath'];
+        /** @var string $redirectUrl */
+        $redirectUrl = $_SERVER['REDIRECT_URL'] ?? '';
+        foreach ($searchResults as $index => $searchResult) {
             $bundleEntry = [
-                'fullUrl' =>  $GLOBALS['site_addr_oath'] . ($_SERVER['REDIRECT_URL'] ?? '') . '/' . $searchResult->getId(),
+                'fullUrl' =>  $siteAddr . $redirectUrl . '/' . $searchResult->getId(),
                 'resource' => $searchResult
             ];
             $fhirBundleEntry = new FHIRBundleEntry($bundleEntry);
@@ -115,6 +121,7 @@ class QuestionnaireRestController implements IRestController
         // FHIRBundle omits the `entry` key when empty, but the SPA expects an
         // array; normalize the empty case to a plain array with entry: [].
         if (empty($bundleEntries)) {
+            /** @var array<string,mixed> $bundleSearchResult */
             $bundleSearchResult = json_decode((string) json_encode($bundleSearchResult), true);
             $bundleSearchResult['entry'] = [];
         }

@@ -136,7 +136,34 @@ SAFE path; none of these were "fixed" while writing tests):
   `result_data` yields an associative array (a scalar/list payload would break the merge).
 - (P2) `(int) $record['asset_id']` casts a null asset_id to 0 (no default protection).
 
-## Phase 2: the source-typing pass (next)
+## Phase 2: the source-typing pass — DONE (v0.12.0)
+Result: baseline 1418 -> 882 errors / 523 entries. Container-mixed essentially gone
+(offsetAccess 212->2, foreach 22->0, invalidOffset 30->0), argument.type 353->192,
+return.type 49->10; zero cast.* introduced; 176 tests still green. Done via the
+proof + a 5-agent fan-out (SystemUserRepository was the committed proof).
+
+Follow-up cleanup (small, baselined for now): ~13 residual ripples the pass left —
+offsetAccess.notFound where a shape omits an optional key (LibraryAssetResultRest
+Controller:105/110, AssessmentResponseBlobFHIR:158/159, QuestionnairePortalTask:276/
+320/321, ClientSearchRepository:91), a varTag.nativeType (APIProxyController:568), and
+a few over-typed empty()/isset() guards now flagged "always truthy" (ClientRepository:
+39/66, the *FHIRResourceService $result/$response/$item/$service guards). Each is a
+1-line shape tweak (add the optional key / loosen the shape so the guard stays live).
+
+Latent runtime bugs surfaced by the pass — need author decisions (NOT fixed):
+- `AssignmentTaskFHIRResourceService::update()` calls `$this->updateAssignmentItem(...)`
+  which does not exist -> runtime fatal on the assignment-item branch.
+- `AssessmentReportRepository` and `RestControllers/TagRestController` reference an
+  undefined `$this->logger` (fatal on their error paths; no logger property/DI).
+- `ClientRepository` setAssessmentId() with no null guard (getMostRecentAssessmentIdForUid
+  can return null); `saveLibraryAssetResultBlob` arity mismatch with its caller.
+- `AssessmentGroupRestController::createAssessmentGroupsFromEntities` uses `return;`
+  where `continue;` is meant (one bad blob aborts the whole loop, losing all groups).
+- `QuestionnaireResponseFormFHIRResourceService` L104 dead store into the wrong array.
+(Fixed in v0.12.0: APIProxyController routeMappings, ResourceImporterService $report,
+AssessmentAppointmentController $appt, AssignedQuestionnaire ?? 0, QRespFHIR getAll.)
+
+## Phase 2 (original notes)
 Target the "mixed-at-boundary" cluster — **771 errors (~54% of 1418)**, all one root:
 `mixed` from DB rows / `json_decode` / request payloads flowing into typed slots.
 Identifiers: argument.type 353, offsetAccess.nonOffsetAccessible 212, return.type 49,
@@ -174,6 +201,9 @@ type reset, Client::fromJSON rewrite/removal) since this pass touches those exac
   Assigned* subclasses, DTOs, error/code models). Suite 15 → 136 tests / 428
   assertions, 2 incomplete. Coverage 9.3% → **15.0%**; the P1 classes are now ~100%.
   Latent bugs above were surfaced in the process.
+- 2026-10-08: Source-typing pass (Phase 2) complete — proof (SystemUserRepository) +
+  5-agent fan-out over the mixed-at-boundary cluster. Baseline 1418 -> 882; zero cast.*;
+  176 tests green. v0.12.0. Several real bugs fixed, more logged above for follow-up.
 - 2026-10-08: P2 repository-hydration batch complete — 5 new test files (AssignmentRepository
   + AssessmentRepository/AssessmentResultRepository/LibraryAssetResultBlobRepository/
   SystemUserRepository), reflection into the private hydrators on the pure no-DB path.

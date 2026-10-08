@@ -58,7 +58,9 @@ class ClientRestController implements IRestController
         $assignedUserId = $userID; // convert to an actual user id.
         if (isset($params['user'])) {
             $userService = new UserService();
-            $user = $userService->getUserByUUID($params['user']);
+            /** @var string $userUuid */
+            $userUuid = $params['user'];
+            $user = $userService->getUserByUUID($userUuid);
             if (empty($user) && !$isAdmin) {
                 return RestUtils::returnAccessDeniedResponse($this->logger, 'assignedUserId missing and user missing admin/super ACL');
             } else {
@@ -66,6 +68,7 @@ class ClientRestController implements IRestController
             }
         }
         $facilityRepo = new FacilityService();
+        /** @var array{id?: int}|null $primaryBusiness */
         $primaryBusiness = $facilityRepo->getPrimaryBusinessEntity();
         $repo = new ClientSearchRepository(isset($primaryBusiness['id']) ? $primaryBusiness['id'] : null);
         $search = new ClientSearchQueryDTO();
@@ -95,6 +98,7 @@ class ClientRestController implements IRestController
         $params = [];
         $params['id']  = $id;
         $facilityRepo = new FacilityService();
+        /** @var array{id?: int}|null $primaryBusiness */
         $primaryBusiness = $facilityRepo->getPrimaryBusinessEntity();
         $repo = new ClientSearchRepository(isset($primaryBusiness['id']) ? $primaryBusiness['id'] : null);
         $search = new ClientSearchQueryDTO();
@@ -103,7 +107,9 @@ class ClientRestController implements IRestController
         $results = $repo->searchClientList($search, $config, $request->getUserId());
         if ($results->hasData()) {
             $psrFactory = new Psr17Factory();
-            return $psrFactory->createResponse(200)->withBody($psrFactory->createStream((string) json_encode($results->getData()[0])));
+            /** @var list<mixed> $resultsData */
+            $resultsData = $results->getData();
+            return $psrFactory->createResponse(200)->withBody($psrFactory->createStream((string) json_encode($resultsData[0])));
         } else {
             return RestUtils::getNotFoundResponse();
         }
@@ -117,6 +123,7 @@ class ClientRestController implements IRestController
     public function removeAssignmentFromClient(ServerRestRequest $request, $id, $assignmentId)
     {
         $facilityRepo = new FacilityService();
+        /** @var array{id?: int}|null $primaryBusiness */
         $primaryBusiness = $facilityRepo->getPrimaryBusinessEntity();
         $transactionCommitted = false;
         try {
@@ -126,7 +133,7 @@ class ClientRestController implements IRestController
                 throw new AccessDeniedException('user missing admin/super ACL');
             }
             $repo = new ClientRepository($this->logger);
-            $id = $repo->removeAssignmentFromClient($id, $assignmentId, $request->getUserId(), $primaryBusiness['id']);
+            $id = $repo->removeAssignmentFromClient($id, $assignmentId, $request->getUserId(), $primaryBusiness['id'] ?? null);
             QueryUtils::commitTransaction();
             $transactionCommitted = true;
             return RestUtils::returnSingleObjectResponse(['assignmentId' => $id]);
@@ -158,6 +165,7 @@ class ClientRestController implements IRestController
             // these actions from facility break the transaction
             // TODO: @adunsulag need to investigate why both of these function calls break the transaction.
             $facRepo = new FacilityService();
+            /** @var array{id?: int}|null $facility */
             $facility = $facRepo->getPrimaryBusinessEntity();
 
             QueryUtils::startTransaction();
@@ -168,6 +176,7 @@ class ClientRestController implements IRestController
 
             $facilityId = isset($facility['id']) ? $facility['id'] : null;
 
+            /** @var array{id?: int, _id?: int, appointmentId?: string, profileId?: string} $group */
             $group = $request->getBodyAsJson() ?? [];
             $groupId = $group['id'] ?? $group['_id'] ?? null;
             if (empty($groupId)) {
@@ -252,6 +261,7 @@ class ClientRestController implements IRestController
         $patientService = new PatientService();
         try {
             $this->logger->debug(self::class . "->sendMessageToClient() called");
+            /** @var array{message?: string, subject?: string, isTest?: int} $messageRequest */
             $messageRequest = $request->getBodyAsJson();
             $message = trim(($messageRequest['message'] ?? ''));
             $subject = trim(($messageRequest['subject'] ?? ''));
@@ -274,9 +284,11 @@ class ClientRestController implements IRestController
             if (!$patient->hasData()) {
                 throw new \InvalidArgumentException("Patient not found for request", ErrorCode::INVALID_REQUEST);
             }
-            $patient = ProcessingResult::extractDataArray($patient)[0];
+            /** @var list<array{pid: string, email: ?string}> $patientRecords */
+            $patientRecords = ProcessingResult::extractDataArray($patient);
+            $patient = $patientRecords[0];
             $patientEmail = $patient['email'] ?? '';
-            $this->messageDispatcher->sendInvitationMessage($patient['pid'], $subject, $message, $patientEmail, $senderEmail, $isTest);
+            $this->messageDispatcher->sendInvitationMessage((int) $patient['pid'], $subject, $message, $patientEmail, $senderEmail, $isTest);
             QueryUtils::commitTransaction();
             $transactionCommitted = true;
         } catch (\Exception $exception) {

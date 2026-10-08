@@ -111,7 +111,7 @@ class GlobalConfig
     }
 
     /**
-     * @return array<string, mixed>
+     * @return array<string, array{title: string, description: string, type: string, default: string|bool, options?: array<string, string>}>
      */
     public function getGlobalSettingSectionConfiguration()
     {

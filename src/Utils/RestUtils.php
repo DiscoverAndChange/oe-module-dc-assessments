@@ -38,14 +38,14 @@ class RestUtils
         } else {
             $message = $error->getMessage();
         }
-        $codeAsString = ErrorCode::getErrorStringForErrorCode($error->getCode() ?? ErrorCode::SYSTEM_ERROR);
+        $codeAsString = ErrorCode::getErrorStringForErrorCode($error->getCode());
         $err = [
             '_code' => $codeAsString
             ,'_message' => $message || xl("An error has occurred see code for details")
             ,'error' => $error->getMessage() || xl("An error has occurred see code for details") // make sure to be backwards compatible for old code.
         ];
 
-        $statusCode = ErrorCodeStatus::getStatusForErrorCode($error->getCode() ?? ErrorCode::SYSTEM_ERROR);
+        $statusCode = ErrorCodeStatus::getStatusForErrorCode($error->getCode());
 
         // don't reveal details of the error to the frontend.
         if ($statusCode >= 500) {
@@ -134,7 +134,7 @@ class RestUtils
         } elseif ($processingResult->hasInternalErrors()) {
             $httpResponseBody["internalErrors"] = $processingResult->getInternalErrors();
         } else {
-            return RestUtils::returnSingleObjectResponse($processingResult->getData()[0]);
+            return RestUtils::returnSingleObjectResponse(((array) $processingResult->getData())[0]);
         }
         $psrFactory = new Psr17Factory();
         return $psrFactory->createResponse($status)->withBody($psrFactory->createStream((string) json_encode($httpResponseBody)));
@@ -148,11 +148,15 @@ class RestUtils
             $status = 400;
             if ($result->hasInternalErrors()) {
                 $status = 500;
-                $detailedText = implode(" ", (array) $result->getInternalErrors());
+                /** @var list<string> $internalErrors */
+                $internalErrors = (array) $result->getInternalErrors();
+                $detailedText = implode(" ", $internalErrors);
                 $operationOutcome = UtilsService::createOperationOutcomeResource('fatal', 'transient', $detailedText);
             } else {
                 // TODO: if we had more details or more specific codes we could provide better values here
-                $detailedText = implode(" ", (array) $result->getValidationMessages());
+                /** @var list<string> $validationMessages */
+                $validationMessages = (array) $result->getValidationMessages();
+                $detailedText = implode(" ", $validationMessages);
                 $operationOutcome = UtilsService::createOperationOutcomeResource('error', 'processing', $detailedText);
             }
             return $psrFactory->createResponse($status)->withBody($psrFactory->createStream((string) json_encode($operationOutcome)));
@@ -207,6 +211,7 @@ class RestUtils
         ];
         $serializer = new Serializer($normalizers, $encoders);
 
+        /** @var object $hydratedObject */
         $hydratedObject = $serializer->deserialize($requestBody, $objectType, 'json');
         return $hydratedObject;
     }

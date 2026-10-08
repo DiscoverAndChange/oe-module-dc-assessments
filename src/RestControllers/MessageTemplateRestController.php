@@ -30,6 +30,7 @@ class MessageTemplateRestController implements IRestController
             $query = $request->getQueryParams();
             $puuid = $query['clientId'] ?? '';
             $patientRepo = new PatientService();
+            /** @var list<array<string,mixed>>|null $patient */
             $patient = ProcessingResult::extractDataArray($patientRepo->getOne($puuid));
             if (empty($patient)) {
                 return RestUtils::getNotFoundResponse();

@@ -154,6 +154,7 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
     private function renderAppointmentNotificationScreen($appointmentId, $displayMessage = null)
     {
         $appointmentService = new AppointmentService();
+        /** @var list<array{pc_pid: string, pc_eid: string, pc_eventDate: string}> $appointment */
         $appointment = $appointmentService->getAppointment($appointmentId);
         if (empty($appointment) || empty($appointment[0]['pc_pid'])) { // patient appointment
             return; // nothing to do here
@@ -171,11 +172,11 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
             }
 
             $patientService = new PatientService();
-            $patient = $patientService->findByPid($appointment['pc_pid']);
-            $phone = $patient['phone_cell'] ?? null;
-            $email = $patient['email'] ?? null;
-            $hipaaAllowEmail = ($patient['hipaa_allowemail'] ?? 'NO') === 'YES';
-            $hipaaAllowSms = ($patient['hipaa_allowsms'] ?? 'NO') === 'YES';
+            $patient = $patientService->findByPid((int) $appointment['pc_pid']);
+            $phone = $patient['phone_cell'];
+            $email = $patient['email'];
+            $hipaaAllowEmail = $patient['hipaa_allowemail'] === 'YES';
+            $hipaaAllowSms = $patient['hipaa_allowsms'] === 'YES';
             $noContactMethods = empty($phone) && empty($email) && !($hipaaAllowEmail || $hipaaAllowSms);
             $display = xl("Setup Notifications");
             $truncatedDisplay = mb_strimwidth($display, 0, 80, "...");
@@ -215,12 +216,12 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
                 $data
             );
         } catch (\Exception $e) {
-            (new SystemLogger())->error($e->getMessage(), ['trace' => $e->getTraceAsString(), 'appt' => $appt ?? '']);
+            (new SystemLogger())->error($e->getMessage(), ['trace' => $e->getTraceAsString(), 'appt' => $appointment]);
         }
     }
 
     /**
-     * @param mixed $pc_eid
+     * @param string $pc_eid
      * @param string $action
      * @return string
      */
@@ -233,7 +234,7 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
     }
 
     /**
-     * @param array<mixed> $appointment
+     * @param array{pc_eventDate: string, pc_eid: string} $appointment
      * @return string
      */
     private function getCalendarEventBackUrl($appointment)
@@ -252,11 +253,13 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
     {
         if (!empty($appointmentId)) {
             $smartAppService = $this->appClientService;
+            /** @var string $clientId */
             $clientId = $smartAppService->getRegisteredClientId();
             $url = $GLOBALS['webroot'] . '/interface/smart/ehr-launch-client.php?intent=' . urlencode(SMARTLaunchToken::INTENT_APPOINTMENT_DIALOG)
                 . '&client_id=' . urlencode($clientId) . "&csrf_token=" . urlencode(CsrfUtils::collectCsrfToken())
                 . '&appointment_id=' . urlencode($appointmentId);
             $appointmentService = new AppointmentService();
+            /** @var list<array{pc_pid: string, pc_eid: string, pc_eventDate: string}> $appointment */
             $appointment = $appointmentService->getAppointment($appointmentId);
             if (!empty($appointment) && !empty($appointment[0]['pc_pid'])) { // patient appointment
                 $appointment = $appointment[0];
@@ -294,6 +297,7 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
             }
             // TODO: @adunsulag is there an ACL for sending messages to patients?
             $service = new AppointmentService();
+            /** @var list<array{pc_pid: string}> $appt */
             $appt = $service->getAppointment($pc_eid);
             $appt = $appt[0] ?? [];
             $patientPid = $appt['pc_pid'] ?? null;
@@ -342,8 +346,9 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
         }
         $assignment = null;
         try {
+            /** @var array{pc_eid: string} $appt */
             $appt = $event->getAppt();
-            $assignmentIds = $this->repository->getAssignmentUuidsForAppointment($appt['pc_eid']);
+            $assignmentIds = $this->repository->getAssignmentUuidsForAppointment((int) $appt['pc_eid']);
             $assignments = [];
             if (!empty($assignmentIds)) {
                 $assignments = $this->repository->search([new TokenSearchField('assignment_uuid', $assignmentIds, true)]);
@@ -361,7 +366,7 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
                 ]
             );
         } catch (\Exception $e) {
-            (new SystemLogger())->error($e->getMessage(), ['trace' => $e->getTraceAsString(), 'appt' => $appt ?? '']);
+            (new SystemLogger())->error($e->getMessage(), ['trace' => $e->getTraceAsString(), 'appt' => $appt]);
         }
 
         $this->renderNotificationsSection($event, $appt, $assignment);

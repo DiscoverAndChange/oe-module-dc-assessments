@@ -442,7 +442,9 @@ class Bootstrap
             if ($this->globalsConfig->shouldDisplayUpdatedOAuthPages()) {
                 if (!empty(SessionWrapperFactory::getInstance()->getActiveSession()->get('pid'))) {
                     $vars = $event->getTwigVariables();
-                    if (!empty($vars['scopesByResource']['Questionnaire'])) {
+                    /** @var array<string, mixed> $scopesByResource */
+                    $scopesByResource = $vars['scopesByResource'] ?? [];
+                    if (!empty($scopesByResource['Questionnaire'])) {
                         $event->setTwigTemplate('discoverandchange/oauth2/scope-authorize.html.twig');
                     }
                 }
@@ -586,12 +588,16 @@ class Bootstrap
 
     public function getQuestionnaireAuditController(): QuestionnaireAuditController
     {
-        return $this->getServiceContainer()->get(QuestionnaireAuditController::class);
+        /** @var QuestionnaireAuditController $controller */
+        $controller = $this->getServiceContainer()->get(QuestionnaireAuditController::class);
+        return $controller;
     }
 
     public function getBackendDispatchController(): BackendDispatchController
     {
-        return $this->getServiceContainer()->get(BackendDispatchController::class);
+        /** @var BackendDispatchController $controller */
+        $controller = $this->getServiceContainer()->get(BackendDispatchController::class);
+        return $controller;
     }
 
     /**

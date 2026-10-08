@@ -52,13 +52,13 @@ class PaginatedResultsService
         $hasMoreData = false;
         $moreResultsLimit = $pagination->getLimit() + 1;
         $resultsCount = count($results);
-        $offset = $pagination->getCurrentOffsetId() + $resultsCount;
+        $offset = (int) $pagination->getCurrentOffsetId() + $resultsCount;
         $cursor = null;
         (new SystemLogger())->debug("returnPaginatedResultsResponse() inside", ["pagination" => $pagination->jsonSerialize(), "resultCount" => count($results)]);
 
         if ($resultsCount >= $moreResultsLimit) {
             $returnData = array_slice($results, 0, $pagination->getLimit());
-            $offset = $pagination->getCurrentOffsetId() + $pagination->getLimit();
+            $offset = (int) $pagination->getCurrentOffsetId() + $pagination->getLimit();
             $hasMoreData = true;
         }
 

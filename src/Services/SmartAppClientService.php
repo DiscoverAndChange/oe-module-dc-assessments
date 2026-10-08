@@ -24,6 +24,7 @@ class SmartAppClientService
             // time to setup the data for this
             // TODO: @adunsulag we need to abstract this out of the AuthorizationController into its own service
             $clientId = $clientRepository->generateClientId();
+            /** @var string $clientId */
             $reg_token = $clientRepository->generateRegistrationAccessToken();
             $reg_client_uri_path = $clientRepository->generateRegistrationClientUriPath();
 //            $client_secret = $clientRepository->generateClientSecret();

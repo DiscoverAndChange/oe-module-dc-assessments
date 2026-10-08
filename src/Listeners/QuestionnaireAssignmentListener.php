@@ -30,12 +30,13 @@ class QuestionnaireAssignmentListener implements IStaticEventSubscriber
     {
         if ($saveEvent->getService() instanceof QuestionnaireResponseService) {
             $commitTransaction  = false;
+            /** @var array{isNew: bool, patient_id: string, questionnaire_id: string, encounter: string, response_id: string, questionnaire_name: string} $data */
             $data = $saveEvent->getSaveData();
             $isNew = $data['isNew'] === true;
             if (!$isNew) {
                 return; // nothing to do here as we don't update assignments on an update request.
             }
-            $pid = $data['patient_id'] ?? null;
+            $pid = $data['patient_id'];
             $patientService = new PatientService();
             $puuid = UuidRegistry::uuidToString($patientService->getUuid($pid));
             $questionnaireId = $data['questionnaire_id'];
@@ -46,7 +47,7 @@ class QuestionnaireAssignmentListener implements IStaticEventSubscriber
                     if (!empty($encounter)) {
                         $items = $this->assignmentRepository->getQuestionnaireAssignmentItemsForEncounter($encounter, $questionnaireId);
                     } else {
-                        $items = $this->assignmentRepository->getQuestionnaireAssignmentItemsForClient($pid, $questionnaireId);
+                        $items = $this->assignmentRepository->getQuestionnaireAssignmentItemsForClient((int) $pid, $questionnaireId);
                     }
                     if (!empty($items)) {
                         foreach ($items as $item) {
@@ -71,7 +72,7 @@ class QuestionnaireAssignmentListener implements IStaticEventSubscriber
         }
     }
     /**
-     * @param array<mixed> $data
+     * @param array{isNew: bool, patient_id: string, questionnaire_id: string, encounter: string, response_id: string, questionnaire_name: string} $data
      * @param string $puuid
      */
     private function updateAssignmentItem(AssignedQuestionnaire $item, $data, $puuid): Assignment

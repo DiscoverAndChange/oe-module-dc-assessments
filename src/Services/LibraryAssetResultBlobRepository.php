@@ -42,6 +42,7 @@ class LibraryAssetResultBlobRepository
             $answers = $resultBlob->getAnswers();
 
             $cleanedAnswers = array_map(function ($answer) use ($sanitizer) {
+                /** @var array<string, mixed> $answer */
                 if (!empty($answer['value'])) {
                     $answer['value'] = $sanitizer->sanitize($answer['value']);
                 }
@@ -175,7 +176,7 @@ class LibraryAssetResultBlobRepository
     {
         $records = QueryUtils::fetchRecords($sql, $params);
         if (empty($records)) {
-            return null;
+            return [];
         }
         $results = [];
         foreach ($records as $record) {

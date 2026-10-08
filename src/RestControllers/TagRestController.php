@@ -15,7 +15,7 @@ class TagRestController implements IRestController
     {
         $tagRepository = new TagRepository();
         try {
-            $tags = $tagRepository->listTags() ?? [];
+            $tags = $tagRepository->listTags();
             return RestUtils::returnSingleObjectResponse($tags);
         } catch (\Exception $e) {
             return RestUtils::getErrorResponse($this->logger, $e);
