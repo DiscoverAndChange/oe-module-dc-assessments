@@ -20,6 +20,12 @@ v0.12.3 Fix latent bugs surfaced by the audit; raise test coverage
     status var, so the response builder hit an undefined variable; now returns 500.
   - TagRepository::getTagsForAssetIds: ids that all fail the positive-int filter no longer
     build an invalid "IN ()" clause; returns [] without querying.
+  - ResourceImporterService::importReports: the real export (DiscoverAndChangeResources.json)
+    writes reports with the SPA key convention (id/name/data/linkedGroup/linkedAssessments[])
+    rather than the underscore form (_id/_name/_data/_assessment/_assessmentgroup). Every
+    report there links to a group via linkedGroup, so the importer hit "Failed to find
+    assessment or assessment group" and all report imports failed. importReports() now
+    normalizes both conventions.
 
   Test coverage raised ~18% -> ~27% lines (177 -> 349 tests): pure-unit tests for the
   validators, Utils (RestUtils/FhirObjectDenormalizer), PaginatedResultsService,

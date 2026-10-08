@@ -266,17 +266,35 @@ class ResourceImporterService
             $this->importLog[] = $logEntry;
             $assessmentUid = null;
             $groupId = null;
+            // Reports appear in two export conventions: the underscore form
+            // (_id/_name/_data/_assessment/_assessmentgroup) used by the test fixtures and
+            // the SPA export form (id/name/data/linkedAssessments[]/linkedGroup) used by
+            // DiscoverAndChangeResources.json. Normalize both so either imports cleanly.
+            /** @var string $reportId */
+            $reportId = $report['_id'] ?? $report['id'] ?? '';
+            /** @var string $reportName */
+            $reportName = $report['_name'] ?? $report['name'] ?? '';
+            /** @var array<string, mixed> $reportData */
+            $reportData = (array) ($report['_data'] ?? $report['data'] ?? []);
+            $linkedAssessmentUid = $report['_assessment'] ?? null;
+            /** @var list<mixed> $linkedAssessments */
+            $linkedAssessments = (array) ($report['linkedAssessments'] ?? []);
+            if (($linkedAssessmentUid === null || $linkedAssessmentUid === '') && $linkedAssessments !== []) {
+                // the schema links a report to a single assessment; take the first
+                $linkedAssessmentUid = $linkedAssessments[0] ?? null;
+            }
+            $linkedGroupName = $report['_assessmentgroup'] ?? $report['linkedGroup'] ?? null;
             try {
                 QueryUtils::startTransaction();
-                if (!empty($report['_assessment'])) {
-                    if (!$assessmentRepo->existsAssessment($report['_assessment'])) {
-                        throw new \InvalidArgumentException("Failed to find assessment with uid " . $report['_assessment']);
+                if (!empty($linkedAssessmentUid)) {
+                    if (!$assessmentRepo->existsAssessment($linkedAssessmentUid)) {
+                        throw new \InvalidArgumentException("Failed to find assessment with uid " . $linkedAssessmentUid);
                     }
-                    $assessmentUid = $report['_assessment'];
-                } else if (!empty($report['_assessmentgroup'])) {
-                    $result = $groupRepo->search(['name' => $report['_assessmentgroup']]);
+                    $assessmentUid = $linkedAssessmentUid;
+                } else if (!empty($linkedGroupName)) {
+                    $result = $groupRepo->search(['name' => $linkedGroupName]);
                     if (!$result->hasData()) {
-                        throw new \InvalidArgumentException("Failed to find assessment group with name " . $report['_assessmentgroup']);
+                        throw new \InvalidArgumentException("Failed to find assessment group with name " . $linkedGroupName);
                     }
                     /** @var array<int, array<string, mixed>> $groupResultData */
                     $groupResultData = ProcessingResult::extractDataArray($result) ?? [];
@@ -284,15 +302,15 @@ class ResourceImporterService
                 } else {
                     throw new \InvalidArgumentException("Failed to find assessment or assessment group");
                 }
-                if ($repo->existsReport($report['_id'])) {
-                    throw new \InvalidArgumentException("Report with id " . $report['_id'] . " already exists");
+                if ($repo->existsReport($reportId)) {
+                    throw new \InvalidArgumentException("Report with id " . $reportId . " already exists");
                 }
-                $repo->createReport($report['_id'], $report['_name'], $importerId, (array) $report['_data'], $groupId, $assessmentUid);
+                $repo->createReport($reportId, $reportName, $importerId, $reportData, $groupId, $assessmentUid);
                 QueryUtils::commitTransaction();
                 $logEntry->importStatus = "success";
-                $logEntry->successMessage = "Successfully imported report with title " . $report['_name'];
+                $logEntry->successMessage = "Successfully imported report with title " . $reportName;
             } catch (\Exception $exception) {
-                $logEntry->error = "report " . ($report['_name'] ?? '<unknown>') . " " . $exception->getMessage() . " " . $exception->getTraceAsString();
+                $logEntry->error = "report " . ($reportName ?: '<unknown>') . " " . $exception->getMessage() . " " . $exception->getTraceAsString();
                 $logEntry->importStatus = "failure";
                 QueryUtils::rollbackTransaction();
             }
