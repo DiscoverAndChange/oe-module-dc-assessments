@@ -255,6 +255,33 @@ nothing to remove), just unreachable frontend paths.
   version bump (minor — behavior change to the API surface), CHANGELOG entry, run `composer
   test` + phpstan after. The 177-test suite + hydration coverage is the safety net.
 
+## v0.12.3 bug-fix pass — DONE
+Fixed the real latent bugs the characterization suite + SPA audit surfaced (honest
+fixes, each with a regression test; suite 177 -> 186, phpstan clean):
+- QuestionnaireResponseFormFHIRResourceService::parseFhirResource — two `== 'Patient'`/
+  `== 'Practitioner'` precedence bugs + the Encounter dead-store/wrong-uuid bug.
+- Assignment::fromJSON type reset; AssignedQuestionnaire::fromJSON dropped fields +
+  dateCompleted preservation; AssignmentRepository setResultId ordering;
+  AssessmentResultRepository non-array/missing-key handling; LibraryAssetBlobResultDTO
+  string creationDate; ClientSearchQueryDTO property defaults.
+
+Deliberately NOT fixed (documented, not one-line bugs):
+- `saveLibraryAssetResultBlob` silently drops the caller's userId/patientUUID (5 args to a
+  3-arg method). No DB column exists to store them (would need a `dac_LibraryAssetResultBlob`
+  migration), and the only caller passing them is the DEPRECATED `library-asset-results.create`
+  route (the live FHIR path passes 3). Incomplete audit feature on dead code — needs a
+  migration + wiring, out of scope for a bug-fix pass.
+- `LibraryAssetBlobResultDTO::jsonSerialize` omits assetId/assignmentItemId/clientId
+  (asymmetric with fromDTO). Adding them changes the REST response shape and the asymmetry
+  is not exercised as an actual round trip, so left as-is.
+- `AssessmentGroup::getId(): int` vs `int|string` property — pure return-type smell, no
+  runtime failure in practice (ids are ints); risky to widen, left as-is.
+
+## Coverage build-out (Scope B) — IN PROGRESS
+Goal (per decision): pure no-DB classes + raise partial repos + DB-backed repos
+(Client/ClientSearch/Tag/Token/MessageTemplate) + REST controller live actions. Excludes
+FHIR resource services and Bootstrap/DI.
+
 ## Progress log
 - 2026-10-08: Plan created. phpunit.xml given a `<source>`/testsuite so coverage can
   target `src/`. First pure-unit test (`Models/AssignmentTest`) added as the pattern.
@@ -268,6 +295,10 @@ nothing to remove), just unreachable frontend paths.
 - 2026-10-08: Source-typing pass (Phase 2) complete — proof (SystemUserRepository) +
   5-agent fan-out over the mixed-at-boundary cluster. Baseline 1418 -> 882; zero cast.*;
   176 tests green. v0.12.0. Several real bugs fixed, more logged above for follow-up.
+- 2026-10-08: v0.12.3 bug-fix pass — fixed the real latent bugs from the audit (FHIR
+  parse precedence/encounter, model fromJSON round-trips, repo hydration ordering, DTO
+  date parsing), each with a regression test. Suite 177 -> 186, phpstan clean. Then
+  started the Scope B coverage build-out.
 - 2026-10-08: SPA route audit complete — extracted the full original TS from the frontend
   source maps (479 files), inventoried every request, cross-referenced all 39 API_MAPPINGS
   routes. 7 routes unused by the shipped SPA (6 low-risk + `task.one` medium). Recorded the
