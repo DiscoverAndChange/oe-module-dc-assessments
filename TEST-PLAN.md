@@ -63,16 +63,16 @@ Controller (151), AssessmentGroupRestController (146).
 4. **FHIR/service integration** — endpoint/delegation behavior (hardest; needs harness).
 
 ## Target checklist
-### P1 — pure-unit hydration (no DB)
+### P1 — pure-unit hydration (no DB)  — DONE (coverage of these now ~100%)
 - [x] `Models/Assignment` — fromJSON + jsonSerialize round-trip, type validation, items
-- [ ] `Models/AssignedAssessment`, `AssignedQuestionnaire`, `AssignedLibraryAsset`,
+- [x] `Models/AssignedAssessment`, `AssignedQuestionnaire`, `AssignedLibraryAsset`,
       `AssignedAssessmentGroup`, `AssignedTemplateProfile` — fromJSON (incl. parent call)
-- [ ] `Models/Client` — fromJSON, sortAssignmentsByDateAssigned ordering
-- [ ] `Models/SystemUser`, `AssessmentSummary`, `AssessmentSnippet`, `AssessmentGroup`
-- [ ] `DTO/LibraryAssetBlobDTO` — fromDTO + jsonSerialize (watch nullable ?string fields)
-- [ ] `DTO/LibraryAssetBlobResultDTO` — fromDTO + generateId
-- [ ] `DTO/ClientSearchQueryDTO` — populateFromRequest, isValid
-- [ ] `Models/SystemError`, `ErrorCode`/`ErrorCodeStatus` — code→status/string mapping
+- [x] `Models/Client` — getDisplayName, addAssignment, sortAssignmentsByDateAssigned, jsonSerialize
+- [x] `Models/SystemUser` (role bounds, caps), `AssessmentSummary`, `AssessmentSnippet`, `AssessmentGroup`
+- [~] `DTO/LibraryAssetBlobDTO` — covered incidentally (~94%); add a dedicated test later
+- [x] `DTO/LibraryAssetBlobResultDTO` — fromDTO + generateId + jsonSerialize
+- [x] `DTO/ClientSearchQueryDTO` — populateFromRequest, isEmpty (note: no isValid() exists)
+- [x] `Models/SystemError`, `ErrorCode`/`ErrorCodeStatus` — code→status/string mapping
 ### P2 — repository hydration (crafted row arrays)
 - [ ] `AssignmentRepository::hydrateAssignedFromRecord` / `hydrateItemFromRecord`
 - [ ] `AssessmentRepository::hydrateAssessmentSummaryFromDatabaseRecord`
@@ -89,9 +89,33 @@ Controller (151), AssessmentGroupRestController (146).
 - [ ] `parseOpenEMRRecord` on the FHIR services
 
 ## Findings / latent bugs surfaced by tests
-- `Models/Assignment::fromJSON` does `setId($json["id"] ?? 0)` but `setId(string)` —
-  a missing `id` passes int `0` to a string param → `TypeError` under strict_types.
-  (Documented by a test asserting the happy path; fix separately if desired.)
+Candidates for the source-typing pass / follow-up fixes (tests characterize the
+SAFE path; none of these were "fixed" while writing tests):
+- **`Models/Client::fromJSON()` is dead** — `array_merge($client, (array)$obj)` with
+  `$client` a Client *object* throws `TypeError` on every call. No working path.
+  HIGH priority to rewrite; its test is `markTestIncomplete` until then.
+- **`Models/SystemUser::jsonSerialize()` crashes on a fresh object** — `$_companyName`
+  has no default/initializer, so serialize-before-setCompanyName() throws. Give it `''`.
+- `DTO/ClientSearchQueryDTO` — the 5 typed properties have no defaults, so `isEmpty()`
+  before `populateFromRequest()` throws "must not be accessed before initialization".
+- `Models/ErrorCode::getErrorStringForErrorCode()` checks membership against the WRONG
+  map (`ErrorCodeStatus::codeMap`) then reads `ErrorCode::codeMap` — works only because
+  the two maps share keys today; silently misbehaves if they diverge.
+- `DTO/LibraryAssetBlobResultDTO::fromDTO()` — `setCreationDate($data['creationDate']
+  ?? new DateTime())` into a non-null `\DateTime` setter: a real ISO *string* (the
+  realistic case) is never parsed and TypeErrors; only pre-hydrated DateTime works.
+  Also `jsonSerialize()` drops assetId/assignmentItemId/clientId (asymmetric round-trip).
+- `parent::fromJSON` resets `type` to `"Assessment"` when the input lacks a `type` key —
+  silently flips `isGroupType()` false for AssignedAssessmentGroup/AssignedTemplateProfile.
+- `AssignedQuestionnaire::fromJSON` ignores resultId/documentId/documentTemplateId even
+  when present (only questionnaireId is hydrated).
+- String setters fed `?? 0`: `Assignment::fromJSON` setId, `AssignedQuestionnaire`
+  questionnaireId, `AssignedTemplateProfile` profileId — a missing key stores "0"/0
+  (works only in PHP coercive mode; TypeError under strict_types).
+- Type mismatches: `AssessmentGroup::getId(): int` vs `int|string` property/setter;
+  `AssignedAssessment` `string $assessmentId` vs `setAssessmentId(int)`/`getAssessmentId(): int`.
+- Several Models read required typed properties in `jsonSerialize()` with no defaults —
+  serialize-before-hydrate throws (uninitialized typed property).
 
 ## Progress log
 - 2026-10-08: Plan created. phpunit.xml given a `<source>`/testsuite so coverage can
@@ -99,3 +123,7 @@ Controller (151), AssessmentGroupRestController (146).
 - 2026-10-08: PR #5 (the 8.4.1 port) merged to main; stale PRs #3/#4 closed. This
   work continues on branch `ai/test-coverage-and-source-typing` off updated main.
   PCOV installed; coverage baseline generated: 9.3% (see above).
+- 2026-10-08: P1 pure-unit hydration batch complete — 15 new test files (Models,
+  Assigned* subclasses, DTOs, error/code models). Suite 15 → 136 tests / 428
+  assertions, 2 incomplete. Coverage 9.3% → **15.0%**; the P1 classes are now ~100%.
+  Latent bugs above were surfaced in the process. Next: P2 repository hydration.
