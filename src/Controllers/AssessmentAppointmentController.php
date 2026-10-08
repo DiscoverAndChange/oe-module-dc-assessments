@@ -42,6 +42,9 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
     {
     }
 
+    /**
+     * @return void
+     */
     public static function subscribeToEvents(Container $container, EventDispatcherInterface $dispatcher)
     {
 
@@ -66,6 +69,9 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
         });
     }
 
+    /**
+     * @return void
+     */
     public function deleteDigitalDocumentsSection(ServiceDeleteEvent $deleteEvent)
     {
         if ($deleteEvent->getService() instanceof AppointmentService) {
@@ -84,11 +90,17 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
         }
     }
 
+    /**
+     * @return bool
+     */
     private function hasWizardScreens(AppointmentDialogCloseEvent $event)
     {
         return $this->getWizardScreenFromCurrentRequest() !== null;
     }
 
+    /**
+     * @return string|null
+     */
     private function getWizardScreenFromCurrentRequest()
     {
         // checkbox for sending digital documents
@@ -104,6 +116,11 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
         }
         return null;
     }
+    /**
+     * @param string $wizardScreen
+     * @param mixed $appointmentId
+     * @return void
+     */
     public function renderWizardScreenForAppointmentId($wizardScreen, $appointmentId)
     {
         if ($wizardScreen == BackendDispatchController::RENDER_DIGITAL_DOCUMENTS) {
@@ -113,6 +130,9 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
         }
     }
 
+    /**
+     * @return void
+     */
     public function renderAppointmentWizardScreens(AppointmentDialogCloseEvent $event)
     {
         $appointmentId = $event->getAppointmentId();
@@ -125,6 +145,11 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
         }
     }
 
+    /**
+     * @param mixed $appointmentId
+     * @param string|null $displayMessage
+     * @return void
+     */
     private function renderAppointmentNotificationScreen($appointmentId, $displayMessage = null)
     {
         $appointmentService = new AppointmentService();
@@ -193,6 +218,11 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
         }
     }
 
+    /**
+     * @param mixed $pc_eid
+     * @param string $action
+     * @return string
+     */
     private function getNotificatioNextStepUrl($pc_eid, $action = BackendDispatchController::RENDER_APPOINTMENT_NOTIFICATION)
     {
         return $this->config->getPublicBackendPathFQDN() . "index-backend.php?action="
@@ -201,6 +231,10 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
             . "&previous_step=" . urlencode(BackendDispatchController::RENDER_DIGITAL_DOCUMENTS);
     }
 
+    /**
+     * @param array<mixed> $appointment
+     * @return string
+     */
     private function getCalendarEventBackUrl($appointment)
     {
         $linkDate = preg_replace("/-/", "", $appointment['pc_eventDate']);
@@ -209,6 +243,10 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
         return $backUrl;
     }
 
+    /**
+     * @param mixed $appointmentId
+     * @return void
+     */
     private function renderDigitalDocumentsScreen($appointmentId)
     {
         if (!empty($appointmentId)) {
@@ -242,6 +280,10 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
         }
     }
 
+    /**
+     * @param mixed $pc_eid
+     * @return \Psr\Http\Message\ResponseInterface
+     */
     public function sendAppointmentNotification($pc_eid)
     {
         // no notification message to send so just return
@@ -287,6 +329,9 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
         return RestUtils::returnSingleObjectResponse(['type' => 'success']);
     }
 
+    /**
+     * @return void
+     */
     public function renderDigitalDocumentsSection(AppointmentRenderEvent $event)
     {
         // I don't like that I have to hit the query vars to find out if this is a provider or group appointment
@@ -322,7 +367,10 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
     }
 
 
-    /** @param array<mixed> $appt */
+    /**
+     * @param array<mixed> $appt
+     * @return void
+     */
     public function renderNotificationsSection(AppointmentRenderEvent $event, array $appt, ?Assignment $assignment)
     {
         echo $this->twig->render("discoverandchange/appointment/add_edit_event_notifications.html.twig", []);

@@ -16,7 +16,10 @@ class AssignmentCompleter
     {
     }
 
-    /** @param array<mixed> $client */
+    /**
+     * @param array<mixed> $client
+     * @return mixed
+     */
     public function markAssignmentComplete(Assignment $item, array $client)
     {
         if (empty($item->getId())) {
@@ -47,25 +50,31 @@ class AssignmentCompleter
         return $updatedItem;
     }
 
+    /** @return mixed */
     public function checkIfAllAssignmentCompleted(int $clientId)
     {
         $repo = new AssignmentRepository();
         return $repo->hasCompletedAssignments($clientId);
     }
 
+    /** @return mixed */
     private function markAssignmentItemComplete(Assignment $item)
     {
         $repo = new AssignmentRepository();
         return $repo->updateCompletedAssignmentItem($item);
     }
 
+    /** @return mixed */
     private function getAssignmentForItem(Assignment $item)
     {
         $repo = new AssignmentRepository();
         return $repo->getAssignmentForItem($item->getId());
     }
 
-    /** @param array<mixed> $client */
+    /**
+     * @param array<mixed> $client
+     * @return void
+     */
     private function dispatchNotifications(array $client)
     {
         $this->dispatcher->sendAssignmentsCompleteNotification($client['uuid'], $client['pid']);

@@ -59,12 +59,17 @@ class AssignmentTaskFHIRResourceService extends FhirServiceBase implements IReso
         ]
     ];
 
+    /** @param string $fhirApiURL */
     public function __construct(private AssignmentRepository $repository, $fhirApiURL = null)
     {
         parent::__construct($fhirApiURL);
     }
 
 
+    /**
+     * @param mixed $code
+     * @return bool
+     */
     public function supportsCode($code)
     {
         return $code == self::DAC_ASSIGNMENT;
@@ -226,6 +231,7 @@ class AssignmentTaskFHIRResourceService extends FhirServiceBase implements IReso
         }
     }
 
+    /** @return mixed */
     private function updateAssignment(Assignment $assignment, string $fhirResourceId, FHIRTask $fhirResource)
     {
         $qrService = new QuestionnaireResponseService();

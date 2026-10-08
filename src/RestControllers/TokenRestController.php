@@ -21,6 +21,9 @@ class TokenRestController implements IRestController
         return RestUtils::returnSingleObjectResponse($result);
     }
 
+    /**
+     * @param string $id
+     */
     public function one(ServerRestRequest $request, $id): ResponseInterface
     {
         // TODO: Implement one() method.
@@ -34,6 +37,9 @@ class TokenRestController implements IRestController
         return $psrFactory->createResponse(400)->withBody(json_encode([]));
     }
 
+    /**
+     * @param string $id
+     */
     public function update(ServerRestRequest $httpRestRequest, $id): ResponseInterface
     {
         // TODO: Implement one() method.

@@ -68,6 +68,7 @@ class AssessmentGroup implements \JsonSerializable
         $this->assessments = $assessments;
     }
 
+    /** @return void */
     public function addAssessmentSnippet(AssessmentSnippet $snippet)
     {
         $this->assessments[] = $snippet;

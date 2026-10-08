@@ -44,6 +44,9 @@ class AssessmentRestController implements IRestController
         }
     }
 
+    /**
+     * @param string $id
+     */
     public function one(ServerRestRequest $request, $id): ResponseInterface
     {
         // TODO: Implement one() method.
@@ -72,6 +75,9 @@ class AssessmentRestController implements IRestController
         return $this->createAssessmentForContext($request, AssessmentValidator::DATABASE_INSERT_CONTEXT);
     }
 
+    /**
+     * @param string $id
+     */
     public function update(ServerRestRequest $request, $id): ResponseInterface
     {
         try {
@@ -88,6 +94,10 @@ class AssessmentRestController implements IRestController
         }
     }
 
+    /**
+     * @param string $context
+     * @return ResponseInterface
+     */
     private function createAssessmentForContext(ServerRestRequest $request, $context)
     {
         $validator = new AssessmentValidator();

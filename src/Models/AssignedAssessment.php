@@ -27,6 +27,7 @@ class AssignedAssessment extends Assignment
         return $this->itemId;
     }
 
+    /** @return void */
     public function setItemId(?int $v)
     {
         $this->itemId = $v;
@@ -53,6 +54,7 @@ class AssignedAssessment extends Assignment
         return $this->assessmentId;
     }
 
+    /** @return void */
     public function setAssessmentId(int $v)
     {
         $this->assessmentId = $v;
@@ -63,6 +65,7 @@ class AssignedAssessment extends Assignment
         return $this->uid;
     }
 
+    /** @return void */
     public function setUid(string $v)
     {
         $this->uid = $v;
@@ -73,6 +76,7 @@ class AssignedAssessment extends Assignment
         return $this->resultId;
     }
 
+    /** @return void */
     public function setResultId(?string $v)
     {
         $this->resultId = $v;
@@ -93,7 +97,10 @@ class AssignedAssessment extends Assignment
             'itemId' => $this->getItemId()
         ]);
     }
-    /** @param array<mixed> $assignmentJSON */
+    /**
+     * @param array<mixed> $assignmentJSON
+     * @return void
+     */
     public function fromJSON(array $assignmentJSON)
     {
         parent::fromJSON($assignmentJSON);

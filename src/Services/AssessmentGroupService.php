@@ -21,6 +21,10 @@ class AssessmentGroupService extends BaseService
         parent::__construct(self::TABLE_NAME);
     }
 
+    /**
+     * @param mixed $getCompanyId
+     * @return array<mixed>
+     */
     public function getAllGroups(bool $showAllGroups, $getCompanyId)
     {
         $sql = "SELECT
@@ -48,6 +52,10 @@ class AssessmentGroupService extends BaseService
         return $this->getGroupsForSql($sql, $params);
     }
 
+    /**
+     * @param mixed $groupId
+     * @return array<mixed>|null
+     */
     public function getGroup($groupId)
     {
         $sql = "SELECT
@@ -68,6 +76,11 @@ class AssessmentGroupService extends BaseService
         return null;
     }
 
+    /**
+     * @param string $sql
+     * @param array<mixed> $params
+     * @return array<mixed>
+     */
     private function getGroupsForSql($sql, $params)
     {
         $results = QueryUtils::fetchRecords($sql, $params);
@@ -142,6 +155,10 @@ class AssessmentGroupService extends BaseService
         return $group;
     }
 
+    /**
+     * @param mixed $groupId
+     * @return array<mixed>|null
+     */
     public function addAssessmentToGroup(mixed $uid, $groupId, ?int $companyId)
     {
         $group = $this->getGroup($groupId);
@@ -156,6 +173,10 @@ class AssessmentGroupService extends BaseService
         return $this->getGroup($groupId);
     }
 
+    /**
+     * @param mixed $groupId
+     * @return array<mixed>|null
+     */
     public function updateAssessmentVersionForGroup($groupId)
     {
             // TODO: stephen need the creator/last updator columns on here to track changes...

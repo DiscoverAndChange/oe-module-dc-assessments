@@ -52,6 +52,10 @@ class AssessmentResponseBlobFHIRResourceService extends FhirServiceBase
         parent::__construct();
     }
 
+    /**
+     * @param mixed $code
+     * @return bool
+     */
     public function supportsCode($code)
     {
         return $code === self::CODE_DAC_ASSESSMENT;
@@ -134,6 +138,7 @@ class AssessmentResponseBlobFHIRResourceService extends FhirServiceBase
         return null;
     }
 
+    /** @param mixed $openEmrRecord */
     protected function insertOpenEmrRecord($openEmrRecord)
     {
         $validator = new AssessmentResultBlobValidator();
@@ -213,6 +218,7 @@ class AssessmentResponseBlobFHIRResourceService extends FhirServiceBase
     }
 
 
+    /** @return mixed */
     private function validateCreateAccessAndReturnClient(string $patientUuidString, ?int $userId)
     {
 

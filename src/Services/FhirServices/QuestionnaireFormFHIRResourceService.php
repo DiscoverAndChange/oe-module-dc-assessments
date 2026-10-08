@@ -44,12 +44,17 @@ class QuestionnaireFormFHIRResourceService extends FhirServiceBase implements IR
     use FhirServiceBaseEmptyTrait;
 
 
+    /** @param string $fhirApiURL */
     public function __construct($fhirApiURL = null)
     {
         parent::__construct($fhirApiURL);
         $this->service = new QuestionnaireService();
     }
 
+    /**
+     * @param mixed $code
+     * @return bool
+     */
     public function supportsCode($code)
     {
         // we support pretty much any LOINC code

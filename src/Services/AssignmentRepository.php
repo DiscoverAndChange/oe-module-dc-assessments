@@ -37,7 +37,7 @@ class AssignmentRepository
 
     /**
      * @param Client[] $clients
-     * @return Assignment[]
+     * @return void
      */
     public function populateAssignmentsForClients(array $clients)
     {
@@ -60,12 +60,14 @@ class AssignmentRepository
         }
     }
 
+    /** @param string $assignmentUuid */
     public function getAssignmentByUuid($assignmentUuid): ?Assignment
     {
         $assignments = $this->search([new TokenSearchField('assignment_uuid', [$assignmentUuid], true)]);
         return $assignments[0] ?? null;
     }
 
+    /** @param string $assignmentItemUuid */
     public function getAssignmentForAssignmentItemUuid($assignmentItemUuid): ?Assignment
     {
         $assignments = $this->search([new TokenSearchField('assignmentitem_uuid', [$assignmentItemUuid], true)]);
@@ -73,8 +75,8 @@ class AssignmentRepository
     }
 
     /**
-     * @param $search
-     * @param $isAndCondition
+     * @param array<mixed> $search
+     * @param bool $isAndCondition
      * @return Assignment[]
      */
     public function search($search, $isAndCondition = false)
@@ -320,6 +322,10 @@ class AssignmentRepository
         return $assignment;
     }
 
+    /**
+     * @param array<mixed> $record
+     * @return void
+     */
     private function populateDatesForAssignment($record, Assignment $assignment)
     {
         $dateFormat = "Y-m-d H:i:s.u";
@@ -331,7 +337,10 @@ class AssignmentRepository
         }
     }
 
-    /** @param array<mixed> $record */
+    /**
+     * @param array<mixed> $record
+     * @return void
+     */
     private function hydrateAssignedAssessmentFromRecord(array $record, AssignedAssessment $assessment)
     {
         $assessment->setItemId($record['id']);
@@ -350,7 +359,10 @@ class AssignmentRepository
             $assessment->setResultId($record['assessmentresultblob_id']);
         }
     }
-    /** @param array<mixed> $record */
+    /**
+     * @param array<mixed> $record
+     * @return void
+     */
     private function hydrateAssignedAssessmentGroupFromRecord(array $record, AssignedAssessmentGroup $assessmentGroup)
     {
         $assessmentGroup->setAssessmentGroupId($record['assessmentgroup_id']);
@@ -363,7 +375,10 @@ class AssignmentRepository
         }
     }
 
-    /** @param array<mixed> $record */
+    /**
+     * @param array<mixed> $record
+     * @return void
+     */
     private function hydrateAssignedTemplateProfileFromRecord(array $record, AssignedTemplateProfile $profile)
     {
         $profile->setProfileId($record['profile_id']);
@@ -377,6 +392,7 @@ class AssignmentRepository
         }
     }
 
+    /** @param array<mixed> $item */
     private function hydrateItemFromRecord($item): Assignment
     {
         if (isset($item['assessmentblob_id'])) {
@@ -405,7 +421,10 @@ class AssignmentRepository
         return $assignmentItem;
     }
 
-    /** @param array<mixed> $item */
+    /**
+     * @param array<mixed> $item
+     * @return void
+     */
     private function hydrateAssignedLibraryAssetFromRecord(array $item, AssignedLibraryAsset $asset)
     {
         $this->populateDatesForAssignment($item, $asset);
@@ -420,6 +439,10 @@ class AssignmentRepository
         $asset->setName($item['asset_name']);
         $asset->setResultId($item['assetresultblob_id']);
     }
+    /**
+     * @param int $assignmentId
+     * @return Assignment
+     */
     private function createAssignmentItemFromObject($assignmentId, Assignment $item)
     {
         $uuid = (new UuidRegistry(['table_name' => self::TABLE_NAME_ASSIGNMENT_ITEM]))->createUuid();
@@ -440,6 +463,11 @@ class AssignmentRepository
         return $item;
     }
 
+    /**
+     * @param string $clientId
+     * @param string $assignmentId
+     * @return string
+     */
     public function removeAssignment($clientId, $assignmentId, int $userId)
     {
         $uuidBytes = UuidRegistry::uuidToBytes($assignmentId);
@@ -453,6 +481,10 @@ class AssignmentRepository
         return $assignmentId;
     }
 
+    /**
+     * @param string $clientId
+     * @return Assignment
+     */
     public function saveAssignmentForClient($clientId, Assignment $assignment, int $userId)
     {
         $items = $assignment->getItems();
@@ -495,6 +527,7 @@ class AssignmentRepository
         return $assignment;
     }
 
+    /** @return Assignment|null */
     public function getAssignmentItem(string $assignmentItemUuid, string $puuid)
     {
         // tokens have to be strings... not sure why we force that.
@@ -508,6 +541,7 @@ class AssignmentRepository
         return null;
     }
 
+    /** @return Assignment */
     public function updateCompletedAssignmentItem(Assignment $item)
     {
         $resultId = null;
@@ -546,6 +580,7 @@ class AssignmentRepository
         return $item;
     }
 
+    /** @return mixed */
     public function getAssignmentIdForAssignmentItem(Assignment $item)
     {
         return QueryUtils::fetchSingleValue(
@@ -555,12 +590,14 @@ class AssignmentRepository
         );
     }
 
+    /** @return bool */
     public function hasCompletedAssignmentItems(int $assignmentId)
     {
         $sql = "SELECT COUNT(item.id) AS count FROM " . self::TABLE_NAME_ASSIGNMENT_ITEM . " item WHERE item.assignment_id = ? AND item.date_completed IS NULL";
         $count = QueryUtils::fetchSingleValue($sql, 'count', [$assignmentId]);
         return $count == 0;
     }
+    /** @return bool */
     public function hasCompletedAssignments(int $clientId)
     {
         $sql = "SELECT COUNT(id) AS count FROM " . self::TABLE_NAME . " WHERE client_id = ? AND date_completed IS NULL";
@@ -568,6 +605,7 @@ class AssignmentRepository
         return $count == 0;
     }
 
+    /** @return void */
     private function updateCompletedAssignment(int $assignmentId, \DateTime $dateCompleted)
     {
         $sql = "UPDATE " . self::TABLE_NAME . " SET date_completed = ?,date_updated=? WHERE id = ?";
@@ -575,6 +613,10 @@ class AssignmentRepository
         QueryUtils::sqlStatementThrowException($sql, [$dateCompletedString,$dateCompletedString, $assignmentId]);
     }
 
+    /**
+     * @param array<mixed> $item
+     * @return void
+     */
     private function hydrateDocumentTemplateProfile($item, AssignedQuestionnaire $assignmentItem)
     {
         $assignmentItem->setDocumentTemplateId($item['template_id']);
@@ -589,6 +631,10 @@ class AssignmentRepository
         }
     }
 
+    /**
+     * @param array<mixed> $item
+     * @return void
+     */
     private function hydrateAssignedQuestionnaireFromRecord($item, AssignedQuestionnaire $assignmentItem)
     {
         $this->populateDatesForAssignment($item, $assignmentItem);
@@ -620,7 +666,10 @@ class AssignmentRepository
         return $assignmentItems;
     }
 
-    /** @param array<mixed> $record */
+    /**
+     * @param array<mixed> $record
+     * @return array<string, mixed>
+     */
     private function getItemArrayFromAssignmentItemRecord(array $record)
     {
         $item = [
@@ -650,6 +699,7 @@ class AssignmentRepository
         return $item;
     }
 
+    /** @return array<string>|null */
     public function getAssignmentUuidsForAppointment(?int $pc_eid)
     {
         if (empty($pc_eid)) {
@@ -685,6 +735,13 @@ class AssignmentRepository
         return null;
     }
 
+    /**
+     * @param string $clientId
+     * @param string|null $appointmentId
+     * @param string $profileName
+     * @param string $profileId
+     * @param int $userId
+     */
     public function createClientAssignmentForProfile($clientId, $appointmentId, $profileName, $profileId, $userId): Assignment
     {
         $questionnaireService = new QuestionnaireService();
@@ -749,6 +806,7 @@ class AssignmentRepository
         return $assignmentItems;
     }
 
+    /** @return int */
     private function createAuditRecordForItem(Assignment $item)
     {
 //        if ($item instanceof AssignedQuestionnaire) {
@@ -765,6 +823,7 @@ class AssignmentRepository
         return $portalAuditId;
     }
 
+    /** @return Assignment[] */
     public function getAssignmentsForEncounterUuid(string $encounterUuid, string $puuid)
     {
         // for now just return the assignment list
@@ -774,11 +833,13 @@ class AssignmentRepository
     }
 
 
+    /** @return array<mixed> */
     public function getQuestionnaireAssignmentItemsForEncounter(string $encounterUuid, string $questionnaireId)
     {
         return [];
     }
 
+    /** @return string */
     public function unlinkAssignmentFromAppointment(string $existingAssignmentId, string $event_uuid, int $authUserID)
     {
         $sql = "UPDATE " . self::TABLE_NAME . " SET appointment_id = NULL, date_updated=NOW(), "

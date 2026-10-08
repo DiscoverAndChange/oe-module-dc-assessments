@@ -64,6 +64,7 @@ class QuestionnaireResponseFHIRResourceService extends FhirServiceBase implement
     private EventDispatcher $dispatcher;
 
 
+    /** @param string $fhirApiURL */
     public function __construct(EventDispatcher $dispatcher, $fhirApiURL = null)
     {
         parent::__construct($fhirApiURL);

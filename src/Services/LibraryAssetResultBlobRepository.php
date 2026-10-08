@@ -21,6 +21,10 @@ class LibraryAssetResultBlobRepository
     {
     }
 
+    /**
+     * @param mixed $clientUuid
+     * @return LibraryAssetBlobResultDTO
+     */
     public function saveLibraryAssetResultBlob(
         LibraryAssetBlobResultDTO $resultBlob,
         LibraryAssetBlobDTO $asset,
@@ -77,6 +81,10 @@ class LibraryAssetResultBlobRepository
         return $updatedDTO;
     }
 
+    /**
+     * @param array<mixed> $searchParams
+     * @return ProcessingResult
+     */
     public function search($searchParams)
     {
         $processingResult = new ProcessingResult();
@@ -106,6 +114,9 @@ class LibraryAssetResultBlobRepository
         return $processingResult;
     }
 
+    /**
+     * @return LibraryAssetBlobDTO
+     */
     public function saveTags(LibraryAssetBlobDTO $assetBlob)
     {
         // seems like the easiest is to delete all the tags, and then relink them
@@ -124,6 +135,9 @@ class LibraryAssetResultBlobRepository
         return $assetBlob;
     }
 
+    /**
+     * @return bool
+     */
     private function shouldEncrypt()
     {
         // TODO: @adunsulag we may want to make this configurable, but for now we will just encrypt everything
@@ -131,6 +145,9 @@ class LibraryAssetResultBlobRepository
         return true;
     }
 
+    /**
+     * @return LibraryAssetBlobResultDTO
+     */
     public function getDecryptedAssetResultBlob(string $id, ?int $pid = null)
     {
         $sql = "SELECT larb.id, larb.answers, larb.journal_entry, larb.creation_date, larb.asset_id, larb.client_id "
@@ -149,8 +166,8 @@ class LibraryAssetResultBlobRepository
     }
 
     /**
-     * @param $sql
-     * @param $params
+     * @param string $sql
+     * @param array<mixed> $params
      * @return LibraryAssetBlobResultDTO[]
      */
     private function getRecordsForQuery($sql, $params)
@@ -166,6 +183,10 @@ class LibraryAssetResultBlobRepository
         return $results;
     }
 
+    /**
+     * @param array<mixed> $record
+     * @return LibraryAssetBlobResultDTO
+     */
     private function hydrateResultBlobFromRecord($record)
     {
         $blob = new LibraryAssetBlobResultDTO();

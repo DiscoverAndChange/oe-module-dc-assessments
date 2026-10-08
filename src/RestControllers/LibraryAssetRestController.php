@@ -37,6 +37,9 @@ class LibraryAssetRestController implements IRestController
         }
     }
 
+    /**
+     * @param string $id
+     */
     public function one(ServerRestRequest $request, $id): ResponseInterface
     {
         try {
@@ -96,6 +99,9 @@ class LibraryAssetRestController implements IRestController
         }
     }
 
+    /**
+     * @param string $id
+     */
     public function update(ServerRestRequest $request, $id): ResponseInterface
     {
         // TODO: Implement one() method.

@@ -75,6 +75,9 @@ class AssessmentResultRestController implements IRestController
         }
     }
 
+    /**
+     * @param string $id
+     */
     public function one(ServerRestRequest $request, $id): ResponseInterface
     {
         // TODO: Implement one() method.
@@ -140,6 +143,9 @@ class AssessmentResultRestController implements IRestController
         return $psrFactory->createResponse(400)->withBody(json_encode([]));
     }
 
+    /**
+     * @param string $id
+     */
     public function update(ServerRestRequest $httpRestRequest, $id): ResponseInterface
     {
         // TODO: Implement one() method.
@@ -147,6 +153,9 @@ class AssessmentResultRestController implements IRestController
         return $psrFactory->createResponse(400)->withBody(json_encode([]));
     }
 
+    /**
+     * @return array<mixed>
+     */
     private function validateCreateAccessAndReturnClient(?int $userId, string $patientUuidString, ?string $clientId, PatientService $patientService)
     {
 

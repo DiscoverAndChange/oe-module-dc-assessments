@@ -26,12 +26,21 @@ class ResourceImporterService
      * @var ImportLogEntry[]
      */
     private array $importLog = [];
+    /**
+     * @param string $resource
+     * @param mixed $importerUserId
+     * @return void
+     */
     public function import(string $resource, $importerUserId)
     {
         $resources = json_decode($resource, true, 512, JSON_THROW_ON_ERROR);
         $this->importResources($resources, $importerUserId);
     }
-    /** @param array<mixed> $resources */
+    /**
+     * @param array<mixed> $resources
+     * @param mixed $importerUserId
+     * @return void
+     */
     public function importResources(array $resources, $importerUserId)
     {
         $index = 0;
@@ -52,6 +61,9 @@ class ResourceImporterService
         }
     }
 
+    /**
+     * @return AssessmentRepository
+     */
     public function getAssessmentRepository()
     {
         if (empty($this->assessmentRepository)) {
@@ -60,11 +72,18 @@ class ResourceImporterService
         return $this->assessmentRepository;
     }
 
+    /**
+     * @param AssessmentRepository $repository
+     * @return void
+     */
     public function setAssessmentRepository(AssessmentRepository $repository)
     {
         $this->assessmentRepository = $repository;
     }
 
+    /**
+     * @return AssessmentGroupService
+     */
     public function getAssessmentGroupService()
     {
         if (empty($this->assessmentGroupService)) {
@@ -73,7 +92,11 @@ class ResourceImporterService
         return $this->assessmentGroupService;
     }
 
-    /** @param array<mixed> $assessmentBlobs */
+    /**
+     * @param array<mixed> $assessmentBlobs
+     * @param int $index
+     * @return void
+     */
     public function importAssessmentBlobResources(array $assessmentBlobs, &$index)
     {
         $validator = new AssessmentValidator();
@@ -112,12 +135,20 @@ class ResourceImporterService
         }
     }
 
+    /**
+     * @return ImportLogEntry[]
+     */
     public function getLogEntries()
     {
         return $this->importLog;
     }
 
-    /** @param array<mixed> $assets */
+    /**
+     * @param array<mixed> $assets
+     * @param mixed $importerUserId
+     * @param int $index
+     * @return void
+     */
     public function importLibraryAssetResources(array $assets, $importerUserId, &$index)
     {
         $validator = new LibraryAssetBlobValidator();
@@ -161,7 +192,12 @@ class ResourceImporterService
         }
     }
 
-    /** @param array<mixed> $groups */
+    /**
+     * @param array<mixed> $groups
+     * @param mixed $importerId
+     * @param int $index
+     * @return void
+     */
     public function importAssessmentGroupResources(array $groups, $importerId, &$index)
     {
         $repo = $this->getAssessmentGroupService();
@@ -197,7 +233,12 @@ class ResourceImporterService
         }
     }
 
-    /** @param array<mixed> $reports */
+    /**
+     * @param array<mixed> $reports
+     * @param mixed $importerId
+     * @param int $index
+     * @return void
+     */
     public function importReports(array $reports, $importerId, &$index)
     {
         $repo = new AssessmentReportRepository();

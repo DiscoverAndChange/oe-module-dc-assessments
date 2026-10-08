@@ -20,6 +20,11 @@ class BackendDispatchController
     {
     }
 
+    /**
+     * @param string $action
+     * @param array<mixed> $queryVars
+     * @return \Psr\Http\Message\ResponseInterface|null
+     */
     public function dispatch($action, $queryVars)
     {
         switch ($action) {

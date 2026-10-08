@@ -25,6 +25,7 @@ class QuestionnaireAssignmentListener implements IStaticEventSubscriber
     }
 
 
+    /** @return void */
     public function updateQuestionnaireAssignments(ServiceSaveEvent $saveEvent)
     {
         if ($saveEvent->getService() instanceof QuestionnaireResponseService) {
@@ -69,6 +70,10 @@ class QuestionnaireAssignmentListener implements IStaticEventSubscriber
             }
         }
     }
+    /**
+     * @param array<mixed> $data
+     * @param string $puuid
+     */
     private function updateAssignmentItem(AssignedQuestionnaire $item, $data, $puuid): Assignment
     {
         $questionnaireId = $data['questionnaire_id'];
@@ -90,6 +95,7 @@ class QuestionnaireAssignmentListener implements IStaticEventSubscriber
         return $this->assignmentRepository->updateCompletedAssignmentItem($item);
     }
 
+    /** @return void */
     public static function subscribeToEvents(Container $container, EventDispatcherInterface $eventDispatcher)
     {
         $eventDispatcher->addListener(ServiceSaveEvent::EVENT_POST_SAVE, function (ServiceSaveEvent $event) use ($container) {

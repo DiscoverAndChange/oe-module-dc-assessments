@@ -16,6 +16,11 @@ class ConfigController
     {
     }
 
+    /**
+     * @param string $action
+     * @param array<mixed> $queryVars
+     * @return \Psr\Http\Message\ResponseInterface
+     */
     public function renderConfigAction($action, $queryVars)
     {
         $data = [
@@ -31,6 +36,11 @@ class ConfigController
         return RestUtils::returnTextResponse($text);
     }
 
+    /**
+     * @param string $action
+     * @param array<mixed> $queryVars
+     * @return \Psr\Http\Message\ResponseInterface
+     */
     public function importConfigAction($action, $queryVars)
     {
         $data = [

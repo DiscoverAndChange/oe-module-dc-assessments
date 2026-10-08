@@ -61,6 +61,7 @@ class TaskFHIRResourceService extends FhirServiceBase implements
      */
     private $dataStore;
 
+    /** @param string $fhirApiURL */
     public function __construct(QuestionnairePortalTaskFHIRResourceService $portalQuestionnaireResourceService, AssignmentTaskFHIRResourceService $assignmentResourceService, $fhirApiURL = null)
     {
         parent::__construct($fhirApiURL);
@@ -260,6 +261,7 @@ class TaskFHIRResourceService extends FhirServiceBase implements
         return $provenanceService->createProvenanceForDomainResource($dataRecord, $who);
     }
 
+    /** @return ProcessingResult */
     private function sortFhirSearchResult(ProcessingResult $fhirSearchResult)
     {
         $data = $fhirSearchResult->getData();

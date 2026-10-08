@@ -21,6 +21,9 @@ class AnnouncementRestController implements IRestController
         return $psrFactory->createResponse(200)->withBody(json_encode([]));
     }
 
+    /**
+     * @param string $id
+     */
     public function one(ServerRestRequest $httpRestRequest, $id): ResponseInterface
     {
         // TODO: Implement one() method.
@@ -35,6 +38,9 @@ class AnnouncementRestController implements IRestController
         return $psrFactory->createResponse(400)->withBody(json_encode([]));
     }
 
+    /**
+     * @param string $id
+     */
     public function update(ServerRestRequest $httpRestRequest, $id): ResponseInterface
     {
         // TODO: Implement one() method.

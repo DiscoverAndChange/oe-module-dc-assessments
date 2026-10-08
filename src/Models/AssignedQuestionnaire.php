@@ -48,6 +48,7 @@ class AssignedQuestionnaire extends Assignment
         return $this->resultId;
     }
 
+    /** @return void */
     public function setResultId(?string $v)
     {
         $this->resultId = $v;
@@ -105,7 +106,10 @@ class AssignedQuestionnaire extends Assignment
         ]);
     }
 
-    /** @param array<mixed> $assignmentJSON */
+    /**
+     * @param array<mixed> $assignmentJSON
+     * @return void
+     */
     public function fromJSON(array $assignmentJSON)
     {
         parent::fromJSON($assignmentJSON);

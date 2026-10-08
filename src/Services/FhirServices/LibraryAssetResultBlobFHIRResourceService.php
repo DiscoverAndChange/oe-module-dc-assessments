@@ -62,6 +62,10 @@ class LibraryAssetResultBlobFHIRResourceService extends FhirServiceBase
         $this->patientService = $patientService;
     }
 
+    /**
+     * @param mixed $code
+     * @return bool
+     */
     public function supportsCode($code)
     {
         return $code === self::CODE_DAC_LIBRARY_ASSET;
@@ -114,6 +118,7 @@ class LibraryAssetResultBlobFHIRResourceService extends FhirServiceBase
         return $result;
     }
 
+    /** @param mixed $openEmrRecord */
     protected function insertOpenEmrRecord($openEmrRecord)
     {
         $validator = new LibraryAssetResultBlobValidator();
@@ -164,6 +169,7 @@ class LibraryAssetResultBlobFHIRResourceService extends FhirServiceBase
         return $result;
     }
 
+    /** @return mixed */
     private function validateCreateAccessAndReturnClient(string $patientUuidString, ?int $userId)
     {
 

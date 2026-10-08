@@ -12,6 +12,10 @@ class AssessmentResultRepository
 {
     const TABLE_NAME = "dac_AssessmentResultBlob";
 
+    /**
+     * @param array<mixed> $searchParams
+     * @return ProcessingResult
+     */
     public function search($searchParams)
     {
         $processingResult = new ProcessingResult();
@@ -48,7 +52,10 @@ class AssessmentResultRepository
         return $processingResult;
     }
 
-    /** @param array<mixed> $resultIds */
+    /**
+     * @param array<mixed> $resultIds
+     * @return array<mixed>|null
+     */
     public function getResultListForPatient(string $clientId, array $resultIds)
     {
         if (empty($resultIds)) {
@@ -76,6 +83,7 @@ class AssessmentResultRepository
         $records = $this->hydrateRecordsFromResult($result);
         return $records;
     }
+    /** @return array<mixed>|null */
     public function getResultsForPatient(string $clientId, ?string $assessmentUID, ?string $resultId)
     {
         if (empty($assessmentUID) && empty($resultId)) {
@@ -113,6 +121,10 @@ class AssessmentResultRepository
         return $records[0];
     }
 
+    /**
+     * @param array<mixed> $result
+     * @return array<mixed>
+     */
     private function hydrateRecordsFromResult($result)
     {
         $records = [];
@@ -127,7 +139,10 @@ class AssessmentResultRepository
         return $records;
     }
 
-    /** @param array<mixed> $resultData */
+    /**
+     * @param array<mixed> $resultData
+     * @return array<string, mixed>
+     */
     public function createResult(string $resultId, array $resultData, int $clientId, int $assessmentId)
     {
 
@@ -153,6 +168,13 @@ class AssessmentResultRepository
         return ['id' => $resultId, 'assessment_id' => $assessmentId, 'client_id' => $clientId, 'data' => $resultBlob];
     }
 
+    /**
+     * @param int $templateId
+     * @param int $pid
+     * @param array<mixed> $qr
+     * @param string $questionnaireName
+     * @return int
+     */
     private function insertOnSiteDocumentRecord($templateId, $pid, $qr, $questionnaireName)
     {
     /**

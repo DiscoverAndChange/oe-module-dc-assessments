@@ -22,6 +22,9 @@ class TagRestController implements IRestController
         }
     }
 
+    /**
+     * @param string $id
+     */
     public function one(ServerRestRequest $request, $id): ResponseInterface
     {
         // TODO: Implement one() method.
@@ -35,6 +38,9 @@ class TagRestController implements IRestController
         return $psrFactory->createResponse(400)->withBody(json_encode([]));
     }
 
+    /**
+     * @param string $id
+     */
     public function update(ServerRestRequest $httpRestRequest, $id): ResponseInterface
     {
         // TODO: Implement one() method.

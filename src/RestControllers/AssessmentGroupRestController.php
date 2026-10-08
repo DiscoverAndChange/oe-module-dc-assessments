@@ -57,6 +57,11 @@ class AssessmentGroupRestController implements IRestController
         }
     }
 
+    /**
+     * @param array<mixed> $results
+     * @param bool $showAllGroups
+     * @return AssessmentGroup[]|null
+     */
     private function createAssessmentGroupsFromEntities($results, $showAllGroups, LoggerInterface $logger)
     {
         $groups = [];
@@ -89,6 +94,9 @@ class AssessmentGroupRestController implements IRestController
         return $groups;
     }
 
+    /**
+     * @param string $id
+     */
     public function one(ServerRestRequest $httpRestRequest, $id): ResponseInterface
     {
         // TODO: Implement one() method.
@@ -133,12 +141,18 @@ class AssessmentGroupRestController implements IRestController
         }
     }
 
+    /**
+     * @param string $id
+     */
     public function update(ServerRestRequest $httpRestRequest, $id): ResponseInterface
     {
         // TODO: Implement update() method.
         return RestUtils::getNotFoundResponse();
     }
 
+    /**
+     * @param string $groupId
+     */
     public function addAssessmentToGroup(ServerRestRequest $request, $groupId): ResponseInterface
     {
         $transactionCommitted = false;
@@ -184,6 +198,9 @@ class AssessmentGroupRestController implements IRestController
         }
     }
 
+    /**
+     * @param string $groupId
+     */
     public function updateAssessmentVersionForGroup(ServerRestRequest $request, $groupId): ResponseInterface
     {
         $transactionCommitted = false;
@@ -227,7 +244,10 @@ class AssessmentGroupRestController implements IRestController
         }
     }
 
-    /** @param array<mixed> $profiles */
+    /**
+     * @param array<mixed> $profiles
+     * @return AssessmentGroup[]
+     */
     private function mapProfilesToGroups(DocumentTemplateService $documentTemplateService, array $profiles)
     {
         $groups = [];

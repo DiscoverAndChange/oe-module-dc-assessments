@@ -54,6 +54,7 @@ class RestUtils
         $psrFactory = new Psr17Factory();
         return $psrFactory->createResponse($statusCode)->withBody($psrFactory->createStream(json_encode($err)));
     }
+    /** @param string $logMessage */
     public static function returnAccessDeniedResponse(SystemLogger $logger, $logMessage): ResponseInterface
     {
         $logger->error($logMessage);
@@ -88,6 +89,7 @@ class RestUtils
     }
 
 
+    /** @param string $text */
     public static function returnTextResponse($text): ResponseInterface
     {
         $psrFactory = new Psr17Factory();
@@ -98,6 +100,7 @@ class RestUtils
         return $response;
     }
 
+    /** @param mixed $object */
     public static function returnSingleObjectResponse($object): ResponseInterface
     {
         $psrFactory = new Psr17Factory();
@@ -119,6 +122,7 @@ class RestUtils
         return $psrFactory->createResponse(200)->withBody($psrFactory->createStream(json_encode([])));
     }
 
+    /** @return ResponseInterface */
     public static function getResponseForProcessingResult(ProcessingResult $processingResult)
     {
         $httpResponseBody = [];
@@ -136,6 +140,7 @@ class RestUtils
         return $psrFactory->createResponse($status)->withBody($psrFactory->createStream(json_encode($httpResponseBody)));
     }
 
+    /** @return ResponseInterface */
     public static function getFhirCreateResponseForProcessingResult(string $resourceType, ProcessingResult $result)
     {
         $psrFactory = new Psr17Factory();
@@ -159,6 +164,7 @@ class RestUtils
         return self::addFhirLocationHeader($response, $resourceType, $id);
     }
 
+    /** @return ResponseInterface */
     public static function addFhirLocationHeader(ResponseInterface $response, string $resourceType, int|string $id)
     {
         $serverConfig = new ServerConfig();
@@ -166,6 +172,7 @@ class RestUtils
         return $response->withHeader("Location", $url);
     }
 
+    /** @return ResponseInterface */
     public static function getFhirOperationOutcomeSuccessResponse(string $resourceType, int|string $id)
     {
         $operationOutcome = UtilsService::createOperationOutcomeSuccess($resourceType, $id);

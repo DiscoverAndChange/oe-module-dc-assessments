@@ -152,6 +152,27 @@ v0.11.1 PHPStan level-10 fixes (bugs + non-ignorable) and module-local baseline
     this module's src/ only, every path relative. Verified end to end — applying
     the baseline reports zero errors, and the DB-backed phpunit suite passes
     (8 tests, 40 assertions).
+  - Baseline burn-down (round 5): specify the missing return and parameter types
+    across the whole module — PHPDoc `@param`/`@return` tags only, no native
+    signatures touched, so runtime behavior is byte-identical — ELIMINATING the
+    entire missingType.return and missingType.parameter categories (0 remaining
+    module-wide, was 263 + 228). Values are the type the body/usage implies
+    (array<mixed> for arrays, the concrete class/scalar where unambiguous, void for
+    non-returning methods, mixed at genuinely untyped DB/JSON/request boundaries);
+    overrides match their parent to stay covariant (e.g. supportsCode()/
+    insertOpenEMRRecord() against FhirServiceBase, the IRestController $id). Naming
+    the types surfaced the latent type-friction they had hidden — callers passing
+    mixed into the now-named slots (argument.type), a handful of return.type — which
+    is recorded in the baseline as the next debt to burn down. Also fixed three real
+    issues the typing exposed: AssignmentRepository::populateAssignmentsForClients
+    declared `@return Assignment[]` but only mutates its argument and returns nothing
+    (→ void); AssessmentReportRepository::getOne() and ClientRestController::
+    sendMessageToClient() fell through to an implicit null under a non-void return
+    (added explicit `return null;`); and Bootstrap's service-locator getters called
+    methods on the `object` that Symfony's Container::get() returns (added
+    `/** @var */` on each local so the concrete service type is known). Baseline is
+    now 1619 errors / 1074 entries (was 2289 / 1691); applying it reports zero
+    errors and the DB-backed phpunit suite still passes (8 tests, 40 assertions).
 
 v0.11.0 OpenEMR 8.4.1 (PHP 8.5) compatibility
 

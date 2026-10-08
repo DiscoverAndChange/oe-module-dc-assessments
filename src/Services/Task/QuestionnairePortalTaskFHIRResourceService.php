@@ -37,6 +37,10 @@ class QuestionnairePortalTaskFHIRResourceService extends FhirServiceBase impleme
     const FHIR_TASK_CODE = 'complete-questionnaire';
 
 
+    /**
+     * @param mixed $code
+     * @return bool
+     */
     public function supportsCode($code)
     {
         // @see sdc-t1 https://build.fhir.org/ig/HL7/sdc/StructureDefinition-sdc-task.html
@@ -223,6 +227,10 @@ class QuestionnairePortalTaskFHIRResourceService extends FhirServiceBase impleme
         return $this->getTaskDataForTemplates($docTemplateService, $processingResult, $templates);
     }
 
+    /**
+     * @param mixed $docTemplateService
+     * @param array<mixed> $templates
+     */
     private function getTaskDataForTemplates($docTemplateService, ProcessingResult $processingResult, $templates): ProcessingResult
     {
 

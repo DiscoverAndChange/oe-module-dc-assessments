@@ -38,6 +38,10 @@ class AssessmentFHIRResourceService extends FhirServiceBase
         $this->assessmentService = $repository;
     }
 
+    /**
+     * @param mixed $code
+     * @return bool
+     */
     public function supportsCode($code)
     {
         return $code === self::CODE_DAC_ASSESSMENT;

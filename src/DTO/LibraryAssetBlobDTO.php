@@ -222,7 +222,10 @@ class LibraryAssetBlobDTO implements \JsonSerializable
         return $dto;
     }
 
-    /** @param array<mixed> $data */
+    /**
+     * @param array<mixed> $data
+     * @return void
+     */
     public function fromDTO(array $data)
     {
         $this->setId($data['id'] ?? 0);

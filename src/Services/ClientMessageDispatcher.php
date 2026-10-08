@@ -18,6 +18,11 @@ class ClientMessageDispatcher
     {
     }
 
+    /**
+     * @param string $clientId
+     * @param int $patientPid
+     * @return void
+     */
     public function sendAssignmentsCompleteNotification(string $clientId, $patientPid)
     {
         if (!$this->config->shouldSendAssignmentCompletionNotices()) {
@@ -31,6 +36,11 @@ class ClientMessageDispatcher
         }
     }
 
+    /**
+     * @param string $clientId
+     * @param int $patientPid
+     * @return void
+     */
     private function sendProviderNotification($clientId, $patientPid)
     {
         $patientService = new PatientService();
@@ -40,6 +50,12 @@ class ClientMessageDispatcher
         }
     }
 
+    /**
+     * @param string $clientId
+     * @param int $patientPid
+     * @param mixed $userId
+     * @return void
+     */
     private function sendUserNotification($clientId, $patientPid, $userId)
     {
         $userService = new UserService();
@@ -67,6 +83,15 @@ class ClientMessageDispatcher
         }
     }
 
+    /**
+     * @param int $patientPid
+     * @param string $subject
+     * @param string $message
+     * @param string $patientEmail
+     * @param string $senderEmail
+     * @param bool $isTest
+     * @return void
+     */
     public function sendInvitationMessage($patientPid, $subject, $message, $patientEmail, $senderEmail, $isTest)
     {
         $this->logger->debug(self::class . "->sendInvitationMessage() called", ['pid' => $patientPid]);
@@ -95,6 +120,13 @@ class ClientMessageDispatcher
         $this->dispatcher->dispatch($notificationEvent, SendNotificationEvent::SEND_NOTIFICATION_BY_SERVICE);
     }
 
+    /**
+     * @param string $subject
+     * @param array<mixed> $user
+     * @param string $template
+     * @param array<mixed> $templateData
+     * @return bool
+     */
     private function sendMessageViaMailer($subject, $user, $template, $templateData)
     {
         if (empty($templateData['logo'])) {

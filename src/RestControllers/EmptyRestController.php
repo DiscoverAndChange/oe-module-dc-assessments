@@ -15,6 +15,9 @@ class EmptyRestController implements IRestController
         return $psr17->createResponse(200)->withBody($psr17->createStream(json_encode([])));
     }
 
+    /**
+     * @param string $id
+     */
     public function one(ServerRestRequest $request, $id): ResponseInterface
     {
         $psr17 = new Psr17Factory();
@@ -27,6 +30,9 @@ class EmptyRestController implements IRestController
         return $psr17->createResponse(200)->withBody($psr17->createStream(json_encode([])));
     }
 
+    /**
+     * @param string $id
+     */
     public function update(ServerRestRequest $request, $id): ResponseInterface
     {
         $psr17 = new Psr17Factory();

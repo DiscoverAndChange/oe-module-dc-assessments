@@ -29,6 +29,7 @@ final class ServerRestRequest implements ServerRequestInterface
         $this->httpRestRequest = $httpRestRequest;
     }
 
+    /** @return Role */
     public function getAuthRole()
     {
         if ($this->httpRestRequest->isPatientRequest()) {
@@ -41,11 +42,13 @@ final class ServerRestRequest implements ServerRequestInterface
         }
     }
 
+    /** @return bool */
     public function isPatientRequest()
     {
         return $this->httpRestRequest->isPatientRequest();
     }
 
+    /** @return string|null */
     public function getPatientUUIDString()
     {
         return $this->httpRestRequest->getPatientUUIDString();
@@ -101,6 +104,7 @@ final class ServerRestRequest implements ServerRequestInterface
         return $this->httpRestRequest->getBody();
     }
 
+    /** @return mixed */
     public function getBodyAsJson()
     {
         // Read the raw request body as a string and decode it ourselves. We do NOT
@@ -159,6 +163,7 @@ final class ServerRestRequest implements ServerRequestInterface
         return new ServerRestRequest($this->httpRestRequest->withUri($uri, $preserveHost));
     }
 
+    /** @return int|null */
     public function getUserId()
     {
         return $this->httpRestRequest->getRequestUserId();
@@ -254,6 +259,7 @@ final class ServerRestRequest implements ServerRequestInterface
         return new ServerRestRequest($this->httpRestRequest->withoutAttribute($name));
     }
 
+    /** @return int */
     public function getCompanyId()
     {
         // TODO: @adunsulag need to handle the company id here better

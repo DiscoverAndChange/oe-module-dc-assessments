@@ -86,6 +86,9 @@ class ClientRestController implements IRestController
         return PaginatedResultsService::returnPaginatedResultsForProcessingResponse($results);
     }
 
+    /**
+     * @param string $id
+     */
     public function one(ServerRestRequest $request, $id): ResponseInterface
     {
         $params = [];
@@ -105,6 +108,11 @@ class ClientRestController implements IRestController
         }
     }
 
+    /**
+     * @param string $id
+     * @param string $assignmentId
+     * @return ResponseInterface
+     */
     public function removeAssignmentFromClient(ServerRestRequest $request, $id, $assignmentId)
     {
         $facilityRepo = new FacilityService();
@@ -138,6 +146,10 @@ class ClientRestController implements IRestController
         }
     }
 
+    /**
+     * @param string $id
+     * @return ResponseInterface
+     */
     public function addAssignmentGroupToClient(ServerRestRequest $request, $id)
     {
         $transactionCommitted = false;
@@ -189,6 +201,10 @@ class ClientRestController implements IRestController
         }
     }
 
+    /**
+     * @param string $id
+     * @return ResponseInterface
+     */
     public function addAssignmentToClient(ServerRestRequest $request, $id)
     {
         $transactionCommitted = false;
@@ -223,6 +239,10 @@ class ClientRestController implements IRestController
         }
     }
 
+    /**
+     * @param string $id
+     * @return ResponseInterface|null
+     */
     public function sendMessageToClient(ServerRestRequest $request, $id)
     {
         $transactionCommitted = false;
@@ -270,6 +290,7 @@ class ClientRestController implements IRestController
                 }
             }
         }
+        return null;
     }
 
     public function create(ServerRestRequest $request): ResponseInterface
@@ -279,6 +300,9 @@ class ClientRestController implements IRestController
         return $psrFactory->createResponse(400)->withBody(json_encode([]));
     }
 
+    /**
+     * @param string $id
+     */
     public function update(ServerRestRequest $request, $id): ResponseInterface
     {
         // TODO: Implement one() method.

@@ -506,6 +506,9 @@ class APIProxyController
         }
     }
 
+    /**
+     * @return mixed
+     */
     public function proxyGet(HttpRestRequest $httpRestRequest)
     {
         $request = $this->createRequestFromHttpRestRequest($httpRestRequest);
@@ -517,11 +520,17 @@ class APIProxyController
         }
     }
 
+    /**
+     * @return mixed
+     */
     public function proxyDelete(HttpRestRequest $httpRestRequest)
     {
         return $this->proxyGet($httpRestRequest);  // gonna be pretty identical here.
     }
 
+    /**
+     * @return mixed
+     */
     public function proxyPost(HttpRestRequest $httpRestRequest)
     {
         $param = $httpRestRequest->getQueryParam('API_REQUEST');
@@ -573,6 +582,9 @@ class APIProxyController
 // /api/v1users/
 
 
+    /**
+     * @return ServerRestRequest
+     */
     public function createRequestFromHttpRestRequest(HttpRestRequest $httpRestRequest)
     {
         $queryVars = $httpRestRequest->getQueryParams();
@@ -604,12 +616,19 @@ class APIProxyController
 
         return new ServerRestRequest($httpRestRequest, $request);
     }
+    /**
+     * @param string $apiRequest
+     * @return string
+     */
     private function getUriForApiRequest($apiRequest)
     {
         $uri = $this->baseUri . $apiRequest;
         return $uri;
     }
 
+    /**
+     * @return RequestInterface
+     */
     private function addAuthorizationToRequest(HttpRestRequest $request, RequestInterface $proxyRequest)
     {
         $authorization = $request->getHeader("Authorization")[0] ?? '';
@@ -620,6 +639,9 @@ class APIProxyController
         return $proxyRequest;
     }
 
+    /**
+     * @return \Psr\Http\Message\ResponseInterface
+     */
     private function sendRequestAndReturnResponse(ServerRestRequest $request)
     {
         try {

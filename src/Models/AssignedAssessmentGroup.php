@@ -35,7 +35,10 @@ class AssignedAssessmentGroup extends Assignment
         ], $json);
     }
 
-    /** @param array<mixed> $assignmentJSON */
+    /**
+     * @param array<mixed> $assignmentJSON
+     * @return void
+     */
     public function fromJSON(array $assignmentJSON)
     {
         parent::fromJSON($assignmentJSON);

@@ -67,7 +67,7 @@ class QuestionnaireRestController implements IRestController
      * Retrieves a single api resource.  Handles the response to the API request GET /fhir/Questionnaire/:fhirId
      * The $fhirId is populated from the API request by the rest route dispatcher.
      * @see HttpRestRouteHandler::dispatch to see how this parsing is done.
-     * @param $id The unique id of the resource to be returned.
+     * @param string $id The unique id of the resource to be returned.
      * @param ServerRestRequest $request
      * @return ResponseInterface
      */
@@ -95,7 +95,8 @@ class QuestionnaireRestController implements IRestController
      * - _id (euuid)
      * - patient (puuid)
      * - date {gt|lt|ge|le}
-     * @param $puuidBind - Optional variable to only allow visibility of the patient with this puuid.
+     * @param array<mixed> $searchParams
+     * @param string|null $puuidBind - Optional variable to only allow visibility of the patient with this puuid.
      * @return FHIR bundle with query results, if found
      */
     private function getAll($searchParams, $puuidBind = null)
@@ -122,9 +123,10 @@ class QuestionnaireRestController implements IRestController
 
     /**
      * Queries for a single FHIR encounter resource by FHIR id
-     * @param $fhirId The FHIR encounter resource id (uuid)
-     * @param $puuidBind - Optional variable to only allow visibility of the patient with this puuid.
+     * @param string $fhirId The FHIR encounter resource id (uuid)
+     * @param string|null $puuidBind - Optional variable to only allow visibility of the patient with this puuid.
      * @returns 200 if the operation completes successfully
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     private function getOne($fhirId, $puuidBind = null)
     {

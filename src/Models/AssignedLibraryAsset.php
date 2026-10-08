@@ -51,6 +51,7 @@ class AssignedLibraryAsset extends Assignment
         return $this->resultId;
     }
 
+    /** @return void */
     public function setResultId(?string $v)
     {
         $this->resultId = $v;
@@ -70,7 +71,10 @@ class AssignedLibraryAsset extends Assignment
         ]);
     }
 
-    /** @param array<mixed> $assignmentJSON */
+    /**
+     * @param array<mixed> $assignmentJSON
+     * @return void
+     */
     public function fromJSON(array $assignmentJSON)
     {
         parent::fromJSON($assignmentJSON);

@@ -43,6 +43,9 @@ class LibraryAssetResultRestController implements IRestController
         }
     }
 
+    /**
+     * @param string $id
+     */
     public function one(ServerRestRequest $request, $id): ResponseInterface
     {
         try {
@@ -140,6 +143,9 @@ class LibraryAssetResultRestController implements IRestController
         }
     }
 
+    /**
+     * @param string $id
+     */
     public function update(ServerRestRequest $request, $id): ResponseInterface
     {
         // TODO: Implement one() method.
@@ -147,6 +153,9 @@ class LibraryAssetResultRestController implements IRestController
         return $psrFactory->createResponse(400)->withBody(json_encode([]));
     }
 
+    /**
+     * @return array<mixed>
+     */
     private function validateCreateAccessAndReturnClient(?int $userId, string $patientUuidString, ?string $clientId, PatientService $patientService)
     {
 
@@ -174,6 +183,9 @@ class LibraryAssetResultRestController implements IRestController
         return $client;
     }
 
+    /**
+     * @return LibraryAssetBlobDTO
+     */
     private function getAsset(?int $id)
     {
         $libraryAssetsRepo = new LibraryAssetBlobRepository($this->logger);

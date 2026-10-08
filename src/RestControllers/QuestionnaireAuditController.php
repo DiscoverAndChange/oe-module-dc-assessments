@@ -35,7 +35,11 @@ class QuestionnaireAuditController
     {
     }
 
-    /** @param array<mixed> $queryVars */
+    /**
+     * @param string $action
+     * @param array<mixed> $queryVars
+     * @return \Psr\Http\Message\ResponseInterface
+     */
     public function dispatch($action, array $queryVars)
     {
         try {
@@ -53,6 +57,10 @@ class QuestionnaireAuditController
     }
 
     // TODO: Is there a way we can just move this to our standard apis...
+    /**
+     * @param array<mixed> $queryVars
+     * @return \Psr\Http\Message\ResponseInterface
+     */
     private function actionChartAssignmentToEncounter($queryVars)
     {
         // action chart questionnaire to encounter
@@ -130,6 +138,14 @@ class QuestionnaireAuditController
         }
     }
 
+    /**
+     * @param array<mixed> $auditRecord
+     * @param array<mixed> $questionnaire
+     * @param array<mixed> $questionnaireResponse
+     * @param mixed $pid
+     * @param mixed $encounterId
+     * @return mixed
+     */
     private function saveEncounterForm($auditRecord, $questionnaire, $questionnaireResponse, $pid, $encounterId)
     {
         // how is the encounter form saved
@@ -152,6 +168,10 @@ class QuestionnaireAuditController
         return $savedForm->getFormId();
     }
 
+    /**
+     * @param array<mixed> $queryVars
+     * @return \Psr\Http\Message\ResponseInterface
+     */
     private function actionView($queryVars)
     {
         // TODO: check that pid, recordId, and qr are set otherwise throw invalidargumentexception
@@ -177,6 +197,9 @@ class QuestionnaireAuditController
         }
     }
 
+    /**
+     * @return \Psr\Http\Message\ResponseInterface
+     */
     private function displayPrintVersionForResults()
     {
         $data = [
@@ -194,6 +217,11 @@ class QuestionnaireAuditController
         $response = $psrFactory->createResponse(200, 'OK');
         return $response->withBody($psrFactory->createStream($body));
     }
+    /**
+     * @param mixed $auditId
+     * @param mixed $pid
+     * @return \Psr\Http\Message\ResponseInterface
+     */
     private function displayAuditForSmartAppAssignment($auditId, $pid, Assignment $assignmentItem)
     {
         $category = $this->getCategoryList();
@@ -228,6 +256,11 @@ class QuestionnaireAuditController
         return $response->withBody($psrFactory->createStream($body));
     }
 
+    /**
+     * @param mixed $auditId
+     * @param mixed $pid
+     * @return \Psr\Http\Message\ResponseInterface
+     */
     private function displayAuditForAssignedQuestionnaire($auditId, $pid, AssignedQuestionnaire $assignmentItem)
     {
 
@@ -260,6 +293,9 @@ class QuestionnaireAuditController
     }
 
     // TODO: @adunsulag look at abstracting this out into a separate service class for our documents.
+    /**
+     * @return array<mixed>
+     */
     private function getCategoryList()
     {
         // we'd normally use something like:
@@ -274,6 +310,12 @@ class QuestionnaireAuditController
         return $root['tree'] ?? [];
     }
 
+    /**
+     * @param mixed $currentNode
+     * @param array<mixed> $children
+     * @param int $depth
+     * @return array<mixed>
+     */
     private function getCategoryTree(\CategoryTree $obj, $currentNode, $children, $depth = 0)
     {
         // do a breadth first descent of the tree
@@ -295,6 +337,10 @@ class QuestionnaireAuditController
         return $transformedTree;
     }
 
+    /**
+     * @param string $action
+     * @return \Psr\Http\Message\ResponseInterface
+     */
     private function actionNotFound($action)
     {
         $psrFactory = new Psr17Factory();
@@ -303,6 +349,9 @@ class QuestionnaireAuditController
         return $response->withBody($psrFactory->createStream($body));
     }
 
+    /**
+     * @return \Psr\Http\Message\ResponseInterface
+     */
     private function returnError(\Exception $exception)
     {
         $psrFactory = new Psr17Factory();
@@ -316,6 +365,10 @@ class QuestionnaireAuditController
         }
     }
 
+    /**
+     * @param mixed $auditRecordId
+     * @return void
+     */
     private function updateOnSitePortalActivityWithCompletion($auditRecordId)
     {
         $sql = "UPDATE onsite_portal_activity SET pending_action='completed',status='closed' WHERE id = ? ";

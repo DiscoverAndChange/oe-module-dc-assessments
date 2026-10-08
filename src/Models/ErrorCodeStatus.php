@@ -18,6 +18,7 @@ class ErrorCodeStatus
         ErrorCode::RECORD_CREATE_FAILED => 500
     );
 
+    /** @param int $code */
     public static function getStatusForErrorCode($code): int
     {
 

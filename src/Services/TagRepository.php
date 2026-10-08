@@ -39,6 +39,9 @@ class TagRepository
         return $tags;
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function listTags()
     {
         $tags = QueryUtils::fetchTableColumn("Select tag from " . self::TABLE_NAME, 'tag', []);

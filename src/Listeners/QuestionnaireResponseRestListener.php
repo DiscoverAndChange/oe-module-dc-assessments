@@ -21,6 +21,7 @@ class QuestionnaireResponseRestListener implements IStaticEventSubscriber
     public function __construct(private AssessmentResponseBlobFHIRResourceService $assessmentResponseBlobFHIRResourceService, private LibraryAssetResultBlobFHIRResourceService $libraryAssetResultBlobFHIRResourceService)
     {
     }
+    /** @return void */
     public static function subscribeToEvents(Container $container, EventDispatcherInterface $eventDispatcher)
     {
         $eventDispatcher->addListener('fhir.questionnaire_response.pre_insert', function (GenericEvent $event) use ($container) {
@@ -37,6 +38,7 @@ class QuestionnaireResponseRestListener implements IStaticEventSubscriber
         });
     }
 
+    /** @return void */
     public function dispatchFHIRInsertEvent(GenericEvent $event)
     {
         // for now we stick with the generic event
@@ -69,6 +71,7 @@ class QuestionnaireResponseRestListener implements IStaticEventSubscriber
         }
     }
 
+    /** @return mixed */
     public function dispatchFHIRSearchEvent(GenericEvent $event)
     {
         // for now we stick with the generic event

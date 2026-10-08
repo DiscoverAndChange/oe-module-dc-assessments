@@ -16,6 +16,14 @@ class ClientRepository
     {
     }
 
+    /**
+     * @param string $clientId
+     * @param string $profileId
+     * @param int $userId
+     * @param int|null $facilityId
+     * @param string|null $appointmentId
+     * @return Assignment
+     */
     public function addTemplateProfileAssignmentToClient($clientId, $profileId, $userId, $facilityId, $appointmentId = null)
     {
         $assignmentRepository = new AssignmentRepository();
@@ -33,6 +41,14 @@ class ClientRepository
         return $assignmentRepository->createClientAssignmentForProfile($clientId, $appointmentId, $listOption['title'], $listOption['option_id'], $userId);
     }
 
+    /**
+     * @param string $clientId
+     * @param int $groupId
+     * @param int $userId
+     * @param int|null $facilityId
+     * @param string|null $appointmentId
+     * @return Assignment
+     */
     public function addGroupAssignmentToClient($clientId, $groupId, $userId, $facilityId, $appointmentId = null)
     {
         $dateAssigned = new \DateTime();
@@ -62,6 +78,11 @@ class ClientRepository
         return $updatedAssignment;
     }
 
+    /**
+     * @param string $clientId
+     * @param string $assignmentId
+     * @return string
+     */
     public function removeAssignmentFromClient($clientId, $assignmentId, int $userId, ?int $facilityId)
     {
         // need to check if the user has permission to remove the assignment
@@ -69,6 +90,7 @@ class ClientRepository
         return $assignmentRepository->removeAssignment($clientId, $assignmentId, $userId);
     }
 
+    /** @param string $clientId */
     public function addAssignmentToClient($clientId, Assignment $assignment, int $getUserId): Assignment
     {
         if (empty($assignment->getItems())) {

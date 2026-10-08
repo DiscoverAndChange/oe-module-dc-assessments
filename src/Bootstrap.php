@@ -149,11 +149,17 @@ class Bootstrap
         return self::$instance;
     }
 
+    /**
+     * @return void
+     */
     public function addGlobalSettings()
     {
         $this->eventDispatcher->addListener(GlobalsInitializedEvent::EVENT_HANDLE, [$this, 'addModuleGlobalSettings']);
     }
 
+    /**
+     * @return void
+     */
     public function addModuleGlobalSettings(GlobalsInitializedEvent $event)
     {
         $service = $event->getGlobalsService();
@@ -182,6 +188,9 @@ class Bootstrap
         $this->injectSyntheticServicesIntoContainer($container);
          return $container;
     }
+    /**
+     * @return void
+     */
     private function addSyntheticServicesToContainer(ContainerBuilder $container)
     {
         // setup our synthetic services.
@@ -199,6 +208,9 @@ class Bootstrap
         $container->setAlias(LoggerInterface::class, 'logger');
     }
 
+    /**
+     * @return void
+     */
     private function injectSyntheticServicesIntoContainer(Container $container)
     {
         $container->set('logger', $this->logger);
@@ -206,6 +218,9 @@ class Bootstrap
         $container->set('config', $this->globalsConfig);
         $container->set('dispatcher', $this->eventDispatcher);
     }
+    /**
+     * @return void
+     */
     private function addServicesToContainer(ContainerBuilder $container)
     {
         $publicServices = [];
@@ -367,16 +382,26 @@ class Bootstrap
         $container->addDefinitions($publicServices);
     }
 
+    /**
+     * @param string $tier
+     * @return string
+     */
     private function getAssetPath($tier = 'backend')
     {
         return $this->getURLPath() . $tier . '/assets/';
     }
 
+    /**
+     * @return string
+     */
     public function getURLPath()
     {
         return $GLOBALS['webroot'] . self::MODULE_INSTALLATION_PATH . $this->moduleDirectoryName . "/public/";
     }
 
+    /**
+     * @return void
+     */
     public function subscribeToEvents()
     {
         // any events would go here.
@@ -399,6 +424,9 @@ class Bootstrap
         QuestionnaireResponseRestListener::subscribeToEvents($this->serviceContainer, $this->eventDispatcher);
     }
 
+    /**
+     * @return TemplatePageEvent
+     */
     public function oauth2TemplatePageOverrides(TemplatePageEvent $event)
     {
         $template = $event->getPageName();
@@ -424,6 +452,9 @@ class Bootstrap
         return $event;
     }
 
+    /**
+     * @return Container
+     */
     public function getServiceContainer()
     {
         if (empty($this->serviceContainer)) {
@@ -432,6 +463,9 @@ class Bootstrap
         return $this->serviceContainer;
     }
 
+    /**
+     * @return void
+     */
     public function addTemplateOverrideLoader(TwigEnvironmentEvent $event)
     {
         // TODO: @adunsulag figure out why this is getting fired twice.
@@ -449,6 +483,9 @@ class Bootstrap
         }
     }
 
+    /**
+     * @return void
+     */
     public function addProviderPortalScript(ScriptFilterEvent $event)
     {
         if ($event->getContextArgument(ScriptFilterEvent::CONTEXT_ARGUMENT_SCRIPT_NAME) == '/portal/patient/index.php') {
@@ -458,12 +495,18 @@ class Bootstrap
         }
     }
 
+    /**
+     * @return string
+     */
     private function getTemplatePath()
     {
         return \dirname(__DIR__) . DIRECTORY_SEPARATOR . "templates" . DIRECTORY_SEPARATOR;
     }
 
 
+    /**
+     * @return void
+     */
     public function registerMenuItems()
     {
 //        if ($this->getGlobalConfig()->getGlobalSetting(GlobalConfig::CONFIG_ENABLE_MENU)) {
@@ -471,6 +514,9 @@ class Bootstrap
 //        }
     }
 
+    /**
+     * @return MenuEvent
+     */
     public function addCustomModuleMenuItem(MenuEvent $event)
     {
         $menu = $event->getMenu();
@@ -480,6 +526,7 @@ class Bootstrap
         $menuItem->target = 'msc';
         $menuItem->menu_id = 'misimg';
         $menuItem->label = xlt("Patient Portal Assignments");
+        /** @var SmartAppClientService $smartAppService */
         $smartAppService = $this->getServiceContainer()->get(SmartAppClientService::class);
         $clientId = $smartAppService->getRegisteredClientId();
 
@@ -541,30 +588,49 @@ class Bootstrap
         return $this->getServiceContainer()->get(BackendDispatchController::class);
     }
 
+    /**
+     * @return mixed
+     */
     public function getClientId()
     {
+        /** @var SmartAppClientService $appService */
         $appService = $this->getServiceContainer()->get(SmartAppClientService::class);
         return $appService->getRegisteredClientId();
     }
 
+    /**
+     * @return string
+     */
     public function getFhirUrl()
     {
+        /** @var ServerConfig $serverConfig */
         $serverConfig = $this->getServiceContainer()->get(ServerConfig::class);
         return $serverConfig->getFhirUrl();
     }
 
+    /**
+     * @return string
+     */
     public function getApiUrl()
     {
+        /** @var ServerConfig $serverConfig */
         $serverConfig = $this->getServiceContainer()->get(ServerConfig::class);
         return $serverConfig->getStandardApiUrl();
     }
 
+    /**
+     * @return string
+     */
     public function getApiBaseUrl()
     {
+        /** @var ServerConfig $serverConfig */
         $serverConfig = $this->getServiceContainer()->get(ServerConfig::class);
         return $serverConfig->getBaseApiUrl();
     }
 
+    /**
+     * @return string
+     */
     public function getSmartStyleUrl()
     {
         return $GLOBALS['site_addr_oath'] . $GLOBALS['web_root'] . "/oauth2/" . SessionWrapperFactory::getInstance()->getActiveSession()->get('site_id') . "/" . SMARTAuthorizationController::SMART_STYLE_URL;

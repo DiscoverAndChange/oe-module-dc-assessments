@@ -10,11 +10,18 @@ use OpenEMR\Modules\DiscoverAndChange\Assessments\Models\Assignment;
 
 class AssignmentSerializer
 {
+    /**
+     * @return array<mixed>
+     */
     public function serialize(Assignment $assignment)
     {
         return $assignment->jsonSerialize();
     }
-    /** @param array<mixed> $assignmentJSON */
+    /**
+     * @param array<mixed> $assignmentJSON
+     * @param int $depth
+     * @return Assignment
+     */
     public function deserialize(array $assignmentJSON, $depth = 0)
     {
         if ($depth > 5) {

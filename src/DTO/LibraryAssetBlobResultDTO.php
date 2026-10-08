@@ -22,6 +22,7 @@ class LibraryAssetBlobResultDTO implements \JsonSerializable
     }
 
 
+    /** @return void */
     public function generateId()
     {
         $this->setId(Uuid::uuid4()->toString());
@@ -158,7 +159,10 @@ class LibraryAssetBlobResultDTO implements \JsonSerializable
         return $dto;
     }
 
-    /** @param array<mixed> $data */
+    /**
+     * @param array<mixed> $data
+     * @return void
+     */
     public function fromDTO(array $data)
     {
         $this->setId($data['id'] ?? null);

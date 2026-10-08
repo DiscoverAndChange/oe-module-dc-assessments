@@ -57,6 +57,7 @@ class QuestionnaireResponseFormFHIRResourceService extends FhirServiceBase imple
      */
     private $service;
 
+    /** @param string $fhirApiURL */
     public function __construct($fhirApiURL = null)
     {
         parent::__construct($fhirApiURL);
@@ -276,6 +277,7 @@ class QuestionnaireResponseFormFHIRResourceService extends FhirServiceBase imple
         return null;
     }
 
+    /** @param mixed $openEmrRecord */
     public function insertOpenEMRRecord($openEmrRecord)
     {
         /**

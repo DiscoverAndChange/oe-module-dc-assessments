@@ -74,6 +74,7 @@ class Assignment implements \JsonSerializable
         return $this->clientId;
     }
 
+    /** @return void */
     public function setClientId(?string $v)
     {
         $this->clientId = $v;
@@ -87,6 +88,7 @@ class Assignment implements \JsonSerializable
         return $this->items;
     }
 
+    /** @param mixed $id */
     public function getItemForId($id): ?Assignment
     {
         foreach ($this->items as $item) {
@@ -103,6 +105,7 @@ class Assignment implements \JsonSerializable
         $this->items = $v;
     }
 
+    /** @return void */
     public function addItem(Assignment $assignment)
     {
         $this->items[] = $assignment;
@@ -213,7 +216,10 @@ class Assignment implements \JsonSerializable
         return $result;
     }
 
-    /** @param array<mixed> $assignmentJSON */
+    /**
+     * @param array<mixed> $assignmentJSON
+     * @return void
+     */
     public function fromJSON(array $assignmentJSON)
     {
         $dateFormat = "Y-m-d\TH:i:s.uP";

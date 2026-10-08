@@ -23,6 +23,9 @@ class APISetupController implements IStaticEventSubscriber
 
 
 
+    /**
+     * @return void
+     */
     public function addApi(Container $container, RestApiCreateEvent $event)
     {
         foreach (APIProxyController::API_MAPPINGS as $clazz => $mapping) {
@@ -76,6 +79,9 @@ class APISetupController implements IStaticEventSubscriber
         }
     }
 
+    /**
+     * @return void
+     */
     public function addScopes(RestApiScopeEvent $event)
     {
         foreach (APIProxyController::API_MAPPINGS as $clazz => $mapping) {
@@ -93,12 +99,18 @@ class APISetupController implements IStaticEventSubscriber
         }
     }
 
+    /**
+     * @return void
+     */
     public function addMetadata(RestApiResourceServiceEvent $event)
     {
 //        $event->setServiceClass(TaskFHIRResourceService::class);
 //        $event->setServiceClass(QuestionnaireFHIRResourceService::class);
     }
 
+    /**
+     * @return void
+     */
     public static function subscribeToEvents(Container $container, EventDispatcherInterface $eventDispatcher)
     {
 
@@ -134,6 +146,9 @@ class APISetupController implements IStaticEventSubscriber
         });
     }
 
+    /**
+     * @return bool
+     */
     private function shouldSkipSecurityForResource(RestApiSecurityCheckEvent $event)
     {
         // we only want to check at the patient level

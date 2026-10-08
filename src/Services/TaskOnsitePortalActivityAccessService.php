@@ -8,6 +8,10 @@ use OpenEMR\Services\PatientService;
 
 class TaskOnsitePortalActivityAccessService
 {
+    /**
+     * @param mixed $auditRecordId
+     * @return void
+     */
     public function updateOnSitePortalActivityWithCompletion($auditRecordId)
     {
         $sql = "UPDATE onsite_portal_activity SET pending_action='completed',status='closed' WHERE id = ? ";
@@ -15,6 +19,14 @@ class TaskOnsitePortalActivityAccessService
         QueryUtils::sqlStatementThrowException($sql, $binds);
     }
 
+    /**
+     * @param string $puuid
+     * @param string $activity
+     * @param string $narrative
+     * @param mixed $table_args
+     * @param mixed $action_user
+     * @return mixed
+     */
     public function createOnSitePortalActivity($puuid, $activity, $narrative, $table_args, $action_user = '0')
     {
         $date = (new \DateTime())->format("Y-m-d H:i:s");

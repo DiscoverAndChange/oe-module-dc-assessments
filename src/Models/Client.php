@@ -132,11 +132,13 @@ class Client implements \JsonSerializable
         return $properties;
     }
 
+    /** @return void */
     public function addAssignment(Assignment $assignment)
     {
         $this->assignments[] = $assignment;
     }
 
+    /** @return void */
     public function sortAssignmentsByDateAssigned()
     {
         usort($this->assignments, function (Assignment $a, Assignment $b) {

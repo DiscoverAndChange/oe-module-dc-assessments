@@ -25,6 +25,9 @@ class AssignmentEncounterController implements IStaticEventSubscriber
     {
     }
 
+    /**
+     * @return void
+     */
     public static function subscribeToEvents(Container $container, EventDispatcherInterface $eventDispatcher)
     {
 
@@ -39,6 +42,9 @@ class AssignmentEncounterController implements IStaticEventSubscriber
         );
     }
 
+    /**
+     * @return void
+     */
     public function renderAssignmentListSection(EncounterFormsListRenderEvent $event)
     {
         // we don't handle group and other types of encounters for now

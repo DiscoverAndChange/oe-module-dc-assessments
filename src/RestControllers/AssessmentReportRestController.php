@@ -33,6 +33,9 @@ class AssessmentReportRestController implements IRestController
         return $psrFactory->createResponse(200)->withBody($psrFactory->createStream(json_encode($reports)));
     }
 
+    /**
+     * @param string $id
+     */
     public function one(ServerRestRequest $request, $id): ResponseInterface
     {
         // TODO: Implement one() method.
@@ -94,6 +97,9 @@ class AssessmentReportRestController implements IRestController
         }
     }
 
+    /**
+     * @param string $id
+     */
     public function update(ServerRestRequest $request, $id): ResponseInterface
     {
         $validator = new AssessmentReportValidator();

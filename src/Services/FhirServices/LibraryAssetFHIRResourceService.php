@@ -39,6 +39,10 @@ class LibraryAssetFHIRResourceService extends FhirServiceBase
         $this->repository = $repository;
     }
 
+    /**
+     * @param mixed $code
+     * @return bool
+     */
     public function supportsCode($code)
     {
         return $code === self::CODE_DAC_LIBRARY_ASSET;
