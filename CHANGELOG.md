@@ -1,9 +1,8 @@
 v0.12.9 Integration coverage for the questionnaire -> assignment-completion pipeline (batch 6)
 
   Covers the live server-side flow when the patient SPA submits a completed assessment/
-  questionnaire, scoped to patients/users/questionnaires/assignments (encounter-charting,
-  PDF/document generation and library-asset results are out of scope and deferred; their
-  heavy collaborators are mocked).
+  questionnaire, scoped to patients/users/questionnaires/assignments (encounter-charting and
+  library-asset results are out of scope; their heavy collaborators are mocked).
   - New test traits: tests/Tests/Support/AclIntegration.php (installs the default ACL tree
     once + logs in the seeded admin so AclMain passes) and AssignmentFixture.php (patient
     pid==id, published assessment, saved assignment + AssignedAssessment item, cleanup).
@@ -14,6 +13,9 @@ v0.12.9 Integration coverage for the questionnaire -> assignment-completion pipe
     (bad body) and 500 (service error) paths (resourceService mocked).
   - QuestionnaireResponseRestListener (insert/search routing) and QuestionnaireAssignmentListener
     (guard + no-match branches).
+  - QuestionnaireResponseOnSiteDocumentService::createDocument: proves PDF generation still
+    works end to end -- flattens the response to HTML, runs PatientPortalPDFDocumentCreator,
+    and asserts a stored \Document (application/pdf) whose bytes start with "%PDF".
 
   Bug fix (with regression test): QuestionnaireResponseRestListener::dispatchFHIRInsertEvent
   used $extension[0] after array_filter() (which preserves keys), so a QuestionnaireResponse

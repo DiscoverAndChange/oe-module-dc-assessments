@@ -412,10 +412,12 @@ Batch 6 (v0.12.9) netted the questionnaire -> assignment-completion pipeline:
 AssessmentResponseBlob::insertOpenEmrRecord, QuestionnaireResponseRestController::create,
 and the QR listeners (guard/routing paths). Fixed the dispatchFHIRInsertEvent array_filter[0]
 routing bug (regression test added). New reusable traits: AclIntegration + AssignmentFixture.
-Still-uncovered 267 are the explicitly out-of-scope / deep-fixture areas: AssessmentAppointment
-Controller (calendar), QuestionnaireAuditController chart-to-encounter (encounters), the
-PDF/document completion branches (QuestionnaireAssignmentListener happy path, needs core
-questionnaire + document_templates + onsite_portal_activity), LibraryAssetResult insert, and
+PDF GENERATION IS COVERED (QuestionnaireResponseOnSiteDocumentService::createDocument -> a real
+stored application/pdf \Document, bytes start with %PDF) — the module owner confirmed PDF output
+is in active use. Still-uncovered 267 are the out-of-scope / deep-fixture areas: AssessmentAppoint
+mentController (calendar), QuestionnaireAuditController chart-to-encounter (encounters), the
+QuestionnaireAssignmentListener end-to-end completion (needs core questionnaire + document_templates
++ an un-cleanable onsite_portal_activity write), LibraryAssetResult insert, and
 QuestionnairePortalTask getTaskDataForTemplates.
 Latent issues found in batch 6 (documented, not fixed): QuestionnaireResponseRestListener
 dead search-error branches + a stray `use PHPUnit\...\InvalidArgumentException` in the QR
@@ -513,9 +515,10 @@ integration-heavy remainder is a future batch (or fix conservatively/PHPDoc-only
   (scoped to patients/users/questionnaires/assignments per the module owner; encounters/PDF/
   documents/library-assets deferred). AclIntegration + AssignmentFixture traits; tests for
   AssessmentResponseBlob insert, QR controller create, the two QR listeners. Fixed the
-  dispatchFHIRInsertEvent array_filter routing bug (+regression test). Suite 509 -> 527;
-  coverage ~54% -> ~56% lines; phpstan-flagged errors in exercised methods 58% -> 64%. phpstan
-  clean. v0.12.9 on ai/coverage-batch-6.
+  dispatchFHIRInsertEvent array_filter routing bug (+regression test). Also added a PDF-generation
+  test (QuestionnaireResponseOnSiteDocumentService::createDocument -> real stored %PDF Document),
+  confirming PDF output still works (owner uses it). Suite 509 -> 528; coverage ~54% -> ~56% lines;
+  phpstan-flagged errors in exercised methods 58% -> 64%. phpstan clean. v0.12.9 on ai/coverage-batch-6.
 - 2026-10-08: Fixed a production SMART-app crash (v0.12.8): SystemUserRepository::getUsers fed
   NULL usernames (OpenEMR "address book" / non-login user rows) into SystemUser(string
   $username) -> TypeError on GET /api/assessment-users/:uuid. getUsers() now skips username-less
