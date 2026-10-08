@@ -770,7 +770,10 @@ class AssignmentRepository
         if (empty($pc_eid)) {
             return null;
         }
-        return $this->search([new TokenSearchField('appointment_id', $pc_eid, false)], true);
+        // TokenSearchField requires string values; passing the int $pc_eid threw
+        // "Token value must be a valid string", so the appointment-render path
+        // (AssessmentAppointmentController) crashed for any real appointment id.
+        return $this->search([new TokenSearchField('appointment_id', (string) $pc_eid, false)], true);
     }
 
     public function getTemplateProfileAssignmentForAppointmentId(?int $pc_eid): ?AssignedTemplateProfile

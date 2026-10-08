@@ -277,6 +277,32 @@ Deliberately NOT fixed (documented, not one-line bugs):
 - `AssessmentGroup::getId(): int` vs `int|string` property — pure return-type smell, no
   runtime failure in practice (ids are ints); risky to widen, left as-is.
 
+## Coverage build-out (Scope B) — BATCH 4 DONE (provider audit + repo branches)
+Batch 4 (453 -> 478 tests, coverage ~45% -> ~47% lines, phpstan clean):
+- QuestionnaireAuditController: dispatch routing, view guards (missing recordId / no match ->
+  404), dispatch error path (-> 500). Chart/view happy paths (DB writes + real Twig) deferred.
+- ClientRepository happy paths: addGroupAssignmentToClient, addAssignmentToClient, remove.
+- AssignmentRepository remaining branches: audit-id item lookup, encounter reads, appointment
+  guard/no-op paths, AssignedAssessmentGroup save with child items.
+
+Bug fixed in batch 4 (the new AssignmentRepository branch test exposed it):
+- [FIXED v0.12.6] AssignmentRepository::getAssignmentsForAppointmentId passed the int $pc_eid
+  into TokenSearchField (requires a string) -> "Token value must be a valid string" on every
+  non-zero id, so the provider appointment-render path (AssessmentAppointmentController) crashed
+  for any real appointment. Cast to string.
+
+Documented, not fixed:
+- ClientRepository::addGroupAssignmentToClient feeds ?string blob name/uid into non-null
+  setName/setUid; a group blob with a NULL name/uid would TypeError (happy path never hits it).
+- hasCompletedAssignments/hasCompletedAssignmentItems are vacuously true with zero rows (name
+  reads as if it should require a completed row) — existing intended behavior.
+
+Scope B essentially complete. Remaining (would be batch 5, deep integration, likely low ROI):
+FHIR services' insert()/update() completed DB paths (QuestionnaireResponse create flow;
+Task update() completed path is on the DEPRECATED task.update route), createClientAssignment
+ForProfile / AssignedQuestionnaire save (document-template + core questionnaire fixtures), and
+appointment-linked read happy paths (calendar-event fixtures).
+
 ## Coverage build-out (Scope B) — BATCH 3 DONE (FHIR layer + Bootstrap)
 Batch 3 (409 -> 453 tests, coverage ~38% -> ~45% lines, phpstan clean):
 - FHIR delegation services (Questionnaire/QuestionnaireResponse/Task): loadSearchParameters,
@@ -371,6 +397,10 @@ More latent bugs surfaced during batch 1:
 
 
 ## Progress log
+- 2026-10-08: Scope B batch 4 — QuestionnaireAuditController guards + ClientRepository happy
+  paths + AssignmentRepository remaining branches (453 -> 478 tests, coverage ~45% -> ~47%
+  lines). Fixed the getAssignmentsForAppointmentId int-into-TokenSearchField crash on the
+  provider appointment path. phpstan clean. v0.12.6 on branch ai/coverage-batch-4.
 - 2026-10-08: Scope B batch 3 — FHIR resource-service layer (delegation + leaf + Task
   sub-services) + Bootstrap container/DI smoke tests (409 -> 453 tests, coverage ~38% -> ~45%
   lines). Fixed the uncaught SearchFieldException (missing import) in the two delegation

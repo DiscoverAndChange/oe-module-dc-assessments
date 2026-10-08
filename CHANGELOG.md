@@ -1,3 +1,27 @@
+v0.12.6 Provider audit + repo-branch coverage (Scope B batch 4); fix appointment-id lookup crash
+
+  Coverage raised ~45% -> ~47% lines (453 -> 478 tests, phpstan clean):
+  - QuestionnaireAuditController: dispatch routing, the view guards (missing recordId / no
+    matching audit -> 404), and the dispatch error path (-> 500). The chart/view happy paths
+    (encounter-form save, audit render) write to the DB / render real templates and are left
+    to integration coverage.
+  - ClientRepository happy paths: addGroupAssignmentToClient (group + its assessments),
+    addAssignmentToClient (resolves a published assessment by uid), removeAssignmentFromClient.
+  - AssignmentRepository remaining branches: audit-id item lookup, encounter reads, the
+    appointment-id guard/no-op paths, and saving an AssignedAssessmentGroup with child items.
+
+  Bug fix (exposed by the new AssignmentRepository branch test):
+  - getAssignmentsForAppointmentId() passed the int $pc_eid into TokenSearchField, which
+    requires a string -> "Token value must be a valid string" on every non-zero id. The
+    provider appointment-render path (AssessmentAppointmentController) therefore crashed for
+    any real appointment. Cast the id to string.
+
+  Deferred (integration-level, documented in TEST-PLAN): the FHIR services' insert()/update()
+  completed DB paths (the Task update() completed path is on the now-deprecated task.update
+  route), createClientAssignmentForProfile / AssignedQuestionnaire save (document-template /
+  core questionnaire fixtures), and the real appointment-linked read paths (calendar-event
+  fixtures).
+
 v0.12.5 FHIR-layer + Bootstrap test coverage (Scope B batch 3); fix uncaught search exception
 
   Coverage raised ~38% -> ~45% lines (409 -> 453 tests, phpstan clean):
