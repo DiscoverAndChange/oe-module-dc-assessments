@@ -163,7 +163,15 @@ Latent runtime bugs surfaced by the pass:
   a fatal; the item-update FEATURE itself is still unimplemented (see below).
 - [FIXED v0.12.0] APIProxyController routeMappings, ResourceImporterService $report,
   AssessmentAppointmentController $appt, AssignedQuestionnaire ?? 0, QRespFHIR getAll.
-- [OPEN — author decision] FHIR Task item-update feature (implement updateAssignmentItem);
+- [DEFERRED — frontend doesn't use it] FHIR Task item-update feature (updateAssignmentItem):
+  investigated the compiled SPA (public/frontend) — its `TaskService` builds a
+  `status:"completed"` Task but the server call is COMMENTED OUT
+  (`// return client.update<Task>(task)`); there is NO active `PUT /Task/:id`. Item
+  completion goes through `client.create` of a QuestionnaireResponse ->
+  QuestionnaireAssignmentListener (server), which already completes the item. So the
+  Task-update path is dead by design. Leave the v0.12.1 graceful "not yet supported"
+  stub; implement the backend only when the frontend re-enables the Task update (then
+  the real payload is known). Other open author-decision items:
   `QuestionnaireResponseFormFHIRResourceService` half-built encounter/source linkage
   (dead stores into an undefined `$parsedResource` + a `!empty(...) == 'Practitioner'`
   precedence bug); `saveLibraryAssetResultBlob()` silently drops two caller args
