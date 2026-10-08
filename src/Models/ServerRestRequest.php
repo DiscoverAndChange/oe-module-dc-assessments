@@ -3,6 +3,7 @@
 namespace OpenEMR\Modules\DiscoverAndChange\Assessments\Models;
 
 use Http\Message\Encoding\GzipDecodeStream;
+use Nyholm\Psr7\Factory\Psr17Factory;
 use OpenEMR\Common\Acl\AclMain;
 use Psr\Http\Message\RequestInterface;
 use OpenEMR\Common\Http\HttpRestRequest;
@@ -157,7 +158,11 @@ final class ServerRestRequest implements ServerRequestInterface
 
     public function getUri(): UriInterface
     {
-        return $this->httpRestRequest->getUri();
+        // HttpRestRequest::getUri() returns the raw request-URI string, so returning it
+        // directly violated this UriInterface return type and TypeErrored whenever called
+        // (e.g. SystemUserRestController::list does $request->getUri()->getQuery()). Wrap
+        // the string in a PSR-7 Uri to honour the declared contract.
+        return (new Psr17Factory())->createUri($this->httpRestRequest->getUri());
     }
 
     public function withUri(UriInterface $uri, $preserveHost = false): static

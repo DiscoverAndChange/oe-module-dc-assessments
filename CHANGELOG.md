@@ -1,3 +1,26 @@
+v0.12.4 More latent bug fixes; raise test coverage ~27% -> ~38% (Scope B batch 2)
+
+  Honest fixes (each with a regression test; module phpstan stays clean), several on
+  LIVE routes that were crashing:
+  - LibraryAssetResultBlobRepository::getDecryptedAssetResultBlob: the query aliased
+    patient_data.pid as patient_pid but joined ON pd.pid (an unknown column), so EVERY
+    call failed with a SQL error -- the live library-asset-results.one route (the patient
+    SPA's getAssetResult) always 500'd. Also `return $results[0]` on an empty result raised
+    an undefined-key warning (escalated to a 500) for a missing id. Fixed the join column
+    and return null for no match (controller -> 404).
+  - ServerRestRequest::getUri(): declared a UriInterface return but returned the raw
+    HttpRestRequest string, so it TypeErrored whenever called -- e.g. the live
+    assessment-users route (SystemUserRestController::list -> getUri()->getQuery()). Now
+    wraps the string in a PSR-7 Uri.
+  - AssessmentReportRestController::one(): returned 200 with a "null" body for an unknown
+    id (the trailing getNotFoundResponse() was unreachable); now returns 404.
+
+  Test coverage raised ~27% -> ~38% lines (349 -> 409 tests): REST controllers (Empty,
+  Announcement, Token, Tag, SystemUser, Assessment, AssessmentGroup, AssessmentReport,
+  MessageTemplate, LibraryAssetResult) and DB-backed repository CRUD/lifecycle
+  (AssignmentRepository, AssessmentReportRepository, AssessmentResultRepository,
+  ClientSearchRepository, LibraryAssetResultBlobRepository join path).
+
 v0.12.3 Fix latent bugs surfaced by the audit; raise test coverage
 
   Honest fixes (no cast-to-silence; phpstan stays clean), each with a regression test:

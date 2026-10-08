@@ -43,13 +43,17 @@ class AssessmentReportRestController implements IRestController
         $hostSiteId = 1;
         try {
             $report = $repo->getOne($id);
+            // getOne() returns null for an unknown id; previously that was passed to
+            // returnSingleObjectResponse() and emitted a 200 with a "null" body (the
+            // trailing getNotFoundResponse() was unreachable). Return a proper 404.
+            if (!$report) {
+                return RestUtils::getNotFoundResponse();
+            }
             return RestUtils::returnSingleObjectResponse($report);
         } catch (\Exception $exception) {
             $this->logger->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             return RestUtils::getServerErrorResponse($exception);
         }
-        // otherwise we return not found
-        return RestUtils::getNotFoundResponse();
     }
 
     public function create(ServerRestRequest $request): ResponseInterface

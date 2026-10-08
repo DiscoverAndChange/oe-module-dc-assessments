@@ -95,4 +95,62 @@ class LibraryAssetResultBlobRepositoryTest extends TestCase
 
         $this->assertSame(7, $blob->getAssetId());
     }
+
+    // ---------------------------------------------------------------------
+    // DB-backed getDecryptedAssetResultBlob() — exercises the real LEFT JOIN query.
+    // ---------------------------------------------------------------------
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+        \OpenEMR\Common\Database\QueryUtils::sqlStatementThrowException("DELETE FROM dac_LibraryAssetResultBlob WHERE id LIKE 'phptest%'", [], true);
+        \OpenEMR\Common\Database\QueryUtils::sqlStatementThrowException("DELETE FROM dac_LibraryAssetBlob WHERE title LIKE 'phptest%'", [], true);
+        \OpenEMR\Common\Database\QueryUtils::sqlStatementThrowException("DELETE FROM patient_data WHERE fname LIKE 'phptest%'", [], true);
+    }
+
+    /** @return array{0:int,1:int} [patientId, assetId] with patient_data.id == pid */
+    private function seedPatientAndAsset(): array
+    {
+        $q = \OpenEMR\Common\Database\QueryUtils::class;
+        $q::sqlStatementThrowException("INSERT INTO patient_data (fname, lname, pubpid, date) VALUES ('phptest-larb', 'phptest-larb', 'phptest-larb', NOW())");
+        /** @var int $pid */
+        $pid = (int) $q::fetchSingleValue("SELECT id FROM patient_data WHERE fname = 'phptest-larb' ORDER BY id DESC LIMIT 1", 'id', []);
+        // the repo joins client_id to patient_data.pid, while the FK references patient_data.id
+        $q::sqlStatementThrowException("UPDATE patient_data SET pid = ? WHERE id = ?", [$pid, $pid]);
+
+        $q::sqlStatementThrowException(
+            "INSERT INTO dac_LibraryAssetBlob (title, description, type, view_count, use_count, original_creator, content, created_by, last_updated_by)"
+            . " VALUES ('phptest-larb-asset', '', 'article', 0, 0, 'phptest', '', 1, 1)"
+        );
+        /** @var int $assetId */
+        $assetId = (int) $q::fetchSingleValue("SELECT id FROM dac_LibraryAssetBlob WHERE title = 'phptest-larb-asset' ORDER BY id DESC LIMIT 1", 'id', []);
+        return [$pid, $assetId];
+    }
+
+    public function testGetDecryptedAssetResultBlobReturnsRowViaJoin(): void
+    {
+        [$pid, $assetId] = $this->seedPatientAndAsset();
+        // empty answers/journal so no decryption is attempted
+        \OpenEMR\Common\Database\QueryUtils::sqlStatementThrowException(
+            "INSERT INTO dac_LibraryAssetResultBlob (id, answers, journal_entry, asset_id, client_id) VALUES (?, NULL, NULL, ?, ?)",
+            ['phptest-larb-result-1', $assetId, $pid]
+        );
+
+        $repo = new LibraryAssetResultBlobRepository(new SystemLogger(), new CryptoGen());
+        $result = $repo->getDecryptedAssetResultBlob('phptest-larb-result-1', $pid);
+
+        $this->assertInstanceOf(LibraryAssetBlobResultDTO::class, $result);
+        $this->assertSame('phptest-larb-result-1', $result->getId());
+        $this->assertSame($assetId, $result->getAssetId());
+    }
+
+    public function testGetDecryptedAssetResultBlobReturnsNullForUnknownId(): void
+    {
+        // REGRESSION (fixed v0.12.4): the query aliased patient_data.pid as patient_pid but
+        // joined ON pd.pid (unknown column) -> SQL error on EVERY call, and an empty result
+        // did `return $results[0]` (undefined-key warning -> 500). The live
+        // library-asset-results.one route was broken; it now cleanly returns null -> 404.
+        $repo = new LibraryAssetResultBlobRepository(new SystemLogger(), new CryptoGen());
+        $this->assertNull($repo->getDecryptedAssetResultBlob('phptest-no-such-result'));
+    }
 }
