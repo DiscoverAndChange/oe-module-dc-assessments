@@ -215,29 +215,29 @@ class ResourceImporterService
             $groupId = null;
             try {
                 QueryUtils::startTransaction();
-                if (!empty($report['assessment'])) {
-                    if (!$assessmentRepo->existsAssessment($report['assessment'])) {
-                        throw new \InvalidArgumentException("Failed to find assessment with uid " . $report['assessment']);
+                if (!empty($report['_assessment'])) {
+                    if (!$assessmentRepo->existsAssessment($report['_assessment'])) {
+                        throw new \InvalidArgumentException("Failed to find assessment with uid " . $report['_assessment']);
                     }
-                    $assessmentUid = $report['assessment'];
-                } else if (!empty($report['linkedGroup'])) {
-                    $result = $groupRepo->search(['name' => $report['linkedGroup']]);
+                    $assessmentUid = $report['_assessment'];
+                } else if (!empty($report['_assessmentgroup'])) {
+                    $result = $groupRepo->search(['name' => $report['_assessmentgroup']]);
                     if (!$result->hasData()) {
-                        throw new \InvalidArgumentException("Failed to find assessment group with name " . $report['linkedGroup']);
+                        throw new \InvalidArgumentException("Failed to find assessment group with name " . $report['_assessmentgroup']);
                     }
                     $groupId = ProcessingResult::extractDataArray($result)[0]['id'];
                 } else {
                     throw new \InvalidArgumentException("Failed to find assessment or assessment group");
                 }
-                if ($repo->existsReport($report['id'])) {
-                    throw new \InvalidArgumentException("Report with id " . $report['id'] . " already exists");
+                if ($repo->existsReport($report['_id'])) {
+                    throw new \InvalidArgumentException("Report with id " . $report['_id'] . " already exists");
                 }
-                $repo->createReport($report['id'], $report['name'], $importerId, $report['data'], $groupId, $assessmentUid);
+                $repo->createReport($report['_id'], $report['_name'], $importerId, $report['_data'], $groupId, $assessmentUid);
                 QueryUtils::commitTransaction();
                 $logEntry->importStatus = "success";
-                $logEntry->successMessage = "Successfully imported report with title " . $report['name'];
+                $logEntry->successMessage = "Successfully imported report with title " . $report['_name'];
             } catch (\Exception $exception) {
-                $logEntry->error = "report " . ($report['name'] ?? '<unknown>') . " " . $exception->getMessage() . " " . $exception->getTraceAsString();
+                $logEntry->error = "report " . ($report['_name'] ?? '<unknown>') . " " . $exception->getMessage() . " " . $exception->getTraceAsString();
                 $logEntry->importStatus = "failure";
                 QueryUtils::rollbackTransaction();
             }

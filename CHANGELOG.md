@@ -55,6 +55,14 @@ v0.11.1 PHPStan level-10 fixes (bugs + non-ignorable) and module-local baseline
     removing an appointment actually clears its assignments.
 
   Latent bugs:
+  - ResourceImporterService::importReports() read the report fields under the
+    wrong keys (assessment / linkedGroup / id / name / data) while the export
+    format and its test fixture — like the sibling importers — use underscore-
+    prefixed keys (_assessment / _assessmentgroup / _id / _name / _data). Every
+    report import therefore failed the linked-assessment/group lookup
+    ("Failed to find assessment or assessment group"). Use the underscore keys.
+    (Pre-existing since 0.9.0; surfaced by running the full phpunit suite against
+    a seeded DB.)
   - AssessmentRepository::getAssessmentForAssignmentItem(): the query selected
     `ab1.status`, but this query's FROM aliases the tables item/assessment/
     assignment — there is no `ab1` alias here (that alias belongs to the other
