@@ -25,15 +25,21 @@ class SystemUserRepository
         // now we need to hydrate them and convert them to SystemUser classes
         $systemUsers = [];
         $facRepo = new FacilityService();
+        /** @var array<string,mixed>|null $primaryEntity */
         $primaryEntity = $facRepo->getPrimaryBusinessEntity();
         foreach ($users as $user) {
-            $systemUsers[] = $this->hydrateUser($user, $primaryEntity);
+            $systemUsers[] = $this->hydrateUser((array) $user, $primaryEntity);
         }
         return $systemUsers;
     }
+    /**
+     * @param array<mixed> $user
+     * @param array<mixed>|null $primaryEntity
+     * @return SystemUser
+     */
     public function hydrateUser(array $user, $primaryEntity)
     {
-        $companyId = $primaryEntity['id'] ?? null;
+        $companyId = isset($primaryEntity['id']) ? $primaryEntity['id'] : null;
         // we will treat the uuid as the username as we don't want to reveal that anymore to the frontend
         $systemUser = new SystemUser($user['uuid'], $user['username'], $companyId);
         if (AclMain::aclCheckCore('admin', 'super', $user['username'])) {
@@ -42,20 +48,24 @@ class SystemUserRepository
             // if we need to introduce the role of company admin's we can do that here, but not sure there is an ACL for that.
             $systemUser->setRole(Role::Registered);
         }
-        $systemUser->setFirstName($user['fname'] ?? '');
-        $systemUser->setLastName($user['lname'] ?? '');
-        $systemUser->setCompanyName($primaryEntity['name'] ?? '');
+        $systemUser->setFirstName(($user['fname'] ?? ''));
+        $systemUser->setLastName(($user['lname'] ?? ''));
+        $systemUser->setCompanyName(($primaryEntity['name'] ?? ''));
         $systemUser->setEnabled($user['active'] == '1');
         // TODO: if we need different capabilities we can set that here.
         return $systemUser;
     }
 
+    /**
+     * @param array<mixed> $clientIds
+     * @return SystemUser[]
+     */
     public function getUsersForClients(array $clientIds)
     {
         $patientService = new PatientService();
         $mappedProviderIds = $patientService->getProviderIDsForPatientUuids($clientIds);
         // tokens are required to be strings
-        $userIds = array_map('strval', array_values($mappedProviderIds));
+        $userIds = array_map('strval', array_values((array) $mappedProviderIds));
         $idSearch = new TokenSearchField('id', $userIds);
         $userRepo = new UserService();
         $userRepo->toggleSensitiveFields(['username']);
@@ -68,10 +78,11 @@ class SystemUserRepository
         // now we need to hydrate them and convert them to SystemUser classes
         $systemUsers = [];
         $facRepo = new FacilityService();
+        /** @var array<string,mixed>|null $primaryEntity */
         $primaryEntity = $facRepo->getPrimaryBusinessEntity();
         $userIdIndex = [];
         foreach ($users as $user) {
-            $systemUser = $this->hydrateUser($user, $primaryEntity);
+            $systemUser = $this->hydrateUser((array) $user, $primaryEntity);
             $providerId = $mappedProviderUuids[$systemUser->getId()];
             $userIdIndex[$providerId] = $systemUser;
         }

@@ -59,12 +59,17 @@ class AssignmentTaskFHIRResourceService extends FhirServiceBase implements IReso
         ]
     ];
 
+    /** @param string $fhirApiURL */
     public function __construct(private AssignmentRepository $repository, $fhirApiURL = null)
     {
         parent::__construct($fhirApiURL);
     }
 
 
+    /**
+     * @param mixed $code
+     * @return bool
+     */
     public function supportsCode($code)
     {
         return $code == self::DAC_ASSIGNMENT;
@@ -76,7 +81,7 @@ class AssignmentTaskFHIRResourceService extends FhirServiceBase implements IReso
      * Search fields can be combined as Composite fields and represent a host of search options.
      * @see https://www.hl7.org/fhir/search.html to see the types of search operations, and search types that are available
      * for use.
-     * @return array
+     * @return array<string, FhirSearchParameterDefinition>
      */
     protected function loadSearchParameters()
     {
@@ -102,6 +107,7 @@ class AssignmentTaskFHIRResourceService extends FhirServiceBase implements IReso
         return new FhirSearchParameterDefinition('patient', SearchFieldType::REFERENCE, [new ServiceField('client_uuid', ServiceField::TYPE_UUID)]);
     }
 
+    /** @param array<mixed> $dataRecord */
     public function parseOpenEMRRecord($dataRecord = array(), $encode = false): FHIRTask
     {
         $fhirResource = new FHIRTask();
@@ -147,6 +153,7 @@ class AssignmentTaskFHIRResourceService extends FhirServiceBase implements IReso
         return $fhirResource;
     }
 
+    /** @param array<mixed> $openEMRSearchParameters */
     protected function searchForOpenEMRRecords($openEMRSearchParameters): ProcessingResult
     {
         if (isset($openEMRSearchParameters['code']) && $openEMRSearchParameters['code'] instanceof TokenSearchField) {
@@ -176,6 +183,7 @@ class AssignmentTaskFHIRResourceService extends FhirServiceBase implements IReso
         if (!empty($results)) {
             if (isset($openEMRSearchParameters['_id'])) {
                 $matchSearchId = true;
+                /** @var TokenSearchValue[] $values */
                 $values = $openEMRSearchParameters['_id']->getValues();
                 $matchedUUids = array_map(function (TokenSearchValue $value) {
                     return $value->getCode();
@@ -224,6 +232,7 @@ class AssignmentTaskFHIRResourceService extends FhirServiceBase implements IReso
         }
     }
 
+    /** @return mixed */
     private function updateAssignment(Assignment $assignment, string $fhirResourceId, FHIRTask $fhirResource)
     {
         $qrService = new QuestionnaireResponseService();

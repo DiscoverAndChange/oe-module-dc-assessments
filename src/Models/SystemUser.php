@@ -6,6 +6,7 @@ class SystemUser implements \JsonSerializable
 {
     private string $_password;
     private int $_role;
+    /** @var array<mixed> */
     private array $_caps;
     private string $_id;
     private string $_username;
@@ -147,11 +148,13 @@ class SystemUser implements \JsonSerializable
         $this->_billingCustomerId = $value;
     }
 
+    /** @return array<mixed> */
     public function getCapabilities(): array
     {
         return $this->_caps;
     }
 
+    /** @param array<mixed> $v */
     public function setCapabilities(array $v): void
     {
         $this->_caps = $v;
@@ -165,15 +168,16 @@ class SystemUser implements \JsonSerializable
     public static function fromJSON(object $obj): SystemUser
     {
         if (!is_object($obj)) {
-            throw new Exception("Passed in object is not a JSON object");
+            throw new \Exception("Passed in object is not a JSON object");
         }
-        $user = new SystemUser($obj->_id, $obj->_username, $obj->_companyID);
+        $user = new SystemUser($obj->_id, $obj->_username, isset($obj->_companyID) ? $obj->_companyID : null);
         $user->setRole($obj->_role);
 
         // We do not hydrate caps or password
         return $user;
     }
-    public function jsonSerialize()
+    /** @return array<mixed> */
+    public function jsonSerialize(): array
     {
         return [
             '_id' => $this->_id,

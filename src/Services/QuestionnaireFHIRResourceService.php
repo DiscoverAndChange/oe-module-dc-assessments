@@ -47,7 +47,7 @@ class QuestionnaireFHIRResourceService extends FhirServiceBase implements IResou
     use MappedServiceCodeTrait;
 
 
-    public function __construct(AssessmentFHIRResourceService $assessmentService = null, QuestionnaireFormFHIRResourceService $questionnaireService = null, LibraryAssetFHIRResourceService $libraryAssetService = null)
+    public function __construct(AssessmentFHIRResourceService $assessmentService, QuestionnaireFormFHIRResourceService $questionnaireService, LibraryAssetFHIRResourceService $libraryAssetService)
     {
         parent::__construct();
 //        $this->assessmentService = new AssessmentFHIRResourceService();
@@ -63,7 +63,7 @@ class QuestionnaireFHIRResourceService extends FhirServiceBase implements IResou
      * Search fields can be combined as Composite fields and represent a host of search options.
      * @see https://www.hl7.org/fhir/search.html to see the types of search operations, and search types that are available
      * for use.
-     * @return array
+     * @return array<string, FhirSearchParameterDefinition>
      */
     protected function loadSearchParameters()
     {
@@ -78,9 +78,9 @@ class QuestionnaireFHIRResourceService extends FhirServiceBase implements IResou
 
     /**
      * Retrieves all of the fhir observation resources mapped to the underlying openemr data elements.
-     * @param $fhirSearchParameters The FHIR resource search parameters
+     * @param mixed $fhirSearchParameters The FHIR resource search parameters
      * @param $puuidBind - Optional variable to only allow visibility of the patient with this puuid.
-     * @return processing result
+     * @return ProcessingResult
      */
     public function getAll($fhirSearchParameters, $puuidBind = null): ProcessingResult
     {
@@ -102,7 +102,7 @@ class QuestionnaireFHIRResourceService extends FhirServiceBase implements IResou
             }
         } catch (SearchFieldException $exception) {
             $systemLogger = new SystemLogger();
-            $systemLogger->errorLogCaller("Failed to retrieve records", ['message' => $exception->getMessage(),
+            $systemLogger->error("Failed to retrieve records", ['message' => $exception->getMessage(),
                 'field' => $exception->getField(), 'trace' => $exception->getTraceAsString()]);
             // put our exception information here
             $fhirSearchResult->setValidationMessages([$exception->getField() => $exception->getMessage()]);

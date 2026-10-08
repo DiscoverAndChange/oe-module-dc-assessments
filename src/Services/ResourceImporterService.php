@@ -26,11 +26,22 @@ class ResourceImporterService
      * @var ImportLogEntry[]
      */
     private array $importLog = [];
+    /**
+     * @param string $resource
+     * @param mixed $importerUserId
+     * @return void
+     */
     public function import(string $resource, $importerUserId)
     {
+        /** @var array<string, array<mixed>> $resources */
         $resources = json_decode($resource, true, 512, JSON_THROW_ON_ERROR);
         $this->importResources($resources, $importerUserId);
     }
+    /**
+     * @param array<mixed> $resources
+     * @param mixed $importerUserId
+     * @return void
+     */
     public function importResources(array $resources, $importerUserId)
     {
         $index = 0;
@@ -51,6 +62,9 @@ class ResourceImporterService
         }
     }
 
+    /**
+     * @return AssessmentRepository
+     */
     public function getAssessmentRepository()
     {
         if (empty($this->assessmentRepository)) {
@@ -59,11 +73,18 @@ class ResourceImporterService
         return $this->assessmentRepository;
     }
 
+    /**
+     * @param AssessmentRepository $repository
+     * @return void
+     */
     public function setAssessmentRepository(AssessmentRepository $repository)
     {
         $this->assessmentRepository = $repository;
     }
 
+    /**
+     * @return AssessmentGroupService
+     */
     public function getAssessmentGroupService()
     {
         if (empty($this->assessmentGroupService)) {
@@ -72,11 +93,17 @@ class ResourceImporterService
         return $this->assessmentGroupService;
     }
 
+    /**
+     * @param array<mixed> $assessmentBlobs
+     * @param int $index
+     * @return void
+     */
     public function importAssessmentBlobResources(array $assessmentBlobs, &$index)
     {
         $validator = new AssessmentValidator();
         $repo = new AssessmentRepository(new SystemLogger());
         foreach ($assessmentBlobs as $blob) {
+            /** @var array<string, mixed> $blob */
             $logEntry = new ImportLogEntry();
             $logEntry->index = $index++;
             // make it look good if we need to debug
@@ -86,7 +113,7 @@ class ResourceImporterService
             $this->importLog[] = $logEntry;
             $validation = $validator->validate($blob, AssessmentValidator::DATABASE_INSERT_CONTEXT);
             if (!$validation->isValid()) {
-                $logEntry->error = "assessment " . ($report['_name'] ?? '<unknown>') . ' ' . implode(" ", $validation->getValidationMessages());
+                $logEntry->error = "assessment " . ($report['_name'] ?? '<unknown>') . ' ' . implode(" ", (array) $validation->getValidationMessages());
             } else if ($repo->existsAssessment($blob['_uid'])) {
                 $logEntry->error = "Assessment already exists with uid " . $blob['_uid'];
             } else {
@@ -110,16 +137,26 @@ class ResourceImporterService
         }
     }
 
+    /**
+     * @return ImportLogEntry[]
+     */
     public function getLogEntries()
     {
         return $this->importLog;
     }
 
+    /**
+     * @param array<mixed> $assets
+     * @param mixed $importerUserId
+     * @param int $index
+     * @return void
+     */
     public function importLibraryAssetResources(array $assets, $importerUserId, &$index)
     {
         $validator = new LibraryAssetBlobValidator();
         $repo = new LibraryAssetBlobRepository(new SystemLogger());
         foreach ($assets as $assetBlob) {
+            /** @var array<string, mixed> $assetBlob */
             $logEntry = new ImportLogEntry();
             $logEntry->index = $index++;
             $logEntry->importResource = json_encode($assetBlob, JSON_PRETTY_PRINT);
@@ -130,7 +167,7 @@ class ResourceImporterService
             if (!$validation->isValid()) {
                 $errorMessage = "asset " . ($assetBlob['title'] ?? '<unknown>') . ' ';
                 foreach ($validation->getValidationMessages() as $key => $value) {
-                    $errorMessage .= "Validation failed for key $key with messages " . implode(";", $value) . ".";
+                    $errorMessage .= "Validation failed for key $key with messages " . implode(";", (array) $value) . ".";
                 }
                 $logEntry->error = $errorMessage;
             } else if ($repo->existsAsset($assetBlob['title'])) {
@@ -141,9 +178,9 @@ class ResourceImporterService
 
                 // make sure we sanitize the content
                 $sanitizer = new HTMLSanitizer();
-                $asset->setContent($sanitizer->sanitize($asset->getContent()));
-                $asset->setDescription($sanitizer->sanitize($asset->getDescription()));
-                $asset->setTitle($sanitizer->sanitize($asset->getTitle()));
+                $asset->setContent($sanitizer->sanitize((string) $asset->getContent()));
+                $asset->setDescription($sanitizer->sanitize((string) $asset->getDescription()));
+                $asset->setTitle($sanitizer->sanitize((string) $asset->getTitle()));
 
                 try {
                     // no company id to link this assessment to in the import.
@@ -158,6 +195,12 @@ class ResourceImporterService
         }
     }
 
+    /**
+     * @param array<mixed> $groups
+     * @param mixed $importerId
+     * @param int $index
+     * @return void
+     */
     public function importAssessmentGroupResources(array $groups, $importerId, &$index)
     {
         $repo = $this->getAssessmentGroupService();
@@ -193,6 +236,12 @@ class ResourceImporterService
         }
     }
 
+    /**
+     * @param array<mixed> $reports
+     * @param mixed $importerId
+     * @param int $index
+     * @return void
+     */
     public function importReports(array $reports, $importerId, &$index)
     {
         $repo = new AssessmentReportRepository();
@@ -210,29 +259,29 @@ class ResourceImporterService
             $groupId = null;
             try {
                 QueryUtils::startTransaction();
-                if (!empty($report['assessment'])) {
-                    if (!$assessmentRepo->existsAssessment($report['assessment'])) {
-                        throw new \InvalidArgumentException("Failed to find assessment with uid " . $report['assessment']);
+                if (!empty($report['_assessment'])) {
+                    if (!$assessmentRepo->existsAssessment($report['_assessment'])) {
+                        throw new \InvalidArgumentException("Failed to find assessment with uid " . $report['_assessment']);
                     }
-                    $assessmentUid = $report['assessment'];
-                } else if (!empty($report['linkedGroup'])) {
-                    $result = $groupRepo->search(['name' => $report['linkedGroup']]);
+                    $assessmentUid = $report['_assessment'];
+                } else if (!empty($report['_assessmentgroup'])) {
+                    $result = $groupRepo->search(['name' => $report['_assessmentgroup']]);
                     if (!$result->hasData()) {
-                        throw new \InvalidArgumentException("Failed to find assessment group with name " . $report['linkedGroup']);
+                        throw new \InvalidArgumentException("Failed to find assessment group with name " . $report['_assessmentgroup']);
                     }
                     $groupId = ProcessingResult::extractDataArray($result)[0]['id'];
                 } else {
                     throw new \InvalidArgumentException("Failed to find assessment or assessment group");
                 }
-                if ($repo->existsReport($report['id'])) {
-                    throw new \InvalidArgumentException("Report with id " . $report['id'] . " already exists");
+                if ($repo->existsReport($report['_id'])) {
+                    throw new \InvalidArgumentException("Report with id " . $report['_id'] . " already exists");
                 }
-                $repo->createReport($report['id'], $report['name'], $importerId, $report['data'], $groupId, $assessmentUid);
+                $repo->createReport($report['_id'], $report['_name'], $importerId, (array) $report['_data'], $groupId, $assessmentUid);
                 QueryUtils::commitTransaction();
                 $logEntry->importStatus = "success";
-                $logEntry->successMessage = "Successfully imported report with title " . $report['name'];
+                $logEntry->successMessage = "Successfully imported report with title " . $report['_name'];
             } catch (\Exception $exception) {
-                $logEntry->error = "report " . ($report['name'] ?? '<unknown>') . " " . $exception->getMessage() . " " . $exception->getTraceAsString();
+                $logEntry->error = "report " . ($report['_name'] ?? '<unknown>') . " " . $exception->getMessage() . " " . $exception->getTraceAsString();
                 $logEntry->importStatus = "failure";
                 QueryUtils::rollbackTransaction();
             }

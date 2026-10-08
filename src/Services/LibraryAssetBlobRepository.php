@@ -18,6 +18,11 @@ class LibraryAssetBlobRepository
     {
     }
 
+    /**
+     * @param string $tag
+     * @param bool $summaryOnly
+     * @return array<mixed>
+     */
     public function listAssets($tag = "", $summaryOnly = true): array
     {
         $sql = "SELECT uuid, id, title, type, description, original_creator, creation_date, last_update_date";
@@ -36,6 +41,10 @@ class LibraryAssetBlobRepository
         return $this->getAssetsForQuery($sql, $params);
     }
 
+    /**
+     * @param array<mixed> $searchParams
+     * @return ProcessingResult
+     */
     public function search($searchParams)
     {
         $processingResult = new ProcessingResult();
@@ -43,9 +52,11 @@ class LibraryAssetBlobRepository
         $distinctIds = "SELECT distinct la.id FROM " . self::TABLE_NAME
             . " la LEFT JOIN " . TagRepository::TABLE_NAME_LIBRARY_ASSET_JOIN_TAG . " lat ON la.id = lat.library_asset_blob_id LEFT JOIN "
             . TagRepository::TABLE_NAME . " t ON lat.tag_id = t.id ";
+        /** @var array<string, \OpenEMR\Services\Search\ISearchField> $searchParams */
         $where = FhirSearchWhereClauseBuilder::build($searchParams);
         $query = $distinctIds . $where->getFragment();
 
+        /** @var list<int|string> $ids */
         $ids = QueryUtils::fetchTableColumn($query, 'id', $where->getBoundValues());
         if (empty($ids)) {
             return $processingResult;
@@ -65,6 +76,11 @@ class LibraryAssetBlobRepository
         return $processingResult;
     }
 
+    /**
+     * @param string $sql
+     * @param array<mixed> $params
+     * @return LibraryAssetBlobDTO[]
+     */
     private function getAssetsForQuery($sql, $params)
     {
         $records = QueryUtils::fetchRecords($sql, $params);
@@ -72,27 +88,28 @@ class LibraryAssetBlobRepository
         // we need to grab all of our ids as we loop through and generate our objects
         $ids = [];
         foreach ($records as $record) {
-            $ids[] = intval($record['id']);
+            $ids[] = $record['id'];
         }
         // now we can fetch our tags
         $tagRepo = new TagRepository();
         $tags = $tagRepo->getTagsForAssetIds($ids);
         $assets = [];
         foreach ($records as $row) {
+            /** @var array<string, string|null> $row */
             $asset = new LibraryAssetBlobDTO();
-            $asset->setId($row['id'])
+            $asset->setId((int) $row['id'])
                 ->setTitle($row['title'])
-                ->setType($row['type'])
+                ->setType((string) $row['type'])
                 ->setDescription($row['description'])
-                ->setContent($row['content'])
-                ->setJournal($row['journal'])
+                ->setContent($row['content'] ?? null)
+                ->setJournal($row['journal'] ?? null)
                 ->setOriginalCreator($row['original_creator'])
                 ->setCreationDate($row['creation_date'])
                 ->setLastUpdateDate($row['last_update_date'])
-                ->setTags($tags[$row['id']] ?? []);
+                ->setTags((array) ($tags[$row['id']] ?? []));
 
             if (empty($row['uuid'])) {
-                $uuid = self::updateLibraryAssetBlobUuid($row['id']);
+                $uuid = self::updateLibraryAssetBlobUuid((int) $row['id']);
             } else {
                 $uuid = $row['uuid'];
             }
@@ -103,6 +120,10 @@ class LibraryAssetBlobRepository
         return $assets;
     }
 
+    /**
+     * @param int $id
+     * @return LibraryAssetBlobDTO|null
+     */
     public function getAsset($id)
     {
         if (empty($id)) {
@@ -117,6 +138,10 @@ class LibraryAssetBlobRepository
         $assets = $this->getAssetsForQuery($sql, $params);
         return $assets[0] ?? null;
     }
+    /**
+     * @param string $assetTitle
+     * @return bool
+     */
     public function existsAsset($assetTitle)
     {
         $sql = "SELECT uuid, id FROM " . self::TABLE_NAME . " WHERE title = ?";
@@ -126,6 +151,11 @@ class LibraryAssetBlobRepository
         return !empty($records);
     }
 
+    /**
+     * @param LibraryAssetBlobDTO $assetBlob
+     * @param int $userId
+     * @return LibraryAssetBlobDTO
+     */
     public function saveLibraryAssetBlob(LibraryAssetBlobDTO $assetBlob, int $userId)
     {
         $sql = "INSERT INTO " . self::TABLE_NAME . " (uuid, title, type, description, original_creator, creator_link, created_by,"
@@ -148,6 +178,10 @@ class LibraryAssetBlobRepository
         return $assetBlobWithTags;
     }
 
+    /**
+     * @param LibraryAssetBlobDTO $assetBlob
+     * @return LibraryAssetBlobDTO
+     */
     public function saveTags(LibraryAssetBlobDTO $assetBlob)
     {
         // seems like the easiest is to delete all the tags, and then relink them
@@ -167,6 +201,10 @@ class LibraryAssetBlobRepository
         return $assetBlob;
     }
 
+    /**
+     * @param int $id
+     * @return string
+     */
     public static function updateLibraryAssetBlobUuid($id)
     {
         $registry = self::getUuidRegistry();
@@ -176,6 +214,9 @@ class LibraryAssetBlobRepository
         return $uuid;
     }
 
+    /**
+     * @return UuidRegistry
+     */
     public static function getUuidRegistry()
     {
         $registry = new UuidRegistry(['table_name' => self::TABLE_NAME]);

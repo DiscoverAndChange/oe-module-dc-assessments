@@ -7,7 +7,7 @@ use Particle\Validator\Validator;
 
 class AssessmentReportValidator extends BaseValidator
 {
-    protected function configureValidator()
+    protected function configureValidator(): void
     {
         parent::configureValidator();
 

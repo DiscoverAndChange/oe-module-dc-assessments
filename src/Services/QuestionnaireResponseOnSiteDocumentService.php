@@ -12,6 +12,13 @@ class QuestionnaireResponseOnSiteDocumentService
     {
     }
 
+    /**
+     * @param mixed $templateId
+     * @param string $documentCategory
+     * @param array<mixed> $questionnaireResponse
+     * @param string $questionnaireName
+     * @return mixed
+     */
     public function createDocument($templateId, $documentCategory, array $questionnaireResponse, $questionnaireName)
     {
         $pid = $questionnaireResponse['patient_id'];
@@ -29,6 +36,13 @@ class QuestionnaireResponseOnSiteDocumentService
 //        $onsiteId = $this->insertOnSiteDocumentRecord($templateId, $pid, $questionnaireResponse, $questionnaireName);
     }
 
+    /**
+     * @param mixed $templateId
+     * @param mixed $pid
+     * @param array<mixed> $qr
+     * @param string $questionnaireName
+     * @return mixed
+     */
     private function insertOnSiteDocumentRecord($templateId, $pid, $qr, $questionnaireName)
     {
         /**

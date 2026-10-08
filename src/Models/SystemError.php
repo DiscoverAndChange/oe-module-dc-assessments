@@ -17,17 +17,21 @@ class SystemError extends \RuntimeException
      */
     private array $_subErrors;
 
-    public function __constructor(int $code, string $message, ?array $subErrors)
+    /** @param SystemError[]|null $subErrors */
+    public function __construct(int $code, string $message, ?array $subErrors = null)
     {
         parent::__construct($message, $code);
+        $this->_code = $code;
+        $this->_subErrors = $subErrors ?? [];
     }
 
 
-    public function code(): ErrorCode
+    public function code(): int
     {
         return $this->_code;
     }
 
+    /** @return array<mixed> */
     public function subErrors(): array
     {
         return $this->_subErrors;

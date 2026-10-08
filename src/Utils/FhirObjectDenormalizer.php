@@ -22,17 +22,17 @@ class FhirObjectDenormalizer implements DenormalizerInterface
     const NUMBER_CLASSES = [FHIRDecimal::class];
 
     const ARRAY_VALUE_CLASSES = [FHIRTaskStatus::class, FHIRQuestionnaireResponseStatus::class];
-    public function denormalize($data, string $type, string $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
         $pos = array_search($type, self::STRING_CLASSES);
         if ($pos !== false) {
             $clazz = self::STRING_CLASSES[$pos];
-            return new $clazz((string)$data);
+            return new $clazz($data);
         }
         $arrayPos = array_search($type, self::ARRAY_VALUE_CLASSES);
         if ($arrayPos !== false) {
             $clazz = self::ARRAY_VALUE_CLASSES[$arrayPos];
-            return new $clazz(['value' => (string)$data]);
+            return new $clazz(['value' => $data]);
         }
         $numberPos = array_search($type, self::NUMBER_CLASSES);
         if ($numberPos !== false) {
@@ -42,11 +42,24 @@ class FhirObjectDenormalizer implements DenormalizerInterface
         return $data;
     }
 
-    public function supportsDenormalization($data, string $type, string $format = null)
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
         if (in_array($type, self::SUPPORTED_CLASSES) !== false) {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Required by Symfony Serializer 7's DenormalizerInterface. Maps each
+     * supported type to true (support does not vary by data, so it is cacheable).
+     */
+    public function getSupportedTypes(?string $format): array
+    {
+        $types = [];
+        foreach (self::SUPPORTED_CLASSES as $class) {
+            $types[$class] = true;
+        }
+        return $types;
     }
 }

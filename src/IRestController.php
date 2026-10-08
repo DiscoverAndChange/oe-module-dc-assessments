@@ -9,8 +9,14 @@ use Psr\Http\Message\ResponseInterface;
 interface IRestController
 {
     public function list(ServerRestRequest $request): ResponseInterface;
+    /**
+     * @param string $id
+     */
     public function one(ServerRestRequest $request, $id): ResponseInterface;
 
     public function create(ServerRestRequest $request): ResponseInterface;
+    /**
+     * @param string $id
+     */
     public function update(ServerRestRequest $request, $id): ResponseInterface;
 }

@@ -74,6 +74,7 @@ class Assignment implements \JsonSerializable
         return $this->clientId;
     }
 
+    /** @return void */
     public function setClientId(?string $v)
     {
         $this->clientId = $v;
@@ -87,6 +88,7 @@ class Assignment implements \JsonSerializable
         return $this->items;
     }
 
+    /** @param mixed $id */
     public function getItemForId($id): ?Assignment
     {
         foreach ($this->items as $item) {
@@ -97,11 +99,13 @@ class Assignment implements \JsonSerializable
         return null;
     }
 
+    /** @param Assignment[] $v */
     public function setItems(array $v): void
     {
         $this->items = $v;
     }
 
+    /** @return void */
     public function addItem(Assignment $assignment)
     {
         $this->items[] = $assignment;
@@ -183,7 +187,8 @@ class Assignment implements \JsonSerializable
         $this->type = $v;
     }
 
-    public function jsonSerialize()
+    /** @return array<mixed> */
+    public function jsonSerialize(): array
     {
         $result = [
             "id" => $this->id,
@@ -211,12 +216,16 @@ class Assignment implements \JsonSerializable
         return $result;
     }
 
+    /**
+     * @param array<mixed> $assignmentJSON
+     * @return void
+     */
     public function fromJSON(array $assignmentJSON)
     {
         $dateFormat = "Y-m-d\TH:i:s.uP";
-        $this->setId($assignmentJSON["id"] ?? 0);
-        $this->setName($assignmentJSON["name"] ?? "");
-        $this->setType($assignmentJSON["type"] ?? "Assessment");
+        $this->setId(($assignmentJSON["id"] ?? 0));
+        $this->setName(($assignmentJSON["name"] ?? ""));
+        $this->setType(($assignmentJSON["type"] ?? "Assessment"));
         if (!empty($assignmentJSON['dateCompleted'])) {
             $this->setDateCompleted(\DateTime::createFromFormat($dateFormat, $assignmentJSON['dateCompleted']));
         }

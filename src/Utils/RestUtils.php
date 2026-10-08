@@ -2,7 +2,6 @@
 
 namespace OpenEMR\Modules\DiscoverAndChange\Assessments\Utils;
 
-use Http\Message\Encoding\GzipEncodeStream;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use OpenApi\Util;
 use OpenEMR\Common\Acl\AccessDeniedException;
@@ -32,7 +31,7 @@ class RestUtils
 
     public static function getErrorResponse(SystemLogger $logger, \Exception $error): ResponseInterface
     {
-        $logger->errorLogCaller($error->getMessage(), ['trace' => $error->getTraceAsString()]);
+        $logger->error($error->getMessage(), ['trace' => $error->getTraceAsString()]);
 
         if ($error instanceof AccessDeniedException) {
             $message = xlt("Access Denied");
@@ -53,21 +52,44 @@ class RestUtils
             $err['error'] = $err['_message'] = xl("A system error occurred.  Please try again or contact support.");
         }
         $psrFactory = new Psr17Factory();
-        return $psrFactory->createResponse($statusCode)->withBody($psrFactory->createStream(json_encode($err)));
+        return $psrFactory->createResponse($statusCode)->withBody($psrFactory->createStream((string) json_encode($err)));
     }
+    /** @param string $logMessage */
     public static function returnAccessDeniedResponse(SystemLogger $logger, $logMessage): ResponseInterface
     {
-        $logger->errorLogCaller($logMessage);
+        $logger->error($logMessage);
         $psrFactory = new Psr17Factory();
-        return $psrFactory->createResponse(401)->withBody($psrFactory->createStream(json_encode(['error' => xlt('Access Denied')])));
+        return $psrFactory->createResponse(401)->withBody($psrFactory->createStream((string) json_encode(['error' => xlt('Access Denied')])));
     }
     public static function getNotFoundResponse(): ResponseInterface
     {
         $psrFactory = new Psr17Factory();
-        return $psrFactory->createResponse(404)->withBody($psrFactory->createStream(json_encode(['error' => xlt('Not Found')])));
+        return $psrFactory->createResponse(404)->withBody($psrFactory->createStream((string) json_encode(['error' => xlt('Not Found')])));
+    }
+
+    /**
+     * Access-denied response. The optional $error is accepted for call-site
+     * convenience (callers typically log it first); its detail is deliberately
+     * not leaked to the client.
+     */
+    public static function getAccessDeniedResponse(?\Throwable $error = null): ResponseInterface
+    {
+        $psrFactory = new Psr17Factory();
+        return $psrFactory->createResponse(403)->withBody($psrFactory->createStream((string) json_encode(['error' => xlt('Access Denied')])));
+    }
+
+    /**
+     * Generic server-error response. The optional $error is accepted for
+     * call-site convenience; its detail is deliberately not leaked to the client.
+     */
+    public static function getServerErrorResponse(?\Throwable $error = null): ResponseInterface
+    {
+        $psrFactory = new Psr17Factory();
+        return $psrFactory->createResponse(500)->withBody($psrFactory->createStream((string) json_encode(['error' => xl('A system error occurred.  Please try again or contact support.')])));
     }
 
 
+    /** @param string $text */
     public static function returnTextResponse($text): ResponseInterface
     {
         $psrFactory = new Psr17Factory();
@@ -78,34 +100,36 @@ class RestUtils
         return $response;
     }
 
+    /** @param mixed $object */
     public static function returnSingleObjectResponse($object): ResponseInterface
     {
         $psrFactory = new Psr17Factory();
-        // should we gzip this?
-
-        $response = $psrFactory->createResponse(200);
-        $stream = $psrFactory->createStream(json_encode($object));
-        $stream->rewind(); // have to rewind the stream.
-        $encodedStream = new GzipEncodeStream($stream);
-        $response = $response->withAddedHeader('Content-Encoding', 'gzip')
+        // Return plain JSON. We intentionally do NOT gzip at the application layer:
+        // OpenEMR 8.4's ApiResponseLoggerListener logs the response body into the
+        // utf8mb4 api_log table (request_body/response columns), and binary gzip
+        // bytes trigger a SQLSTATE[22007] 1366 "Incorrect string value" error.
+        // Transport compression belongs at the web server (mod_deflate) via normal
+        // Accept-Encoding negotiation, which the browser decodes transparently.
+        $response = $psrFactory->createResponse(200)
             ->withHeader('Content-Type', 'application/json')
-            ->withBody($encodedStream);
+            ->withBody($psrFactory->createStream((string) json_encode($object)));
         return $response;
     }
 
     public static function getEmptyResponse(): ResponseInterface
     {
         $psrFactory = new Psr17Factory();
-        return $psrFactory->createResponse(200)->withBody($psrFactory->createStream(json_encode([])));
+        return $psrFactory->createResponse(200)->withBody($psrFactory->createStream((string) json_encode([])));
     }
 
+    /** @return ResponseInterface */
     public static function getResponseForProcessingResult(ProcessingResult $processingResult)
     {
         $httpResponseBody = [];
         if (!$processingResult->isValid()) {
             $status = 400;
             $httpResponseBody["validationErrors"] = $processingResult->getValidationMessages();
-        } elseif (count($processingResult->getData()) <= 0) {
+        } elseif (count((array) $processingResult->getData()) <= 0) {
             return RestUtils::getNotFoundResponse();
         } elseif ($processingResult->hasInternalErrors()) {
             $httpResponseBody["internalErrors"] = $processingResult->getInternalErrors();
@@ -113,9 +137,10 @@ class RestUtils
             return RestUtils::returnSingleObjectResponse($processingResult->getData()[0]);
         }
         $psrFactory = new Psr17Factory();
-        return $psrFactory->createResponse($status)->withBody($psrFactory->createStream(json_encode($httpResponseBody)));
+        return $psrFactory->createResponse($status)->withBody($psrFactory->createStream((string) json_encode($httpResponseBody)));
     }
 
+    /** @return ResponseInterface */
     public static function getFhirCreateResponseForProcessingResult(string $resourceType, ProcessingResult $result)
     {
         $psrFactory = new Psr17Factory();
@@ -123,22 +148,23 @@ class RestUtils
             $status = 400;
             if ($result->hasInternalErrors()) {
                 $status = 500;
-                $detailedText = implode(" ", $result->getInternalErrors());
+                $detailedText = implode(" ", (array) $result->getInternalErrors());
                 $operationOutcome = UtilsService::createOperationOutcomeResource('fatal', 'transient', $detailedText);
             } else {
                 // TODO: if we had more details or more specific codes we could provide better values here
-                $detailedText = implode(" ", $result->getValidationMessages());
+                $detailedText = implode(" ", (array) $result->getValidationMessages());
                 $operationOutcome = UtilsService::createOperationOutcomeResource('error', 'processing', $detailedText);
             }
-            return $psrFactory->createResponse($status)->withBody($psrFactory->createStream(json_encode($operationOutcome)));
+            return $psrFactory->createResponse($status)->withBody($psrFactory->createStream((string) json_encode($operationOutcome)));
         }
-        $data = $result->getData();
+        $data = (array) $result->getData();
         $id = array_shift($data);
 
         $response = $psrFactory->createResponse(201);
         return self::addFhirLocationHeader($response, $resourceType, $id);
     }
 
+    /** @return ResponseInterface */
     public static function addFhirLocationHeader(ResponseInterface $response, string $resourceType, int|string $id)
     {
         $serverConfig = new ServerConfig();
@@ -146,11 +172,12 @@ class RestUtils
         return $response->withHeader("Location", $url);
     }
 
+    /** @return ResponseInterface */
     public static function getFhirOperationOutcomeSuccessResponse(string $resourceType, int|string $id)
     {
         $operationOutcome = UtilsService::createOperationOutcomeSuccess($resourceType, $id);
         $psrFactory = new Psr17Factory();
-        return $psrFactory->createResponse(200)->withBody($psrFactory->createStream(json_encode($operationOutcome)));
+        return $psrFactory->createResponse(200)->withBody($psrFactory->createStream((string) json_encode($operationOutcome)));
     }
 
     /**

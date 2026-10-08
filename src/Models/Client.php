@@ -5,6 +5,7 @@ namespace OpenEMR\Modules\DiscoverAndChange\Assessments\Models;
 class Client implements \JsonSerializable
 {
     private string $id = "";
+    /** @var array<mixed> */
     private array $assignments = [];
     private string $customField1 = "";
     private int $companyId;
@@ -73,12 +74,12 @@ class Client implements \JsonSerializable
         $this->companyId = $v;
     }
 
-    public function getID(): string
+    public function getId(): string
     {
         return $this->id;
     }
 
-    public function setID(string $v): void
+    public function setId(string $v): void
     {
         $this->id = $v;
     }
@@ -93,11 +94,13 @@ class Client implements \JsonSerializable
         $this->customField1 = $v;
     }
 
+    /** @return array<mixed> */
     public function getAssignments(): array
     {
         return $this->assignments;
     }
 
+    /** @param array<mixed> $v */
     public function setAssignments(array $v): void
     {
         $this->assignments = $v;
@@ -106,20 +109,21 @@ class Client implements \JsonSerializable
     public static function fromJSON(object $obj): Client
     {
         if (!is_object($obj)) {
-            throw new InvalidArgumentException("Passed in object is not a JSON object");
+            throw new \InvalidArgumentException("Passed in object is not a JSON object");
         }
 
         $client = new Client();
         $client = array_merge($client, (array) $obj);
 
         if (isset($obj->assignedUser)) {
-            $client->setAssignedUser(SystemUser::fromJSON($obj->assignedUser));
+            $client->setAssignedUser(SystemUser::fromJSON((object) $obj->assignedUser));
         }
 
         return $client;
     }
 
-    public function jsonSerialize()
+    /** @return array<mixed> */
+    public function jsonSerialize(): array
     {
         $properties = get_object_vars($this);
         if (!empty($properties['assignedUser'])) {
@@ -128,17 +132,22 @@ class Client implements \JsonSerializable
         return $properties;
     }
 
+    /** @return void */
     public function addAssignment(Assignment $assignment)
     {
         $this->assignments[] = $assignment;
     }
 
+    /** @return void */
     public function sortAssignmentsByDateAssigned()
     {
-        usort($this->assignments, function (Assignment $a, Assignment $b) {
-            $aTime = ($a->getDateAssigned() ?? new DateTime());
-            $bTime = ($b->getDateAssigned() ?? new DateTime());
+        /** @var Assignment[] $assignments */
+        $assignments = $this->assignments;
+        usort($assignments, function (Assignment $a, Assignment $b) {
+            $aTime = ($a->getDateAssigned() ?? new \DateTime());
+            $bTime = ($b->getDateAssigned() ?? new \DateTime());
             return $aTime < $bTime ? -1 : 1;
         });
+        $this->assignments = $assignments;
     }
 }

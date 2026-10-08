@@ -27,21 +27,24 @@ class LibraryAssetRestController implements IRestController
     {
         try {
             $query = $request->getQueryParams();
-            $tag = trim($query['tag'] ?? '');
+            $tag = trim(($query['tag'] ?? ''));
             $psrFactory = new Psr17Factory();
             $libraryAssetsRepo = new LibraryAssetBlobRepository($this->logger);
             $assets = $libraryAssetsRepo->listAssets($tag);
-            return $psrFactory->createResponse(200)->withBody($psrFactory->createStream(json_encode($assets)));
+            return $psrFactory->createResponse(200)->withBody($psrFactory->createStream((string) json_encode($assets)));
         } catch (\Exception $e) {
             return RestUtils::getErrorResponse($this->logger, $e);
         }
     }
 
+    /**
+     * @param string $id
+     */
     public function one(ServerRestRequest $request, $id): ResponseInterface
     {
         try {
             $libraryAssetsRepo = new LibraryAssetBlobRepository($this->logger);
-            $asset = $libraryAssetsRepo->getAsset($id);
+            $asset = $libraryAssetsRepo->getAsset((int) $id);
             if (empty($asset)) {
                 return RestUtils::getNotFoundResponse();
             }
@@ -53,6 +56,7 @@ class LibraryAssetRestController implements IRestController
 
     public function create(ServerRestRequest $request): ResponseInterface
     {
+        /** @var array<string, mixed> $data */
         $data = $request->getBodyAsJson();
         $validator = new LibraryAssetBlobValidator();
         $validation = $validator->validate($data, LibraryAssetBlobValidator::DATABASE_INSERT_CONTEXT);
@@ -63,7 +67,7 @@ class LibraryAssetRestController implements IRestController
                 throw new AccessDeniedException("admin", "forms", "You do not have permission to create library assets");
             }
             if (!$validation->isValid()) {
-                $this->logger->errorLogCaller("Validation failed", ['errors' => $validation->getValidationMessages()]);
+                $this->logger->error("Validation failed", ['errors' => $validation->getValidationMessages()]);
                 throw new \InvalidArgumentException("One or more fields was invalid", ErrorCode::VALIDATION_FAILED);
             }
 
@@ -71,17 +75,17 @@ class LibraryAssetRestController implements IRestController
             $asset->fromDTO($data);
 
             $sanitizer = new HTMLSanitizer();
-            $asset->setContent($sanitizer->sanitize($asset->getContent()));
-            $asset->setDescription($sanitizer->sanitize($asset->getDescription()));
-            $asset->setTitle($sanitizer->sanitize($asset->getTitle()));
+            $asset->setContent($sanitizer->sanitize((string) $asset->getContent()));
+            $asset->setDescription($sanitizer->sanitize((string) $asset->getDescription()));
+            $asset->setTitle($sanitizer->sanitize((string) $asset->getTitle()));
 
             $libraryAssetsRepo = new LibraryAssetBlobRepository($this->logger);
-            $createdAsset = $libraryAssetsRepo->saveLibraryAssetBlob($asset, $request->getUserId());
+            $createdAsset = $libraryAssetsRepo->saveLibraryAssetBlob($asset, (int) $request->getUserId());
             QueryUtils::commitTransaction();
             $transactionCommitted = true;
             return RestUtils::returnSingleObjectResponse($createdAsset);
         } catch (AccessDeniedException $exception) {
-            $this->logger->errorLogCaller($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
+            $this->logger->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             return RestUtils::getAccessDeniedResponse($exception);
         } catch (\Exception $e) {
             return RestUtils::getErrorResponse($this->logger, $e);
@@ -90,16 +94,19 @@ class LibraryAssetRestController implements IRestController
                 try {
                     QueryUtils::rollbackTransaction();
                 } catch (\Exception $e) {
-                    $this->logger->errorLogCaller("Failed to rollback transaction", ['trace' => $e->getTraceAsString()]);
+                    $this->logger->error("Failed to rollback transaction", ['trace' => $e->getTraceAsString()]);
                 }
             }
         }
     }
 
+    /**
+     * @param string $id
+     */
     public function update(ServerRestRequest $request, $id): ResponseInterface
     {
         // TODO: Implement one() method.
         $psrFactory = new Psr17Factory();
-        return $psrFactory->createResponse(400)->withBody(json_encode([]));
+        return $psrFactory->createResponse(400)->withBody($psrFactory->createStream((string) json_encode([])));
     }
 }

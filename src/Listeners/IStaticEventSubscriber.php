@@ -7,5 +7,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 interface IStaticEventSubscriber
 {
+    /** @return void */
     static function subscribeToEvents(Container $container, EventDispatcherInterface $eventDispatcher);
 }

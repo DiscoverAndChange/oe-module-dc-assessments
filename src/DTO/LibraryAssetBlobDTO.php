@@ -20,7 +20,9 @@ class LibraryAssetBlobDTO implements \JsonSerializable
     private ?string $creatorLink = null;
     private ?string $creationDate = null;
     private ?string $lastUpdateDate = null;
+    /** @var array<mixed>|null */
     private ?array $tags = null;
+    /** @var array<mixed>|null */
     private ?array $results = null;
 
     public function __construct()
@@ -174,28 +176,33 @@ class LibraryAssetBlobDTO implements \JsonSerializable
         return $this;
     }
 
+    /** @return array<mixed>|null */
     public function getTags(): ?array
     {
         return $this->tags;
     }
 
+    /** @param array<mixed>|null $tags */
     public function setTags(?array $tags): self
     {
         $this->tags = $tags;
         return $this;
     }
 
+    /** @return array<mixed>|null */
     public function getResults(): ?array
     {
         return $this->results;
     }
 
+    /** @param array<mixed>|null $results */
     public function setResults(?array $results): self
     {
         $this->results = $results;
         return $this;
     }
 
+    /** @return array<mixed> */
     public function jsonSerialize(): array
     {
         $dto = [
@@ -215,19 +222,23 @@ class LibraryAssetBlobDTO implements \JsonSerializable
         return $dto;
     }
 
+    /**
+     * @param array<mixed> $data
+     * @return void
+     */
     public function fromDTO(array $data)
     {
-        $this->setId($data['id'] ?? 0);
-        $this->setTitle($data['title'] ?? '');
-        $this->setType($data['type'] ?? 'article');
-        $this->setDescription($data['description'] ?? '');
-        $this->setContent($data['content'] ?? '');
+        $this->setId(($data['id'] ?? 0));
+        $this->setTitle(($data['title'] ?? ''));
+        $this->setType(($data['type'] ?? 'article'));
+        $this->setDescription(($data['description'] ?? ''));
+        $this->setContent(($data['content'] ?? ''));
         $this->setJournal($data['journal'] ?? null);
         $this->setOriginalCreator($data['originalCreator'] ?? null);
         $this->setCreatorLink($data['creatorLink'] ?? null);
-        $this->setCreationDate($data['creationDate'] ?? (new \DateTime())->format(DATE_ATOM));
-        $this->setLastUpdateDate($data['lastUpdateDate'] ?? (new \DateTime())->format(DATE_ATOM));
-        $this->setTags($data['tags'] ?? []);
-        $this->setResults($data['results'] ?? []);
+        $this->setCreationDate(($data['creationDate'] ?? (new \DateTime())->format(DATE_ATOM)));
+        $this->setLastUpdateDate(($data['lastUpdateDate'] ?? (new \DateTime())->format(DATE_ATOM)));
+        $this->setTags((array) ($data['tags'] ?? []));
+        $this->setResults((array) ($data['results'] ?? []));
     }
 }

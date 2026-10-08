@@ -12,21 +12,30 @@ class EmptyRestController implements IRestController
     public function list(ServerRestRequest $request): ResponseInterface
     {
         $psr17 = new Psr17Factory();
-        return $psr17->createResponse(200)->withBody($psr17->createStream(json_encode([])));
+        return $psr17->createResponse(200)->withBody($psr17->createStream((string) json_encode([])));
     }
 
+    /**
+     * @param string $id
+     */
     public function one(ServerRestRequest $request, $id): ResponseInterface
     {
-        // TODO: Implement one() method.
+        $psr17 = new Psr17Factory();
+        return $psr17->createResponse(200)->withBody($psr17->createStream((string) json_encode([])));
     }
 
     public function create(ServerRestRequest $request): ResponseInterface
     {
-        // TODO: Implement create() method.
+        $psr17 = new Psr17Factory();
+        return $psr17->createResponse(200)->withBody($psr17->createStream((string) json_encode([])));
     }
 
+    /**
+     * @param string $id
+     */
     public function update(ServerRestRequest $request, $id): ResponseInterface
     {
-        // TODO: Implement update() method.
+        $psr17 = new Psr17Factory();
+        return $psr17->createResponse(200)->withBody($psr17->createStream((string) json_encode([])));
     }
 }

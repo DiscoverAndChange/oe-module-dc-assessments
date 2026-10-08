@@ -9,13 +9,21 @@ use OpenEMR\Validators\ProcessingResult;
 
 class PaginatedResultsService
 {
+    /**
+     * @param array<mixed> $queryParams
+     * @return QueryPagination
+     */
     public static function getPaginationFromQuery($queryParams): QueryPagination
     {
-        $limit = intval($queryParams['_limit'] ?? 50);
-        $offset = intval($queryParams['_offset'] ?? 0);
+        $limit = ($queryParams['_limit'] ?? 50);
+        $offset = ($queryParams['_offset'] ?? 0);
         $pagination = new QueryPagination($limit, $offset);
         return $pagination;
     }
+    /**
+     * @param ProcessingResult $result
+     * @return \Psr\Http\Message\ResponseInterface
+     */
     public static function returnPaginatedResultsForProcessingResponse(ProcessingResult $result)
     {
         $pagination = $result->getPagination();
@@ -29,8 +37,13 @@ class PaginatedResultsService
 
         // for now have it be empty
         $psrFactory = new Psr17Factory();
-        return $psrFactory->createResponse(200)->withBody($psrFactory->createStream(json_encode($data)));
+        return $psrFactory->createResponse(200)->withBody($psrFactory->createStream((string) json_encode($data)));
     }
+    /**
+     * @param array<mixed> $results
+     * @param QueryPagination $pagination
+     * @return \Psr\Http\Message\ResponseInterface
+     */
     public static function returnedPaginatedResultsResponse(array $results, QueryPagination $pagination)
     {
         $psrFactory = new Psr17Factory();
@@ -57,6 +70,6 @@ class PaginatedResultsService
         ];
 
         // for now have it be empty
-        return $psrFactory->createResponse(200)->withBody($psrFactory->createStream(json_encode($data)));
+        return $psrFactory->createResponse(200)->withBody($psrFactory->createStream((string) json_encode($data)));
     }
 }

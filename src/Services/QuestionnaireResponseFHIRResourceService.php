@@ -61,9 +61,10 @@ class QuestionnaireResponseFHIRResourceService extends FhirServiceBase implement
      */
     private $service;
 
-    private $dispatcher;
+    private EventDispatcher $dispatcher;
 
 
+    /** @param string $fhirApiURL */
     public function __construct(EventDispatcher $dispatcher, $fhirApiURL = null)
     {
         parent::__construct($fhirApiURL);
@@ -91,6 +92,7 @@ class QuestionnaireResponseFHIRResourceService extends FhirServiceBase implement
         }
     }
 
+    /** @param mixed $fhirSearchParameters */
     public function getAll($fhirSearchParameters, $puuidBind = null): ProcessingResult
     {
         $result = new ProcessingResult();
@@ -118,7 +120,7 @@ class QuestionnaireResponseFHIRResourceService extends FhirServiceBase implement
      * Search fields can be combined as Composite fields and represent a host of search options.
      * @see https://www.hl7.org/fhir/search.html to see the types of search operations, and search types that are available
      * for use.
-     * @return array
+     * @return array<string, FhirSearchParameterDefinition>
      */
     protected function loadSearchParameters()
     {

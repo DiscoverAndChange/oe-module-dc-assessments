@@ -20,6 +20,11 @@ class BackendDispatchController
     {
     }
 
+    /**
+     * @param string $action
+     * @param array<mixed> $queryVars
+     * @return \Psr\Http\Message\ResponseInterface|null
+     */
     public function dispatch($action, $queryVars)
     {
         switch ($action) {
@@ -37,7 +42,7 @@ class BackendDispatchController
                 $request = $this->configController->importConfigAction($action, $queryVars);
                 break;
             default:
-                (new SystemLogger())->errorLogCaller("Unknown action", ['action' => $action]);
+                (new SystemLogger())->error("Unknown action", ['action' => $action]);
                 $request = RestUtils::getNotFoundResponse();
                 break;
         }

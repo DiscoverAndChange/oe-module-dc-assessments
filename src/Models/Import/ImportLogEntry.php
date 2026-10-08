@@ -23,6 +23,7 @@ class ImportLogEntry
 
     public ?string $successMessage = null;
 
+    /** @return string */
     public function getMessage()
     {
         if ($this->importStatus == 'success') {

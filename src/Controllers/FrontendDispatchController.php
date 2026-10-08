@@ -16,11 +16,18 @@ class FrontendDispatchController
     {
     }
 
+    /**
+     * @return bool
+     */
     public function isClientEnabled(string $clientId)
     {
         return $this->clientService->isClientEnabled($clientId);
     }
 
+    /**
+     * @param array<mixed> $queryVars
+     * @return \Psr\Http\Message\ResponseInterface
+     */
     public function dispatch(array $queryVars)
     {
         $clientId = $this->config->getSmartAppClientId();
@@ -44,6 +51,9 @@ class FrontendDispatchController
         return $psr->createResponse()->withBody($psr->createStream($result));
     }
 
+    /**
+     * @return array<mixed>
+     */
     private function getSmartStylesJson()
     {
         // TODO: @adunsulag I don't like the duplicate code here and in SMARTAuthorizationController->smartAppStyles()

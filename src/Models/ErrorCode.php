@@ -39,6 +39,7 @@ class ErrorCode
         ErrorCode::RECORD_CREATE_FAILED => "RECORD_CREATE_FAILED"
     );
 
+    /** @param int $code */
     public static function getErrorStringForErrorCode($code): string
     {
 

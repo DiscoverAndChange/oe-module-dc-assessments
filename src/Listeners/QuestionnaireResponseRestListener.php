@@ -21,6 +21,7 @@ class QuestionnaireResponseRestListener implements IStaticEventSubscriber
     public function __construct(private AssessmentResponseBlobFHIRResourceService $assessmentResponseBlobFHIRResourceService, private LibraryAssetResultBlobFHIRResourceService $libraryAssetResultBlobFHIRResourceService)
     {
     }
+    /** @return void */
     public static function subscribeToEvents(Container $container, EventDispatcherInterface $eventDispatcher)
     {
         $eventDispatcher->addListener('fhir.questionnaire_response.pre_insert', function (GenericEvent $event) use ($container) {
@@ -37,6 +38,7 @@ class QuestionnaireResponseRestListener implements IStaticEventSubscriber
         });
     }
 
+    /** @return void */
     public function dispatchFHIRInsertEvent(GenericEvent $event)
     {
         // for now we stick with the generic event
@@ -69,9 +71,11 @@ class QuestionnaireResponseRestListener implements IStaticEventSubscriber
         }
     }
 
+    /** @return mixed */
     public function dispatchFHIRSearchEvent(GenericEvent $event)
     {
         // for now we stick with the generic event
+        /** @var array<mixed> $fhirSearchParameters */
         $fhirSearchParameters = $event->getSubject();
         $processingResult = new ProcessingResult();
         $result = $this->assessmentResponseBlobFHIRResourceService->getAll($fhirSearchParameters);
@@ -79,7 +83,7 @@ class QuestionnaireResponseRestListener implements IStaticEventSubscriber
             $processingResult->addProcessingResult($result);
         } else {
             // we have something so let's return our processing result
-            $this->getLogger()->errorLogCaller("Failed to process the search request for assessment response results.");
+            $this->getLogger()->error("Failed to process the search request for assessment response results.");
             $processingResult->addInternalError(xlt("Failed to process the search request."));
         }
         if ($processingResult->isValid()) {
@@ -88,7 +92,7 @@ class QuestionnaireResponseRestListener implements IStaticEventSubscriber
                 $processingResult->addProcessingResult($result);
             } else {
                 // we have something so let's return our processing result
-                $this->getLogger()->errorLogCaller("Failed to process the search request for asset library response results.");
+                $this->getLogger()->error("Failed to process the search request for asset library response results.");
                 $processingResult->addInternalError(xlt("Failed to process the search request."));
             }
         }

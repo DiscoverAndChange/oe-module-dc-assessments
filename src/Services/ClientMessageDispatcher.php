@@ -18,6 +18,11 @@ class ClientMessageDispatcher
     {
     }
 
+    /**
+     * @param string $clientId
+     * @param int $patientPid
+     * @return void
+     */
     public function sendAssignmentsCompleteNotification(string $clientId, $patientPid)
     {
         if (!$this->config->shouldSendAssignmentCompletionNotices()) {
@@ -31,6 +36,11 @@ class ClientMessageDispatcher
         }
     }
 
+    /**
+     * @param string $clientId
+     * @param int $patientPid
+     * @return void
+     */
     private function sendProviderNotification($clientId, $patientPid)
     {
         $patientService = new PatientService();
@@ -40,16 +50,22 @@ class ClientMessageDispatcher
         }
     }
 
+    /**
+     * @param string $clientId
+     * @param int $patientPid
+     * @param mixed $userId
+     * @return void
+     */
     private function sendUserNotification($clientId, $patientPid, $userId)
     {
         $userService = new UserService();
         $user = $userService->getUser($userId);
         if (empty($user)) {
-            $this->logger->errorLogCaller("Failed to find user for assignment completion notice", ['userId' => $userId]);
+            $this->logger->error("Failed to find user for assignment completion notice", ['userId' => $userId]);
             return;
         }
         if (empty($user['email'])) {
-            $this->logger->errorLogCaller("User missing valid email address for assignment completion notice", ['userId' => $userId]);
+            $this->logger->error("User missing valid email address for assignment completion notice", ['userId' => $userId]);
             return;
         }
 
@@ -61,12 +77,21 @@ class ClientMessageDispatcher
         ];
         $template = "discoverandchange/emails/assessment-services-assignments-complete";
         if (!$this->sendMessageViaMailer($subject, $user, $template, $msg)) {
-            $this->logger->errorLogCaller("Failed to send assignment completion notice to user", ['userId' => $userId, 'puuid' => $clientId, 'pid' => $patientPid]);
+            $this->logger->error("Failed to send assignment completion notice to user", ['userId' => $userId, 'puuid' => $clientId, 'pid' => $patientPid]);
         } else {
             $this->logger->debug(self::class . "->" . __FUNCTION__ . " - sent assignment completion notice to user", ['userId' => $userId, 'puuid' => $clientId, 'pid' => $patientPid]);
         }
     }
 
+    /**
+     * @param int $patientPid
+     * @param string $subject
+     * @param string $message
+     * @param string $patientEmail
+     * @param string $senderEmail
+     * @param bool $isTest
+     * @return void
+     */
     public function sendInvitationMessage($patientPid, $subject, $message, $patientEmail, $senderEmail, $isTest)
     {
         $this->logger->debug(self::class . "->sendInvitationMessage() called", ['pid' => $patientPid]);
@@ -84,7 +109,7 @@ class ClientMessageDispatcher
 //            $nl2brMessage = nl2br($message);
 //            $sanitizedMessage = $this->sanitizeString($nl2brMessage);
         } catch (\Exception $error) {
-            $this->logger->errorLogCaller($error->getMessage(), ['trace' => $error->getTraceAsString()]);
+            $this->logger->error($error->getMessage(), ['trace' => $error->getTraceAsString()]);
             throw new \InvalidArgumentException("Failed to sanitize email text", ErrorCode::SYSTEM_ERROR);
         }
 
@@ -95,6 +120,13 @@ class ClientMessageDispatcher
         $this->dispatcher->dispatch($notificationEvent, SendNotificationEvent::SEND_NOTIFICATION_BY_SERVICE);
     }
 
+    /**
+     * @param string $subject
+     * @param array<mixed> $user
+     * @param string $template
+     * @param array<mixed> $templateData
+     * @return bool
+     */
     private function sendMessageViaMailer($subject, $user, $template, $templateData)
     {
         if (empty($templateData['logo'])) {

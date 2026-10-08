@@ -6,6 +6,7 @@ use OpenEMR\Common\Acl\AccessDeniedException;
 use OpenEMR\Common\Acl\AclMain;
 use OpenEMR\Common\Database\QueryUtils;
 use OpenEMR\Common\Logging\SystemLogger;
+use OpenEMR\Common\Session\SessionWrapperFactory;
 use OpenEMR\FHIR\Config\ServerConfig;
 use OpenEMR\FHIR\R4\FHIRDomainResource\FHIRProvenance;
 use OpenEMR\FHIR\R4\FHIRDomainResource\FHIRQuestionnaire;
@@ -61,6 +62,10 @@ class LibraryAssetResultBlobFHIRResourceService extends FhirServiceBase
         $this->patientService = $patientService;
     }
 
+    /**
+     * @param mixed $code
+     * @return bool
+     */
     public function supportsCode($code)
     {
         return $code === self::CODE_DAC_LIBRARY_ASSET;
@@ -76,7 +81,8 @@ class LibraryAssetResultBlobFHIRResourceService extends FhirServiceBase
         ];
     }
 
-    protected function createOpenEMRSearchParameters($fhirSearchParameters, $puuidBind)
+    /** @param array<mixed> $fhirSearchParameters */
+    protected function createOpenEMRSearchParameters(array $fhirSearchParameters, ?string $puuidBind = null): array
     {
         // we don't do anything with the code once we have it, so we remove it.
         if (!empty($fhirSearchParameters['questionnaire-code'])) {
@@ -85,6 +91,7 @@ class LibraryAssetResultBlobFHIRResourceService extends FhirServiceBase
         return parent::createOpenEMRSearchParameters($fhirSearchParameters, $puuidBind);
     }
 
+    /** @return array<mixed> */
     public function parseFhirResource(FHIRDomainResource $fhirResource)
     {
         if (!($fhirResource instanceof FHIRQuestionnaireResponse)) {
@@ -111,7 +118,8 @@ class LibraryAssetResultBlobFHIRResourceService extends FhirServiceBase
         return $result;
     }
 
-    protected function insertOpenEMRRecord($openEmrRecord)
+    /** @param mixed $openEmrRecord */
+    protected function insertOpenEmrRecord($openEmrRecord)
     {
         $validator = new LibraryAssetResultBlobValidator();
         $validation = $validator->validate($openEmrRecord, LibraryAssetResultBlobValidator::DATABASE_INSERT_CONTEXT);
@@ -122,13 +130,13 @@ class LibraryAssetResultBlobFHIRResourceService extends FhirServiceBase
         try {
             $assignmentRepo = $this->assignmentRepository;
             QueryUtils::startTransaction();
-            $client = $this->validateCreateAccessAndReturnClient($openEmrRecord['clientId'], $_SESSION['authUserId'] ?? null);
+            $client = $this->validateCreateAccessAndReturnClient($openEmrRecord['clientId'], SessionWrapperFactory::getInstance()->getActiveSession()->get('authUserID'));
             // use the id in the session... don't like it but its the only thing we have right now
             $resultDTO = new LibraryAssetBlobResultDTO();
-            $resultDTO->fromDTO($openEmrRecord);
+            $resultDTO->fromDTO((array) $openEmrRecord);
             $assetDTO = new LibraryAssetBlobDTO();
             if (!empty($openEmrRecord['asset'])) {
-                $assetDTO->fromDTO($openEmrRecord['asset']);
+                $assetDTO->fromDTO((array) $openEmrRecord['asset']);
             }
 
             $item = $assignmentRepo->getAssignmentItem($resultDTO->getAssignmentItemId(), $openEmrRecord['clientId']);
@@ -142,15 +150,15 @@ class LibraryAssetResultBlobFHIRResourceService extends FhirServiceBase
             $item->setResultId($resultDTO->getId());
             $result = new ProcessingResult();
             $result->addData($resultDTO->getId());
-            $this->completer->markAssignmentComplete($item, $client);
+            $this->completer->markAssignmentComplete($item, (array) $client);
             QueryUtils::commitTransaction();
             $transactionCommitted = true;
         } catch (AccessDeniedException $exception) {
-            $this->getLogger()->errorLogCaller($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
+            $this->getLogger()->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             $result = new ProcessingResult();
             $result->addInternalError(xlt("You do not have permission to create this result"));
         } catch (\Exception $exception) {
-            $this->getLogger()->errorLogCaller($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
+            $this->getLogger()->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             $result = new ProcessingResult();
             $result->addInternalError(xlt("A system error occurred in processing your request"));
         } finally {
@@ -161,6 +169,7 @@ class LibraryAssetResultBlobFHIRResourceService extends FhirServiceBase
         return $result;
     }
 
+    /** @return mixed */
     private function validateCreateAccessAndReturnClient(string $patientUuidString, ?int $userId)
     {
 
@@ -180,6 +189,7 @@ class LibraryAssetResultBlobFHIRResourceService extends FhirServiceBase
         return $client;
     }
 
+    /** @param array<mixed> $dataRecord */
     public function parseOpenEMRRecord($dataRecord = array(), $encode = false)
     {
         $fhirResource = new FHIRQuestionnaireResponse();
@@ -208,6 +218,7 @@ class LibraryAssetResultBlobFHIRResourceService extends FhirServiceBase
         return $fhirResource;
     }
 
+    /** @param array<mixed> $openEMRSearchParameters */
     protected function searchForOpenEMRRecords($openEMRSearchParameters): ProcessingResult
     {
         return $this->repository->search($openEMRSearchParameters);

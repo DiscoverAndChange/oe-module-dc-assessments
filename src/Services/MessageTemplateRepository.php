@@ -14,9 +14,9 @@ class MessageTemplateRepository
 
     /**
      * Given a client and company, retrieve the invitation message template.
-     * @param Patient $client
-     * @param Company|Facility $company
-     * @return array
+     * @param array<mixed> $client
+     * @param array<mixed>|null $company
+     * @return array<mixed>
      */
     public function getTemplateForClient(array $client, $company = null): array
     {
@@ -29,8 +29,9 @@ class MessageTemplateRepository
 
     /**
      * Retrieves the subject and template settings for the invitation message for the provided company.
-     * @param array $company
-     * @return array
+     * @param array<mixed> $client
+     * @param array<mixed>|null $company
+     * @return array<mixed>
      */
     public function getTemplateSettingsForFacility(array $client, ?array $company): array
     {

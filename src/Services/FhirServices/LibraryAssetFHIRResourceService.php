@@ -39,6 +39,10 @@ class LibraryAssetFHIRResourceService extends FhirServiceBase
         $this->repository = $repository;
     }
 
+    /**
+     * @param mixed $code
+     * @return bool
+     */
     public function supportsCode($code)
     {
         return $code === self::CODE_DAC_LIBRARY_ASSET;
@@ -54,7 +58,8 @@ class LibraryAssetFHIRResourceService extends FhirServiceBase
         ];
     }
 
-    protected function createOpenEMRSearchParameters($fhirSearchParameters, $puuidBind)
+    /** @param array<mixed> $fhirSearchParameters */
+    protected function createOpenEMRSearchParameters(array $fhirSearchParameters, ?string $puuidBind = null): array
     {
         // we don't do anything with the code once we have it, so we remove it.
         if (!empty($fhirSearchParameters['questionnaire-code'])) {
@@ -63,6 +68,7 @@ class LibraryAssetFHIRResourceService extends FhirServiceBase
         return parent::createOpenEMRSearchParameters($fhirSearchParameters, $puuidBind);
     }
 
+    /** @param array<mixed> $dataRecord */
     public function parseOpenEMRRecord($dataRecord = array(), $encode = false)
     {
         $fhirResource = new FHIRQuestionnaire();
@@ -91,6 +97,7 @@ class LibraryAssetFHIRResourceService extends FhirServiceBase
         return $fhirResource;
     }
 
+    /** @param array<mixed> $openEMRSearchParameters */
     protected function searchForOpenEMRRecords($openEMRSearchParameters): ProcessingResult
     {
         return $this->repository->search($openEMRSearchParameters);

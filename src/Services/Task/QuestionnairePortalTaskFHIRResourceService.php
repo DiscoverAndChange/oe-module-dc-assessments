@@ -37,6 +37,10 @@ class QuestionnairePortalTaskFHIRResourceService extends FhirServiceBase impleme
     const FHIR_TASK_CODE = 'complete-questionnaire';
 
 
+    /**
+     * @param mixed $code
+     * @return bool
+     */
     public function supportsCode($code)
     {
         // @see sdc-t1 https://build.fhir.org/ig/HL7/sdc/StructureDefinition-sdc-task.html
@@ -44,6 +48,7 @@ class QuestionnairePortalTaskFHIRResourceService extends FhirServiceBase impleme
     }
 
     // in parsing this we need to do the following: https://build.fhir.org/ig/HL7/sdc/StructureDefinition-sdc-task.html
+    /** @param array<mixed> $dataRecord */
     public function parseOpenEMRRecord($dataRecord = array(), $encode = false): FHIRTask
     {
         $fhirResource = new FHIRTask();
@@ -139,7 +144,7 @@ class QuestionnairePortalTaskFHIRResourceService extends FhirServiceBase impleme
      * Search fields can be combined as Composite fields and represent a host of search options.
      * @see https://www.hl7.org/fhir/search.html to see the types of search operations, and search types that are available
      * for use.
-     * @return array
+     * @return array<string, FhirSearchParameterDefinition>
      */
     protected function loadSearchParameters()
     {
@@ -165,6 +170,7 @@ class QuestionnairePortalTaskFHIRResourceService extends FhirServiceBase impleme
     }
 
 
+    /** @param array<mixed> $openEMRSearchParameters */
     protected function searchForOpenEMRRecords($openEMRSearchParameters): ProcessingResult
     {
         $processingResult = new ProcessingResult();
@@ -221,6 +227,10 @@ class QuestionnairePortalTaskFHIRResourceService extends FhirServiceBase impleme
         return $this->getTaskDataForTemplates($docTemplateService, $processingResult, $templates);
     }
 
+    /**
+     * @param mixed $docTemplateService
+     * @param array<mixed> $templates
+     */
     private function getTaskDataForTemplates($docTemplateService, ProcessingResult $processingResult, $templates): ProcessingResult
     {
 
@@ -229,8 +239,8 @@ class QuestionnairePortalTaskFHIRResourceService extends FhirServiceBase impleme
         $pids = [];
         $ids = [];
         foreach ($templates as $template) {
-            $pids[] = intval($template['pid']);
-            $ids[] = intval($template['id']);
+            $pids[] = $template['pid'];
+            $ids[] = $template['id'];
         }
         $pidsRepeat = str_repeat('?,', count($pids) - 1) . '?';
         $filePathRepeat = str_repeat('?,', count($ids) - 1) . '?';

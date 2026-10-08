@@ -37,16 +37,17 @@ class MessageTemplateRestController implements IRestController
                 $patient = $patient[0];
             }
             $facRepo = new FacilityService();
+            /** @var array<mixed>|null $primaryEntity */
             $primaryEntity = $facRepo->getPrimaryBusinessEntity();
             $userId = $request->getUserId();
             $userRepo = new UserService();
-            $user = $userRepo->getUser($userId);
+            $user = $userRepo->getUser((int) $userId);
             if (empty($user)) {
                 throw new \InvalidArgumentException("User not found for request");
             }
 
             $messageTemplateRepo = new MessageTemplateRepository($this->twig, $this->config);
-            $result = $messageTemplateRepo->getTemplateForClient($patient, $primaryEntity);
+            $result = $messageTemplateRepo->getTemplateForClient((array) $patient, $primaryEntity);
 
             $result = array_merge($result, [
                 'from' => $this->config->getNotificationDefaultFrom()
@@ -56,10 +57,13 @@ class MessageTemplateRestController implements IRestController
             ]);
             return RestUtils::returnSingleObjectResponse($result);
         } catch (\Exception $e) {
-            return RestUtils::getErrorResponse($e);
+            return RestUtils::getErrorResponse($this->logger, $e);
         }
     }
 
+    /**
+     * @param string $id
+     */
     public function one(ServerRestRequest $request, $id): ResponseInterface
     {
         try {
@@ -73,13 +77,16 @@ class MessageTemplateRestController implements IRestController
     {
         // TODO: Implement one() method.
         $psrFactory = new Psr17Factory();
-        return $psrFactory->createResponse(400)->withBody(json_encode([]));
+        return $psrFactory->createResponse(400)->withBody($psrFactory->createStream((string) json_encode([])));
     }
 
+    /**
+     * @param string $id
+     */
     public function update(ServerRestRequest $httpRestRequest, $id): ResponseInterface
     {
         // TODO: Implement one() method.
         $psrFactory = new Psr17Factory();
-        return $psrFactory->createResponse(400)->withBody(json_encode([]));
+        return $psrFactory->createResponse(400)->withBody($psrFactory->createStream((string) json_encode([])));
     }
 }

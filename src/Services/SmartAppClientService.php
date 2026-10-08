@@ -14,6 +14,7 @@ class SmartAppClientService
     {
     }
 
+    /** @return mixed */
     public function getRegisteredClientId()
     {
         $clientId = $this->globalConfig->getSmartAppClientId();
@@ -55,6 +56,7 @@ class SmartAppClientService
         return $clientId;
     }
 
+    /** @return bool */
     public function isClientEnabled(string $clientId)
     {
         $clientRepository = new ClientRepository();

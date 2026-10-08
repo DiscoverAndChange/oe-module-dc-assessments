@@ -6,8 +6,10 @@ use http\Env;
 use OpenEMR\Common\Auth\OpenIDConnect\Repositories\ScopeRepository;
 use OpenEMR\Common\Crypto\CryptoGen;
 use OpenEMR\Common\Csrf\CsrfUtils;
+use OpenEMR\Common\Session\SessionWrapperFactory;
 use OpenEMR\Common\Logging\SystemLogger;
 use OpenEMR\Common\Twig\TwigContainer;
+use Psr\Log\LoggerInterface;
 use OpenEMR\Core\Kernel;
 use OpenEMR\Events\Core\ScriptFilterEvent;
 use OpenEMR\Events\Core\TemplatePageEvent;
@@ -133,7 +135,9 @@ class Bootstrap
         $this->eventDispatcher = $eventDispatcher;
 
         // we inject our globals value.
-        $this->globalsConfig = new GlobalConfig($GLOBALS);
+        /** @var array<string, mixed> $globals */
+        $globals = $GLOBALS;
+        $this->globalsConfig = new GlobalConfig($globals);
         $this->logger = new SystemLogger();
         $this->serviceContainer = $this->setupContainer();
     }
@@ -147,11 +151,17 @@ class Bootstrap
         return self::$instance;
     }
 
+    /**
+     * @return void
+     */
     public function addGlobalSettings()
     {
         $this->eventDispatcher->addListener(GlobalsInitializedEvent::EVENT_HANDLE, [$this, 'addModuleGlobalSettings']);
     }
 
+    /**
+     * @return void
+     */
     public function addModuleGlobalSettings(GlobalsInitializedEvent $event)
     {
         $service = $event->getGlobalsService();
@@ -169,8 +179,10 @@ class Bootstrap
             $this->addServicesToContainer($container);
             $container->compile();
             $dumper = new PhpDumper($container);
+            /** @var string $dump */
+            $dump = $dumper->dump(['class' => 'DacAssessmentCachedContainer', 'namespace' => 'OpenEMR\\Modules\\DiscoverAndChange\\Assessments']);
             $containerConfigCache->write(
-                $dumper->dump(['class' => 'DacAssessmentCachedContainer', 'namespace' => 'OpenEMR\\Modules\\DiscoverAndChange\\Assessments']),
+                $dump,
                 $container->getResources()
             );
         }
@@ -180,6 +192,9 @@ class Bootstrap
         $this->injectSyntheticServicesIntoContainer($container);
          return $container;
     }
+    /**
+     * @return void
+     */
     private function addSyntheticServicesToContainer(ContainerBuilder $container)
     {
         // setup our synthetic services.
@@ -191,8 +206,15 @@ class Bootstrap
             }
         }
         $container->setAlias(SystemLogger::class, 'logger');
+        // OpenEMR 8.4.1's FhirServiceBase composes PSR's LoggerAwareTrait, whose
+        // setLogger() type-hints Psr\Log\LoggerInterface. Alias it to the same
+        // synthetic SystemLogger service so #[Required] setter autowiring resolves.
+        $container->setAlias(LoggerInterface::class, 'logger');
     }
 
+    /**
+     * @return void
+     */
     private function injectSyntheticServicesIntoContainer(Container $container)
     {
         $container->set('logger', $this->logger);
@@ -200,6 +222,9 @@ class Bootstrap
         $container->set('config', $this->globalsConfig);
         $container->set('dispatcher', $this->eventDispatcher);
     }
+    /**
+     * @return void
+     */
     private function addServicesToContainer(ContainerBuilder $container)
     {
         $publicServices = [];
@@ -361,16 +386,26 @@ class Bootstrap
         $container->addDefinitions($publicServices);
     }
 
+    /**
+     * @param string $tier
+     * @return string
+     */
     private function getAssetPath($tier = 'backend')
     {
         return $this->getURLPath() . $tier . '/assets/';
     }
 
+    /**
+     * @return string
+     */
     public function getURLPath()
     {
         return $GLOBALS['webroot'] . self::MODULE_INSTALLATION_PATH . $this->moduleDirectoryName . "/public/";
     }
 
+    /**
+     * @return void
+     */
     public function subscribeToEvents()
     {
         // any events would go here.
@@ -393,6 +428,9 @@ class Bootstrap
         QuestionnaireResponseRestListener::subscribeToEvents($this->serviceContainer, $this->eventDispatcher);
     }
 
+    /**
+     * @return TemplatePageEvent
+     */
     public function oauth2TemplatePageOverrides(TemplatePageEvent $event)
     {
         $template = $event->getPageName();
@@ -402,7 +440,7 @@ class Bootstrap
             }
         } else if ($template == 'oauth2/authorize/scopes-authorize') {
             if ($this->globalsConfig->shouldDisplayUpdatedOAuthPages()) {
-                if (!empty($_SESSION['pid'])) {
+                if (!empty(SessionWrapperFactory::getInstance()->getActiveSession()->get('pid'))) {
                     $vars = $event->getTwigVariables();
                     if (!empty($vars['scopesByResource']['Questionnaire'])) {
                         $event->setTwigTemplate('discoverandchange/oauth2/scope-authorize.html.twig');
@@ -418,6 +456,9 @@ class Bootstrap
         return $event;
     }
 
+    /**
+     * @return Container
+     */
     public function getServiceContainer()
     {
         if (empty($this->serviceContainer)) {
@@ -426,6 +467,9 @@ class Bootstrap
         return $this->serviceContainer;
     }
 
+    /**
+     * @return void
+     */
     public function addTemplateOverrideLoader(TwigEnvironmentEvent $event)
     {
         // TODO: @adunsulag figure out why this is getting fired twice.
@@ -433,7 +477,9 @@ class Bootstrap
         $twig = $event->getTwigEnvironment();
         // we know if we don't have our twig extension that we haven't executed so we can setup our system this way.
         if (!$twig->hasExtension(SimplifiedOAuthTwigExtension::class)) {
-            $twig->addExtension($container->get(SimplifiedOAuthTwigExtension::class));
+            /** @var SimplifiedOAuthTwigExtension $extension */
+            $extension = $container->get(SimplifiedOAuthTwigExtension::class);
+            $twig->addExtension($extension);
 
             // we make sure we can override our file system directory here.
             $loader = $twig->getLoader();
@@ -443,6 +489,9 @@ class Bootstrap
         }
     }
 
+    /**
+     * @return void
+     */
     public function addProviderPortalScript(ScriptFilterEvent $event)
     {
         if ($event->getContextArgument(ScriptFilterEvent::CONTEXT_ARGUMENT_SCRIPT_NAME) == '/portal/patient/index.php') {
@@ -452,25 +501,28 @@ class Bootstrap
         }
     }
 
+    /**
+     * @return string
+     */
     private function getTemplatePath()
     {
         return \dirname(__DIR__) . DIRECTORY_SEPARATOR . "templates" . DIRECTORY_SEPARATOR;
     }
 
 
+    /**
+     * @return void
+     */
     public function registerMenuItems()
     {
 //        if ($this->getGlobalConfig()->getGlobalSetting(GlobalConfig::CONFIG_ENABLE_MENU)) {
-            /**
-             * @var EventDispatcherInterface $eventDispatcher
-             * @var array $module
-             * @global                       $eventDispatcher @see ModulesApplication::loadCustomModule
-             * @global                       $module @see ModulesApplication::loadCustomModule
-             */
             $this->eventDispatcher->addListener(MenuEvent::MENU_UPDATE, [$this, 'addCustomModuleMenuItem']);
 //        }
     }
 
+    /**
+     * @return MenuEvent
+     */
     public function addCustomModuleMenuItem(MenuEvent $event)
     {
         $menu = $event->getMenu();
@@ -480,6 +532,7 @@ class Bootstrap
         $menuItem->target = 'msc';
         $menuItem->menu_id = 'misimg';
         $menuItem->label = xlt("Patient Portal Assignments");
+        /** @var SmartAppClientService $smartAppService */
         $smartAppService = $this->getServiceContainer()->get(SmartAppClientService::class);
         $clientId = $smartAppService->getRegisteredClientId();
 
@@ -488,7 +541,7 @@ class Bootstrap
 //        $menuItem->url = "/interface/modules/custom_modules/oe-module-dc-assessments/public/frontend/login";
         $menuItem->url = $GLOBALS['webroot'] . '/interface/smart/ehr-launch-client.php?client_id='
             . urlencode($clientId) . '&intent=' . urlencode(SMARTLaunchToken::INTENT_MAIN_TAB)
-            . '&csrf_token=' . urlencode(CsrfUtils::collectCsrfToken());
+            . '&csrf_token=' . urlencode(CsrfUtils::collectCsrfToken(SessionWrapperFactory::getInstance()->getActiveSession()));
         $menuItem->children = [];
 
         /**
@@ -541,32 +594,51 @@ class Bootstrap
         return $this->getServiceContainer()->get(BackendDispatchController::class);
     }
 
+    /**
+     * @return mixed
+     */
     public function getClientId()
     {
+        /** @var SmartAppClientService $appService */
         $appService = $this->getServiceContainer()->get(SmartAppClientService::class);
         return $appService->getRegisteredClientId();
     }
 
+    /**
+     * @return string
+     */
     public function getFhirUrl()
     {
+        /** @var ServerConfig $serverConfig */
         $serverConfig = $this->getServiceContainer()->get(ServerConfig::class);
         return $serverConfig->getFhirUrl();
     }
 
+    /**
+     * @return string
+     */
     public function getApiUrl()
     {
+        /** @var ServerConfig $serverConfig */
         $serverConfig = $this->getServiceContainer()->get(ServerConfig::class);
         return $serverConfig->getStandardApiUrl();
     }
 
+    /**
+     * @return string
+     */
     public function getApiBaseUrl()
     {
+        /** @var ServerConfig $serverConfig */
         $serverConfig = $this->getServiceContainer()->get(ServerConfig::class);
         return $serverConfig->getBaseApiUrl();
     }
 
+    /**
+     * @return string
+     */
     public function getSmartStyleUrl()
     {
-        return $GLOBALS['site_addr_oath'] . $GLOBALS['web_root'] . "/oauth2/" . $_SESSION['site_id'] . "/" . SMARTAuthorizationController::SMART_STYLE_URL;
+        return $GLOBALS['site_addr_oath'] . $GLOBALS['web_root'] . "/oauth2/" . SessionWrapperFactory::getInstance()->getActiveSession()->get('site_id') . "/" . SMARTAuthorizationController::SMART_STYLE_URL;
     }
 }

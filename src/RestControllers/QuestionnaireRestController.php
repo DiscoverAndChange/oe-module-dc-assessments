@@ -44,8 +44,8 @@ class QuestionnaireRestController implements IRestController
      * Handles the response to the API request GET /fhir/Questionnaire and returns the FHIRBundle resource
      * that was found for the given request.  Any query search parameters are processed by this method.  If the method
      * is run in the patient context (as a logged in patient) it restricts the search to just that patient.
-     * @param ServerRestRequest
-     * @return FHIRBundle
+     * @param ServerRestRequest $request
+     * @return ResponseInterface
      */
     public function list(ServerRestRequest $request): ResponseInterface
     {
@@ -67,7 +67,7 @@ class QuestionnaireRestController implements IRestController
      * Retrieves a single api resource.  Handles the response to the API request GET /fhir/Questionnaire/:fhirId
      * The $fhirId is populated from the API request by the rest route dispatcher.
      * @see HttpRestRouteHandler::dispatch to see how this parsing is done.
-     * @param $id The unique id of the resource to be returned.
+     * @param string $id The unique id of the resource to be returned.
      * @param ServerRestRequest $request
      * @return ResponseInterface
      */
@@ -80,11 +80,13 @@ class QuestionnaireRestController implements IRestController
     public function create(ServerRestRequest $request): ResponseInterface
     {
         // TODO: Implement create() method.
+        return RestUtils::getNotFoundResponse();
     }
 
     public function update(ServerRestRequest $request, $id): ResponseInterface
     {
         // TODO: Implement update() method.
+        return RestUtils::getNotFoundResponse();
     }
 
     /**
@@ -93,7 +95,8 @@ class QuestionnaireRestController implements IRestController
      * - _id (euuid)
      * - patient (puuid)
      * - date {gt|lt|ge|le}
-     * @param $puuidBind - Optional variable to only allow visibility of the patient with this puuid.
+     * @param array<mixed> $searchParams
+     * @param string|null $puuidBind - Optional variable to only allow visibility of the patient with this puuid.
      * @return FHIR bundle with query results, if found
      */
     private function getAll($searchParams, $puuidBind = null)
@@ -109,14 +112,21 @@ class QuestionnaireRestController implements IRestController
             array_push($bundleEntries, $fhirBundleEntry);
         }
         $bundleSearchResult = $this->fhirService->createBundle('Questionnaire', $bundleEntries, false);
+        // FHIRBundle omits the `entry` key when empty, but the SPA expects an
+        // array; normalize the empty case to a plain array with entry: [].
+        if (empty($bundleEntries)) {
+            $bundleSearchResult = json_decode((string) json_encode($bundleSearchResult), true);
+            $bundleSearchResult['entry'] = [];
+        }
         return $bundleSearchResult;
     }
 
     /**
      * Queries for a single FHIR encounter resource by FHIR id
-     * @param $fhirId The FHIR encounter resource id (uuid)
-     * @param $puuidBind - Optional variable to only allow visibility of the patient with this puuid.
+     * @param string $fhirId The FHIR encounter resource id (uuid)
+     * @param string|null $puuidBind - Optional variable to only allow visibility of the patient with this puuid.
      * @returns 200 if the operation completes successfully
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     private function getOne($fhirId, $puuidBind = null)
     {

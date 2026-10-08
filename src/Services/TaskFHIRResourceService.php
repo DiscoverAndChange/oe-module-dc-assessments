@@ -61,6 +61,7 @@ class TaskFHIRResourceService extends FhirServiceBase implements
      */
     private $dataStore;
 
+    /** @param string $fhirApiURL */
     public function __construct(QuestionnairePortalTaskFHIRResourceService $portalQuestionnaireResourceService, AssignmentTaskFHIRResourceService $assignmentResourceService, $fhirApiURL = null)
     {
         parent::__construct($fhirApiURL);
@@ -75,7 +76,7 @@ class TaskFHIRResourceService extends FhirServiceBase implements
      * Search fields can be combined as Composite fields and represent a host of search options.
      * @see https://www.hl7.org/fhir/search.html to see the types of search operations, and search types that are available
      * for use.
-     * @return array
+     * @return array<string, FhirSearchParameterDefinition>
      */
     protected function loadSearchParameters()
     {
@@ -102,9 +103,9 @@ class TaskFHIRResourceService extends FhirServiceBase implements
 
     /**
      * Retrieves all of the fhir task resources mapped to the underlying openemr data elements.
-     * @param $fhirSearchParameters The FHIR resource search parameters
+     * @param mixed $fhirSearchParameters The FHIR resource search parameters
      * @param $puuidBind - Optional variable to only allow visibility of the patient with this puuid.
-     * @return processing result
+     * @return ProcessingResult
      */
     public function getAll($fhirSearchParameters, $puuidBind = null): ProcessingResult
     {
@@ -126,16 +127,18 @@ class TaskFHIRResourceService extends FhirServiceBase implements
                 } else {
                     $fhirSearchResult = $this->searchAllServices($fhirSearchParameters, $puuidBind);
                     // because we are dealing with multiple services we need to sort these results
+                    /** @var ProcessingResult $fhirSearchResult */
                     $this->sortFhirSearchResult($fhirSearchResult);
                 }
             } else {
                 $fhirSearchResult = $this->searchAllServices($fhirSearchParameters, $puuidBind);
                 // because we are dealing with multiple services we need to sort these results
+                /** @var ProcessingResult $fhirSearchResult */
                 $this->sortFhirSearchResult($fhirSearchResult);
             }
         } catch (SearchFieldException $exception) {
             $systemLogger = new SystemLogger();
-            $systemLogger->errorLogCaller("exception thrown", ['message' => $exception->getMessage(),
+            $systemLogger->error("exception thrown", ['message' => $exception->getMessage(),
                 'field' => $exception->getField(), 'trace' => $exception->getTraceAsString()]);
             // put our exception information here
             $fhirSearchResult->setValidationMessages([$exception->getField() => $exception->getMessage()]);
@@ -144,7 +147,7 @@ class TaskFHIRResourceService extends FhirServiceBase implements
         return $fhirSearchResult;
     }
     /**
-     * @param array $dataRecord
+     * @param array<mixed> $dataRecord
      * @param bool $encode
      * @return TaskFHIRResource|\OpenEMR\Services\FHIR\the
      */
@@ -207,7 +210,7 @@ class TaskFHIRResourceService extends FhirServiceBase implements
      * Updates a FHIR resource in the system.
      * @param $fhirResourceId The FHIR Resource ID used to lookup the existing FHIR resource/OpenEMR record
      * @param $fhirResource The FHIR resource.
-     * @return The OpenEMR Service Result
+     * @return ProcessingResult The OpenEMR Service Result
      */
     public function update($fhirResourceId, FHIRDomainResource $fhirResource): ProcessingResult
     {
@@ -260,6 +263,7 @@ class TaskFHIRResourceService extends FhirServiceBase implements
         return $provenanceService->createProvenanceForDomainResource($dataRecord, $who);
     }
 
+    /** @return ProcessingResult */
     private function sortFhirSearchResult(ProcessingResult $fhirSearchResult)
     {
         $data = $fhirSearchResult->getData();

@@ -25,6 +25,9 @@ class AssignmentEncounterController implements IStaticEventSubscriber
     {
     }
 
+    /**
+     * @return void
+     */
     public static function subscribeToEvents(Container $container, EventDispatcherInterface $eventDispatcher)
     {
 
@@ -39,6 +42,9 @@ class AssignmentEncounterController implements IStaticEventSubscriber
         );
     }
 
+    /**
+     * @return void
+     */
     public function renderAssignmentListSection(EncounterFormsListRenderEvent $event)
     {
         // we don't handle group and other types of encounters for now
@@ -50,24 +56,24 @@ class AssignmentEncounterController implements IStaticEventSubscriber
         $encounterId = $event->getEncounter();
 
         if (empty($pid) || empty($encounterId)) {
-            $this->logger->errorLogCaller("Missing pid or encounterId");
+            $this->logger->error("Missing pid or encounterId");
         }
         $patientService = new PatientService();
-        $puuid = $patientService->getUuid($pid);
+        $puuid = $patientService->getUuid((string)$pid);
         if (empty($puuid)) {
-            $this->logger->errorLogCaller("Missing patient uuid");
+            $this->logger->error("Missing patient uuid");
         } else {
             $puuid = UuidRegistry::uuidToString($puuid);
         }
-        $euuid = EncounterService::getUuidById($encounterId, EncounterService::ENCOUNTER_TABLE, 'encounter');
+        $euuid = EncounterService::getUuidById((string)$encounterId, EncounterService::ENCOUNTER_TABLE, 'encounter');
         if (empty($euuid)) {
-            $this->logger->errorLogCaller("Missing encounter uuid");
+            $this->logger->error("Missing encounter uuid");
         }
         $euuid = UuidRegistry::uuidToString($euuid);
 //        $token = new SMARTLaunchToken($puuid, $euuid);
 //        $token->setIntent(SMARTLaunchToken::INTENT_ENCOUNTER_DIALOG);
 //        $launchCode = $token->serialize();
-        $assignments = $this->repository->getAssignmentsForEncounterUuid($euuid, $puuid);
+        $assignments = $this->repository->getAssignmentsForEncounterUuid($euuid, (string)$puuid);
         $issuer = (new ServerConfig())->getFhirUrl();
 //        $launchParams = "?launch=" . urlencode($launchCode) . "&iss=" . urlencode($issuer) . "&aud=" . urlencode($issuer);
 //        $launchUri = $this->globalConfig->getSmartAppAdminPublicPath() . $launchParams;

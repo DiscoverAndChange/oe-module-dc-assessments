@@ -10,7 +10,14 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
 
-class ServerRestRequest implements ServerRequestInterface
+/**
+ * Thin PSR-7 ServerRequestInterface wrapper around OpenEMR's HttpRestRequest.
+ *
+ * Declared final so the PSR-7 immutable-wither methods can declare a native
+ * `: static` return type (which, for a final class, PHPStan resolves to this
+ * class) and stay covariant with the interface.
+ */
+final class ServerRestRequest implements ServerRequestInterface
 {
     /**
      * @var HttpRestRequest $httpRestRequest
@@ -22,6 +29,7 @@ class ServerRestRequest implements ServerRequestInterface
         $this->httpRestRequest = $httpRestRequest;
     }
 
+    /** @return Role */
     public function getAuthRole()
     {
         if ($this->httpRestRequest->isPatientRequest()) {
@@ -34,106 +42,130 @@ class ServerRestRequest implements ServerRequestInterface
         }
     }
 
+    /** @return bool */
     public function isPatientRequest()
     {
         return $this->httpRestRequest->isPatientRequest();
     }
 
+    /** @return string|null */
     public function getPatientUUIDString()
     {
         return $this->httpRestRequest->getPatientUUIDString();
     }
 
-    public function getProtocolVersion()
+    public function getProtocolVersion(): string
     {
         return $this->httpRestRequest->getProtocolVersion();
     }
 
-    public function withProtocolVersion($version)
+    public function withProtocolVersion($version): static
     {
         return new ServerRestRequest($this->httpRestRequest->withProtocolVersion($version));
     }
 
-    public function getHeaders()
+    public function getHeaders(): array
     {
         return $this->httpRestRequest->getHeaders();
     }
 
-    public function hasHeader($name)
+    public function hasHeader($name): bool
     {
         return $this->httpRestRequest->hasHeader($name);
     }
 
-    public function getHeader($name)
+    public function getHeader($name): array
     {
         return $this->httpRestRequest->getHeader($name);
     }
 
-    public function getHeaderLine($name)
+    public function getHeaderLine($name): string
     {
         return $this->httpRestRequest->getHeaderLine($name);
     }
 
-    public function withHeader($name, $value)
+    public function withHeader($name, $value): static
     {
         return new ServerRestRequest($this->httpRestRequest->withHeader($name, $value));
     }
 
-    public function withAddedHeader($name, $value)
+    public function withAddedHeader($name, $value): static
     {
         return new ServerRestRequest($this->httpRestRequest->withAddedHeader($name, $value));
     }
 
-    public function withoutHeader($name)
+    public function withoutHeader($name): static
     {
         return new ServerRestRequest($this->httpRestRequest->withoutHeader($name));
     }
 
-    public function getBody()
+    public function getBody(): StreamInterface
     {
         return $this->httpRestRequest->getBody();
     }
 
+    /** @return mixed */
     public function getBodyAsJson()
     {
-        return $this->httpRestRequest->getRequestBodyJSON();
+        // Read the raw request body as a string and decode it ourselves. We do NOT
+        // delegate to HttpRestRequest::getRequestBodyJSON(): on OpenEMR 8.x that
+        // calls $this->getContent(true)->getContents(), but HttpRestRequest extends
+        // Symfony's Request without overriding getContent(), so getContent(true)
+        // returns a PHP resource — which has no getContents() — and every module
+        // POST fatals ("Call to a member function getContents() on resource").
+        $content = $this->httpRestRequest->getContent();
+        if ($content === '') {
+            return null;
+        }
+        // Support gzip-encoded request bodies (the SPA may send Content-Encoding: gzip).
+        $encoding = $this->httpRestRequest->headers->get('Content-Encoding');
+        if ($encoding !== null && stripos($encoding, 'gzip') !== false) {
+            $decoded = @gzdecode($content);
+            if ($decoded !== false) {
+                $content = $decoded;
+            }
+        }
+        return json_decode($content, true);
     }
 
-    public function withBody(StreamInterface $body)
+    public function withBody(StreamInterface $body): static
     {
         return new ServerRestRequest($this->httpRestRequest->withBody($body));
     }
 
-    public function getRequestTarget()
+    public function getRequestTarget(): string
     {
         return $this->httpRestRequest->getRequestTarget();
     }
 
-    public function withRequestTarget($requestTarget)
+    public function withRequestTarget($requestTarget): static
     {
-        return new ServerRestRequest($this->httpRestRequest->withRequestTarget($requestTarget));
+        /** @var HttpRestRequest $request */
+        $request = $this->httpRestRequest->withRequestTarget($requestTarget);
+        return new ServerRestRequest($request);
     }
 
-    public function getMethod()
+    public function getMethod(): string
     {
         return $this->httpRestRequest->getMethod();
     }
 
-    public function withMethod($method)
+    public function withMethod($method): static
     {
         return new ServerRestRequest($this->httpRestRequest->withMethod($method));
     }
 
-    public function getUri()
+    public function getUri(): UriInterface
     {
         return $this->httpRestRequest->getUri();
     }
 
-    public function withUri(UriInterface $uri, $preserveHost = false)
+    public function withUri(UriInterface $uri, $preserveHost = false): static
     {
         return new ServerRestRequest($this->httpRestRequest->withUri($uri, $preserveHost));
     }
 
+    /** @return int|null */
     public function getUserId()
     {
         return $this->httpRestRequest->getRequestUserId();
@@ -144,25 +176,31 @@ class ServerRestRequest implements ServerRequestInterface
         return $this->httpRestRequest;
     }
 
-    public function getServerParams()
+    /** @return array<mixed> */
+    public function getServerParams(): array
     {
         // TODO: Implement getServerParams() method.
         return $this->httpRestRequest->getServerParams();
     }
 
-    public function getCookieParams()
+    /** @return array<mixed> */
+    public function getCookieParams(): array
     {
         // TODO: Implement getCookieParams() method.
         return $this->httpRestRequest->getCookieParams();
     }
 
-    public function withCookieParams(array $cookies)
+    /** @param array<mixed> $cookies */
+    public function withCookieParams(array $cookies): static
     {
         // TODO: Implement withCookieParams() method.
-        return new ServerRestRequest($this->httpRestRequest->withCookieParams($cookies));
+        /** @var array<string, mixed> $cookieParams */
+        $cookieParams = $cookies;
+        return new ServerRestRequest($this->httpRestRequest->withCookieParams($cookieParams));
     }
 
-    public function getQueryParams()
+    /** @return array<mixed> */
+    public function getQueryParams(): array
     {
         $queryParams = $this->httpRestRequest->getQueryParams();
         // we need to handle cross site debugging in our requests which trigger debug sessions
@@ -174,32 +212,40 @@ class ServerRestRequest implements ServerRequestInterface
         return $queryParams;
     }
 
-    public function withQueryParams(array $query)
+    /** @param array<mixed> $query */
+    public function withQueryParams(array $query): static
     {
-        return new ServerRestRequest($this->httpRestRequest->withQueryParams($query));
+        /** @var array<string, mixed> $queryParams */
+        $queryParams = $query;
+        return new ServerRestRequest($this->httpRestRequest->withQueryParams($queryParams));
     }
 
-    public function getUploadedFiles()
+    /** @return array<mixed> */
+    public function getUploadedFiles(): array
     {
         return $this->httpRestRequest->getUploadedFiles();
     }
 
-    public function withUploadedFiles(array $uploadedFiles)
+    /** @param array<mixed> $uploadedFiles */
+    public function withUploadedFiles(array $uploadedFiles): static
     {
         return new ServerRestRequest($this->httpRestRequest->withUploadedFiles($uploadedFiles));
     }
 
+    /** @return array<mixed>|object|null */
     public function getParsedBody()
     {
         return $this->httpRestRequest->getParsedBody();
     }
 
-    public function withParsedBody($data)
+    /** @param array<mixed>|object|null $data */
+    public function withParsedBody($data): static
     {
         return new ServerRestRequest($this->httpRestRequest->withParsedBody($data));
     }
 
-    public function getAttributes()
+    /** @return array<mixed> */
+    public function getAttributes(): array
     {
         return $this->httpRestRequest->getAttributes();
     }
@@ -209,16 +255,17 @@ class ServerRestRequest implements ServerRequestInterface
         return $this->httpRestRequest->getAttribute($name, $default);
     }
 
-    public function withAttribute($name, $value)
+    public function withAttribute($name, $value): static
     {
         return new ServerRestRequest($this->httpRestRequest->withAttribute($name, $value));
     }
 
-    public function withoutAttribute($name)
+    public function withoutAttribute($name): static
     {
         return new ServerRestRequest($this->httpRestRequest->withoutAttribute($name));
     }
 
+    /** @return int */
     public function getCompanyId()
     {
         // TODO: @adunsulag need to handle the company id here better

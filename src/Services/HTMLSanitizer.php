@@ -29,6 +29,10 @@ class HTMLSanitizer
         return $purifiedHtml;
     }
 
+    /**
+     * @param string $contents
+     * @return string
+     */
     public function stripHTML($contents)
     {
         return strip_tags($contents);

@@ -40,7 +40,7 @@ class APIProxyController
     private string $baseUri;
 
     /**
-     * @var array
+     * @var array<mixed>
      */
     private $controllers;
 
@@ -50,7 +50,7 @@ class APIProxyController
     private $routes;
 
     /**
-     * @var array
+     * @var array<mixed>
      */
     const API_MAPPINGS = [
         'questionnaire.list' => [
@@ -506,6 +506,9 @@ class APIProxyController
         }
     }
 
+    /**
+     * @return mixed
+     */
     public function proxyGet(HttpRestRequest $httpRestRequest)
     {
         $request = $this->createRequestFromHttpRestRequest($httpRestRequest);
@@ -517,11 +520,17 @@ class APIProxyController
         }
     }
 
+    /**
+     * @return mixed
+     */
     public function proxyDelete(HttpRestRequest $httpRestRequest)
     {
         return $this->proxyGet($httpRestRequest);  // gonna be pretty identical here.
     }
 
+    /**
+     * @return mixed
+     */
     public function proxyPost(HttpRestRequest $httpRestRequest)
     {
         $param = $httpRestRequest->getQueryParam('API_REQUEST');
@@ -573,6 +582,9 @@ class APIProxyController
 // /api/v1users/
 
 
+    /**
+     * @return ServerRestRequest
+     */
     public function createRequestFromHttpRestRequest(HttpRestRequest $httpRestRequest)
     {
         $queryVars = $httpRestRequest->getQueryParams();
@@ -582,7 +594,7 @@ class APIProxyController
 //        if (!empty($queryVars)) {
 //            $uri .= "?" . http_build_query($queryVars);
 //        }
-        $request = $psr17Factory->createServerRequest($_SERVER['REQUEST_METHOD'], $httpRestRequest->getRequestURI());
+        $request = $psr17Factory->createServerRequest($_SERVER['REQUEST_METHOD'], $httpRestRequest->getRequestUri());
         // oddly Psr17Factory does not set the query params array.
         $request = $request->withQueryParams($queryVars);
 //        $request = $this->addAuthorizationToRequest($httpRestRequest, $request);
@@ -604,12 +616,19 @@ class APIProxyController
 
         return new ServerRestRequest($httpRestRequest, $request);
     }
+    /**
+     * @param string $apiRequest
+     * @return string
+     */
     private function getUriForApiRequest($apiRequest)
     {
         $uri = $this->baseUri . $apiRequest;
         return $uri;
     }
 
+    /**
+     * @return RequestInterface
+     */
     private function addAuthorizationToRequest(HttpRestRequest $request, RequestInterface $proxyRequest)
     {
         $authorization = $request->getHeader("Authorization")[0] ?? '';
@@ -620,13 +639,16 @@ class APIProxyController
         return $proxyRequest;
     }
 
+    /**
+     * @return \Psr\Http\Message\ResponseInterface
+     */
     private function sendRequestAndReturnResponse(ServerRestRequest $request)
     {
         try {
             $client = new Client();
             $response = $client->send($request);
         } catch (GuzzleException $e) {
-            (new SystemLogger())->errorLogCaller(
+            (new SystemLogger())->error(
                 $e->getMessage(),
                 ['trace' => $e->getTraceAsString(), 'apiRequest' => $_REQUEST['API_REQUEST']]
             );

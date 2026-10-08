@@ -23,6 +23,9 @@ class APISetupController implements IStaticEventSubscriber
 
 
 
+    /**
+     * @return void
+     */
     public function addApi(Container $container, RestApiCreateEvent $event)
     {
         foreach (APIProxyController::API_MAPPINGS as $clazz => $mapping) {
@@ -32,14 +35,32 @@ class APISetupController implements IStaticEventSubscriber
                 foreach ($contexts as $context) {
                     $function = function (...$args) use ($mapping, $container) {
                         // TODO: @adunsulag check ACL permission checks here for user context
-                        $request = array_pop($args); // remove the last argument
+                        // OpenEMR dispatches the route callback with the captured URL
+                        // parameters followed by the HttpRestRequest. Since 8.2 it ALSO
+                        // appends the OEGlobalsBag after the request, so we can no longer
+                        // assume the request is the last argument. Pull the HttpRestRequest
+                        // out wherever it is, drop any other appended object (the globals
+                        // bag), keep the scalar route params in order, and put a
+                        // ServerRestRequest first as our controllers expect.
+                        $request = null;
+                        $routeParams = [];
+                        foreach ($args as $arg) {
+                            if ($arg instanceof HttpRestRequest) {
+                                $request = $arg;
+                            } elseif (is_object($arg)) {
+                                // e.g. OEGlobalsBag appended by OpenEMR >= 8.2; not a route param
+                                continue;
+                            } else {
+                                $routeParams[] = $arg;
+                            }
+                        }
                         // now put the request at the beginning for our routes as that's how our APIs function
                         if ($request instanceof HttpRestRequest) {
-                            array_unshift($args, new ServerRestRequest($request));
+                            array_unshift($routeParams, new ServerRestRequest($request));
                         }
                         if (method_exists($mapping['controller'], $mapping['action'])) {
                             $controller = $container->get($mapping['controller']);
-                            return call_user_func([$controller, $mapping['action']], ...$args);
+                            return call_user_func([$controller, $mapping['action']], ...$routeParams);
                         }
                     };
                     if (isset($mapping['isFhir']) && $mapping['isFhir'] === true) {
@@ -58,6 +79,9 @@ class APISetupController implements IStaticEventSubscriber
         }
     }
 
+    /**
+     * @return void
+     */
     public function addScopes(RestApiScopeEvent $event)
     {
         foreach (APIProxyController::API_MAPPINGS as $clazz => $mapping) {
@@ -75,12 +99,18 @@ class APISetupController implements IStaticEventSubscriber
         }
     }
 
+    /**
+     * @return void
+     */
     public function addMetadata(RestApiResourceServiceEvent $event)
     {
 //        $event->setServiceClass(TaskFHIRResourceService::class);
 //        $event->setServiceClass(QuestionnaireFHIRResourceService::class);
     }
 
+    /**
+     * @return void
+     */
     public static function subscribeToEvents(Container $container, EventDispatcherInterface $eventDispatcher)
     {
 
@@ -90,7 +120,7 @@ class APISetupController implements IStaticEventSubscriber
                 $service->addApi($container, $event);
             }
         });
-        $eventDispatcher->addListener(RestApiScopeEvent::EVENT_TYPE_GET_SUPPORTED_SCOPES, function (RestAPIScopeEvent $event) use ($container) {
+        $eventDispatcher->addListener(RestApiScopeEvent::EVENT_TYPE_GET_SUPPORTED_SCOPES, function (RestApiScopeEvent $event) use ($container) {
             $service = $container->get(self::class);
             if ($service instanceof self) {
                 $service->addScopes($event);
@@ -116,6 +146,9 @@ class APISetupController implements IStaticEventSubscriber
         });
     }
 
+    /**
+     * @return bool
+     */
     private function shouldSkipSecurityForResource(RestApiSecurityCheckEvent $event)
     {
         // we only want to check at the patient level

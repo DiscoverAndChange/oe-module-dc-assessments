@@ -12,6 +12,10 @@ class AssessmentResultRepository
 {
     const TABLE_NAME = "dac_AssessmentResultBlob";
 
+    /**
+     * @param array<mixed> $searchParams
+     * @return ProcessingResult
+     */
     public function search($searchParams)
     {
         $processingResult = new ProcessingResult();
@@ -23,6 +27,7 @@ class AssessmentResultRepository
             . " LEFT JOIN (SELECT id AS assignmentitem_id, assessmentresultblob_id FROM " . AssignmentRepository::TABLE_NAME_ASSIGNMENT_ITEM . ") ai ON (assessmentresultblob_id = arb.id) ";
 
         $sql = " ORDER BY arb.date DESC ";
+        /** @var array<string, \OpenEMR\Services\Search\ISearchField> $searchParams */
         $where = FhirSearchWhereClauseBuilder::build($searchParams);
         $query = $distinctIds . $fromClause . $where->getFragment() . $sql;
 
@@ -48,6 +53,10 @@ class AssessmentResultRepository
         return $processingResult;
     }
 
+    /**
+     * @param array<mixed> $resultIds
+     * @return array<mixed>|null
+     */
     public function getResultListForPatient(string $clientId, array $resultIds)
     {
         if (empty($resultIds)) {
@@ -75,6 +84,7 @@ class AssessmentResultRepository
         $records = $this->hydrateRecordsFromResult($result);
         return $records;
     }
+    /** @return array<mixed>|null */
     public function getResultsForPatient(string $clientId, ?string $assessmentUID, ?string $resultId)
     {
         if (empty($assessmentUID) && empty($resultId)) {
@@ -112,12 +122,16 @@ class AssessmentResultRepository
         return $records[0];
     }
 
+    /**
+     * @param array<mixed> $result
+     * @return array<mixed>
+     */
     private function hydrateRecordsFromResult($result)
     {
         $records = [];
         foreach ($result as $resultBlob) {
-            $resultData = json_decode($resultBlob['result_data'] ?? '{}', true);
-            $assessmentData = json_decode($resultBlob['assessment_data'] ?? '{}', true);
+            $resultData = json_decode(($resultBlob['result_data'] ?? '{}'), true);
+            $assessmentData = json_decode(($resultBlob['assessment_data'] ?? '{}'), true);
             $resultData['_assessment'] = $assessmentData;
             $resultData['_assignmentItemId'] = $resultBlob['assignmentitem_id'];
             $resultData['_dateCompleted'] = $resultBlob['date'];
@@ -126,6 +140,10 @@ class AssessmentResultRepository
         return $records;
     }
 
+    /**
+     * @param array<mixed> $resultData
+     * @return array<string, mixed>
+     */
     public function createResult(string $resultId, array $resultData, int $clientId, int $assessmentId)
     {
 
@@ -137,7 +155,7 @@ class AssessmentResultRepository
             foreach ($resultData['_answers'] as $answer) {
                 $answers[] = [
                     '_answer' => $sanitizer->sanitize($answer['_answer'])
-                    ,'_score' => intval($answer['_score'])
+                    ,'_score' => $answer['_score']
                     ,'_question_id' => $answer['_question_id']
                 ];
             }
@@ -151,6 +169,13 @@ class AssessmentResultRepository
         return ['id' => $resultId, 'assessment_id' => $assessmentId, 'client_id' => $clientId, 'data' => $resultBlob];
     }
 
+    /**
+     * @param int $templateId
+     * @param int $pid
+     * @param array<mixed> $qr
+     * @param string $questionnaireName
+     * @return int
+     */
     private function insertOnSiteDocumentRecord($templateId, $pid, $qr, $questionnaireName)
     {
     /**

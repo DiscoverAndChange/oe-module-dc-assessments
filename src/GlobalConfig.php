@@ -38,7 +38,8 @@ class GlobalConfig
 
     private const LOCAL_DEBUG = false;
 
-    private $globalsArray;
+    /** @var array<string, mixed> */
+    private array $globalsArray;
 
     /**
      * @var CryptoGen
@@ -46,12 +47,17 @@ class GlobalConfig
     private $cryptoGen;
 
 
+    /** @param array<string, mixed> $globalsArray */
     public function __construct(array $globalsArray)
     {
         $this->globalsArray = $globalsArray;
         $this->cryptoGen = new CryptoGen();
     }
 
+    /**
+     * @param GlobalsService $service
+     * @return void
+     */
     public function setupConfiguration(GlobalsService $service)
     {
         $section = xlt("Discover and Change Assessments");
@@ -87,16 +93,26 @@ class GlobalConfig
         return true;
     }
 
+    /**
+     * @return mixed
+     */
     public function getSmartAppClientId()
     {
         return $this->getGlobalSetting(self::DC_ASSESSMENTS_CONFIG_CLIENT_ID);
     }
 
+    /**
+     * @param string $settingKey
+     * @return mixed
+     */
     public function getGlobalSetting($settingKey)
     {
         return $this->globalsArray[$settingKey] ?? null;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getGlobalSettingSectionConfiguration()
     {
         $settings = [
@@ -134,11 +150,17 @@ class GlobalConfig
         return $settings;
     }
 
+    /**
+     * @return mixed
+     */
     public function getRootDir()
     {
         // note this comes from the variable in the global scope IE $GLOBALS defined in global.inc.php
         return $this->getGlobalSetting('webserver_root');
     }
+    /**
+     * @return string
+     */
     public function getPublicPathFQDN()
     {
         // return the public path with the fully qualified domain name in it
@@ -147,21 +169,33 @@ class GlobalConfig
         . self::MODULE_INSTALLATION_PATH . self::MODULE_NAME .  '/public/';
     }
 
+    /**
+     * @return string
+     */
     public function getPublicBackendPathFQDN()
     {
         return $this->getPublicPathFQDN() . "backend/";
     }
 
+    /**
+     * @return string
+     */
     public function getPublicFrontendPathFQDN()
     {
         return $this->getPublicPathFQDN() . "frontend/";
     }
 
+    /**
+     * @return string
+     */
     public function getSmartAppAdminLoginPublicPath()
     {
         return $this->getSmartAppAdminRootPath() . "login";
     }
 
+    /**
+     * @return string
+     */
     public function getSmartAppAdminRootPath()
     {
         if (self::LOCAL_DEBUG) {
@@ -170,6 +204,9 @@ class GlobalConfig
         return $this->getPublicPathFQDN() . "frontend/";
     }
 
+    /**
+     * @return bool
+     */
     public function shouldSendAssignmentCompletionNotices()
     {
         $shouldSendNotice = ($GLOBALS[self::DC_ASSESSMENTS_CONFIG_COMPLETION_SEND_NOTICES_FLAG] ?? '0') === '1';
@@ -178,16 +215,25 @@ class GlobalConfig
         return $shouldSendNotice && ($contactUserId || $providerNoticeEnabled);
     }
 
+    /**
+     * @return mixed
+     */
     public function getAssignmentCompletionNoticeUserId()
     {
         return $GLOBALS[self::DC_ASSESSMENTS_CONFIG_COMPLETION_ADDRESS_BOOK_ID] ?? null;
     }
 
+    /**
+     * @return bool
+     */
     public function shouldSendProviderNotification()
     {
         return ($GLOBALS[self::DC_ASSESSMENTS_CONFIG_COMPLETION_SEND_PROVIDER_NOTICES_FLAG] ?? '0') === '1';
     }
 
+    /**
+     * @return string
+     */
     public function getSmartAppAdminPublicPathRedirectUri()
     {
         if (self::LOCAL_DEBUG) {
@@ -196,6 +242,9 @@ class GlobalConfig
         return $this->getSmartAppAdminLoginPublicPath() . "Finalize";
     }
 
+    /**
+     * @return string
+     */
     public function getSmartAppClientPublicPath()
     {
         if (self::LOCAL_DEBUG) {
@@ -204,6 +253,9 @@ class GlobalConfig
         return $this->getPublicPathFQDN() . "frontend/login";
     }
 
+    /**
+     * @return string
+     */
     public function getSmartAppClientPublicPathRedirectUri()
     {
         if (self::LOCAL_DEBUG) {
@@ -212,6 +264,9 @@ class GlobalConfig
         return $this->getSmartAppClientPublicPath() . "Finalize";
     }
 
+    /**
+     * @return string
+     */
     public function getSmartAppPatientLaunchUri()
     {
         if (self::LOCAL_DEBUG) {
@@ -220,37 +275,58 @@ class GlobalConfig
         return $this->getPublicPathFQDN() . "frontend/std/assessments/dashboard";
     }
 
+    /**
+     * @return string
+     */
     public function getFHIRUrl()
     {
         return (new ServerConfig())->getFhirUrl();
     }
 
+    /**
+     * @return string
+     */
     public function getAPIUrl()
     {
         return (new ServerConfig())->getBaseApiUrl();
     }
 
+    /**
+     * @return mixed
+     */
     public function getFHIRPatientClientId()
     {
         return $this->getGlobalSetting(self::DC_ASSESSMENTS_CONFIG_PATIENT_CLIENT_ID);
     }
 
+    /**
+     * @return string
+     */
     public function getPatientClientRedirectUrl()
     {
         return $this->getPublicPathFQDN() . "index.php";
 //        return $this->getGlobalSetting("web_root") . self::MODULE_INSTALLATION_PATH . "public/index.php";
     }
 
+    /**
+     * @return string
+     */
     public function getPatientClientScopes()
     {
         return "launch/patient api:fhir openid profile patient/Task.read patient/Questionnaire.read";
     }
 
+    /**
+     * @return mixed
+     */
     public function getQualifiedSiteAddress()
     {
         return $this->getGlobalSetting('qualified_site_addr');
     }
 
+    /**
+     * @return mixed
+     */
     public function getPortalOnsiteAddress()
     {
         // return the portal address to be used.
@@ -261,36 +337,57 @@ class GlobalConfig
         }
     }
 
+    /**
+     * @return mixed
+     */
     public function getApplicationName()
     {
         return $this->getGlobalSetting(self::INSTALLATION_NAME);
     }
 
+    /**
+     * @return mixed
+     */
     public function getNotificationDefaultFrom()
     {
         return $this->getPatientReminderName();
     }
 
+    /**
+     * @return mixed
+     */
     public function getNotificationDefaultReplyTo()
     {
         return $this->getPatientReminderName();
     }
 
+    /**
+     * @return mixed
+     */
     private function getPatientReminderName()
     {
         return $this->getGlobalSetting('patient_reminder_sender_email');
     }
 
+    /**
+     * @return string
+     */
     public function getSmartAppName()
     {
         return "Discover and Change Assessment Platform";
     }
 
+    /**
+     * @return string
+     */
     public function getSmartAppContactAddress()
     {
         return 'info@discoverandchange.com';
     }
 
+    /**
+     * @return string
+     */
     public function getSmartAppScopes()
     {
         // TODO: @adunsulag we need to look at breaking this up into a client scope app and an admin scope app.
@@ -298,6 +395,10 @@ class GlobalConfig
         //return 'launch user/Patient.read user/Task.read user/Questionnaire.read user/QuestionnaireResponse.read user/QuestionnaireResponse.write api:port api:oemr openid profile offline_access patient/patient.read user/reports.read patient/clients.read user/clients.read user/assignment-groups.write user/assignments.write user/assignments.write user/assessment-groups.read patient/assessment-groups.read user/assessment-groups.write user/assessments.write user/assessment-groups.write user/assessment-reports.read user/assessment-reports.write user/assessment-reports.read user/assessment-reports.write user/assessment-results.read user/assessment-results.write patient/assessment-results.write user/tags.read patient/tags.read user/message-templates.read user/assessment-users.read user/assessment-users.read user/library-assets.read user/library-assets.read patient/library-assets.read user/library-assets.write user/library-asset-results.write patient/library-asset-results.write user/library-asset-results.read user/assessments.read patient/assessments.read user/assessments.write patient/assessments.write user/assessments.read patient/assessments.read user/assessments.write user/announcements.read user/messages.write fhirUser';
     }
 
+    /**
+     * @param string $clientId
+     * @return void
+     */
     public function saveSmartAppClientId(string $clientId)
     {
         $bind = [$clientId, self::DC_ASSESSMENTS_CONFIG_CLIENT_ID];
@@ -310,6 +411,9 @@ class GlobalConfig
         QueryUtils::sqlStatementThrowException($sql, $bind);
     }
 
+    /**
+     * @return bool
+     */
     public function shouldDisplayUpdatedOAuthPages()
     {
         return $this->getGlobalSetting(self::DC_ASSESSMENTS_CONFIG_SHOW_UPDATED_OAUTH2_PAGES) === '1';

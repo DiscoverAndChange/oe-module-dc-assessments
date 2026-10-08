@@ -22,11 +22,11 @@ use Psr\Http\Message\ResponseInterface;
 
 class AssessmentRestController implements IRestController
 {
-    public function __construct(private ?SystemLogger $logger = null)
+    private SystemLogger $logger;
+
+    public function __construct(?SystemLogger $logger = null)
     {
-        if (empty($this->logger)) {
-            $this->logger = new SystemLogger();
-        }
+        $this->logger = $logger ?? new SystemLogger();
     }
 
     public function list(ServerRestRequest $request): ResponseInterface
@@ -40,10 +40,13 @@ class AssessmentRestController implements IRestController
             return RestUtils::getEmptyResponse();
         } else {
             $psrFactory = new Psr17Factory();
-            return $psrFactory->createResponse(200)->withBody($psrFactory->createStream(json_encode($results)));
+            return $psrFactory->createResponse(200)->withBody($psrFactory->createStream((string) json_encode($results)));
         }
     }
 
+    /**
+     * @param string $id
+     */
     public function one(ServerRestRequest $request, $id): ResponseInterface
     {
         // TODO: Implement one() method.
@@ -72,6 +75,9 @@ class AssessmentRestController implements IRestController
         return $this->createAssessmentForContext($request, AssessmentValidator::DATABASE_INSERT_CONTEXT);
     }
 
+    /**
+     * @param string $id
+     */
     public function update(ServerRestRequest $request, $id): ResponseInterface
     {
         try {
@@ -79,7 +85,7 @@ class AssessmentRestController implements IRestController
             $companyId = $request->getAuthRole() == Role::SuperUser ? null : $facRepo->getPrimaryBusinessEntity()['id'];
             // first we need to do some checking on whether the current user can edit this assessment
             $assessmentRepo = new AssessmentRepository($this->logger);
-            if (!$assessmentRepo->canEditAssessment($id, $companyId)) {
+            if (!$assessmentRepo->canEditAssessment((int) $id, $companyId)) {
                 throw new AccessDeniedException('admin', 'forms', "You do not have permission to edit this assessment");
             }
             return $this->createAssessmentForContext($request, AssessmentValidator::DATABASE_UPDATE_CONTEXT);
@@ -88,9 +94,14 @@ class AssessmentRestController implements IRestController
         }
     }
 
+    /**
+     * @param string $context
+     * @return ResponseInterface
+     */
     private function createAssessmentForContext(ServerRestRequest $request, $context)
     {
         $validator = new AssessmentValidator();
+        /** @var array<string, mixed> $data */
         $data = $request->getBodyAsJson();
 
         $transactionCommitted = false;
@@ -101,7 +112,7 @@ class AssessmentRestController implements IRestController
             $validation = $validator->validate($data, $context);
 
             if (!$validation->isValid()) {
-                $this->logger->errorLogCaller("Validation failed", ['errors' => $validation->getValidationMessages()]);
+                $this->logger->error("Validation failed", ['errors' => $validation->getValidationMessages()]);
                 throw new \InvalidArgumentException("One or more fields was invalid", ErrorCode::VALIDATION_FAILED);
             }
             if (!AclMain::aclCheckCore('admin', 'forms')) {
@@ -129,7 +140,7 @@ class AssessmentRestController implements IRestController
             $transactionCommitted = true;
             return RestUtils::returnSingleObjectResponse([]); // we return nothing as part of the create.
         } catch (AccessDeniedException $exception) {
-            $this->logger->errorLogCaller($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
+            $this->logger->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             return RestUtils::getAccessDeniedResponse($exception);
         } catch (\Exception $e) {
             return RestUtils::getErrorResponse($this->logger, $e);
@@ -138,7 +149,7 @@ class AssessmentRestController implements IRestController
                 try {
                     QueryUtils::rollbackTransaction();
                 } catch (\Exception $e) {
-                    $this->logger->errorLogCaller("Failed to rollback transaction", ['trace' => $e->getTraceAsString()]);
+                    $this->logger->error("Failed to rollback transaction", ['trace' => $e->getTraceAsString()]);
                 }
             }
         }

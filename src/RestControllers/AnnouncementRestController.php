@@ -18,27 +18,33 @@ class AnnouncementRestController implements IRestController
     {
         $psrFactory = new Psr17Factory();
         // for now have it be empty
-        return $psrFactory->createResponse(200)->withBody(json_encode([]));
+        return $psrFactory->createResponse(200)->withBody($psrFactory->createStream((string) json_encode([])));
     }
 
+    /**
+     * @param string $id
+     */
     public function one(ServerRestRequest $httpRestRequest, $id): ResponseInterface
     {
         // TODO: Implement one() method.
         $psrFactory = new Psr17Factory();
-        return $psrFactory->createResponse(200)->withBody(json_encode([]));
+        return $psrFactory->createResponse(200)->withBody($psrFactory->createStream((string) json_encode([])));
     }
 
     public function create(ServerRestRequest $httpRestRequest): ResponseInterface
     {
         // TODO: Implement one() method.
         $psrFactory = new Psr17Factory();
-        return $psrFactory->createResponse(400)->withBody(json_encode([]));
+        return $psrFactory->createResponse(400)->withBody($psrFactory->createStream((string) json_encode([])));
     }
 
+    /**
+     * @param string $id
+     */
     public function update(ServerRestRequest $httpRestRequest, $id): ResponseInterface
     {
         // TODO: Implement one() method.
         $psrFactory = new Psr17Factory();
-        return $psrFactory->createResponse(400)->withBody(json_encode([]));
+        return $psrFactory->createResponse(400)->withBody($psrFactory->createStream((string) json_encode([])));
     }
 }

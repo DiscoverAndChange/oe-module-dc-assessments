@@ -23,6 +23,8 @@ use Psr\Log\LoggerInterface;
 
 class AssessmentGroupRestController implements IRestController
 {
+    private SystemLogger $logger;
+
     public function __construct()
     {
         $this->logger = new SystemLogger();
@@ -51,17 +53,22 @@ class AssessmentGroupRestController implements IRestController
             $returnGroups = array_merge($groups, $profilesAsGroups);
 
             $psrFactory = new Psr17Factory();
-            return $psrFactory->createResponse(200)->withBody($psrFactory->createStream(json_encode($returnGroups)));
+            return $psrFactory->createResponse(200)->withBody($psrFactory->createStream((string) json_encode($returnGroups)));
         }
     }
 
+    /**
+     * @param array<mixed> $results
+     * @param bool $showAllGroups
+     * @return AssessmentGroup[]|null
+     */
     private function createAssessmentGroupsFromEntities($results, $showAllGroups, LoggerInterface $logger)
     {
         $groups = [];
         foreach ($results as $result) {
             $group = new AssessmentGroup();
             $group->setName($result['name']);
-            $group->setId(intval($result['id']));
+            $group->setId($result['id']);
             if (!empty($result['date_created'])) {
                 $group->setCreated(\DateTime::createFromFormat('Y-m-d H:i:s.u', $result['date_created']));
             }
@@ -87,9 +94,13 @@ class AssessmentGroupRestController implements IRestController
         return $groups;
     }
 
+    /**
+     * @param string $id
+     */
     public function one(ServerRestRequest $httpRestRequest, $id): ResponseInterface
     {
         // TODO: Implement one() method.
+        return RestUtils::getNotFoundResponse();
     }
 
     public function create(ServerRestRequest $request): ResponseInterface
@@ -106,7 +117,7 @@ class AssessmentGroupRestController implements IRestController
             $validation = $validator->validate($data, AssessmentGroupValidator::DATABASE_INSERT_CONTEXT);
 
             if (!$validation->isValid()) {
-                $this->logger->errorLogCaller("Validation failed", ['errors' => $validation->getValidationMessages()]);
+                $this->logger->error("Validation failed", ['errors' => $validation->getValidationMessages()]);
                 throw new \InvalidArgumentException("One or more fields was invalid", ErrorCode::VALIDATION_FAILED);
             }
             $companyId = $request->getAuthRole() == Role::SuperUser ? null : $request->getCompanyId();
@@ -115,7 +126,7 @@ class AssessmentGroupRestController implements IRestController
             $transactionCommitted = true;
             return RestUtils::returnSingleObjectResponse($createdGroup);
         } catch (AccessDeniedException $exception) {
-            $this->logger->errorLogCaller($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
+            $this->logger->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             return RestUtils::getAccessDeniedResponse($exception);
         } catch (\Exception $e) {
             return RestUtils::getErrorResponse($this->logger, $e);
@@ -124,17 +135,24 @@ class AssessmentGroupRestController implements IRestController
                 try {
                     QueryUtils::rollbackTransaction();
                 } catch (\Exception $e) {
-                    $this->logger->errorLogCaller("Failed to rollback transaction", ['trace' => $e->getTraceAsString()]);
+                    $this->logger->error("Failed to rollback transaction", ['trace' => $e->getTraceAsString()]);
                 }
             }
         }
     }
 
+    /**
+     * @param string $id
+     */
     public function update(ServerRestRequest $httpRestRequest, $id): ResponseInterface
     {
         // TODO: Implement update() method.
+        return RestUtils::getNotFoundResponse();
     }
 
+    /**
+     * @param string $groupId
+     */
     public function addAssessmentToGroup(ServerRestRequest $request, $groupId): ResponseInterface
     {
         $transactionCommitted = false;
@@ -150,7 +168,7 @@ class AssessmentGroupRestController implements IRestController
             $validation = $validator->validate($data, AssessmentGroupValidator::DATABASE_ADD_ASSESSMENT_CONTEXT);
 
             if (!$validation->isValid()) {
-                $this->logger->errorLogCaller("Validation failed", ['errors' => $validation->getValidationMessages()]);
+                $this->logger->error("Validation failed", ['errors' => $validation->getValidationMessages()]);
                 throw new \InvalidArgumentException("One or more fields was invalid", ErrorCode::VALIDATION_FAILED);
             }
             $uid = $data['uid'];
@@ -165,7 +183,7 @@ class AssessmentGroupRestController implements IRestController
                 throw new \Exception("Failed to create JSON object from created group");
             }
         } catch (AccessDeniedException $exception) {
-            $this->logger->errorLogCaller($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
+            $this->logger->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             return RestUtils::getAccessDeniedResponse($exception);
         } catch (\Exception $e) {
             return RestUtils::getErrorResponse($this->logger, $e);
@@ -174,12 +192,15 @@ class AssessmentGroupRestController implements IRestController
                 try {
                     QueryUtils::rollbackTransaction();
                 } catch (\Exception $e) {
-                    $this->logger->errorLogCaller("Failed to rollback transaction", ['trace' => $e->getTraceAsString()]);
+                    $this->logger->error("Failed to rollback transaction", ['trace' => $e->getTraceAsString()]);
                 }
             }
         }
     }
 
+    /**
+     * @param string $groupId
+     */
     public function updateAssessmentVersionForGroup(ServerRestRequest $request, $groupId): ResponseInterface
     {
         $transactionCommitted = false;
@@ -195,7 +216,7 @@ class AssessmentGroupRestController implements IRestController
             $validation = $validator->validate($data, AssessmentGroupValidator::DATABASE_UPDATE_ASSESSMENT_CONTEXT);
 
             if (!$validation->isValid()) {
-                $this->logger->errorLogCaller("Validation failed", ['errors' => $validation->getValidationMessages()]);
+                $this->logger->error("Validation failed", ['errors' => $validation->getValidationMessages()]);
                 throw new \InvalidArgumentException("One or more fields was invalid", ErrorCode::VALIDATION_FAILED);
             }
             $createdGroup = $repo->updateAssessmentVersionForGroup($groupId);
@@ -208,7 +229,7 @@ class AssessmentGroupRestController implements IRestController
                 throw new \Exception("Failed to create JSON object from created group");
             }
         } catch (AccessDeniedException $exception) {
-            $this->logger->errorLogCaller($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
+            $this->logger->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             return RestUtils::getAccessDeniedResponse($exception);
         } catch (\Exception $e) {
             return RestUtils::getErrorResponse($this->logger, $e);
@@ -217,12 +238,16 @@ class AssessmentGroupRestController implements IRestController
                 try {
                     QueryUtils::rollbackTransaction();
                 } catch (\Exception $e) {
-                    $this->logger->errorLogCaller("Failed to rollback transaction", ['trace' => $e->getTraceAsString()]);
+                    $this->logger->error("Failed to rollback transaction", ['trace' => $e->getTraceAsString()]);
                 }
             }
         }
     }
 
+    /**
+     * @param array<mixed> $profiles
+     * @return AssessmentGroup[]
+     */
     private function mapProfilesToGroups(DocumentTemplateService $documentTemplateService, array $profiles)
     {
         $groups = [];

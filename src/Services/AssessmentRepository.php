@@ -20,6 +20,7 @@ class AssessmentRepository
     public function __construct(private SystemLogger $logger)
     {
     }
+    /** @return array<mixed> */
     public function getAssessmentSummaryList(?int $companyId): array
     {
         // TODO: stephen not sure I like this as it implicitly assumes that the highest autoincrement id
@@ -44,6 +45,7 @@ class AssessmentRepository
         return $this->getAssessmentSummaryFromRecords($assessmentList);
     }
 
+    /** @param array<mixed> $openEMRSearchParameters */
     public function search($openEMRSearchParameters): ProcessingResult
     {
         $processingResult = new ProcessingResult();
@@ -58,6 +60,7 @@ class AssessmentRepository
 
         $publishedToken = new TokenSearchField('status', 'published');
         $openEMRSearchParameters['status'] = $publishedToken;
+        /** @var array<string, \OpenEMR\Services\Search\ISearchField> $openEMRSearchParameters */
         $where = FhirSearchWhereClauseBuilder::build($openEMRSearchParameters);
         $query = $sql . $where->getFragment();
 
@@ -69,6 +72,10 @@ class AssessmentRepository
         return $processingResult;
     }
 
+    /**
+     * @param list<array<mixed>> $assessmentList
+     * @return AssessmentSummary[]
+     */
     private function getAssessmentSummaryFromRecords($assessmentList)
     {
         $records = [];
@@ -78,6 +85,10 @@ class AssessmentRepository
         return $records;
     }
 
+    /**
+     * @param array<mixed> $record
+     * @return AssessmentSummary
+     */
     private function hydrateAssessmentSummaryFromDatabaseRecord($record)
     {
         /**
@@ -100,11 +111,15 @@ class AssessmentRepository
         $result->name = $record['name'] ?? '';
         $result->description = $record['description'] ?? '';
         $result->data = $record['data'] ?? '';
-        $result->date = \DateTime::createFromFormat('Y-m-d H:i:s.u', $record['date'] ?? '');
+        $result->date = \DateTime::createFromFormat('Y-m-d H:i:s.u', ($record['date'] ?? ''));
         $result->isPublic = empty($record['company_id']);
         return $result;
     }
 
+    /**
+     * @param string $uid
+     * @return array<mixed>
+     */
     public function getAssessmentForAssignmentItem(string $assignmentItemUuid, $uid, string $clientID)
     {
         if (empty($uid)) {
@@ -117,7 +132,7 @@ class AssessmentRepository
             throw new \InvalidArgumentException("Missing assignmentUuid", ErrorCode::VALIDATE_DATA_MISSING);
         }
         // TODO: @adunsulag need to validate against $clientId
-        $sql = "SELECT assessment.id,assessment.data,assessment.uid, ab1.status "
+        $sql = "SELECT assessment.id,assessment.data,assessment.uid, assessment.status "
             . "FROM " . AssignmentRepository::TABLE_NAME_ASSIGNMENT_ITEM . " item "
             . "LEFT JOIN " . self::TABLE_NAME . " assessment ON item.assessmentblob_id = assessment.id "
             . "LEFT JOIN " . AssignmentRepository::TABLE_NAME . " assignment ON assignment.id = item.assignment_id AND (assignment.client_id = ? OR assignment.client_id IS NULL)"
@@ -127,6 +142,10 @@ class AssessmentRepository
         return $assessment;
     }
 
+    /**
+     * @param string $uid
+     * @return array<mixed>
+     */
     public function getAssessmentForVersion($uid, int $version)
     {
         if (empty($uid)) {
@@ -140,18 +159,31 @@ class AssessmentRepository
         return $this->getAssessmentFromSQL($sql, $params);
     }
 
+    /**
+     * @param string $uid
+     * @return mixed
+     */
     public function getMostRecentAssessmentIdForUid($uid)
     {
         $sql = "SELECT id FROM " . self::TABLE_VIEW_CURRENT_ASSESSMENT . " WHERE uid = ? LIMIT 1";
         return QueryUtils::fetchSingleValue($sql, 'id', [$uid]);
     }
 
+    /**
+     * @param string $uid
+     * @return array<mixed>
+     */
     public function getAssessmentForUid($uid)
     {
         $sql = "SELECT * FROM " . self::TABLE_NAME . " WHERE uid = ? AND status = 'published' ORDER BY date DESC LIMIT 1";
         return $this->getAssessmentFromSQL($sql, [$uid]);
     }
 
+    /**
+     * @param string $sql
+     * @param array<mixed> $params
+     * @return array<mixed>
+     */
     private function getAssessmentFromSQL($sql, $params)
     {
         $result = QueryUtils::fetchRecords($sql, $params);
@@ -171,6 +203,10 @@ class AssessmentRepository
         return $blobData;
     }
 
+    /**
+     * @param array<mixed> $jsonData
+     * @return int
+     */
     public function createAssessment(string $uid, string $name, string $description, array $jsonData, ?int $companyId)
     {
         $htmlSanitizer = new HTMLSanitizer();
@@ -187,6 +223,7 @@ class AssessmentRepository
         return QueryUtils::getLastInsertId();
     }
 
+    /** @return bool */
     public function existsAssessment(mixed $uid)
     {
         $sql = "SELECT COUNT(*) AS cnt FROM " . self::TABLE_NAME . " WHERE uid = ?";
@@ -194,6 +231,10 @@ class AssessmentRepository
         return QueryUtils::fetchSingleValue($sql, 'cnt', $params) > 0;
     }
 
+    /**
+     * @param int $id
+     * @return bool
+     */
     public function canEditAssessment($id, ?int $companyId)
     {
         if (empty($companyId)) {
@@ -202,9 +243,13 @@ class AssessmentRepository
         }
         $sql = "SELECT DISTINCT company_id FROM " . self::TABLE_NAME . " WHERE id = ? ";
         $assessmentCompanyId = QueryUtils::fetchSingleValue($sql, 'company_id', [$id]);
-        return $assessmentCompanyId === null || intval($assessmentCompanyId) === $companyId;
+        return $assessmentCompanyId === null || $assessmentCompanyId === $companyId;
     }
 
+    /**
+     * @param int $id
+     * @return string
+     */
     public static function updateAssessmentUuid($id)
     {
         $registry = self::getUuidRegistry();
@@ -214,6 +259,7 @@ class AssessmentRepository
         return $uuid;
     }
 
+    /** @return UuidRegistry */
     public static function getUuidRegistry()
     {
         $registry = new UuidRegistry(['table_name' => self::TABLE_NAME]);

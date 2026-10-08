@@ -30,7 +30,6 @@ use OpenEMR\Services\FHIR\Serialization\FhirPatientSerializer;
 use OpenEMR\Services\FHIR\UtilsService;
 use OpenEMR\Validators\ProcessingResult;
 use Psr\Http\Message\ResponseInterface;
-use RestConfig;
 
 class TaskRestController
 {
@@ -50,8 +49,8 @@ class TaskRestController
      * Handles the response to the API request GET /fhir/Task and returns the FHIRBundle resource
      * that was found for the given request.  Any query search parameters are processed by this method.  If the method
      * is run in the patient context (as a logged in patient) it restricts the search to just that patient.
-     * @param ServerRestRequest
-     * @return FHIRBundle
+     * @param ServerRestRequest $request
+     * @return ResponseInterface
      */
     public function list(ServerRestRequest $request): ResponseInterface
     {
@@ -73,7 +72,7 @@ class TaskRestController
      * Retrieves a single api resource.  Handles the response to the API request GET /fhir/Questionnaire/:fhirId
      * The $fhirId is populated from the API request by the rest route dispatcher.
      * @see HttpRestRouteHandler::dispatch to see how this parsing is done.
-     * @param $id The unique id of the resource to be returned.
+     * @param string $id The unique id of the resource to be returned.
      * @param ServerRestRequest $request
      * @return ResponseInterface
      */
@@ -89,7 +88,8 @@ class TaskRestController
      * - _id (euuid)
      * - patient (puuid)
      * - date {gt|lt|ge|le}
-     * @param $puuidBind - Optional variable to only allow visibility of the patient with this puuid.
+     * @param array<mixed> $searchParams
+     * @param string|null $puuidBind - Optional variable to only allow visibility of the patient with this puuid.
      * @return FHIR bundle with query results, if found
      */
     public function getAll($searchParams, $puuidBind = null)
@@ -105,15 +105,25 @@ class TaskRestController
             array_push($bundleEntries, $fhirBundleEntry);
         }
         $bundleSearchResult = $this->fhirService->createBundle(self::FHIR_RESOURCE_TYPE, $bundleEntries, false);
-        $searchResponseBody = RestControllerHelper::responseHandler($bundleSearchResult, null, 200);
-        return $searchResponseBody;
+        // Return the FHIR bundle itself. Do NOT route it through
+        // RestControllerHelper::responseHandler(): on OpenEMR 8.x that returns a
+        // Symfony Response, which returnSingleObjectResponse() then json_encodes to
+        // just {"headers":...} instead of the bundle. Also, FHIRBundle omits the
+        // `entry` key entirely when there are no results, but the SPA expects an
+        // array — so normalize the empty case to a plain array with entry: [].
+        if (empty($bundleEntries)) {
+            $bundleSearchResult = json_decode((string) json_encode($bundleSearchResult), true);
+            $bundleSearchResult['entry'] = [];
+        }
+        return $bundleSearchResult;
     }
 
     /**
      * Updates an existing FHIR patient resource.  If no Prefer header is specified it returns the representation default.
      * @param $request ServerRestRequest The http request.
-     * @param $fhirId The FHIR patient resource id (uuid)
+     * @param string $fhirId The FHIR patient resource id (uuid)
      * @returns 200 if the resource is created, 400 if the resource is invalid
+     * @return ResponseInterface
      */
     public function update(ServerRestRequest $request, $fhirId)
     {
@@ -160,12 +170,12 @@ class TaskRestController
             $response = RestUtils::addFhirLocationHeader($response, self::FHIR_RESOURCE_TYPE, $result->getData()[0]);
             return $response->withStatus(201);
         } catch (\InvalidArgumentException $exception) {
-            (new SystemLogger())->errorLogCaller($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
+            (new SystemLogger())->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             $operationOutcome = UtilsService::createOperationOutcomeResource('fatal', 'transient', xlt('Invalid request body'));
             $response = RestUtils::returnSingleObjectResponse($operationOutcome);
             return $response->withStatus(400);
         } catch (\Exception $exception) {
-            (new SystemLogger())->errorLogCaller($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
+            (new SystemLogger())->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             $operationOutcome = UtilsService::createOperationOutcomeResource('fatal', 'transient', xlt('Server Error in creating QuestionnaireResponse resource'));
             $response = RestUtils::returnSingleObjectResponse($operationOutcome);
             return $response->withStatus(500);
@@ -174,9 +184,10 @@ class TaskRestController
 
     /**
      * Queries for a single FHIR encounter resource by FHIR id
-     * @param $fhirId The FHIR encounter resource id (uuid)
-     * @param $puuidBind - Optional variable to only allow visibility of the patient with this puuid.
+     * @param string $fhirId The FHIR encounter resource id (uuid)
+     * @param string|null $puuidBind - Optional variable to only allow visibility of the patient with this puuid.
      * @returns 200 if the operation completes successfully
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function getOne($fhirId, $puuidBind = null)
     {

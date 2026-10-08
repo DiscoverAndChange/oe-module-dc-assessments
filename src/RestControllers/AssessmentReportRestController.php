@@ -30,9 +30,12 @@ class AssessmentReportRestController implements IRestController
         $showAllReports = $request->getQueryParams()['showAllReports'] ?? false;
         $showAllReports = $showAllReports === 'true';
         $reports = $repo->getAll($showAllReports, $hostSiteId);
-        return $psrFactory->createResponse(200)->withBody($psrFactory->createStream(json_encode($reports)));
+        return $psrFactory->createResponse(200)->withBody($psrFactory->createStream((string) json_encode($reports)));
     }
 
+    /**
+     * @param string $id
+     */
     public function one(ServerRestRequest $request, $id): ResponseInterface
     {
         // TODO: Implement one() method.
@@ -42,7 +45,7 @@ class AssessmentReportRestController implements IRestController
             $report = $repo->getOne($id);
             return RestUtils::returnSingleObjectResponse($report);
         } catch (\Exception $exception) {
-            $this->logger->errorLogCaller($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
+            $this->logger->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             return RestUtils::getServerErrorResponse($exception);
         }
         // otherwise we return not found
@@ -63,23 +66,23 @@ class AssessmentReportRestController implements IRestController
             $validation = $validator->validate($data, AssessmentReportValidator::DATABASE_INSERT_CONTEXT);
 
             if (!$validation->isValid()) {
-                $this->logger->errorLogCaller("Validation failed", ['errors' => $validation->getValidationMessages()]);
+                $this->logger->error("Validation failed", ['errors' => $validation->getValidationMessages()]);
                 throw new \InvalidArgumentException("One or more fields was invalid", ErrorCode::VALIDATION_FAILED);
             }
 
             $assessmentGroupID = null;
             if (!empty($data['linkedGroup'])) {
-                $assessmentGroupID = $data['linkedGroup']['id'] ?? null;
+                $assessmentGroupID = isset($data['linkedGroup']['id']) ? $data['linkedGroup']['id'] : null;
                 unset($data['linkedGroup']);
             }
-            $assessmentUid = $data['assessmentUid'] ?? null;
+            $assessmentUid = isset($data['assessmentUid']) ? $data['assessmentUid'] : null;
             $repo = new AssessmentReportRepository();
-            $result = $repo->createReport($data['id'], $data['name'], $request->getUserId(), $data, $assessmentGroupID, $assessmentUid);
+            $result = $repo->createReport($data['id'], $data['name'], $request->getUserId(), (array) $data, $assessmentGroupID, $assessmentUid);
             QueryUtils::commitTransaction();
             $transactionCommitted = true;
             return RestUtils::returnSingleObjectResponse($result);
         } catch (AccessDeniedException $exception) {
-            $this->logger->errorLogCaller($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
+            $this->logger->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             return RestUtils::getAccessDeniedResponse($exception);
         } catch (\Exception $e) {
             return RestUtils::getErrorResponse($this->logger, $e);
@@ -88,12 +91,15 @@ class AssessmentReportRestController implements IRestController
                 try {
                     QueryUtils::rollbackTransaction();
                 } catch (\Exception $e) {
-                    $this->logger->errorLogCaller("Failed to rollback transaction", ['trace' => $e->getTraceAsString()]);
+                    $this->logger->error("Failed to rollback transaction", ['trace' => $e->getTraceAsString()]);
                 }
             }
         }
     }
 
+    /**
+     * @param string $id
+     */
     public function update(ServerRestRequest $request, $id): ResponseInterface
     {
         $validator = new AssessmentReportValidator();
@@ -108,23 +114,23 @@ class AssessmentReportRestController implements IRestController
             $validation = $validator->validate($data, AssessmentReportValidator::DATABASE_UPDATE_CONTEXT);
 
             if (!$validation->isValid()) {
-                $this->logger->errorLogCaller("Validation failed", ['errors' => $validation->getValidationMessages()]);
+                $this->logger->error("Validation failed", ['errors' => $validation->getValidationMessages()]);
                 throw new \InvalidArgumentException("One or more fields was invalid", ErrorCode::VALIDATION_FAILED);
             }
 
             $assessmentGroupID = null;
             if (!empty($data['linkedGroup'])) {
-                $assessmentGroupID = $data['linkedGroup']['id'] ?? null;
+                $assessmentGroupID = isset($data['linkedGroup']['id']) ? $data['linkedGroup']['id'] : null;
                 unset($data['linkedGroup']);
             }
-            $assessmentUid = $data['assessmentUid'] ?? null;
+            $assessmentUid = isset($data['assessmentUid']) ? $data['assessmentUid'] : null;
             $repo = new AssessmentReportRepository();
-            $result = $repo->updateReport($data['id'], $data['name'], $request->getUserId(), $data, $assessmentGroupID, $assessmentUid);
+            $result = $repo->updateReport($data['id'], $data['name'], $request->getUserId(), (array) $data, $assessmentGroupID, $assessmentUid);
             QueryUtils::commitTransaction();
             $transactionCommitted = true;
             return RestUtils::returnSingleObjectResponse([]);
         } catch (AccessDeniedException $exception) {
-            $this->logger->errorLogCaller($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
+            $this->logger->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             return RestUtils::getAccessDeniedResponse($exception);
         } catch (\Exception $e) {
             return RestUtils::getErrorResponse($this->logger, $e);
@@ -133,7 +139,7 @@ class AssessmentReportRestController implements IRestController
                 try {
                     QueryUtils::rollbackTransaction();
                 } catch (\Exception $e) {
-                    $this->logger->errorLogCaller("Failed to rollback transaction", ['trace' => $e->getTraceAsString()]);
+                    $this->logger->error("Failed to rollback transaction", ['trace' => $e->getTraceAsString()]);
                 }
             }
         }

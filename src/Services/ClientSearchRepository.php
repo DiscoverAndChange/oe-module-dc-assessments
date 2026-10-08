@@ -8,6 +8,7 @@ use OpenEMR\Modules\DiscoverAndChange\Assessments\DTO\ClientSearchQueryDTO;
 use OpenEMR\Common\Database\QueryPagination;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Models\Client;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Models\ErrorCode;
+use OpenEMR\Modules\DiscoverAndChange\Assessments\Models\SystemError;
 use OpenEMR\Services\FacilityService;
 use OpenEMR\Services\PatientService;
 use OpenEMR\Services\Search\CompositeSearchField;
@@ -22,9 +23,8 @@ use OpenEMR\Validators\ProcessingResult;
 class ClientSearchRepository
 {
     private ?int $companyId;
-    private $_repo;
 
-    private $logger;
+    private SystemLogger $logger;
 
     public function __construct(?int $companyID)
     {

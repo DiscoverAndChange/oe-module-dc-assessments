@@ -57,12 +57,14 @@ class QuestionnaireResponseFormFHIRResourceService extends FhirServiceBase imple
      */
     private $service;
 
+    /** @param string $fhirApiURL */
     public function __construct($fhirApiURL = null)
     {
         parent::__construct($fhirApiURL);
         $this->service = new QuestionnaireResponseService();
     }
 
+    /** @return array<mixed> */
     public function parseFhirResource(FHIRDomainResource $fhirResource)
     {
         if (!($fhirResource instanceof FHIRQuestionnaireResponse)) {
@@ -132,7 +134,7 @@ class QuestionnaireResponseFormFHIRResourceService extends FhirServiceBase imple
     }
 
     /**
-     * @param array $dataRecord
+     * @param array<mixed> $dataRecord
      * @param bool $encode
      * @return TaskFHIRResource|\OpenEMR\Services\FHIR\the
      */
@@ -145,7 +147,7 @@ class QuestionnaireResponseFormFHIRResourceService extends FhirServiceBase imple
         } catch (\JsonException $exception) {
             // log the error and move on
             $innerData = []; // nothing we can do here, but skip the questionnaire data as its invalid
-            (new SystemLogger())->errorLogCaller(
+            (new SystemLogger())->error(
                 "Unable to parse questionnaire json",
                 ['uuid' => $dataRecord['uuid'] ?? '', 'message' => $exception->getMessage()
                 ,
@@ -216,7 +218,7 @@ class QuestionnaireResponseFormFHIRResourceService extends FhirServiceBase imple
      * Search fields can be combined as Composite fields and represent a host of search options.
      * @see https://www.hl7.org/fhir/search.html to see the types of search operations, and search types that are available
      * for use.
-     * @return array
+     * @return array<string, FhirSearchParameterDefinition>
      */
     protected function loadSearchParameters()
     {
@@ -240,8 +242,10 @@ class QuestionnaireResponseFormFHIRResourceService extends FhirServiceBase imple
         ];
     }
 
+    /** @param array<mixed> $openEMRSearchParameters */
     protected function searchForOpenEMRRecords($openEMRSearchParameters): ProcessingResult
     {
+        /** @var array<string, \OpenEMR\Services\Search\ISearchField> $openEMRSearchParameters */
         return $this->service->search($openEMRSearchParameters);
     }
 
@@ -274,6 +278,7 @@ class QuestionnaireResponseFormFHIRResourceService extends FhirServiceBase imple
         return null;
     }
 
+    /** @param mixed $openEmrRecord */
     public function insertOpenEMRRecord($openEmrRecord)
     {
         /**

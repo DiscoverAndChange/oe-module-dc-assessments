@@ -13,6 +13,10 @@ class AssessmentReportRepository
 
     const TABLE_PERMISSION_NAME = "dac_ReportPermission";
 
+    /**
+     * @param bool $showAllReports
+     * @return array<mixed>
+     */
     public function getAll($showAllReports)
     {
 
@@ -43,12 +47,12 @@ class AssessmentReportRepository
                 $this->logger->error($e);
             }
             $group = new AssessmentGroup();
-            $group->setId($r['assessmentgroup_id'] ?? 0);
-            $group->setName($r['assessmentgroup_name'] ?? '');
+            $group->setId(($r['assessmentgroup_id'] ?? 0));
+            $group->setName(($r['assessmentgroup_name'] ?? ''));
             if ($r['assessmentgroup_id']) {
                 $report['linkedGroup'] = $group;
             }
-            if ($r['assessment_uid']) {
+            if ($r['assessment_uid'] ?? null) {
                 $report['linkedAssessments'] = [$r['assessment_uid']];
             }
             $hydratedResults[] = $report;
@@ -56,6 +60,10 @@ class AssessmentReportRepository
         return $hydratedResults;
     }
 
+    /**
+     * @param array<mixed> $data
+     * @return void
+     */
     public function createReport(string $id, string $name, int $userId, $data, ?int $groupId, ?string $assessmentUid)
     {
         if (!empty($data['token'])) {
@@ -86,6 +94,10 @@ class AssessmentReportRepository
         // TODO: @adunsulag if we want to handle permissions by company we would handle this.
     }
 
+    /**
+     * @param string $id
+     * @return array<mixed>|null
+     */
     public function getOne($id)
     {
         $sql = "SELECT rv.data, r.assessmentgroup_id,ag.name AS assessmentgroup_name,r.assessment_uid, r.assessment_uid"
@@ -103,8 +115,8 @@ class AssessmentReportRepository
 
             if (!empty($report['assessmentgroup_id'])) {
                 $group = new AssessmentGroup();
-                $group->setId($report['assessmentgroup_id'] ?? 0);
-                $group->setName($report['assessmentgroup_name'] ?? '');
+                $group->setId(($report['assessmentgroup_id'] ?? 0));
+                $group->setName(($report['assessmentgroup_name'] ?? ''));
                 $data['linkedGroup'] = $group;
             }
 
@@ -113,8 +125,13 @@ class AssessmentReportRepository
             }
             return $data;
         }
+        return null;
     }
 
+    /**
+     * @param array<mixed> $data
+     * @return int
+     */
     public function updateReport(string $id, string $name, int $userId, array $data, ?int $assessmentGroupID, ?string $assessmentUid)
     {
         if (!empty($data['token'])) {
@@ -140,6 +157,7 @@ class AssessmentReportRepository
         return QueryUtils::sqlInsert($sqlReportVersion, $params);
     }
 
+    /** @return bool */
     public function existsReport(string $id)
     {
         $sql = "SELECT count(*) as count FROM " . self::TABLE_NAME . " WHERE id = ?";
