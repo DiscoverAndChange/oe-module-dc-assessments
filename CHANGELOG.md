@@ -1,3 +1,28 @@
+v0.12.5 FHIR-layer + Bootstrap test coverage (Scope B batch 3); fix uncaught search exception
+
+  Coverage raised ~38% -> ~45% lines (409 -> 453 tests, phpstan clean):
+  - FHIR delegation services (Questionnaire/QuestionnaireResponse/Task): search-param maps,
+    code-based delegation, event short-circuit, createProvenance type guards, Task
+    parseOpenEMRRecord.
+  - Leaf FHIR services (Assessment, QuestionnaireForm, AssessmentResponseBlob,
+    LibraryAssetResultBlob): supportsCode + parseOpenEMRRecord/parseFhirResource mapping.
+  - Task sub-services (AssignmentTask, QuestionnairePortalTask): supportsCode,
+    parseOpenEMRRecord FHIRTask build, and the update() guard/clean-fail branches.
+  - Bootstrap: the DI container compiles, wires the public controllers, and
+    subscribeToEvents() registers its listeners.
+
+  Bug fix (with regression test):
+  - QuestionnaireFHIRResourceService / TaskFHIRResourceService caught SearchFieldException
+    without importing it, so the catch named a nonexistent module-namespaced class and the
+    real OpenEMR\Services\Search\SearchFieldException escaped uncaught (an unsupported
+    questionnaire-code/code -> uncaught 500 instead of validation messages). Added the import
+    so getAll() surfaces it as validation messages.
+
+  Documented, not fixed (future hardening): the Task services' update() completed-path reads
+  getOutput()[0] without an existence check, and several parseOpenEMRRecord methods read
+  required record keys by direct offset without isset guards (undefined-key warnings on
+  malformed input).
+
 v0.12.4 More latent bug fixes; raise test coverage ~27% -> ~38% (Scope B batch 2)
 
   Honest fixes (each with a regression test; module phpstan stays clean), several on

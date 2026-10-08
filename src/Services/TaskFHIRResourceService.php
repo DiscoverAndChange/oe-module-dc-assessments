@@ -38,6 +38,7 @@ use OpenEMR\Services\Search\FhirSearchParameterDefinition;
 use OpenEMR\Services\Search\NumberSearchField;
 use OpenEMR\Services\Search\ReferenceSearchField;
 use OpenEMR\Services\Search\ReferenceSearchValue;
+use OpenEMR\Services\Search\SearchFieldException;
 use OpenEMR\Services\Search\SearchFieldType;
 use OpenEMR\Services\Search\ServiceField;
 use OpenEMR\Services\Search\TokenSearchField;
