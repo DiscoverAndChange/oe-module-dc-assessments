@@ -245,6 +245,7 @@ class QuestionnaireResponseFormFHIRResourceService extends FhirServiceBase imple
     /** @param array<mixed> $openEMRSearchParameters */
     protected function searchForOpenEMRRecords($openEMRSearchParameters): ProcessingResult
     {
+        /** @var array<string, \OpenEMR\Services\Search\ISearchField> $openEMRSearchParameters */
         return $this->service->search($openEMRSearchParameters);
     }
 

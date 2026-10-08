@@ -59,13 +59,13 @@ class AssignmentEncounterController implements IStaticEventSubscriber
             $this->logger->error("Missing pid or encounterId");
         }
         $patientService = new PatientService();
-        $puuid = $patientService->getUuid($pid);
+        $puuid = $patientService->getUuid((string)$pid);
         if (empty($puuid)) {
             $this->logger->error("Missing patient uuid");
         } else {
             $puuid = UuidRegistry::uuidToString($puuid);
         }
-        $euuid = EncounterService::getUuidById($encounterId, EncounterService::ENCOUNTER_TABLE, 'encounter');
+        $euuid = EncounterService::getUuidById((string)$encounterId, EncounterService::ENCOUNTER_TABLE, 'encounter');
         if (empty($euuid)) {
             $this->logger->error("Missing encounter uuid");
         }
@@ -73,7 +73,7 @@ class AssignmentEncounterController implements IStaticEventSubscriber
 //        $token = new SMARTLaunchToken($puuid, $euuid);
 //        $token->setIntent(SMARTLaunchToken::INTENT_ENCOUNTER_DIALOG);
 //        $launchCode = $token->serialize();
-        $assignments = $this->repository->getAssignmentsForEncounterUuid($euuid, $puuid);
+        $assignments = $this->repository->getAssignmentsForEncounterUuid($euuid, (string)$puuid);
         $issuer = (new ServerConfig())->getFhirUrl();
 //        $launchParams = "?launch=" . urlencode($launchCode) . "&iss=" . urlencode($issuer) . "&aud=" . urlencode($issuer);
 //        $launchUri = $this->globalConfig->getSmartAppAdminPublicPath() . $launchParams;

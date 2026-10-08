@@ -27,6 +27,7 @@ class AssessmentResultRepository
             . " LEFT JOIN (SELECT id AS assignmentitem_id, assessmentresultblob_id FROM " . AssignmentRepository::TABLE_NAME_ASSIGNMENT_ITEM . ") ai ON (assessmentresultblob_id = arb.id) ";
 
         $sql = " ORDER BY arb.date DESC ";
+        /** @var array<string, \OpenEMR\Services\Search\ISearchField> $searchParams */
         $where = FhirSearchWhereClauseBuilder::build($searchParams);
         $query = $distinctIds . $fromClause . $where->getFragment() . $sql;
 
@@ -129,8 +130,8 @@ class AssessmentResultRepository
     {
         $records = [];
         foreach ($result as $resultBlob) {
-            $resultData = json_decode($resultBlob['result_data'] ?? '{}', true);
-            $assessmentData = json_decode($resultBlob['assessment_data'] ?? '{}', true);
+            $resultData = json_decode(($resultBlob['result_data'] ?? '{}'), true);
+            $assessmentData = json_decode(($resultBlob['assessment_data'] ?? '{}'), true);
             $resultData['_assessment'] = $assessmentData;
             $resultData['_assignmentItemId'] = $resultBlob['assignmentitem_id'];
             $resultData['_dateCompleted'] = $resultBlob['date'];
@@ -154,7 +155,7 @@ class AssessmentResultRepository
             foreach ($resultData['_answers'] as $answer) {
                 $answers[] = [
                     '_answer' => $sanitizer->sanitize($answer['_answer'])
-                    ,'_score' => intval($answer['_score'])
+                    ,'_score' => $answer['_score']
                     ,'_question_id' => $answer['_question_id']
                 ];
             }

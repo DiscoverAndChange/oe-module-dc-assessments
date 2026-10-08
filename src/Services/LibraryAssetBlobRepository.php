@@ -52,9 +52,11 @@ class LibraryAssetBlobRepository
         $distinctIds = "SELECT distinct la.id FROM " . self::TABLE_NAME
             . " la LEFT JOIN " . TagRepository::TABLE_NAME_LIBRARY_ASSET_JOIN_TAG . " lat ON la.id = lat.library_asset_blob_id LEFT JOIN "
             . TagRepository::TABLE_NAME . " t ON lat.tag_id = t.id ";
+        /** @var array<string, \OpenEMR\Services\Search\ISearchField> $searchParams */
         $where = FhirSearchWhereClauseBuilder::build($searchParams);
         $query = $distinctIds . $where->getFragment();
 
+        /** @var list<int|string> $ids */
         $ids = QueryUtils::fetchTableColumn($query, 'id', $where->getBoundValues());
         if (empty($ids)) {
             return $processingResult;
@@ -86,27 +88,28 @@ class LibraryAssetBlobRepository
         // we need to grab all of our ids as we loop through and generate our objects
         $ids = [];
         foreach ($records as $record) {
-            $ids[] = intval($record['id']);
+            $ids[] = $record['id'];
         }
         // now we can fetch our tags
         $tagRepo = new TagRepository();
         $tags = $tagRepo->getTagsForAssetIds($ids);
         $assets = [];
         foreach ($records as $row) {
+            /** @var array<string, string|null> $row */
             $asset = new LibraryAssetBlobDTO();
-            $asset->setId($row['id'])
+            $asset->setId((int) $row['id'])
                 ->setTitle($row['title'])
-                ->setType($row['type'])
+                ->setType((string) $row['type'])
                 ->setDescription($row['description'])
                 ->setContent($row['content'] ?? null)
                 ->setJournal($row['journal'] ?? null)
                 ->setOriginalCreator($row['original_creator'])
                 ->setCreationDate($row['creation_date'])
                 ->setLastUpdateDate($row['last_update_date'])
-                ->setTags($tags[$row['id']] ?? []);
+                ->setTags((array) ($tags[$row['id']] ?? []));
 
             if (empty($row['uuid'])) {
-                $uuid = self::updateLibraryAssetBlobUuid($row['id']);
+                $uuid = self::updateLibraryAssetBlobUuid((int) $row['id']);
             } else {
                 $uuid = $row['uuid'];
             }

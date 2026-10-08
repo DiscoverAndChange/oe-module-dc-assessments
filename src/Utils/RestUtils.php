@@ -52,19 +52,19 @@ class RestUtils
             $err['error'] = $err['_message'] = xl("A system error occurred.  Please try again or contact support.");
         }
         $psrFactory = new Psr17Factory();
-        return $psrFactory->createResponse($statusCode)->withBody($psrFactory->createStream(json_encode($err)));
+        return $psrFactory->createResponse($statusCode)->withBody($psrFactory->createStream((string) json_encode($err)));
     }
     /** @param string $logMessage */
     public static function returnAccessDeniedResponse(SystemLogger $logger, $logMessage): ResponseInterface
     {
         $logger->error($logMessage);
         $psrFactory = new Psr17Factory();
-        return $psrFactory->createResponse(401)->withBody($psrFactory->createStream(json_encode(['error' => xlt('Access Denied')])));
+        return $psrFactory->createResponse(401)->withBody($psrFactory->createStream((string) json_encode(['error' => xlt('Access Denied')])));
     }
     public static function getNotFoundResponse(): ResponseInterface
     {
         $psrFactory = new Psr17Factory();
-        return $psrFactory->createResponse(404)->withBody($psrFactory->createStream(json_encode(['error' => xlt('Not Found')])));
+        return $psrFactory->createResponse(404)->withBody($psrFactory->createStream((string) json_encode(['error' => xlt('Not Found')])));
     }
 
     /**
@@ -75,7 +75,7 @@ class RestUtils
     public static function getAccessDeniedResponse(?\Throwable $error = null): ResponseInterface
     {
         $psrFactory = new Psr17Factory();
-        return $psrFactory->createResponse(403)->withBody($psrFactory->createStream(json_encode(['error' => xlt('Access Denied')])));
+        return $psrFactory->createResponse(403)->withBody($psrFactory->createStream((string) json_encode(['error' => xlt('Access Denied')])));
     }
 
     /**
@@ -85,7 +85,7 @@ class RestUtils
     public static function getServerErrorResponse(?\Throwable $error = null): ResponseInterface
     {
         $psrFactory = new Psr17Factory();
-        return $psrFactory->createResponse(500)->withBody($psrFactory->createStream(json_encode(['error' => xl('A system error occurred.  Please try again or contact support.')])));
+        return $psrFactory->createResponse(500)->withBody($psrFactory->createStream((string) json_encode(['error' => xl('A system error occurred.  Please try again or contact support.')])));
     }
 
 
@@ -112,14 +112,14 @@ class RestUtils
         // Accept-Encoding negotiation, which the browser decodes transparently.
         $response = $psrFactory->createResponse(200)
             ->withHeader('Content-Type', 'application/json')
-            ->withBody($psrFactory->createStream(json_encode($object)));
+            ->withBody($psrFactory->createStream((string) json_encode($object)));
         return $response;
     }
 
     public static function getEmptyResponse(): ResponseInterface
     {
         $psrFactory = new Psr17Factory();
-        return $psrFactory->createResponse(200)->withBody($psrFactory->createStream(json_encode([])));
+        return $psrFactory->createResponse(200)->withBody($psrFactory->createStream((string) json_encode([])));
     }
 
     /** @return ResponseInterface */
@@ -129,7 +129,7 @@ class RestUtils
         if (!$processingResult->isValid()) {
             $status = 400;
             $httpResponseBody["validationErrors"] = $processingResult->getValidationMessages();
-        } elseif (count($processingResult->getData()) <= 0) {
+        } elseif (count((array) $processingResult->getData()) <= 0) {
             return RestUtils::getNotFoundResponse();
         } elseif ($processingResult->hasInternalErrors()) {
             $httpResponseBody["internalErrors"] = $processingResult->getInternalErrors();
@@ -137,7 +137,7 @@ class RestUtils
             return RestUtils::returnSingleObjectResponse($processingResult->getData()[0]);
         }
         $psrFactory = new Psr17Factory();
-        return $psrFactory->createResponse($status)->withBody($psrFactory->createStream(json_encode($httpResponseBody)));
+        return $psrFactory->createResponse($status)->withBody($psrFactory->createStream((string) json_encode($httpResponseBody)));
     }
 
     /** @return ResponseInterface */
@@ -148,16 +148,16 @@ class RestUtils
             $status = 400;
             if ($result->hasInternalErrors()) {
                 $status = 500;
-                $detailedText = implode(" ", $result->getInternalErrors());
+                $detailedText = implode(" ", (array) $result->getInternalErrors());
                 $operationOutcome = UtilsService::createOperationOutcomeResource('fatal', 'transient', $detailedText);
             } else {
                 // TODO: if we had more details or more specific codes we could provide better values here
-                $detailedText = implode(" ", $result->getValidationMessages());
+                $detailedText = implode(" ", (array) $result->getValidationMessages());
                 $operationOutcome = UtilsService::createOperationOutcomeResource('error', 'processing', $detailedText);
             }
-            return $psrFactory->createResponse($status)->withBody($psrFactory->createStream(json_encode($operationOutcome)));
+            return $psrFactory->createResponse($status)->withBody($psrFactory->createStream((string) json_encode($operationOutcome)));
         }
-        $data = $result->getData();
+        $data = (array) $result->getData();
         $id = array_shift($data);
 
         $response = $psrFactory->createResponse(201);
@@ -177,7 +177,7 @@ class RestUtils
     {
         $operationOutcome = UtilsService::createOperationOutcomeSuccess($resourceType, $id);
         $psrFactory = new Psr17Factory();
-        return $psrFactory->createResponse(200)->withBody($psrFactory->createStream(json_encode($operationOutcome)));
+        return $psrFactory->createResponse(200)->withBody($psrFactory->createStream((string) json_encode($operationOutcome)));
     }
 
     /**

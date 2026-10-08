@@ -170,7 +170,7 @@ class SystemUser implements \JsonSerializable
         if (!is_object($obj)) {
             throw new \Exception("Passed in object is not a JSON object");
         }
-        $user = new SystemUser($obj->_id, $obj->_username, $obj->_companyID);
+        $user = new SystemUser($obj->_id, $obj->_username, isset($obj->_companyID) ? $obj->_companyID : null);
         $user->setRole($obj->_role);
 
         // We do not hydrate caps or password

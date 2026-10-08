@@ -135,7 +135,9 @@ class Bootstrap
         $this->eventDispatcher = $eventDispatcher;
 
         // we inject our globals value.
-        $this->globalsConfig = new GlobalConfig($GLOBALS);
+        /** @var array<string, mixed> $globals */
+        $globals = $GLOBALS;
+        $this->globalsConfig = new GlobalConfig($globals);
         $this->logger = new SystemLogger();
         $this->serviceContainer = $this->setupContainer();
     }
@@ -177,8 +179,10 @@ class Bootstrap
             $this->addServicesToContainer($container);
             $container->compile();
             $dumper = new PhpDumper($container);
+            /** @var string $dump */
+            $dump = $dumper->dump(['class' => 'DacAssessmentCachedContainer', 'namespace' => 'OpenEMR\\Modules\\DiscoverAndChange\\Assessments']);
             $containerConfigCache->write(
-                $dumper->dump(['class' => 'DacAssessmentCachedContainer', 'namespace' => 'OpenEMR\\Modules\\DiscoverAndChange\\Assessments']),
+                $dump,
                 $container->getResources()
             );
         }
@@ -473,7 +477,9 @@ class Bootstrap
         $twig = $event->getTwigEnvironment();
         // we know if we don't have our twig extension that we haven't executed so we can setup our system this way.
         if (!$twig->hasExtension(SimplifiedOAuthTwigExtension::class)) {
-            $twig->addExtension($container->get(SimplifiedOAuthTwigExtension::class));
+            /** @var SimplifiedOAuthTwigExtension $extension */
+            $extension = $container->get(SimplifiedOAuthTwigExtension::class);
+            $twig->addExtension($extension);
 
             // we make sure we can override our file system directory here.
             $loader = $twig->getLoader();

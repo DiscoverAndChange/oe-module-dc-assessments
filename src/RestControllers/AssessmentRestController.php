@@ -22,11 +22,11 @@ use Psr\Http\Message\ResponseInterface;
 
 class AssessmentRestController implements IRestController
 {
-    public function __construct(private ?SystemLogger $logger = null)
+    private SystemLogger $logger;
+
+    public function __construct(?SystemLogger $logger = null)
     {
-        if (empty($this->logger)) {
-            $this->logger = new SystemLogger();
-        }
+        $this->logger = $logger ?? new SystemLogger();
     }
 
     public function list(ServerRestRequest $request): ResponseInterface
@@ -40,7 +40,7 @@ class AssessmentRestController implements IRestController
             return RestUtils::getEmptyResponse();
         } else {
             $psrFactory = new Psr17Factory();
-            return $psrFactory->createResponse(200)->withBody($psrFactory->createStream(json_encode($results)));
+            return $psrFactory->createResponse(200)->withBody($psrFactory->createStream((string) json_encode($results)));
         }
     }
 
@@ -85,7 +85,7 @@ class AssessmentRestController implements IRestController
             $companyId = $request->getAuthRole() == Role::SuperUser ? null : $facRepo->getPrimaryBusinessEntity()['id'];
             // first we need to do some checking on whether the current user can edit this assessment
             $assessmentRepo = new AssessmentRepository($this->logger);
-            if (!$assessmentRepo->canEditAssessment($id, $companyId)) {
+            if (!$assessmentRepo->canEditAssessment((int) $id, $companyId)) {
                 throw new AccessDeniedException('admin', 'forms', "You do not have permission to edit this assessment");
             }
             return $this->createAssessmentForContext($request, AssessmentValidator::DATABASE_UPDATE_CONTEXT);
@@ -101,6 +101,7 @@ class AssessmentRestController implements IRestController
     private function createAssessmentForContext(ServerRestRequest $request, $context)
     {
         $validator = new AssessmentValidator();
+        /** @var array<string, mixed> $data */
         $data = $request->getBodyAsJson();
 
         $transactionCommitted = false;

@@ -53,7 +53,7 @@ class AssessmentGroupRestController implements IRestController
             $returnGroups = array_merge($groups, $profilesAsGroups);
 
             $psrFactory = new Psr17Factory();
-            return $psrFactory->createResponse(200)->withBody($psrFactory->createStream(json_encode($returnGroups)));
+            return $psrFactory->createResponse(200)->withBody($psrFactory->createStream((string) json_encode($returnGroups)));
         }
     }
 
@@ -68,7 +68,7 @@ class AssessmentGroupRestController implements IRestController
         foreach ($results as $result) {
             $group = new AssessmentGroup();
             $group->setName($result['name']);
-            $group->setId(intval($result['id']));
+            $group->setId($result['id']);
             if (!empty($result['date_created'])) {
                 $group->setCreated(\DateTime::createFromFormat('Y-m-d H:i:s.u', $result['date_created']));
             }

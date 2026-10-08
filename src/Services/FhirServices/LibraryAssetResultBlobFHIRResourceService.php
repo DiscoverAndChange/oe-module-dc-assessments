@@ -133,10 +133,10 @@ class LibraryAssetResultBlobFHIRResourceService extends FhirServiceBase
             $client = $this->validateCreateAccessAndReturnClient($openEmrRecord['clientId'], SessionWrapperFactory::getInstance()->getActiveSession()->get('authUserID'));
             // use the id in the session... don't like it but its the only thing we have right now
             $resultDTO = new LibraryAssetBlobResultDTO();
-            $resultDTO->fromDTO($openEmrRecord);
+            $resultDTO->fromDTO((array) $openEmrRecord);
             $assetDTO = new LibraryAssetBlobDTO();
             if (!empty($openEmrRecord['asset'])) {
-                $assetDTO->fromDTO($openEmrRecord['asset']);
+                $assetDTO->fromDTO((array) $openEmrRecord['asset']);
             }
 
             $item = $assignmentRepo->getAssignmentItem($resultDTO->getAssignmentItemId(), $openEmrRecord['clientId']);
@@ -150,7 +150,7 @@ class LibraryAssetResultBlobFHIRResourceService extends FhirServiceBase
             $item->setResultId($resultDTO->getId());
             $result = new ProcessingResult();
             $result->addData($resultDTO->getId());
-            $this->completer->markAssignmentComplete($item, $client);
+            $this->completer->markAssignmentComplete($item, (array) $client);
             QueryUtils::commitTransaction();
             $transactionCommitted = true;
         } catch (AccessDeniedException $exception) {

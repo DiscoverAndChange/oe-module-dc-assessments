@@ -223,9 +223,9 @@ class Assignment implements \JsonSerializable
     public function fromJSON(array $assignmentJSON)
     {
         $dateFormat = "Y-m-d\TH:i:s.uP";
-        $this->setId($assignmentJSON["id"] ?? 0);
-        $this->setName($assignmentJSON["name"] ?? "");
-        $this->setType($assignmentJSON["type"] ?? "Assessment");
+        $this->setId(($assignmentJSON["id"] ?? 0));
+        $this->setName(($assignmentJSON["name"] ?? ""));
+        $this->setType(($assignmentJSON["type"] ?? "Assessment"));
         if (!empty($assignmentJSON['dateCompleted'])) {
             $this->setDateCompleted(\DateTime::createFromFormat($dateFormat, $assignmentJSON['dateCompleted']));
         }

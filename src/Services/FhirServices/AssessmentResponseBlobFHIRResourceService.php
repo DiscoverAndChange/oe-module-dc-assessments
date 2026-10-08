@@ -161,7 +161,7 @@ class AssessmentResponseBlobFHIRResourceService extends FhirServiceBase
             $resultRepo = new AssessmentResultRepository();
             $resultId = Uuid::uuid4()->toString();
             $item->setResultId($resultId);
-            $savedResult = $resultRepo->createResult($resultId, $openEmrRecord, $client['pid'], $item->getAssessmentId());
+            $savedResult = $resultRepo->createResult($resultId, (array) $openEmrRecord, $client['pid'], $item->getAssessmentId());
 
             if (empty($item)) {
                 throw new \InvalidArgumentException("Assignment item not found", ErrorCode::INVALID_REQUEST);
@@ -171,7 +171,7 @@ class AssessmentResponseBlobFHIRResourceService extends FhirServiceBase
             }
             $result = new ProcessingResult();
             $result->addData($resultId);
-            $this->completer->markAssignmentComplete($item, $client);
+            $this->completer->markAssignmentComplete($item, (array) $client);
             QueryUtils::commitTransaction();
             $transactionCommitted = true;
         } catch (AccessDeniedException $exception) {

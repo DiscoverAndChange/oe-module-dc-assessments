@@ -115,7 +115,7 @@ class QuestionnaireRestController implements IRestController
         // FHIRBundle omits the `entry` key when empty, but the SPA expects an
         // array; normalize the empty case to a plain array with entry: [].
         if (empty($bundleEntries)) {
-            $bundleSearchResult = json_decode(json_encode($bundleSearchResult), true);
+            $bundleSearchResult = json_decode((string) json_encode($bundleSearchResult), true);
             $bundleSearchResult['entry'] = [];
         }
         return $bundleSearchResult;

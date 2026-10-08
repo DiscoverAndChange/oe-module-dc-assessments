@@ -228,17 +228,17 @@ class LibraryAssetBlobDTO implements \JsonSerializable
      */
     public function fromDTO(array $data)
     {
-        $this->setId($data['id'] ?? 0);
-        $this->setTitle($data['title'] ?? '');
-        $this->setType($data['type'] ?? 'article');
-        $this->setDescription($data['description'] ?? '');
-        $this->setContent($data['content'] ?? '');
+        $this->setId(($data['id'] ?? 0));
+        $this->setTitle(($data['title'] ?? ''));
+        $this->setType(($data['type'] ?? 'article'));
+        $this->setDescription(($data['description'] ?? ''));
+        $this->setContent(($data['content'] ?? ''));
         $this->setJournal($data['journal'] ?? null);
         $this->setOriginalCreator($data['originalCreator'] ?? null);
         $this->setCreatorLink($data['creatorLink'] ?? null);
-        $this->setCreationDate($data['creationDate'] ?? (new \DateTime())->format(DATE_ATOM));
-        $this->setLastUpdateDate($data['lastUpdateDate'] ?? (new \DateTime())->format(DATE_ATOM));
-        $this->setTags($data['tags'] ?? []);
-        $this->setResults($data['results'] ?? []);
+        $this->setCreationDate(($data['creationDate'] ?? (new \DateTime())->format(DATE_ATOM)));
+        $this->setLastUpdateDate(($data['lastUpdateDate'] ?? (new \DateTime())->format(DATE_ATOM)));
+        $this->setTags((array) ($data['tags'] ?? []));
+        $this->setResults((array) ($data['results'] ?? []));
     }
 }

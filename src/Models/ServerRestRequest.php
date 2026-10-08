@@ -140,7 +140,9 @@ final class ServerRestRequest implements ServerRequestInterface
 
     public function withRequestTarget($requestTarget): static
     {
-        return new ServerRestRequest($this->httpRestRequest->withRequestTarget($requestTarget));
+        /** @var HttpRestRequest $request */
+        $request = $this->httpRestRequest->withRequestTarget($requestTarget);
+        return new ServerRestRequest($request);
     }
 
     public function getMethod(): string
@@ -192,7 +194,9 @@ final class ServerRestRequest implements ServerRequestInterface
     public function withCookieParams(array $cookies): static
     {
         // TODO: Implement withCookieParams() method.
-        return new ServerRestRequest($this->httpRestRequest->withCookieParams($cookies));
+        /** @var array<string, mixed> $cookieParams */
+        $cookieParams = $cookies;
+        return new ServerRestRequest($this->httpRestRequest->withCookieParams($cookieParams));
     }
 
     /** @return array<mixed> */
@@ -211,7 +215,9 @@ final class ServerRestRequest implements ServerRequestInterface
     /** @param array<mixed> $query */
     public function withQueryParams(array $query): static
     {
-        return new ServerRestRequest($this->httpRestRequest->withQueryParams($query));
+        /** @var array<string, mixed> $queryParams */
+        $queryParams = $query;
+        return new ServerRestRequest($this->httpRestRequest->withQueryParams($queryParams));
     }
 
     /** @return array<mixed> */

@@ -217,24 +217,6 @@ parameters:
 			path: src/Bootstrap.php
 
 		-
-			message: '#^Parameter \#1 \$content of method Symfony\\Component\\Config\\ResourceCheckerConfigCache\:\:write\(\) expects string, array\|string given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Bootstrap.php
-
-		-
-			message: '#^Parameter \#1 \$extension of method Twig\\Environment\:\:addExtension\(\) expects Twig\\Extension\\ExtensionInterface, object given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Bootstrap.php
-
-		-
-			message: '#^Parameter \#1 \$globalsArray of class OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\GlobalConfig constructor expects array\<string, mixed\>, array\<mixed\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Bootstrap.php
-
-		-
 			message: '#^Parameter \#1 \$string of function urlencode expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
@@ -286,18 +268,6 @@ parameters:
 			message: '#^Cannot access offset 0 on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 3
-			path: src/Controllers/AssessmentAppointmentController.php
-
-		-
-			message: '#^Cannot call method getClientId\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/Controllers/AssessmentAppointmentController.php
-
-		-
-			message: '#^Cannot call method getId\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
 			path: src/Controllers/AssessmentAppointmentController.php
 
 		-
@@ -361,31 +331,19 @@ parameters:
 			path: src/Controllers/AssessmentAppointmentController.php
 
 		-
-			message: '#^Parameter \#1 \$appointment of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Controllers\\AssessmentAppointmentController\:\:getCalendarEventBackUrl\(\) expects array\<mixed\>, mixed given\.$#'
-			identifier: argument.type
-			count: 2
-			path: src/Controllers/AssessmentAppointmentController.php
-
-		-
 			message: '#^Parameter \#1 \$category of method OpenEMR\\Services\\DocumentTemplates\\DocumentTemplateService\:\:getTemplateListByCategory\(\) expects null, string given\.$#'
 			identifier: argument.type
 			count: 2
 			path: src/Controllers/AssessmentAppointmentController.php
 
 		-
-			message: '#^Parameter \#1 \$clientId of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssignmentRepository\:\:removeAssignment\(\) expects string, mixed given\.$#'
+			message: '#^Parameter \#1 \$clientId of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssignmentRepository\:\:removeAssignment\(\) expects string, string\|null given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Controllers/AssessmentAppointmentController.php
 
 		-
 			message: '#^Parameter \#1 \$pc_eid of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssignmentRepository\:\:getAssignmentUuidsForAppointment\(\) expects int\|null, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Controllers/AssessmentAppointmentController.php
-
-		-
-			message: '#^Parameter \#1 \$pc_eid of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssignmentRepository\:\:getAssignmentsForAppointmentId\(\) expects int\|null, array\|int\|string given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Controllers/AssessmentAppointmentController.php
@@ -400,18 +358,6 @@ parameters:
 			message: '#^Parameter \#1 \$string of function urlencode expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 5
-			path: src/Controllers/AssessmentAppointmentController.php
-
-		-
-			message: '#^Parameter \#1 \$wizardScreen of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Controllers\\AssessmentAppointmentController\:\:renderWizardScreenForAppointmentId\(\) expects string, string\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Controllers/AssessmentAppointmentController.php
-
-		-
-			message: '#^Parameter \#2 \$assignmentId of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssignmentRepository\:\:removeAssignment\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
 			path: src/Controllers/AssessmentAppointmentController.php
 
 		-
@@ -466,24 +412,6 @@ parameters:
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
 			identifier: empty.notAllowed
 			count: 4
-			path: src/Controllers/AssignmentEncounterController.php
-
-		-
-			message: '#^Parameter \#1 \$id of static method OpenEMR\\Services\\BaseService\:\:getUuidById\(\) expects string, int\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Controllers/AssignmentEncounterController.php
-
-		-
-			message: '#^Parameter \#1 \$pid of method OpenEMR\\Services\\PatientService\:\:getUuid\(\) expects string, int\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Controllers/AssignmentEncounterController.php
-
-		-
-			message: '#^Parameter \#2 \$puuid of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssignmentRepository\:\:getAssignmentsForEncounterUuid\(\) expects string, string\|false given\.$#'
-			identifier: argument.type
-			count: 1
 			path: src/Controllers/AssignmentEncounterController.php
 
 		-
@@ -649,18 +577,6 @@ parameters:
 			path: src/DTO/LibraryAssetBlobDTO.php
 
 		-
-			message: '#^Parameter \#1 \$results of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\DTO\\LibraryAssetBlobDTO\:\:setResults\(\) expects array\<mixed\>\|null, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/DTO/LibraryAssetBlobDTO.php
-
-		-
-			message: '#^Parameter \#1 \$tags of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\DTO\\LibraryAssetBlobDTO\:\:setTags\(\) expects array\<mixed\>\|null, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/DTO/LibraryAssetBlobDTO.php
-
-		-
 			message: '#^Parameter \#1 \$title of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\DTO\\LibraryAssetBlobDTO\:\:setTitle\(\) expects string\|null, mixed given\.$#'
 			identifier: argument.type
 			count: 1
@@ -675,12 +591,6 @@ parameters:
 		-
 			message: '#^Cannot access offset ''id'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/DTO/LibraryAssetBlobResultDTO.php
-
-		-
-			message: '#^Parameter \#1 \$answers of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\DTO\\LibraryAssetBlobResultDTO\:\:setAnswers\(\) expects array\<mixed\>, mixed given\.$#'
-			identifier: argument.type
 			count: 1
 			path: src/DTO/LibraryAssetBlobResultDTO.php
 
@@ -949,12 +859,6 @@ parameters:
 			path: src/Listeners/QuestionnaireResponseRestListener.php
 
 		-
-			message: '#^Parameter \#1 \$fhirSearchParameters of method OpenEMR\\Services\\FHIR\\FhirServiceBase\:\:getAll\(\) expects array, mixed given\.$#'
-			identifier: argument.type
-			count: 2
-			path: src/Listeners/QuestionnaireResponseRestListener.php
-
-		-
 			message: '#^Result of && is always true\.$#'
 			identifier: booleanAnd.alwaysTrue
 			count: 2
@@ -1141,19 +1045,7 @@ parameters:
 			path: src/Models/Client.php
 
 		-
-			message: '#^Parameter \#1 \$obj of static method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Models\\SystemUser\:\:fromJSON\(\) expects object, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Models/Client.php
-
-		-
 			message: '#^Parameter \#1 \.\.\.\$arrays of function array_merge expects array, OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Models\\Client given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Models/Client.php
-
-		-
-			message: '#^Parameter \#2 \$callback of function usort expects callable\(mixed, mixed\)\: int, Closure\(OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Models\\Assignment, OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Models\\Assignment\)\: \(\-1\|1\) given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Models/Client.php
@@ -1219,34 +1111,10 @@ parameters:
 			path: src/Models/ServerRestRequest.php
 
 		-
-			message: '#^Parameter \#1 \$cookies of method OpenEMR\\Common\\Http\\HttpRestRequest\:\:withCookieParams\(\) expects array\<string, mixed\>, array\<mixed\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Models/ServerRestRequest.php
-
-		-
 			message: '#^Parameter \#1 \$data of method OpenEMR\\Common\\Http\\HttpRestRequest\:\:withParsedBody\(\) expects array\<string, mixed\>\|null, array\<mixed\>\|object\|null given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Models/ServerRestRequest.php
-
-		-
-			message: '#^Parameter \#1 \$httpRestRequest of class OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Models\\ServerRestRequest constructor expects OpenEMR\\Common\\Http\\HttpRestRequest, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Models/ServerRestRequest.php
-
-		-
-			message: '#^Parameter \#1 \$query of method OpenEMR\\Common\\Http\\HttpRestRequest\:\:withQueryParams\(\) expects array\<string, mixed\>, array\<mixed\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Models/ServerRestRequest.php
-
-		-
-			message: '#^Access to an undefined property object\:\:\$_companyID\.$#'
-			identifier: property.notFound
-			count: 1
-			path: src/Models/SystemUser.php
 
 		-
 			message: '#^Access to an undefined property object\:\:\$_id\.$#'
@@ -1295,12 +1163,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: src/Models/SystemUser.php
-
-		-
-			message: '#^Parameter \#1 \$body of method Psr\\Http\\Message\\MessageInterface\:\:withBody\(\) expects Psr\\Http\\Message\\StreamInterface, string\|false given\.$#'
-			identifier: argument.type
-			count: 4
-			path: src/RestControllers/AnnouncementRestController.php
 
 		-
 			message: '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\.$#'
@@ -1447,12 +1309,6 @@ parameters:
 			path: src/RestControllers/AssessmentGroupRestController.php
 
 		-
-			message: '#^Parameter \#1 \$content of method Nyholm\\Psr7\\Factory\\Psr17Factory\:\:createStream\(\) expects string, string\|false given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/RestControllers/AssessmentGroupRestController.php
-
-		-
 			message: '#^Parameter \#1 \$created of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Models\\AssessmentGroup\:\:setCreated\(\) expects DateTime, DateTime\|false given\.$#'
 			identifier: argument.type
 			count: 1
@@ -1461,7 +1317,7 @@ parameters:
 		-
 			message: '#^Parameter \#1 \$id of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Models\\AssessmentGroup\:\:setId\(\) expects int\|string, mixed given\.$#'
 			identifier: argument.type
-			count: 1
+			count: 2
 			path: src/RestControllers/AssessmentGroupRestController.php
 
 		-
@@ -1502,12 +1358,6 @@ parameters:
 
 		-
 			message: '#^Parameter \#1 \$v of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Models\\AssessmentGroup\:\:setProfileId\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/RestControllers/AssessmentGroupRestController.php
-
-		-
-			message: '#^Parameter \#1 \$value of function intval expects array\|bool\|float\|GMP\|int\|resource\|SimpleXMLElement\|string\|null, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/RestControllers/AssessmentGroupRestController.php
@@ -1585,12 +1435,6 @@ parameters:
 			path: src/RestControllers/AssessmentReportRestController.php
 
 		-
-			message: '#^Parameter \#1 \$content of method Nyholm\\Psr7\\Factory\\Psr17Factory\:\:createStream\(\) expects string, string\|false given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/RestControllers/AssessmentReportRestController.php
-
-		-
 			message: '#^Parameter \#1 \$id of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssessmentReportRepository\:\:createReport\(\) expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
@@ -1622,18 +1466,6 @@ parameters:
 
 		-
 			message: '#^Parameter \#3 \$userId of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssessmentReportRepository\:\:updateReport\(\) expects int, int\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/RestControllers/AssessmentReportRestController.php
-
-		-
-			message: '#^Parameter \#4 \$data of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssessmentReportRepository\:\:createReport\(\) expects array\<mixed\>, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/RestControllers/AssessmentReportRestController.php
-
-		-
-			message: '#^Parameter \#4 \$data of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssessmentReportRepository\:\:updateReport\(\) expects array\<mixed\>, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/RestControllers/AssessmentReportRestController.php
@@ -1681,38 +1513,8 @@ parameters:
 			path: src/RestControllers/AssessmentReportRestController.php
 
 		-
-			message: '#^Cannot access offset ''_description'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/RestControllers/AssessmentRestController.php
-
-		-
-			message: '#^Cannot access offset ''_name'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/RestControllers/AssessmentRestController.php
-
-		-
-			message: '#^Cannot access offset ''_uid'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/RestControllers/AssessmentRestController.php
-
-		-
 			message: '#^Cannot access offset ''id'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
-			count: 3
-			path: src/RestControllers/AssessmentRestController.php
-
-		-
-			message: '#^Cannot access offset ''token'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/RestControllers/AssessmentRestController.php
-
-		-
-			message: '#^Cannot call method error\(\) on OpenEMR\\Common\\Logging\\SystemLogger\|null\.$#'
-			identifier: method.nonObject
 			count: 3
 			path: src/RestControllers/AssessmentRestController.php
 
@@ -1725,7 +1527,7 @@ parameters:
 		-
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
 			identifier: empty.notAllowed
-			count: 3
+			count: 2
 			path: src/RestControllers/AssessmentRestController.php
 
 		-
@@ -1765,30 +1567,6 @@ parameters:
 			path: src/RestControllers/AssessmentRestController.php
 
 		-
-			message: '#^Parameter \#1 \$content of method Nyholm\\Psr7\\Factory\\Psr17Factory\:\:createStream\(\) expects string, string\|false given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/RestControllers/AssessmentRestController.php
-
-		-
-			message: '#^Parameter \#1 \$id of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssessmentRepository\:\:canEditAssessment\(\) expects int, string given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/RestControllers/AssessmentRestController.php
-
-		-
-			message: '#^Parameter \#1 \$logger of class OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssessmentRepository constructor expects OpenEMR\\Common\\Logging\\SystemLogger, OpenEMR\\Common\\Logging\\SystemLogger\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/RestControllers/AssessmentRestController.php
-
-		-
-			message: '#^Parameter \#1 \$logger of static method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Utils\\RestUtils\:\:getErrorResponse\(\) expects OpenEMR\\Common\\Logging\\SystemLogger, OpenEMR\\Common\\Logging\\SystemLogger\|null given\.$#'
-			identifier: argument.type
-			count: 3
-			path: src/RestControllers/AssessmentRestController.php
-
-		-
 			message: '#^Parameter \#1 \$uid of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssessmentRepository\:\:createAssessment\(\) expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
@@ -1825,12 +1603,6 @@ parameters:
 			path: src/RestControllers/AssessmentRestController.php
 
 		-
-			message: '#^Parameter \#4 \$jsonData of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssessmentRepository\:\:createAssessment\(\) expects array\<mixed\>, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/RestControllers/AssessmentRestController.php
-
-		-
 			message: '#^Parameter \#5 \$companyId of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssessmentRepository\:\:createAssessment\(\) expects int\|null, mixed given\.$#'
 			identifier: argument.type
 			count: 1
@@ -1844,24 +1616,6 @@ parameters:
 
 		-
 			message: '#^Cannot access offset ''_assignmentItemId'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/RestControllers/AssessmentResultRestController.php
-
-		-
-			message: '#^Cannot access offset ''clientId'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/RestControllers/AssessmentResultRestController.php
-
-		-
-			message: '#^Cannot access offset ''data'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/RestControllers/AssessmentResultRestController.php
-
-		-
-			message: '#^Cannot access offset ''id'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
 			path: src/RestControllers/AssessmentResultRestController.php
@@ -1933,12 +1687,6 @@ parameters:
 			path: src/RestControllers/AssessmentResultRestController.php
 
 		-
-			message: '#^Parameter \#1 \$body of method Psr\\Http\\Message\\MessageInterface\:\:withBody\(\) expects Psr\\Http\\Message\\StreamInterface, string\|false given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/RestControllers/AssessmentResultRestController.php
-
-		-
 			message: '#^Parameter \#1 \$clientId of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssessmentResultRepository\:\:getResultListForPatient\(\) expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
@@ -1963,19 +1711,7 @@ parameters:
 			path: src/RestControllers/AssessmentResultRestController.php
 
 		-
-			message: '#^Parameter \#2 \$assessmentUID of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssessmentResultRepository\:\:getResultsForPatient\(\) expects string\|null, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/RestControllers/AssessmentResultRestController.php
-
-		-
 			message: '#^Parameter \#2 \$patientUuidString of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\RestControllers\\AssessmentResultRestController\:\:validateCreateAccessAndReturnClient\(\) expects string, string\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/RestControllers/AssessmentResultRestController.php
-
-		-
-			message: '#^Parameter \#2 \$resultData of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssessmentResultRepository\:\:createResult\(\) expects array\<mixed\>, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/RestControllers/AssessmentResultRestController.php
@@ -1988,18 +1724,6 @@ parameters:
 
 		-
 			message: '#^Parameter \#3 \$clientId of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssessmentResultRepository\:\:createResult\(\) expects int, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/RestControllers/AssessmentResultRestController.php
-
-		-
-			message: '#^Parameter \#3 \$resultId of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssessmentResultRepository\:\:getResultsForPatient\(\) expects string\|null, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/RestControllers/AssessmentResultRestController.php
-
-		-
-			message: '#^Parameter \#3 \$user of static method OpenEMR\\Common\\Acl\\AclMain\:\:aclCheckCore\(\) expects string, int\|null given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/RestControllers/AssessmentResultRestController.php
@@ -2119,31 +1843,7 @@ parameters:
 			path: src/RestControllers/ClientRestController.php
 
 		-
-			message: '#^Parameter \#1 \$assignmentJSON of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssignmentSerializer\:\:deserialize\(\) expects array\<mixed\>, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/RestControllers/ClientRestController.php
-
-		-
-			message: '#^Parameter \#1 \$body of method Psr\\Http\\Message\\MessageInterface\:\:withBody\(\) expects Psr\\Http\\Message\\StreamInterface, string\|false given\.$#'
-			identifier: argument.type
-			count: 2
-			path: src/RestControllers/ClientRestController.php
-
-		-
 			message: '#^Parameter \#1 \$companyID of class OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\ClientSearchRepository constructor expects int\|null, mixed given\.$#'
-			identifier: argument.type
-			count: 2
-			path: src/RestControllers/ClientRestController.php
-
-		-
-			message: '#^Parameter \#1 \$content of method Nyholm\\Psr7\\Factory\\Psr17Factory\:\:createStream\(\) expects string, string\|false given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/RestControllers/ClientRestController.php
-
-		-
-			message: '#^Parameter \#1 \$logger of static method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Utils\\RestUtils\:\:returnAccessDeniedResponse\(\) expects OpenEMR\\Common\\Logging\\SystemLogger, string given\.$#'
 			identifier: argument.type
 			count: 2
 			path: src/RestControllers/ClientRestController.php
@@ -2161,19 +1861,7 @@ parameters:
 			path: src/RestControllers/ClientRestController.php
 
 		-
-			message: '#^Parameter \#1 \$userId of method OpenEMR\\Services\\UserService\:\:getUser\(\) expects int\|string, int\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/RestControllers/ClientRestController.php
-
-		-
 			message: '#^Parameter \#1 \$uuid of method OpenEMR\\Services\\UserService\:\:getUserByUUID\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/RestControllers/ClientRestController.php
-
-		-
-			message: '#^Parameter \#2 \$config of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\ClientSearchRepository\:\:searchClientList\(\) expects OpenEMR\\Services\\Search\\SearchQueryConfig, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/RestControllers/ClientRestController.php
@@ -2186,18 +1874,6 @@ parameters:
 
 		-
 			message: '#^Parameter \#2 \$profileId of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\ClientRepository\:\:addTemplateProfileAssignmentToClient\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/RestControllers/ClientRestController.php
-
-		-
-			message: '#^Parameter \#3 \$assignedUserId of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\ClientSearchRepository\:\:searchClientList\(\) expects int\|null, int\|string\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/RestControllers/ClientRestController.php
-
-		-
-			message: '#^Parameter \#3 \$getUserId of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\ClientRepository\:\:addAssignmentToClient\(\) expects int, int\|null given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/RestControllers/ClientRestController.php
@@ -2269,12 +1945,6 @@ parameters:
 			path: src/RestControllers/ClientRestController.php
 
 		-
-			message: '#^Static method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Utils\\RestUtils\:\:returnAccessDeniedResponse\(\) invoked with 1 parameter, 2 required\.$#'
-			identifier: arguments.count
-			count: 2
-			path: src/RestControllers/ClientRestController.php
-
-		-
 			message: '#^catch \(Exception\) would suppress ErrorException, which is forbidden\.$#'
 			identifier: openemr.forbiddenCatchType
 			count: 8
@@ -2283,12 +1953,6 @@ parameters:
 		-
 			message: '#^Direct instantiation of OpenEMR\\Common\\Http\\Psr17Factory is discouraged\. Use OpenEMR\\BC\\ServiceContainer\:\:get\{PsrType\}Factory\(\) instead\.$#'
 			identifier: openemr.forbiddenInstantiation
-			count: 4
-			path: src/RestControllers/EmptyRestController.php
-
-		-
-			message: '#^Parameter \#1 \$content of method OpenEMR\\Common\\Http\\Psr17Factory\:\:createStream\(\) expects string, string\|false given\.$#'
-			identifier: argument.type
 			count: 4
 			path: src/RestControllers/EmptyRestController.php
 
@@ -2317,43 +1981,7 @@ parameters:
 			path: src/RestControllers/LibraryAssetRestController.php
 
 		-
-			message: '#^Parameter \#1 \$body of method Psr\\Http\\Message\\MessageInterface\:\:withBody\(\) expects Psr\\Http\\Message\\StreamInterface, string\|false given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/RestControllers/LibraryAssetRestController.php
-
-		-
-			message: '#^Parameter \#1 \$content of method Nyholm\\Psr7\\Factory\\Psr17Factory\:\:createStream\(\) expects string, string\|false given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/RestControllers/LibraryAssetRestController.php
-
-		-
-			message: '#^Parameter \#1 \$data of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\DTO\\LibraryAssetBlobDTO\:\:fromDTO\(\) expects array\<mixed\>, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/RestControllers/LibraryAssetRestController.php
-
-		-
-			message: '#^Parameter \#1 \$id of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\LibraryAssetBlobRepository\:\:getAsset\(\) expects int, string given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/RestControllers/LibraryAssetRestController.php
-
-		-
 			message: '#^Parameter \#1 \$string of function trim expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/RestControllers/LibraryAssetRestController.php
-
-		-
-			message: '#^Parameter \#1 \$value of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\HTMLSanitizer\:\:sanitize\(\) expects string, string\|null given\.$#'
-			identifier: argument.type
-			count: 3
-			path: src/RestControllers/LibraryAssetRestController.php
-
-		-
-			message: '#^Parameter \#2 \$userId of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\LibraryAssetBlobRepository\:\:saveLibraryAssetBlob\(\) expects int, int\|null given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/RestControllers/LibraryAssetRestController.php
@@ -2367,24 +1995,6 @@ parameters:
 		-
 			message: '#^Call to an undefined method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Models\\Assignment\:\:setResultId\(\)\.$#'
 			identifier: method.notFound
-			count: 1
-			path: src/RestControllers/LibraryAssetResultRestController.php
-
-		-
-			message: '#^Cannot access offset ''asset'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/RestControllers/LibraryAssetResultRestController.php
-
-		-
-			message: '#^Cannot access offset ''assignmentItemId'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/RestControllers/LibraryAssetResultRestController.php
-
-		-
-			message: '#^Cannot access offset ''clientId'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
 			path: src/RestControllers/LibraryAssetResultRestController.php
 
@@ -2455,25 +2065,7 @@ parameters:
 			path: src/RestControllers/LibraryAssetResultRestController.php
 
 		-
-			message: '#^Parameter \#1 \$body of method Psr\\Http\\Message\\MessageInterface\:\:withBody\(\) expects Psr\\Http\\Message\\StreamInterface, string\|false given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/RestControllers/LibraryAssetResultRestController.php
-
-		-
-			message: '#^Parameter \#1 \$data of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\DTO\\LibraryAssetBlobResultDTO\:\:fromDTO\(\) expects array\<mixed\>, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/RestControllers/LibraryAssetResultRestController.php
-
-		-
 			message: '#^Parameter \#1 \$id of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\RestControllers\\LibraryAssetResultRestController\:\:getAsset\(\) expects int\|null, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/RestControllers/LibraryAssetResultRestController.php
-
-		-
-			message: '#^Parameter \#1 \$id of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\LibraryAssetBlobRepository\:\:getAsset\(\) expects int, int\|null given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/RestControllers/LibraryAssetResultRestController.php
@@ -2492,12 +2084,6 @@ parameters:
 
 		-
 			message: '#^Parameter \#3 \$clientId of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\RestControllers\\LibraryAssetResultRestController\:\:validateCreateAccessAndReturnClient\(\) expects string\|null, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/RestControllers/LibraryAssetResultRestController.php
-
-		-
-			message: '#^Parameter \#3 \$user of static method OpenEMR\\Common\\Acl\\AclMain\:\:aclCheckCore\(\) expects string, int\|null given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/RestControllers/LibraryAssetResultRestController.php
@@ -2524,42 +2110,6 @@ parameters:
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
 			identifier: empty.notAllowed
 			count: 2
-			path: src/RestControllers/MessageTemplateRestController.php
-
-		-
-			message: '#^Parameter \#1 \$body of method Psr\\Http\\Message\\MessageInterface\:\:withBody\(\) expects Psr\\Http\\Message\\StreamInterface, string\|false given\.$#'
-			identifier: argument.type
-			count: 2
-			path: src/RestControllers/MessageTemplateRestController.php
-
-		-
-			message: '#^Parameter \#1 \$client of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\MessageTemplateRepository\:\:getTemplateForClient\(\) expects array\<mixed\>, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/RestControllers/MessageTemplateRestController.php
-
-		-
-			message: '#^Parameter \#1 \$logger of static method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Utils\\RestUtils\:\:getErrorResponse\(\) expects OpenEMR\\Common\\Logging\\SystemLogger, Exception given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/RestControllers/MessageTemplateRestController.php
-
-		-
-			message: '#^Parameter \#1 \$userId of method OpenEMR\\Services\\UserService\:\:getUser\(\) expects int\|string, int\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/RestControllers/MessageTemplateRestController.php
-
-		-
-			message: '#^Parameter \#2 \$company of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\MessageTemplateRepository\:\:getTemplateForClient\(\) expects OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\Company\|OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\Facility\|null, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/RestControllers/MessageTemplateRestController.php
-
-		-
-			message: '#^Static method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Utils\\RestUtils\:\:getErrorResponse\(\) invoked with 1 parameter, 2 required\.$#'
-			identifier: arguments.count
-			count: 1
 			path: src/RestControllers/MessageTemplateRestController.php
 
 		-
@@ -2689,12 +2239,6 @@ parameters:
 			path: src/RestControllers/QuestionnaireAuditController.php
 
 		-
-			message: '#^Parameter \#1 \$json of function json_decode expects string, string\|false given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/RestControllers/QuestionnaireAuditController.php
-
-		-
 			message: '#^Parameter \#1 \$pid of method OpenEMR\\Common\\Forms\\BaseForm\:\:setPid\(\) expects int, mixed given\.$#'
 			identifier: argument.type
 			count: 1
@@ -2708,12 +2252,6 @@ parameters:
 
 		-
 			message: '#^Parameter \#1 \$recordId of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssignmentRepository\:\:getAssignmentItemsForAuditId\(\) expects int\|string, mixed given\.$#'
-			identifier: argument.type
-			count: 2
-			path: src/RestControllers/QuestionnaireAuditController.php
-
-		-
-			message: '#^Parameter \#3 \$children of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\RestControllers\\QuestionnaireAuditController\:\:getCategoryTree\(\) expects array\<mixed\>, mixed given\.$#'
 			identifier: argument.type
 			count: 2
 			path: src/RestControllers/QuestionnaireAuditController.php
@@ -2821,18 +2359,6 @@ parameters:
 			path: src/RestControllers/QuestionnaireResponseRestController.php
 
 		-
-			message: '#^Parameter \#1 \$fhirResource of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\QuestionnaireResponseFHIRResourceService\:\:insert\(\) expects OpenEMR\\FHIR\\R4\\FHIRResource\\FHIRDomainResource, object given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/RestControllers/QuestionnaireResponseRestController.php
-
-		-
-			message: '#^Parameter \#1 \$json of function json_decode expects string, string\|false given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/RestControllers/QuestionnaireResponseRestController.php
-
-		-
 			message: '#^Parameter \#2 \$id of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\RestControllers\\QuestionnaireResponseRestController\:\:one\(\) expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
@@ -2929,22 +2455,10 @@ parameters:
 			path: src/RestControllers/QuestionnaireRestController.php
 
 		-
-			message: '#^Parameter \#1 \$json of function json_decode expects string, string\|false given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/RestControllers/QuestionnaireRestController.php
-
-		-
 			message: '#^Property OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\RestControllers\\QuestionnaireRestController\:\:\$logger is never read, only written\.$#'
 			identifier: property.onlyWritten
 			count: 1
 			path: src/RestControllers/QuestionnaireRestController.php
-
-		-
-			message: '#^Parameter \#1 \$body of method Psr\\Http\\Message\\MessageInterface\:\:withBody\(\) expects Psr\\Http\\Message\\StreamInterface, string\|false given\.$#'
-			identifier: argument.type
-			count: 2
-			path: src/RestControllers/SystemUserRestController.php
 
 		-
 			message: '#^Access to an undefined property OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\RestControllers\\TagRestController\:\:\$logger\.$#'
@@ -2956,12 +2470,6 @@ parameters:
 			message: '#^Expression on left side of \?\? is not nullable\.$#'
 			identifier: nullCoalesce.expr
 			count: 1
-			path: src/RestControllers/TagRestController.php
-
-		-
-			message: '#^Parameter \#1 \$body of method Psr\\Http\\Message\\MessageInterface\:\:withBody\(\) expects Psr\\Http\\Message\\StreamInterface, string\|false given\.$#'
-			identifier: argument.type
-			count: 2
 			path: src/RestControllers/TagRestController.php
 
 		-
@@ -3073,12 +2581,6 @@ parameters:
 			path: src/RestControllers/TaskRestController.php
 
 		-
-			message: '#^Parameter \#1 \$json of function json_decode expects string, string\|false given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/RestControllers/TaskRestController.php
-
-		-
 			message: '#^Parameter \#2 \$id of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\RestControllers\\TaskRestController\:\:one\(\) expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
@@ -3101,12 +2603,6 @@ parameters:
 			identifier: openemr.forbiddenCatchType
 			count: 1
 			path: src/RestControllers/TaskRestController.php
-
-		-
-			message: '#^Parameter \#1 \$body of method Psr\\Http\\Message\\MessageInterface\:\:withBody\(\) expects Psr\\Http\\Message\\StreamInterface, string\|false given\.$#'
-			identifier: argument.type
-			count: 2
-			path: src/RestControllers/TokenRestController.php
 
 		-
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
@@ -3230,24 +2726,6 @@ parameters:
 
 		-
 			message: '#^Parameter \#1 \$json of function json_decode expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/AssessmentRepository.php
-
-		-
-			message: '#^Parameter \#1 \$record of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssessmentRepository\:\:hydrateAssessmentSummaryFromDatabaseRecord\(\) expects array\<mixed\>, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/AssessmentRepository.php
-
-		-
-			message: '#^Parameter \#1 \$search of static method OpenEMR\\Services\\Search\\FhirSearchWhereClauseBuilder\:\:build\(\) expects array\<string, OpenEMR\\Services\\Search\\ISearchField\>, array\<mixed\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/AssessmentRepository.php
-
-		-
-			message: '#^Parameter \#1 \$value of function intval expects array\|bool\|float\|GMP\|int\|resource\|SimpleXMLElement\|string\|null, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Services/AssessmentRepository.php
@@ -3388,18 +2866,6 @@ parameters:
 			message: '#^Parameter \#1 \$json of function json_decode expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 2
-			path: src/Services/AssessmentResultRepository.php
-
-		-
-			message: '#^Parameter \#1 \$search of static method OpenEMR\\Services\\Search\\FhirSearchWhereClauseBuilder\:\:build\(\) expects array\<string, OpenEMR\\Services\\Search\\ISearchField\>, array\<mixed\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/AssessmentResultRepository.php
-
-		-
-			message: '#^Parameter \#1 \$value of function intval expects array\|bool\|float\|GMP\|int\|resource\|SimpleXMLElement\|string\|null, mixed given\.$#'
-			identifier: argument.type
-			count: 1
 			path: src/Services/AssessmentResultRepository.php
 
 		-
@@ -3553,12 +3019,6 @@ parameters:
 			path: src/Services/AssignmentRepository.php
 
 		-
-			message: '#^Parameter \#1 \$item of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssignmentRepository\:\:hydrateItemFromRecord\(\) expects array\<mixed\>, mixed given\.$#'
-			identifier: argument.type
-			count: 3
-			path: src/Services/AssignmentRepository.php
-
-		-
 			message: '#^Parameter \#1 \$puuid of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\TaskOnsitePortalActivityAccessService\:\:createOnSitePortalActivity\(\) expects string, string\|null given\.$#'
 			identifier: argument.type
 			count: 1
@@ -3700,18 +3160,6 @@ parameters:
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
 			identifier: empty.notAllowed
 			count: 2
-			path: src/Services/AssignmentSerializer.php
-
-		-
-			message: '#^Parameter \#1 \$assignmentJSON of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Models\\AssignedQuestionnaire\:\:fromJSON\(\) expects array\<mixed\>, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/AssignmentSerializer.php
-
-		-
-			message: '#^Parameter \#1 \$assignmentJSON of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssignmentSerializer\:\:deserialize\(\) expects array\<mixed\>, mixed given\.$#'
-			identifier: argument.type
-			count: 1
 			path: src/Services/AssignmentSerializer.php
 
 		-
@@ -4123,19 +3571,7 @@ parameters:
 			path: src/Services/FhirServices/AssessmentResponseBlobFHIRResourceService.php
 
 		-
-			message: '#^Parameter \#2 \$client of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssignmentCompleter\:\:markAssignmentComplete\(\) expects array\<mixed\>, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/FhirServices/AssessmentResponseBlobFHIRResourceService.php
-
-		-
 			message: '#^Parameter \#2 \$puuid of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssignmentRepository\:\:getAssignmentItem\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/FhirServices/AssessmentResponseBlobFHIRResourceService.php
-
-		-
-			message: '#^Parameter \#2 \$resultData of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssessmentResultRepository\:\:createResult\(\) expects array\<mixed\>, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Services/FhirServices/AssessmentResponseBlobFHIRResourceService.php
@@ -4303,18 +3739,6 @@ parameters:
 			path: src/Services/FhirServices/LibraryAssetResultBlobFHIRResourceService.php
 
 		-
-			message: '#^Parameter \#1 \$data of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\DTO\\LibraryAssetBlobDTO\:\:fromDTO\(\) expects array\<mixed\>, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/FhirServices/LibraryAssetResultBlobFHIRResourceService.php
-
-		-
-			message: '#^Parameter \#1 \$data of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\DTO\\LibraryAssetBlobResultDTO\:\:fromDTO\(\) expects array\<mixed\>, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/FhirServices/LibraryAssetResultBlobFHIRResourceService.php
-
-		-
 			message: '#^Parameter \#1 \$json of function json_decode expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
@@ -4346,12 +3770,6 @@ parameters:
 
 		-
 			message: '#^Parameter \#1 \$versionId of method OpenEMR\\FHIR\\R4\\FHIRElement\\FHIRMeta\:\:setVersionId\(\) expects OpenEMR\\FHIR\\R4\\FHIRElement\\FHIRId, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/FhirServices/LibraryAssetResultBlobFHIRResourceService.php
-
-		-
-			message: '#^Parameter \#2 \$client of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssignmentCompleter\:\:markAssignmentComplete\(\) expects array\<mixed\>, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Services/FhirServices/LibraryAssetResultBlobFHIRResourceService.php
@@ -4651,12 +4069,6 @@ parameters:
 			path: src/Services/FhirServices/QuestionnaireResponseFormFHIRResourceService.php
 
 		-
-			message: '#^Parameter \#1 \$search of method OpenEMR\\Services\\QuestionnaireResponseService\:\:search\(\) expects array\<string, OpenEMR\\Services\\Search\\ISearchField\>, array\<mixed\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/FhirServices/QuestionnaireResponseFormFHIRResourceService.php
-
-		-
 			message: '#^Parameter \#1 \$source of method OpenEMR\\FHIR\\R4\\FHIRDomainResource\\FHIRQuestionnaireResponse\:\:setSource\(\) expects OpenEMR\\FHIR\\R4\\FHIRElement\\FHIRReference, mixed given\.$#'
 			identifier: argument.type
 			count: 2
@@ -4741,105 +4153,9 @@ parameters:
 			path: src/Services/FhirServices/QuestionnaireResponseFormFHIRResourceService.php
 
 		-
-			message: '#^Parameter \#1 \$content of method Nyholm\\Psr7\\Factory\\Psr17Factory\:\:createStream\(\) expects string, string\|false given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/HTTPResponseUtils.php
-
-		-
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
 			identifier: empty.notAllowed
 			count: 7
-			path: src/Services/LibraryAssetBlobRepository.php
-
-		-
-			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(mixed\)\: mixed\)\|null, ''intval'' given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/LibraryAssetBlobRepository.php
-
-		-
-			message: '#^Parameter \#1 \$content of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\DTO\\LibraryAssetBlobDTO\:\:setContent\(\) expects string\|null, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/LibraryAssetBlobRepository.php
-
-		-
-			message: '#^Parameter \#1 \$creationDate of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\DTO\\LibraryAssetBlobDTO\:\:setCreationDate\(\) expects string\|null, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/LibraryAssetBlobRepository.php
-
-		-
-			message: '#^Parameter \#1 \$description of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\DTO\\LibraryAssetBlobDTO\:\:setDescription\(\) expects string\|null, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/LibraryAssetBlobRepository.php
-
-		-
-			message: '#^Parameter \#1 \$id of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\DTO\\LibraryAssetBlobDTO\:\:setId\(\) expects int\|null, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/LibraryAssetBlobRepository.php
-
-		-
-			message: '#^Parameter \#1 \$id of static method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\LibraryAssetBlobRepository\:\:updateLibraryAssetBlobUuid\(\) expects int, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/LibraryAssetBlobRepository.php
-
-		-
-			message: '#^Parameter \#1 \$journal of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\DTO\\LibraryAssetBlobDTO\:\:setJournal\(\) expects string\|null, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/LibraryAssetBlobRepository.php
-
-		-
-			message: '#^Parameter \#1 \$lastUpdateDate of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\DTO\\LibraryAssetBlobDTO\:\:setLastUpdateDate\(\) expects string\|null, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/LibraryAssetBlobRepository.php
-
-		-
-			message: '#^Parameter \#1 \$originalCreator of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\DTO\\LibraryAssetBlobDTO\:\:setOriginalCreator\(\) expects string\|null, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/LibraryAssetBlobRepository.php
-
-		-
-			message: '#^Parameter \#1 \$search of static method OpenEMR\\Services\\Search\\FhirSearchWhereClauseBuilder\:\:build\(\) expects array\<string, OpenEMR\\Services\\Search\\ISearchField\>, array\<mixed\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/LibraryAssetBlobRepository.php
-
-		-
-			message: '#^Parameter \#1 \$tags of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\DTO\\LibraryAssetBlobDTO\:\:setTags\(\) expects array\<mixed\>\|null, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/LibraryAssetBlobRepository.php
-
-		-
-			message: '#^Parameter \#1 \$title of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\DTO\\LibraryAssetBlobDTO\:\:setTitle\(\) expects string\|null, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/LibraryAssetBlobRepository.php
-
-		-
-			message: '#^Parameter \#1 \$type of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\DTO\\LibraryAssetBlobDTO\:\:setType\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/LibraryAssetBlobRepository.php
-
-		-
-			message: '#^Parameter \#1 \$value of function intval expects array\|bool\|float\|GMP\|int\|resource\|SimpleXMLElement\|string\|null, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/LibraryAssetBlobRepository.php
-
-		-
-			message: '#^Possibly invalid array key type mixed\.$#'
-			identifier: offsetAccess.invalidOffset
-			count: 1
 			path: src/Services/LibraryAssetBlobRepository.php
 
 		-
@@ -4891,67 +4207,13 @@ parameters:
 			path: src/Services/LibraryAssetResultBlobRepository.php
 
 		-
-			message: '#^Parameter \#1 \$answers of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\DTO\\LibraryAssetBlobResultDTO\:\:setAnswers\(\) expects array\<mixed\>, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/LibraryAssetResultBlobRepository.php
-
-		-
-			message: '#^Parameter \#1 \$assetId of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\DTO\\LibraryAssetBlobResultDTO\:\:setAssetId\(\) expects int\|null, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/LibraryAssetResultBlobRepository.php
-
-		-
-			message: '#^Parameter \#1 \$assignmentItemId of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\DTO\\LibraryAssetBlobResultDTO\:\:setAssignmentItemId\(\) expects string\|null, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/LibraryAssetResultBlobRepository.php
-
-		-
 			message: '#^Parameter \#1 \$creationDate of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\DTO\\LibraryAssetBlobResultDTO\:\:setCreationDate\(\) expects DateTime, DateTime\|false given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Services/LibraryAssetResultBlobRepository.php
 
 		-
-			message: '#^Parameter \#1 \$id of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\DTO\\LibraryAssetBlobResultDTO\:\:setId\(\) expects string\|null, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/LibraryAssetResultBlobRepository.php
-
-		-
-			message: '#^Parameter \#1 \$journal of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\DTO\\LibraryAssetBlobResultDTO\:\:setJournal\(\) expects string\|null, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/LibraryAssetResultBlobRepository.php
-
-		-
-			message: '#^Parameter \#1 \$json of function json_decode expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/LibraryAssetResultBlobRepository.php
-
-		-
-			message: '#^Parameter \#1 \$search of static method OpenEMR\\Services\\Search\\FhirSearchWhereClauseBuilder\:\:build\(\) expects array\<string, OpenEMR\\Services\\Search\\ISearchField\>, array\<mixed\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/LibraryAssetResultBlobRepository.php
-
-		-
-			message: '#^Parameter \#1 \$value of method OpenEMR\\Common\\Crypto\\CryptoGen\:\:decryptStandard\(\) expects string\|null, mixed given\.$#'
-			identifier: argument.type
-			count: 2
-			path: src/Services/LibraryAssetResultBlobRepository.php
-
-		-
 			message: '#^Parameter \#1 \$value of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\HTMLSanitizer\:\:sanitize\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/LibraryAssetResultBlobRepository.php
-
-		-
-			message: '#^Parameter \#2 \$datetime of static method DateTime\:\:createFromFormat\(\) expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Services/LibraryAssetResultBlobRepository.php
@@ -4981,24 +4243,6 @@ parameters:
 			path: src/Services/MessageTemplateRepository.php
 
 		-
-			message: '#^Parameter \#2 \$company of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\MessageTemplateRepository\:\:getTemplateSettingsForFacility\(\) expects array\<mixed\>\|null, OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\Company\|OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\Facility\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/MessageTemplateRepository.php
-
-		-
-			message: '#^Parameter \$company of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\MessageTemplateRepository\:\:getTemplateForClient\(\) has invalid type OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\Company\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/Services/MessageTemplateRepository.php
-
-		-
-			message: '#^Parameter \$company of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\MessageTemplateRepository\:\:getTemplateForClient\(\) has invalid type OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\Facility\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/Services/MessageTemplateRepository.php
-
-		-
 			message: '#^Binary operation "\+" between int\|string and int results in an error\.$#'
 			identifier: binaryOp.invalid
 			count: 1
@@ -5017,15 +4261,15 @@ parameters:
 			path: src/Services/PaginatedResultsService.php
 
 		-
-			message: '#^Parameter \#1 \$content of method Nyholm\\Psr7\\Factory\\Psr17Factory\:\:createStream\(\) expects string, string\|false given\.$#'
+			message: '#^Parameter \#1 \$limit of class OpenEMR\\Common\\Database\\QueryPagination constructor expects int, mixed given\.$#'
 			identifier: argument.type
-			count: 2
+			count: 1
 			path: src/Services/PaginatedResultsService.php
 
 		-
-			message: '#^Parameter \#1 \$value of function intval expects array\|bool\|float\|GMP\|int\|resource\|SimpleXMLElement\|string\|null, mixed given\.$#'
+			message: '#^Parameter \#2 \$offsetId of class OpenEMR\\Common\\Database\\QueryPagination constructor expects int, mixed given\.$#'
 			identifier: argument.type
-			count: 2
+			count: 1
 			path: src/Services/PaginatedResultsService.php
 
 		-
@@ -5091,24 +4335,6 @@ parameters:
 		-
 			message: '#^Parameter \#1 \$dataRecord \(OpenEMR\\FHIR\\R4\\FHIRResource\\FHIRDomainResource\) of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\QuestionnaireFHIRResourceService\:\:createProvenanceResource\(\) should be contravariant with parameter \$dataRecord \(mixed\) of method OpenEMR\\Services\\FHIR\\FhirServiceBase\:\:createProvenanceResource\(\)$#'
 			identifier: method.childParameterType
-			count: 1
-			path: src/Services/QuestionnaireFHIRResourceService.php
-
-		-
-			message: '#^Parameter \#1 \$service of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\QuestionnaireFHIRResourceService\:\:addMappedService\(\) expects OpenEMR\\Services\\FHIR\\FhirServiceBase, OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\FhirServices\\AssessmentFHIRResourceService\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/QuestionnaireFHIRResourceService.php
-
-		-
-			message: '#^Parameter \#1 \$service of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\QuestionnaireFHIRResourceService\:\:addMappedService\(\) expects OpenEMR\\Services\\FHIR\\FhirServiceBase, OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\FhirServices\\LibraryAssetFHIRResourceService\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/QuestionnaireFHIRResourceService.php
-
-		-
-			message: '#^Parameter \#1 \$service of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\QuestionnaireFHIRResourceService\:\:addMappedService\(\) expects OpenEMR\\Services\\FHIR\\FhirServiceBase, OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\FhirServices\\QuestionnaireFormFHIRResourceService\|null given\.$#'
-			identifier: argument.type
 			count: 1
 			path: src/Services/QuestionnaireFHIRResourceService.php
 
@@ -5293,12 +4519,6 @@ parameters:
 			path: src/Services/ResourceImporterService.php
 
 		-
-			message: '#^Cannot access offset ''_description'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/Services/ResourceImporterService.php
-
-		-
 			message: '#^Cannot access offset ''_id'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 3
@@ -5307,29 +4527,11 @@ parameters:
 		-
 			message: '#^Cannot access offset ''_name'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
-			count: 9
-			path: src/Services/ResourceImporterService.php
-
-		-
-			message: '#^Cannot access offset ''_uid'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 3
+			count: 8
 			path: src/Services/ResourceImporterService.php
 
 		-
 			message: '#^Cannot access offset ''id'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/Services/ResourceImporterService.php
-
-		-
-			message: '#^Cannot access offset ''title'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 4
-			path: src/Services/ResourceImporterService.php
-
-		-
-			message: '#^Cannot access offset ''token'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
 			path: src/Services/ResourceImporterService.php
@@ -5389,12 +4591,6 @@ parameters:
 			path: src/Services/ResourceImporterService.php
 
 		-
-			message: '#^Parameter \#1 \$data of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\DTO\\LibraryAssetBlobDTO\:\:fromDTO\(\) expects array\<mixed\>, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/ResourceImporterService.php
-
-		-
 			message: '#^Parameter \#1 \$groups of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\ResourceImporterService\:\:importAssessmentGroupResources\(\) expects array\<mixed\>, mixed given\.$#'
 			identifier: argument.type
 			count: 1
@@ -5431,12 +4627,6 @@ parameters:
 			path: src/Services/ResourceImporterService.php
 
 		-
-			message: '#^Parameter \#1 \$resources of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\ResourceImporterService\:\:importResources\(\) expects array\<mixed\>, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/ResourceImporterService.php
-
-		-
 			message: '#^Parameter \#1 \$search of method OpenEMR\\Services\\BaseService\:\:search\(\) expects array\<string, OpenEMR\\Services\\Search\\ISearchField\>, array\<string, mixed\> given\.$#'
 			identifier: argument.type
 			count: 1
@@ -5449,13 +4639,7 @@ parameters:
 			path: src/Services/ResourceImporterService.php
 
 		-
-			message: '#^Parameter \#1 \$value of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\HTMLSanitizer\:\:sanitize\(\) expects string, string\|null given\.$#'
-			identifier: argument.type
-			count: 3
-			path: src/Services/ResourceImporterService.php
-
-		-
-			message: '#^Parameter \#2 \$array of function implode expects array, mixed given\.$#'
+			message: '#^Parameter \#2 \$array of function implode expects array\<string\>, array given\.$#'
 			identifier: argument.type
 			count: 2
 			path: src/Services/ResourceImporterService.php
@@ -5486,18 +4670,6 @@ parameters:
 
 		-
 			message: '#^Parameter \#3 \$userId of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssessmentReportRepository\:\:createReport\(\) expects int, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/ResourceImporterService.php
-
-		-
-			message: '#^Parameter \#4 \$data of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssessmentReportRepository\:\:createReport\(\) expects array\<mixed\>, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/ResourceImporterService.php
-
-		-
-			message: '#^Parameter \#4 \$jsonData of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssessmentRepository\:\:createAssessment\(\) expects array\<mixed\>, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Services/ResourceImporterService.php
@@ -5641,12 +4813,6 @@ parameters:
 			path: src/Services/SystemUserRepository.php
 
 		-
-			message: '#^Parameter \#1 \$array of function array_values expects array\<T\>, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/SystemUserRepository.php
-
-		-
 			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(mixed\)\: mixed\)\|null, ''strval'' given\.$#'
 			identifier: argument.type
 			count: 1
@@ -5656,12 +4822,6 @@ parameters:
 			message: '#^Parameter \#1 \$id of class OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Models\\SystemUser constructor expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
-			path: src/Services/SystemUserRepository.php
-
-		-
-			message: '#^Parameter \#1 \$user of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\SystemUserRepository\:\:hydrateUser\(\) expects array\<mixed\>, mixed given\.$#'
-			identifier: argument.type
-			count: 2
 			path: src/Services/SystemUserRepository.php
 
 		-
@@ -5680,12 +4840,6 @@ parameters:
 			message: '#^Parameter \#1 \$value of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Models\\SystemUser\:\:setLastName\(\) expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
-			path: src/Services/SystemUserRepository.php
-
-		-
-			message: '#^Parameter \#2 \$primaryEntity of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\SystemUserRepository\:\:hydrateUser\(\) expects array\<mixed\>\|null, mixed given\.$#'
-			identifier: argument.type
-			count: 2
 			path: src/Services/SystemUserRepository.php
 
 		-
@@ -5851,12 +5005,6 @@ parameters:
 			path: src/Services/Task/AssignmentTaskFHIRResourceService.php
 
 		-
-			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(mixed\)\: mixed\)\|null, Closure\(OpenEMR\\Services\\Search\\TokenSearchValue\)\: \(float\|int\|string\) given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/Task/AssignmentTaskFHIRResourceService.php
-
-		-
 			message: '#^Parameter \#1 \$constant of function xl expects literal\-string, non\-falsy\-string given\.$#'
 			identifier: argument.type
 			count: 1
@@ -5918,12 +5066,6 @@ parameters:
 
 		-
 			message: '#^Parameter \#1 \$versionId of method OpenEMR\\FHIR\\R4\\FHIRElement\\FHIRMeta\:\:setVersionId\(\) expects OpenEMR\\FHIR\\R4\\FHIRElement\\FHIRId, string given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/Task/AssignmentTaskFHIRResourceService.php
-
-		-
-			message: '#^Parameter \#2 \$array of function array_map expects array, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Services/Task/AssignmentTaskFHIRResourceService.php
@@ -6097,12 +5239,6 @@ parameters:
 			path: src/Services/Task/QuestionnairePortalTaskFHIRResourceService.php
 
 		-
-			message: '#^Parameter \#1 \$value of function intval expects array\|bool\|float\|GMP\|int\|resource\|SimpleXMLElement\|string\|null, mixed given\.$#'
-			identifier: argument.type
-			count: 2
-			path: src/Services/Task/QuestionnairePortalTaskFHIRResourceService.php
-
-		-
 			message: '#^Parameter \#1 \$value of method OpenEMR\\FHIR\\R4\\FHIRElement\\FHIRId\:\:setValue\(\) expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
@@ -6193,12 +5329,6 @@ parameters:
 			path: src/Services/TaskFHIRResourceService.php
 
 		-
-			message: '#^Cannot call method setValidationMessages\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/Services/TaskFHIRResourceService.php
-
-		-
 			message: '#^Caught class OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\SearchFieldException not found\.$#'
 			identifier: class.notFound
 			count: 1
@@ -6274,12 +5404,6 @@ parameters:
 			message: '#^Parameter \#1 \$fhirResourceId \(string\) of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\TaskFHIRResourceService\:\:update\(\) should be contravariant with parameter \$fhirResourceId \(mixed\) of method OpenEMR\\Services\\FHIR\\IResourceUpdateableService\:\:update\(\)$#'
 			identifier: method.childParameterType
 			count: 1
-			path: src/Services/TaskFHIRResourceService.php
-
-		-
-			message: '#^Parameter \#1 \$fhirSearchResult of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\TaskFHIRResourceService\:\:sortFhirSearchResult\(\) expects OpenEMR\\Validators\\ProcessingResult, mixed given\.$#'
-			identifier: argument.type
-			count: 2
 			path: src/Services/TaskFHIRResourceService.php
 
 		-
@@ -6361,12 +5485,6 @@ parameters:
 			path: src/Utils/FhirObjectDenormalizer.php
 
 		-
-			message: '#^Cannot cast mixed to string\.$#'
-			identifier: cast.string
-			count: 2
-			path: src/Utils/FhirObjectDenormalizer.php
-
-		-
 			message: '#^Cannot access offset 0 on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
@@ -6385,25 +5503,7 @@ parameters:
 			path: src/Utils/RestUtils.php
 
 		-
-			message: '#^Parameter \#1 \$array of function array_shift expects array, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Utils/RestUtils.php
-
-		-
-			message: '#^Parameter \#1 \$content of method Nyholm\\Psr7\\Factory\\Psr17Factory\:\:createStream\(\) expects string, string\|false given\.$#'
-			identifier: argument.type
-			count: 10
-			path: src/Utils/RestUtils.php
-
-		-
-			message: '#^Parameter \#1 \$value of function count expects array\|Countable, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Utils/RestUtils.php
-
-		-
-			message: '#^Parameter \#2 \$array of function implode expects array, mixed given\.$#'
+			message: '#^Parameter \#2 \$array of function implode expects array\<string\>, array given\.$#'
 			identifier: argument.type
 			count: 2
 			path: src/Utils/RestUtils.php

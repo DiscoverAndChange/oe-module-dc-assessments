@@ -104,10 +104,10 @@ class AssignedAssessment extends Assignment
     public function fromJSON(array $assignmentJSON)
     {
         parent::fromJSON($assignmentJSON);
-        $this->setAssessmentId($assignmentJSON['assessmentId'] ?? 0);
-        $this->setUid($assignmentJSON['uid'] ?? '');
-        $this->setAssessmentUuid($assignmentJSON['assessmentUuid'] ?? '');
-        $this->setResultId($assignmentJSON['resultId'] ?? null);
-        $this->setItemId($assignmentJSON['itemId'] ?? 0);
+        $this->setAssessmentId(($assignmentJSON['assessmentId'] ?? 0));
+        $this->setUid(($assignmentJSON['uid'] ?? ''));
+        $this->setAssessmentUuid(($assignmentJSON['assessmentUuid'] ?? ''));
+        $this->setResultId(isset($assignmentJSON['resultId']) ? $assignmentJSON['resultId'] : null);
+        $this->setItemId(($assignmentJSON['itemId'] ?? 0));
     }
 }

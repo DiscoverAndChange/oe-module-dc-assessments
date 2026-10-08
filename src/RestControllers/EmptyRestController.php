@@ -12,7 +12,7 @@ class EmptyRestController implements IRestController
     public function list(ServerRestRequest $request): ResponseInterface
     {
         $psr17 = new Psr17Factory();
-        return $psr17->createResponse(200)->withBody($psr17->createStream(json_encode([])));
+        return $psr17->createResponse(200)->withBody($psr17->createStream((string) json_encode([])));
     }
 
     /**
@@ -21,13 +21,13 @@ class EmptyRestController implements IRestController
     public function one(ServerRestRequest $request, $id): ResponseInterface
     {
         $psr17 = new Psr17Factory();
-        return $psr17->createResponse(200)->withBody($psr17->createStream(json_encode([])));
+        return $psr17->createResponse(200)->withBody($psr17->createStream((string) json_encode([])));
     }
 
     public function create(ServerRestRequest $request): ResponseInterface
     {
         $psr17 = new Psr17Factory();
-        return $psr17->createResponse(200)->withBody($psr17->createStream(json_encode([])));
+        return $psr17->createResponse(200)->withBody($psr17->createStream((string) json_encode([])));
     }
 
     /**
@@ -36,6 +36,6 @@ class EmptyRestController implements IRestController
     public function update(ServerRestRequest $request, $id): ResponseInterface
     {
         $psr17 = new Psr17Factory();
-        return $psr17->createResponse(200)->withBody($psr17->createStream(json_encode([])));
+        return $psr17->createResponse(200)->withBody($psr17->createStream((string) json_encode([])));
     }
 }

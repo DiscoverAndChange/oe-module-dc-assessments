@@ -75,6 +75,7 @@ class QuestionnaireResponseRestListener implements IStaticEventSubscriber
     public function dispatchFHIRSearchEvent(GenericEvent $event)
     {
         // for now we stick with the generic event
+        /** @var array<mixed> $fhirSearchParameters */
         $fhirSearchParameters = $event->getSubject();
         $processingResult = new ProcessingResult();
         $result = $this->assessmentResponseBlobFHIRResourceService->getAll($fhirSearchParameters);

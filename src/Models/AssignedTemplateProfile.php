@@ -42,6 +42,6 @@ class AssignedTemplateProfile extends Assignment
     public function fromJSON(array $assignmentJSON)
     {
         parent::fromJSON($assignmentJSON);
-        $this->setProfileId($assignmentJSON['profileId'] ?? 0);
+        $this->setProfileId(($assignmentJSON['profileId'] ?? 0));
     }
 }

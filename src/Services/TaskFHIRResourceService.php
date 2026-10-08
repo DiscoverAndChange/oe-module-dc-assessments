@@ -127,11 +127,13 @@ class TaskFHIRResourceService extends FhirServiceBase implements
                 } else {
                     $fhirSearchResult = $this->searchAllServices($fhirSearchParameters, $puuidBind);
                     // because we are dealing with multiple services we need to sort these results
+                    /** @var ProcessingResult $fhirSearchResult */
                     $this->sortFhirSearchResult($fhirSearchResult);
                 }
             } else {
                 $fhirSearchResult = $this->searchAllServices($fhirSearchParameters, $puuidBind);
                 // because we are dealing with multiple services we need to sort these results
+                /** @var ProcessingResult $fhirSearchResult */
                 $this->sortFhirSearchResult($fhirSearchResult);
             }
         } catch (SearchFieldException $exception) {

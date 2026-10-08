@@ -47,8 +47,8 @@ class AssessmentReportRepository
                 $this->logger->error($e);
             }
             $group = new AssessmentGroup();
-            $group->setId($r['assessmentgroup_id'] ?? 0);
-            $group->setName($r['assessmentgroup_name'] ?? '');
+            $group->setId(($r['assessmentgroup_id'] ?? 0));
+            $group->setName(($r['assessmentgroup_name'] ?? ''));
             if ($r['assessmentgroup_id']) {
                 $report['linkedGroup'] = $group;
             }
@@ -115,8 +115,8 @@ class AssessmentReportRepository
 
             if (!empty($report['assessmentgroup_id'])) {
                 $group = new AssessmentGroup();
-                $group->setId($report['assessmentgroup_id'] ?? 0);
-                $group->setName($report['assessmentgroup_name'] ?? '');
+                $group->setId(($report['assessmentgroup_id'] ?? 0));
+                $group->setName(($report['assessmentgroup_name'] ?? ''));
                 $data['linkedGroup'] = $group;
             }
 

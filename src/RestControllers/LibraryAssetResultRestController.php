@@ -83,6 +83,7 @@ class LibraryAssetResultRestController implements IRestController
 
     public function create(ServerRestRequest $request): ResponseInterface
     {
+        /** @var array<string, mixed> $data */
         $data = $request->getBodyAsJson();
         $validator = new LibraryAssetResultBlobValidator();
         $validation = $validator->validate($data, LibraryAssetResultBlobValidator::DATABASE_INSERT_CONTEXT);
@@ -96,7 +97,7 @@ class LibraryAssetResultRestController implements IRestController
                 throw new \InvalidArgumentException("One or more fields was invalid", ErrorCode::VALIDATION_FAILED);
             }
 
-            $client = $this->validateCreateAccessAndReturnClient($request->getUserId(), $request->getPatientUUIDString(), $data['clientId'] ?? null, $patientService);
+            $client = $this->validateCreateAccessAndReturnClient($request->getUserId(), $request->getPatientUUIDString(), ($data['clientId'] ?? null), $patientService);
 
             $assignmentRepo = new AssignmentRepository();
             $item = $assignmentRepo->getAssignmentItem($data['assignmentItemId'], UuidRegistry::uuidToString($client['uuid']));
@@ -150,7 +151,7 @@ class LibraryAssetResultRestController implements IRestController
     {
         // TODO: Implement one() method.
         $psrFactory = new Psr17Factory();
-        return $psrFactory->createResponse(400)->withBody(json_encode([]));
+        return $psrFactory->createResponse(400)->withBody($psrFactory->createStream((string) json_encode([])));
     }
 
     /**
@@ -160,7 +161,7 @@ class LibraryAssetResultRestController implements IRestController
     {
 
         // first we check to see if we are working as a patient
-        if (empty($patientUuidString) && !AclMain::aclCheckCore('encounters', 'notes', $userId)) {
+        if (empty($patientUuidString) && !AclMain::aclCheckCore('encounters', 'notes', (string) $userId)) {
             throw new AccessDeniedException("encounters", "notes", "You do not have permission to create this result");
         } else if (!empty($patientUuidString)) {
             // need to grab the patient pid from the uuid
@@ -189,7 +190,7 @@ class LibraryAssetResultRestController implements IRestController
     private function getAsset(?int $id)
     {
         $libraryAssetsRepo = new LibraryAssetBlobRepository($this->logger);
-        $asset = $libraryAssetsRepo->getAsset($id);
+        $asset = $libraryAssetsRepo->getAsset((int) $id);
         if (empty($asset)) {
             throw new \InvalidArgumentException("Could not find library asset for response", ErrorCode::INVALID_REQUEST);
         }

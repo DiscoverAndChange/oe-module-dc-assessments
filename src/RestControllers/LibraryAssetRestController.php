@@ -27,11 +27,11 @@ class LibraryAssetRestController implements IRestController
     {
         try {
             $query = $request->getQueryParams();
-            $tag = trim($query['tag'] ?? '');
+            $tag = trim(($query['tag'] ?? ''));
             $psrFactory = new Psr17Factory();
             $libraryAssetsRepo = new LibraryAssetBlobRepository($this->logger);
             $assets = $libraryAssetsRepo->listAssets($tag);
-            return $psrFactory->createResponse(200)->withBody($psrFactory->createStream(json_encode($assets)));
+            return $psrFactory->createResponse(200)->withBody($psrFactory->createStream((string) json_encode($assets)));
         } catch (\Exception $e) {
             return RestUtils::getErrorResponse($this->logger, $e);
         }
@@ -44,7 +44,7 @@ class LibraryAssetRestController implements IRestController
     {
         try {
             $libraryAssetsRepo = new LibraryAssetBlobRepository($this->logger);
-            $asset = $libraryAssetsRepo->getAsset($id);
+            $asset = $libraryAssetsRepo->getAsset((int) $id);
             if (empty($asset)) {
                 return RestUtils::getNotFoundResponse();
             }
@@ -56,6 +56,7 @@ class LibraryAssetRestController implements IRestController
 
     public function create(ServerRestRequest $request): ResponseInterface
     {
+        /** @var array<string, mixed> $data */
         $data = $request->getBodyAsJson();
         $validator = new LibraryAssetBlobValidator();
         $validation = $validator->validate($data, LibraryAssetBlobValidator::DATABASE_INSERT_CONTEXT);
@@ -74,12 +75,12 @@ class LibraryAssetRestController implements IRestController
             $asset->fromDTO($data);
 
             $sanitizer = new HTMLSanitizer();
-            $asset->setContent($sanitizer->sanitize($asset->getContent()));
-            $asset->setDescription($sanitizer->sanitize($asset->getDescription()));
-            $asset->setTitle($sanitizer->sanitize($asset->getTitle()));
+            $asset->setContent($sanitizer->sanitize((string) $asset->getContent()));
+            $asset->setDescription($sanitizer->sanitize((string) $asset->getDescription()));
+            $asset->setTitle($sanitizer->sanitize((string) $asset->getTitle()));
 
             $libraryAssetsRepo = new LibraryAssetBlobRepository($this->logger);
-            $createdAsset = $libraryAssetsRepo->saveLibraryAssetBlob($asset, $request->getUserId());
+            $createdAsset = $libraryAssetsRepo->saveLibraryAssetBlob($asset, (int) $request->getUserId());
             QueryUtils::commitTransaction();
             $transactionCommitted = true;
             return RestUtils::returnSingleObjectResponse($createdAsset);
@@ -106,6 +107,6 @@ class LibraryAssetRestController implements IRestController
     {
         // TODO: Implement one() method.
         $psrFactory = new Psr17Factory();
-        return $psrFactory->createResponse(400)->withBody(json_encode([]));
+        return $psrFactory->createResponse(400)->withBody($psrFactory->createStream((string) json_encode([])));
     }
 }

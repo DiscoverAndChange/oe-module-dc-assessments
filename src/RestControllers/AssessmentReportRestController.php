@@ -30,7 +30,7 @@ class AssessmentReportRestController implements IRestController
         $showAllReports = $request->getQueryParams()['showAllReports'] ?? false;
         $showAllReports = $showAllReports === 'true';
         $reports = $repo->getAll($showAllReports, $hostSiteId);
-        return $psrFactory->createResponse(200)->withBody($psrFactory->createStream(json_encode($reports)));
+        return $psrFactory->createResponse(200)->withBody($psrFactory->createStream((string) json_encode($reports)));
     }
 
     /**
@@ -72,12 +72,12 @@ class AssessmentReportRestController implements IRestController
 
             $assessmentGroupID = null;
             if (!empty($data['linkedGroup'])) {
-                $assessmentGroupID = $data['linkedGroup']['id'] ?? null;
+                $assessmentGroupID = isset($data['linkedGroup']['id']) ? $data['linkedGroup']['id'] : null;
                 unset($data['linkedGroup']);
             }
-            $assessmentUid = $data['assessmentUid'] ?? null;
+            $assessmentUid = isset($data['assessmentUid']) ? $data['assessmentUid'] : null;
             $repo = new AssessmentReportRepository();
-            $result = $repo->createReport($data['id'], $data['name'], $request->getUserId(), $data, $assessmentGroupID, $assessmentUid);
+            $result = $repo->createReport($data['id'], $data['name'], $request->getUserId(), (array) $data, $assessmentGroupID, $assessmentUid);
             QueryUtils::commitTransaction();
             $transactionCommitted = true;
             return RestUtils::returnSingleObjectResponse($result);
@@ -120,12 +120,12 @@ class AssessmentReportRestController implements IRestController
 
             $assessmentGroupID = null;
             if (!empty($data['linkedGroup'])) {
-                $assessmentGroupID = $data['linkedGroup']['id'] ?? null;
+                $assessmentGroupID = isset($data['linkedGroup']['id']) ? $data['linkedGroup']['id'] : null;
                 unset($data['linkedGroup']);
             }
-            $assessmentUid = $data['assessmentUid'] ?? null;
+            $assessmentUid = isset($data['assessmentUid']) ? $data['assessmentUid'] : null;
             $repo = new AssessmentReportRepository();
-            $result = $repo->updateReport($data['id'], $data['name'], $request->getUserId(), $data, $assessmentGroupID, $assessmentUid);
+            $result = $repo->updateReport($data['id'], $data['name'], $request->getUserId(), (array) $data, $assessmentGroupID, $assessmentUid);
             QueryUtils::commitTransaction();
             $transactionCommitted = true;
             return RestUtils::returnSingleObjectResponse([]);

@@ -34,8 +34,10 @@ class AssessmentResultRestController implements IRestController
     {
         $resultRepo = new AssessmentResultRepository();
         $query = $request->getQueryParams();
+        /** @var string|null $assessmentUID */
         $assessmentUID = $query['assessmentUID'] ?? null;
         $clientId = $query['clientID'] ?? null;
+        /** @var string|array<mixed>|null $resultId */
         $resultId = $query['resultID'] ?? $query['resultIds'] ?? null;
 
         // first we grab the client and need to check if the current user even has access to this client
@@ -86,6 +88,7 @@ class AssessmentResultRestController implements IRestController
 
     public function create(ServerRestRequest $request): ResponseInterface
     {
+        /** @var array<string, mixed> $data */
         $data = $request->getBodyAsJson();
         $validator = new AssessmentResultBlobValidator();
 
@@ -100,7 +103,7 @@ class AssessmentResultRestController implements IRestController
                 $this->logger->error("Validation failed", ['errors' => $validation->getValidationMessages()]);
                 throw new \InvalidArgumentException("One or more fields was invalid", ErrorCode::VALIDATION_FAILED);
             }
-            $client = $this->validateCreateAccessAndReturnClient($request->getUserId(), $request->getPatientUUIDString(), $data['clientId'] ?? null, $patientService);
+            $client = $this->validateCreateAccessAndReturnClient($request->getUserId(), $request->getPatientUUIDString(), ($data['clientId'] ?? null), $patientService);
 
             $assignmentRepo = new AssignmentRepository();
             $item = $assignmentRepo->getAssignmentItem($data['data']['_assignmentItemId'], UuidRegistry::uuidToString($client['uuid']));
@@ -150,7 +153,7 @@ class AssessmentResultRestController implements IRestController
     {
         // TODO: Implement one() method.
         $psrFactory = new Psr17Factory();
-        return $psrFactory->createResponse(400)->withBody(json_encode([]));
+        return $psrFactory->createResponse(400)->withBody($psrFactory->createStream((string) json_encode([])));
     }
 
     /**
@@ -160,7 +163,7 @@ class AssessmentResultRestController implements IRestController
     {
 
         // first we check to see if we are working as a patient
-        if (empty($patientUuidString) && !AclMain::aclCheckCore('encounters', 'notes', $userId)) {
+        if (empty($patientUuidString) && !AclMain::aclCheckCore('encounters', 'notes', (string) $userId)) {
             throw new AccessDeniedException("encounters", "notes", "You do not have permission to create this result");
         } else if (!empty($patientUuidString)) {
             // need to grab the patient pid from the uuid

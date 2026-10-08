@@ -77,7 +77,8 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
         if ($deleteEvent->getService() instanceof AppointmentService) {
             $apptId = $deleteEvent->getRecordId();
             try {
-                $assignments = $this->repository->getAssignmentsForAppointmentId($apptId);
+                /** @var Assignment[]|null $assignments */
+                $assignments = $this->repository->getAssignmentsForAppointmentId((int) $apptId);
                 foreach (($assignments ?? []) as $assignment) {
                     $this->repository->removeAssignment($assignment->getClientId(), $assignment->getId(), SessionWrapperFactory::getInstance()->getActiveSession()->get('authUserID'));
                 }
@@ -141,7 +142,7 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
         }
         if ($this->hasWizardScreens($event)) {
             $event->stopPropagation(); // don't let the current event in add_edit continue on.
-            $this->renderWizardScreenForAppointmentId($this->getWizardScreenFromCurrentRequest(), $appointmentId);
+            $this->renderWizardScreenForAppointmentId((string) $this->getWizardScreenFromCurrentRequest(), $appointmentId);
         }
     }
 
@@ -179,7 +180,7 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
             $display = xl("Setup Notifications");
             $truncatedDisplay = mb_strimwidth($display, 0, 80, "...");
             if (empty($_GET['previous_step'])) { // no previous step we are going back to the calendar
-                $backUrl = $this->getCalendarEventBackUrl($appointment);
+                $backUrl = $this->getCalendarEventBackUrl((array) $appointment);
             } else {
                 // currently the only other step is the documents... if more wizards steps are added we'd handle this.
                 $backUrl = $this->config->getPublicBackendPathFQDN() . "index-backend.php?action="
@@ -262,7 +263,7 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
                 $display = xl("Assign Digital Documents");
                 $truncatedDisplay = mb_strimwidth($display, 0, 80, "...");
 
-                $backUrl = $this->getCalendarEventBackUrl($appointment);
+                $backUrl = $this->getCalendarEventBackUrl((array) $appointment);
                 $nextStepUrl = null;
                 $nextStepTitle = xl('Configure Notifications');
                 if (!empty($_REQUEST['dc_add_edit_event_send_notification'])) {

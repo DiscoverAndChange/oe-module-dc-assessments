@@ -116,7 +116,7 @@ class Client implements \JsonSerializable
         $client = array_merge($client, (array) $obj);
 
         if (isset($obj->assignedUser)) {
-            $client->setAssignedUser(SystemUser::fromJSON($obj->assignedUser));
+            $client->setAssignedUser(SystemUser::fromJSON((object) $obj->assignedUser));
         }
 
         return $client;
@@ -141,10 +141,13 @@ class Client implements \JsonSerializable
     /** @return void */
     public function sortAssignmentsByDateAssigned()
     {
-        usort($this->assignments, function (Assignment $a, Assignment $b) {
+        /** @var Assignment[] $assignments */
+        $assignments = $this->assignments;
+        usort($assignments, function (Assignment $a, Assignment $b) {
             $aTime = ($a->getDateAssigned() ?? new \DateTime());
             $bTime = ($b->getDateAssigned() ?? new \DateTime());
             return $aTime < $bTime ? -1 : 1;
         });
+        $this->assignments = $assignments;
     }
 }

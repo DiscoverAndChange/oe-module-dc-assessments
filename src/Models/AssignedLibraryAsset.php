@@ -78,7 +78,7 @@ class AssignedLibraryAsset extends Assignment
     public function fromJSON(array $assignmentJSON)
     {
         parent::fromJSON($assignmentJSON);
-        $this->setAssetId($assignmentJSON['assetId'] ?? 0);
-        $this->setAssetUuid($assignmentJSON['assetUuid'] ?? '');
+        $this->setAssetId(($assignmentJSON['assetId'] ?? 0));
+        $this->setAssetUuid(($assignmentJSON['assetUuid'] ?? ''));
     }
 }

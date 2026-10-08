@@ -94,6 +94,7 @@ class LibraryAssetResultBlobRepository
             . " LEFT JOIN (SELECT patient_data.pid AS patient_pid, patient_data.uuid AS patient_uuid FROM " . PatientService::TABLE_NAME . ") pd ON pd.patient_pid = larb.client_id "
             . " LEFT JOIN (select id AS assignmentitem_id, assetresultblob_id FROM " . AssignmentRepository::TABLE_NAME_ASSIGNMENT_ITEM . ") ai ON ai.assetresultblob_id = larb.id ";
 
+        /** @var array<string, \OpenEMR\Services\Search\ISearchField> $searchParams */
         $where = FhirSearchWhereClauseBuilder::build($searchParams);
         $query = $distinctIds . $fromClause . $where->getFragment();
 
@@ -189,9 +190,10 @@ class LibraryAssetResultBlobRepository
      */
     private function hydrateResultBlobFromRecord($record)
     {
+        /** @var array<string, string|null> $record */
         $blob = new LibraryAssetBlobResultDTO();
         $blob->setId($record['id']);
-        $blob->setAssetId($record['asset_id']);
+        $blob->setAssetId((int) $record['asset_id']);
         $blob->setAssignmentItemId($record['assignmentitem_id']);
         $answers = $record['answers'];
         $journal = $record['journal_entry'];
@@ -200,16 +202,16 @@ class LibraryAssetResultBlobRepository
                 $answers = $this->cryptoGen->decryptStandard($answers);
             }
             if (!empty($journal)) {
-                $journal = $this->cryptoGen->decryptStandard($journal);
+                $journal = (string) $this->cryptoGen->decryptStandard($journal);
             }
         }
-        $blob->setAnswers(!empty($answers) ? json_decode($answers, true) : []);
+        $blob->setAnswers((array) (!empty($answers) ? json_decode($answers, true) : []));
         $blob->setJournal($journal);
         if (!empty($record['patient_uuid'])) {
             $blob->setClientId(UuidRegistry::uuidToString($record['patient_uuid']));
         }
         $dateFormat = "Y-m-d H:i:s.u";
-        $blob->setCreationDate(\DateTime::createFromFormat($dateFormat, $record['creation_date']));
+        $blob->setCreationDate(\DateTime::createFromFormat($dateFormat, (string) $record['creation_date']));
         return $blob;
     }
 }

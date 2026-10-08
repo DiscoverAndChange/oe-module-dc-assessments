@@ -173,6 +173,24 @@ v0.11.1 PHPStan level-10 fixes (bugs + non-ignorable) and module-local baseline
     `/** @var */` on each local so the concrete service type is known). Baseline is
     now 1619 errors / 1074 entries (was 2289 / 1691); applying it reports zero
     errors and the DB-backed phpunit suite still passes (8 tests, 40 assertions).
+  - Baseline burn-down (round 6): argument.type. Reduce the class from 517 to 354
+    (163 cleared) by narrowing at the SOURCE rather than silencing: `/** @var */`
+    on json_decode/DB-row/request locals, tightening a few getter returns, (array)
+    casts where the value is genuinely an array, and wrapping `json_encode()` in a
+    PSR `createStream()` where it was being handed straight to `withBody()` (which
+    needs a StreamInterface, not a string). Deliberately did NOT cast mixed values
+    to scalars: this build's strict rules reject "Cannot cast mixed to int/string",
+    so `(int)`/`(string)` on a mixed value only relabels argument.type as cast.int/
+    cast.string — silencing, not fixing. The remaining mixed-at-boundary sites
+    (DB/json/request values flowing into scalar params) stay baselined pending a
+    deeper source-typing pass (typing DB rows as array<string, ?string>, etc.).
+    Three latent bugs surfaced and fixed along the way: ClientRestController and
+    MessageTemplateRestController called RestUtils::returnAccessDeniedResponse()/
+    getErrorResponse() without the required leading SystemLogger argument (a
+    TypeError under strict_types on every error path) — pass $this->logger to match
+    the sibling call sites. Baseline is now 1420 errors / 924 entries (was 1619 /
+    1074); applying it reports zero errors and the phpunit suite passes (8 tests,
+    40 assertions).
 
 v0.11.0 OpenEMR 8.4.1 (PHP 8.5) compatibility
 

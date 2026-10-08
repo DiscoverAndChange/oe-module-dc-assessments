@@ -165,13 +165,13 @@ class LibraryAssetBlobResultDTO implements \JsonSerializable
      */
     public function fromDTO(array $data)
     {
-        $this->setId($data['id'] ?? null);
+        $this->setId(($data['id'] ?? null));
         $asset = $data['asset'] ?? [];
         $assetId = $asset['id'] ?? null;
         $this->setAssetId($assetId);
-        $this->setAnswers($data['answers'] ?? []);
+        $this->setAnswers((array) ($data['answers'] ?? []));
         $this->setAssignmentItemId($data['assignmentItemId'] ?? null);
-        $this->setJournal($data['journal'] ?? '');
+        $this->setJournal(($data['journal'] ?? ''));
         $this->setClientId($data['clientId'] ?? null);
         $this->setCreationDate($data['creationDate'] ?? new \DateTime());
     }

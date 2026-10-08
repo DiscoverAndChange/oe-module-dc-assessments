@@ -183,6 +183,7 @@ class AssignmentTaskFHIRResourceService extends FhirServiceBase implements IReso
         if (!empty($results)) {
             if (isset($openEMRSearchParameters['_id'])) {
                 $matchSearchId = true;
+                /** @var TokenSearchValue[] $values */
                 $values = $openEMRSearchParameters['_id']->getValues();
                 $matchedUUids = array_map(function (TokenSearchValue $value) {
                     return $value->getCode();

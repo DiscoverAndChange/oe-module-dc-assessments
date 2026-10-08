@@ -112,7 +112,7 @@ class TaskRestController
         // `entry` key entirely when there are no results, but the SPA expects an
         // array — so normalize the empty case to a plain array with entry: [].
         if (empty($bundleEntries)) {
-            $bundleSearchResult = json_decode(json_encode($bundleSearchResult), true);
+            $bundleSearchResult = json_decode((string) json_encode($bundleSearchResult), true);
             $bundleSearchResult['entry'] = [];
         }
         return $bundleSearchResult;

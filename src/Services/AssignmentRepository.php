@@ -294,6 +294,7 @@ class AssignmentRepository
         } else {
             $assignment = new Assignment();
             foreach ($record['items'] as $item) {
+                /** @var array<mixed> $item */
                 $assignmentItem = $this->hydrateItemFromRecord($item);
                 $assignment->addItem($assignmentItem);
             }
@@ -369,6 +370,7 @@ class AssignmentRepository
         $assessmentGroup->setName($record['assessmentgroup_name']);
         if (!empty($record['items'])) {
             foreach ($record['items'] as $item) {
+                /** @var array<mixed> $item */
                 $assignmentItem = $this->hydrateItemFromRecord($item);
                 $assessmentGroup->addItem($assignmentItem);
             }
@@ -385,6 +387,7 @@ class AssignmentRepository
         $profile->setName($record['profile_name']);
         if (!empty($record['items'])) {
             foreach ($record['items'] as $item) {
+                /** @var array<mixed> $item */
                 // note the only items hydrated here are where the document template is a questionnaire category.
                 $assignmentItem = $this->hydrateItemFromRecord($item);
                 $profile->addItem($assignmentItem);

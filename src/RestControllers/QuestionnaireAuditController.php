@@ -75,7 +75,7 @@ class QuestionnaireAuditController
             $encounterService = new EncounterService();
             QueryUtils::startTransaction();
 
-            $phpInput = json_decode(file_get_contents('php://input'), true, 512, JSON_THROW_ON_ERROR);
+            $phpInput = json_decode((string) file_get_contents('php://input'), true, 512, JSON_THROW_ON_ERROR);
             $auditRecordId = $phpInput['auditRecordId'] ?? null;
             $encounterId = $phpInput['encounterId'] ?? null;
             $csrfToken = $phpInput['csrfToken'] ?? null;
@@ -154,7 +154,7 @@ class QuestionnaireAuditController
         $formQuestionnaireAssessment->setEncounter($encounterId);
         $formQuestionnaireAssessment->setPid($pid);
         $formQuestionnaireAssessment->setCopyright($qJSON['copyright'] ?? '');
-        $formQuestionnaireAssessment->setFormName($auditRecord['narrative'] ?? '');
+        $formQuestionnaireAssessment->setFormName(($auditRecord['narrative'] ?? ''));
         $formQuestionnaireAssessment->setResponseMeta($metaData);
         $formQuestionnaireAssessment->setQuestionnaireId($questionnaire['id']);
         $formQuestionnaireAssessment->setQuestionnaire($questionnaire['questionnaire']);
@@ -305,7 +305,7 @@ class QuestionnaireAuditController
         // bunch of node conversions anyways... we want the flexibility of using twig to render the tree so we'll just
         // keep it the way we have right now.
         $category = new \CategoryTree(1);
-        $root = $this->getCategoryTree($category, 1, $category->tree[1], 0);
+        $root = $this->getCategoryTree($category, 1, (array) $category->tree[1], 0);
         // we want to skip over the 'Categories' folder and just return the children
         return $root['tree'] ?? [];
     }
@@ -331,7 +331,7 @@ class QuestionnaireAuditController
                 if ($key === 0) {
                     continue; // not sure why we'd end up with empty 0 keys but we are skipping them.
                 }
-                $transformedTree['tree'][$key] = $this->getCategoryTree($obj, $key, $val, $depth + 1);
+                $transformedTree['tree'][$key] = $this->getCategoryTree($obj, $key, (array) $val, $depth + 1);
             }
         }
         return $transformedTree;

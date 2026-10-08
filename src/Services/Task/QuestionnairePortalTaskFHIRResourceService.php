@@ -239,8 +239,8 @@ class QuestionnairePortalTaskFHIRResourceService extends FhirServiceBase impleme
         $pids = [];
         $ids = [];
         foreach ($templates as $template) {
-            $pids[] = intval($template['pid']);
-            $ids[] = intval($template['id']);
+            $pids[] = $template['pid'];
+            $ids[] = $template['id'];
         }
         $pidsRepeat = str_repeat('?,', count($pids) - 1) . '?';
         $filePathRepeat = str_repeat('?,', count($ids) - 1) . '?';

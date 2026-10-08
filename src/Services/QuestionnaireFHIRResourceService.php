@@ -47,7 +47,7 @@ class QuestionnaireFHIRResourceService extends FhirServiceBase implements IResou
     use MappedServiceCodeTrait;
 
 
-    public function __construct(AssessmentFHIRResourceService $assessmentService = null, QuestionnaireFormFHIRResourceService $questionnaireService = null, LibraryAssetFHIRResourceService $libraryAssetService = null)
+    public function __construct(AssessmentFHIRResourceService $assessmentService, QuestionnaireFormFHIRResourceService $questionnaireService, LibraryAssetFHIRResourceService $libraryAssetService)
     {
         parent::__construct();
 //        $this->assessmentService = new AssessmentFHIRResourceService();

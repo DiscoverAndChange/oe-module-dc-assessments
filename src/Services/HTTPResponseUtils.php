@@ -32,6 +32,6 @@ class HTTPResponseUtils
             $err['error'] = $err['_message'] = 'A system error occurred. Please try again or contact support.';
         }
 
-        return $psrFactory->createResponse($statusCode)->withBody($psrFactory->createStream(json_encode($err)));
+        return $psrFactory->createResponse($statusCode)->withBody($psrFactory->createStream((string) json_encode($err)));
     }
 }

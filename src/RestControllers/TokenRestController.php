@@ -34,7 +34,7 @@ class TokenRestController implements IRestController
     {
         // TODO: Implement one() method.
         $psrFactory = new Psr17Factory();
-        return $psrFactory->createResponse(400)->withBody(json_encode([]));
+        return $psrFactory->createResponse(400)->withBody($psrFactory->createStream((string) json_encode([])));
     }
 
     /**
@@ -44,6 +44,6 @@ class TokenRestController implements IRestController
     {
         // TODO: Implement one() method.
         $psrFactory = new Psr17Factory();
-        return $psrFactory->createResponse(400)->withBody(json_encode([]));
+        return $psrFactory->createResponse(400)->withBody($psrFactory->createStream((string) json_encode([])));
     }
 }

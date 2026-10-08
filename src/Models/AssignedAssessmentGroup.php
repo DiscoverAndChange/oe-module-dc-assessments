@@ -42,6 +42,6 @@ class AssignedAssessmentGroup extends Assignment
     public function fromJSON(array $assignmentJSON)
     {
         parent::fromJSON($assignmentJSON);
-        $this->setAssessmentGroupId($assignmentJSON['assessmentGroupId'] ?? 0);
+        $this->setAssessmentGroupId(($assignmentJSON['assessmentGroupId'] ?? 0));
     }
 }

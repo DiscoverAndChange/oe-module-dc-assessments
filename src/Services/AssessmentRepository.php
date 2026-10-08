@@ -60,6 +60,7 @@ class AssessmentRepository
 
         $publishedToken = new TokenSearchField('status', 'published');
         $openEMRSearchParameters['status'] = $publishedToken;
+        /** @var array<string, \OpenEMR\Services\Search\ISearchField> $openEMRSearchParameters */
         $where = FhirSearchWhereClauseBuilder::build($openEMRSearchParameters);
         $query = $sql . $where->getFragment();
 
@@ -72,7 +73,7 @@ class AssessmentRepository
     }
 
     /**
-     * @param array<mixed> $assessmentList
+     * @param list<array<mixed>> $assessmentList
      * @return AssessmentSummary[]
      */
     private function getAssessmentSummaryFromRecords($assessmentList)
@@ -110,7 +111,7 @@ class AssessmentRepository
         $result->name = $record['name'] ?? '';
         $result->description = $record['description'] ?? '';
         $result->data = $record['data'] ?? '';
-        $result->date = \DateTime::createFromFormat('Y-m-d H:i:s.u', $record['date'] ?? '');
+        $result->date = \DateTime::createFromFormat('Y-m-d H:i:s.u', ($record['date'] ?? ''));
         $result->isPublic = empty($record['company_id']);
         return $result;
     }
@@ -242,7 +243,7 @@ class AssessmentRepository
         }
         $sql = "SELECT DISTINCT company_id FROM " . self::TABLE_NAME . " WHERE id = ? ";
         $assessmentCompanyId = QueryUtils::fetchSingleValue($sql, 'company_id', [$id]);
-        return $assessmentCompanyId === null || intval($assessmentCompanyId) === $companyId;
+        return $assessmentCompanyId === null || $assessmentCompanyId === $companyId;
     }
 
     /**
