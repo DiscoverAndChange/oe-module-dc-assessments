@@ -396,6 +396,53 @@ More latent bugs surfaced during batch 1:
   anything as valid).
 
 
+## PHPStan × coverage map (line-level, 2026-10-08) — drives the pre-fix test work
+Method: ran phpstan with the module baseline OFF (846 current errors, with line numbers),
+mapped each error to its enclosing method, and checked that method's coverage via clover.
+Regenerate with: `<scratchpad>/precision.py <clover.xml> <phpstan-errors.json> <DEST>/src`.
+
+Where the 846 flagged errors live:
+- **355 (42%) in methods EXERCISED by tests** -> safe to do aggressive phpstan fixes now.
+- **450 (53%) in methods NOT exercised** -> write a test BEFORE fixing (list below).
+- 34 (4%) in @deprecated methods -> leave in the baseline, do not test/fix.
+- 7 class-level (use/property/docblock) -> n/a.
+
+### "Need a test" targets (method : #errors), grouped by tranche
+TRANCHE A — high-value + unit-testable (do first, ~130 errors):
+- RestControllers/ClientRestController: list 7, addAssignmentGroupToClient 9, sendMessageToClient 8,
+  removeAssignmentFromClient 6, addAssignmentToClient 5  (0% covered today)
+- RestControllers/AssessmentReportRestController: create 12, update 11
+- RestControllers/AssessmentGroupRestController: create 6, addAssessmentToGroup 6, updateAssessmentVersionForGroup 6
+- RestControllers/AssessmentRestController: createAssessmentForContext 10, update 1
+- RestControllers/QuestionnaireResponseRestController: create 8, getAll 5, getOne 1, __construct 1
+- Services/FhirServices/QuestionnaireResponseFormFHIRResourceService: parseOpenEMRRecord 22
+  (read direction; parseFhirResource already covered) — easy win, mostly pure.
+
+TRANCHE B — integration-heavy (real fixtures; cover where cheap, else leave baselined):
+- FHIR insert/insertOpenEmrRecord (QuestionnaireResponse-create DB flow):
+  AssessmentResponseBlobFHIRResourceService::insertOpenEmrRecord 17,
+  LibraryAssetResultBlobFHIRResourceService::insertOpenEmrRecord 10,
+  QuestionnaireResponseFormFHIRResourceService::insertOpenEMRRecord 4,
+  LibraryAssetResultBlobRepository::saveLibraryAssetResultBlob 10.
+- Controllers/AssessmentAppointmentController (51): appointment wizard / notification / digital
+  documents screens — needs appointment + document-template fixtures.
+- RestControllers/QuestionnaireAuditController: actionChartAssignmentToEncounter 13 + render 11.
+- Listeners/QuestionnaireResponseRestListener 11, Listeners/QuestionnaireAssignmentListener 10
+  (QR-save -> assignment-completion event glue).
+- Services/ClientMessageDispatcher 8 (notifications; needs mailer mocking).
+- Services/Task/QuestionnairePortalTaskFHIRResourceService: searchForOpenEMRRecords 6,
+  getTaskDataForTemplates 6.
+
+LEAVE BASELINED (dead/deprecated):
+- The 34 @deprecated-method errors.
+- APIProxyController proxy FALLBACK only: sendRequestAndReturnResponse / getUriForApiRequest /
+  addAuthorizationToRequest (~5; SPA audit confirmed the Guzzle fallback never fires). NOTE the
+  rest of APIProxyController (proxyGet/Post/getCallableForApiRequest, ~15) is live-but-untested
+  and belongs in a test tranche, not here.
+
+Plan: build Tranche A (and cheap parts of B) FIRST, THEN start the aggressive phpstan fixes on
+the now-netted methods; keep deprecated/dead errors baselined.
+
 ## Progress log
 - 2026-10-08: Scope B batch 4 — QuestionnaireAuditController guards + ClientRepository happy
   paths + AssignmentRepository remaining branches (453 -> 478 tests, coverage ~45% -> ~47%
