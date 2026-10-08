@@ -206,6 +206,16 @@ Also fold in the deferred type-smell findings above (string setters fed `?? 0`,
 AssessmentGroup::getId int-vs-int|string, AssignedAssessment assessmentId, parent::fromJSON
 type reset, Client::fromJSON rewrite/removal) since this pass touches those exact lines.
 
+## Next / roadmap (planned)
+- **Dead-code audit driven by the SPA.** Traverse the patient frontend (public/frontend)
+  to enumerate which FHIR/REST routes it actually calls vs. which are unused, then
+  deprecate/remove the unused backend classes and methods. Known-dead already found:
+  APIProxyController's proxy methods (only its API_MAPPINGS constant is used), the
+  Task item-update path (frontend's `client.update<Task>` is commented out), and
+  Client::fromJSON() (no callers). The route map to check against is
+  APIProxyController::API_MAPPINGS (fhir/user/portal route maps). Lean on the test
+  suite as the safety net before removing anything.
+
 ## Progress log
 - 2026-10-08: Plan created. phpunit.xml given a `<source>`/testsuite so coverage can
   target `src/`. First pure-unit test (`Models/AssignmentTest`) added as the pattern.
