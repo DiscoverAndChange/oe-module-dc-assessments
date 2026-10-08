@@ -1,3 +1,19 @@
+v0.12.8 Fix SMART-app crash on assessment-users (NULL username address-book entries)
+
+  Launching the "Patient Portal Assignments" SMART app failed on GET /api/assessment-users/:uuid
+  (SystemUserRestController::one -> SystemUserRepository::getUsers) with
+  "SystemUser::__construct(): Argument #2 (\$username) must be of type string, null given".
+
+  Cause: OpenEMR's users table also holds non-login "address book" entries (external/referring
+  providers) whose username is NULL. getUsers() iterated every user and fed that NULL into the
+  non-null SystemUser::\$username. Fix: getUsers() skips username-less rows (they are not
+  assessment system users) and hydrateUser() coalesces defensively; the username-related type
+  annotations are corrected to ?string.
+
+  Regression test: SystemUserRepositoryAddressBookTest seeds a real login user plus a NULL-
+  username address-book user and asserts getUsers()/one() no longer crash and exclude the
+  non-login entry. (Integration-style: seed -> run -> clean up.)
+
 v0.12.7 Integration tests for ACL-gated write paths (pre-phpstan coverage build-out)
 
   Test-only change (no src changes). Before the planned aggressive PHPStan refactor, this
