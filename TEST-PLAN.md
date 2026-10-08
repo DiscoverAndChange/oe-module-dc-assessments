@@ -32,18 +32,29 @@ No coverage driver is installed. Install PCOV (faster than Xdebug, no suite slow
 ```
 ! sudo apt-get update && sudo apt-get install -y php-pcov
 ```
-Then generate a report (PCOV is off by default, enable per-run):
+Then generate a report (PCOV is off by default, enable per-run). **Gotcha:** PCOV
+only instruments files under `pcov.directory` — you MUST point it at the module
+`src/` or you get a misleading 0%:
 ```
+MOD=interface/modules/custom_modules/oe-module-dc-assessments
 cd ~/projects/openemr-wt-file-manifest \
- && php -d pcov.enabled=1 vendor/bin/phpunit \
-      --configuration=interface/modules/custom_modules/oe-module-dc-assessments/phpunit.xml \
-      --coverage-text --coverage-html coverage-html
+ && php -d pcov.enabled=1 -d pcov.directory="$MOD/src" vendor/bin/phpunit \
+      --configuration="$MOD/phpunit.xml" \
+      --coverage-text --coverage-html "$MOD/coverage-html"
 ```
-`phpunit.xml` now declares `<source>` = `src/`, so coverage is scoped to the module.
-Treat the report as a **map to prioritize**, not a target — line coverage ≠ assertion
-quality. Record the baseline % here once generated.
+`phpunit.xml` declares `<source>` = `src/`, so the report is scoped to the module.
+Treat it as a **map to prioritize**, not a target — line coverage ≠ assertion quality.
+(Local dev here uses the `fullsuite.sh` harness + an absolute-path coverage config
+because the committed bootstrap doesn't load the module's nested vendor; see session
+scratchpad `phpunit-coverage.xml`.)
 
-Coverage baseline: _not yet generated (install PCOV first)_.
+Coverage baseline (2026-10-08): **9.3%** line coverage (486 / 5243 statements),
+12 files touched. Highest existing coverage: LibraryAssetBlobDTO 94%, Assignment 75%,
+ResourceImporterService 70%, AssessmentGroupService 66%. Everything else is at or
+near 0% — see the biggest zero-coverage targets (by statement count): Assignment
+Repository (350), Bootstrap (263), AssessmentAppointmentController (176),
+QuestionnaireAuditController (156), the FHIR form services (~150 each), ClientRest
+Controller (151), AssessmentGroupRestController (146).
 
 ## Strategy: order by (change-risk × path-criticality)
 1. **Pure-unit hydration** (no DB) — the exact code source-typing rewrites: array→object.
@@ -85,3 +96,6 @@ Coverage baseline: _not yet generated (install PCOV first)_.
 ## Progress log
 - 2026-10-08: Plan created. phpunit.xml given a `<source>`/testsuite so coverage can
   target `src/`. First pure-unit test (`Models/AssignmentTest`) added as the pattern.
+- 2026-10-08: PR #5 (the 8.4.1 port) merged to main; stale PRs #3/#4 closed. This
+  work continues on branch `ai/test-coverage-and-source-typing` off updated main.
+  PCOV installed; coverage baseline generated: 9.3% (see above).
