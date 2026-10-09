@@ -1519,36 +1519,6 @@ parameters:
 			path: src/Services/FhirServices/AssessmentFHIRResourceService.php
 
 		-
-			message: '#^Cannot call method error\(\) on Psr\\Log\\LoggerInterface\|null\.$#'
-			identifier: method.nonObject
-			count: 2
-			path: src/Services/FhirServices/AssessmentResponseBlobFHIRResourceService.php
-
-		-
-			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
-			identifier: empty.notAllowed
-			count: 6
-			path: src/Services/FhirServices/AssessmentResponseBlobFHIRResourceService.php
-
-		-
-			message: '#^Instanceof between OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Models\\AssignedAssessment and OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Models\\AssignedAssessment will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: src/Services/FhirServices/AssessmentResponseBlobFHIRResourceService.php
-
-		-
-			message: '#^Offset ''clientId'' might not exist on array\{data\?\: array\<string, mixed\>, \.\.\.\}\.$#'
-			identifier: offsetAccess.notFound
-			count: 1
-			path: src/Services/FhirServices/AssessmentResponseBlobFHIRResourceService.php
-
-		-
-			message: '#^Offset ''data'' might not exist on array\{data\?\: array\<string, mixed\>, \.\.\.\}\.$#'
-			identifier: offsetAccess.notFound
-			count: 1
-			path: src/Services/FhirServices/AssessmentResponseBlobFHIRResourceService.php
-
-		-
 			message: '#^OpenEMR\\Common\\Database\\QueryUtils\:\:commitTransaction\(\) is deprecated\. Use QueryUtils\:\:inTransaction\(\) wrapper instead\.$#'
 			identifier: openemr.deprecatedSqlFunction
 			count: 1
@@ -1567,12 +1537,6 @@ parameters:
 			path: src/Services/FhirServices/AssessmentResponseBlobFHIRResourceService.php
 
 		-
-			message: '#^Parameter \#1 \$assignmentItemUuid of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssignmentRepository\:\:getAssignmentItem\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/FhirServices/AssessmentResponseBlobFHIRResourceService.php
-
-		-
 			message: '#^Parameter \#1 \$code of method OpenEMR\\FHIR\\R4\\FHIRDomainResource\\FHIRQuestionnaire\:\:addCode\(\) expects OpenEMR\\FHIR\\R4\\FHIRElement\\FHIRCoding, OpenEMR\\FHIR\\R4\\FHIRElement\\FHIRCode given\.$#'
 			identifier: argument.type
 			count: 1
@@ -1586,12 +1550,6 @@ parameters:
 
 		-
 			message: '#^Parameter \#1 \$name of method OpenEMR\\FHIR\\R4\\FHIRDomainResource\\FHIRQuestionnaire\:\:setName\(\) expects OpenEMR\\FHIR\\R4\\FHIRElement\\FHIRString, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/FhirServices/AssessmentResponseBlobFHIRResourceService.php
-
-		-
-			message: '#^Parameter \#1 \$patientUuidString of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\FhirServices\\AssessmentResponseBlobFHIRResourceService\:\:validateCreateAccessAndReturnClient\(\) expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Services/FhirServices/AssessmentResponseBlobFHIRResourceService.php
@@ -1627,38 +1585,8 @@ parameters:
 			path: src/Services/FhirServices/AssessmentResponseBlobFHIRResourceService.php
 
 		-
-			message: '#^Parameter \#2 \$puuid of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssignmentRepository\:\:getAssignmentItem\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/FhirServices/AssessmentResponseBlobFHIRResourceService.php
-
-		-
-			message: '#^Parameter \#2 \$userId of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\FhirServices\\AssessmentResponseBlobFHIRResourceService\:\:validateCreateAccessAndReturnClient\(\) expects int\|null, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/FhirServices/AssessmentResponseBlobFHIRResourceService.php
-
-		-
-			message: '#^Parameter \#3 \$clientId of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssessmentResultRepository\:\:createResult\(\) expects int, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/FhirServices/AssessmentResponseBlobFHIRResourceService.php
-
-		-
 			message: '#^Return type \(array\<mixed\>\|null\) of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\FhirServices\\AssessmentResponseBlobFHIRResourceService\:\:parseFhirResource\(\) should be covariant with return type \(array\) of method OpenEMR\\Services\\FHIR\\FhirServiceBase\:\:parseFhirResource\(\)$#'
 			identifier: method.childReturnType
-			count: 1
-			path: src/Services/FhirServices/AssessmentResponseBlobFHIRResourceService.php
-
-		-
-			message: '#^Unreachable statement \- code above always terminates\.$#'
-			identifier: deadCode.unreachable
-			count: 1
-			path: src/Services/FhirServices/AssessmentResponseBlobFHIRResourceService.php
-
-		-
-			message: '#^Variable \$item in empty\(\) always exists and is not falsy\.$#'
-			identifier: empty.variable
 			count: 1
 			path: src/Services/FhirServices/AssessmentResponseBlobFHIRResourceService.php
 
