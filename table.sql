@@ -623,6 +623,20 @@ UPDATE `globals` SET `gl_value` = 1 WHERE `gl_name` = 'oauth_ehr_launch_authoriz
 COMMIT;
 #EndIf
 
+-- The assessments SMART app authenticates patients via the OAuth2 "portal-api" flow, which has
+-- no first-login credential-reset/verify UI. With OpenEMR's default
+-- portal_force_credential_reset='0' (Allow), a freshly-created patient is left unverified
+-- (patient_access_onsite.portal_pwd_status != 1), so core rejects the very first SMART login with
+-- "credentials invalid". Force the global to '1' (Disable) so newly-created portal credentials are
+-- immediately usable (create_portallogin.php -> forced_reset_disable=1 -> portal_pwd_status=1).
+-- REPLACE (not UPDATE) because this global has no globals row by default -- it falls back to the
+-- globals.inc.php default until explicitly set. gl_index 0 is the scalar-global slot.
+#IfNotRow2D globals gl_name portal_force_credential_reset gl_value 1
+START TRANSACTION;
+REPLACE INTO `globals` (`gl_name`, `gl_index`, `gl_value`) VALUES ('portal_force_credential_reset', 0, '1');
+COMMIT;
+#EndIf
+
 #IfMissingColumn dac_AssessmentBlob uuid
 ALTER TABLE dac_AssessmentBlob ADD `uuid` binary(16) NULL DEFAULT NULL;
 #EndIf
