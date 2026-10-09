@@ -43,12 +43,6 @@ parameters:
 			path: src/APIProxyController.php
 
 		-
-			message: '#^Direct instantiation of OpenEMR\\Common\\Logging\\SystemLogger is discouraged\. Use OpenEMR\\BC\\ServiceContainer\:\:getLogger\(\) instead\.$#'
-			identifier: openemr.forbiddenInstantiation
-			count: 2
-			path: src/APIProxyController.php
-
-		-
 			message: '#^Method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\APIProxyController\:\:addAuthorizationToRequest\(\) is unused\.$#'
 			identifier: method.unused
 			count: 1
@@ -157,12 +151,6 @@ parameters:
 			path: src/Bootstrap.php
 
 		-
-			message: '#^Direct instantiation of OpenEMR\\Common\\Logging\\SystemLogger is discouraged\. Use OpenEMR\\BC\\ServiceContainer\:\:getLogger\(\) instead\.$#'
-			identifier: openemr.forbiddenInstantiation
-			count: 1
-			path: src/Bootstrap.php
-
-		-
 			message: '#^Parameter \#1 \$string of function urlencode expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
@@ -229,12 +217,6 @@ parameters:
 			path: src/Controllers/AssessmentAppointmentController.php
 
 		-
-			message: '#^Direct instantiation of OpenEMR\\Common\\Logging\\SystemLogger is discouraged\. Use OpenEMR\\BC\\ServiceContainer\:\:getLogger\(\) instead\.$#'
-			identifier: openemr.forbiddenInstantiation
-			count: 4
-			path: src/Controllers/AssessmentAppointmentController.php
-
-		-
 			message: '#^Parameter \#1 \$category of method OpenEMR\\Services\\DocumentTemplates\\DocumentTemplateService\:\:getTemplateListByCategory\(\) expects null, string given\.$#'
 			identifier: argument.type
 			count: 2
@@ -293,12 +275,6 @@ parameters:
 			identifier: empty.notAllowed
 			count: 4
 			path: src/Controllers/AssignmentEncounterController.php
-
-		-
-			message: '#^Direct instantiation of OpenEMR\\Common\\Logging\\SystemLogger is discouraged\. Use OpenEMR\\BC\\ServiceContainer\:\:getLogger\(\) instead\.$#'
-			identifier: openemr.forbiddenInstantiation
-			count: 1
-			path: src/Controllers/BackendDispatchController.php
 
 		-
 			message: '#^Result of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Controllers\\AssessmentAppointmentController\:\:renderWizardScreenForAppointmentId\(\) \(void\) is used\.$#'
@@ -649,12 +625,6 @@ parameters:
 			path: src/RestControllers/AssessmentGroupRestController.php
 
 		-
-			message: '#^Direct instantiation of OpenEMR\\Common\\Logging\\SystemLogger is discouraged\. Use OpenEMR\\BC\\ServiceContainer\:\:getLogger\(\) instead\.$#'
-			identifier: openemr.forbiddenInstantiation
-			count: 1
-			path: src/RestControllers/AssessmentGroupRestController.php
-
-		-
 			message: '#^Offset ''assessmentBlob'' on array\{assessmentBlob\: array\{id\: string, name\: string, uid\: string\}\} in empty\(\) always exists and is not falsy\.$#'
 			identifier: empty.offset
 			count: 1
@@ -814,12 +784,6 @@ parameters:
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
 			identifier: empty.notAllowed
 			count: 2
-			path: src/RestControllers/AssessmentRestController.php
-
-		-
-			message: '#^Direct instantiation of OpenEMR\\Common\\Logging\\SystemLogger is discouraged\. Use OpenEMR\\BC\\ServiceContainer\:\:getLogger\(\) instead\.$#'
-			identifier: openemr.forbiddenInstantiation
-			count: 4
 			path: src/RestControllers/AssessmentRestController.php
 
 		-
@@ -1297,12 +1261,6 @@ parameters:
 			path: src/RestControllers/QuestionnaireRestController.php
 
 		-
-			message: '#^Direct instantiation of OpenEMR\\Common\\Logging\\SystemLogger is discouraged\. Use OpenEMR\\BC\\ServiceContainer\:\:getLogger\(\) instead\.$#'
-			identifier: openemr.forbiddenInstantiation
-			count: 1
-			path: src/RestControllers/TagRestController.php
-
-		-
 			message: '#^catch \(Exception\) would suppress ErrorException, which is forbidden\.$#'
 			identifier: openemr.forbiddenCatchType
 			count: 1
@@ -1324,12 +1282,6 @@ parameters:
 			message: '#^Direct access to \$_SERVER is forbidden\. Use Symfony''s Request object instead\.$#'
 			identifier: openemr.forbiddenRequestGlobals
 			count: 1
-			path: src/RestControllers/TaskRestController.php
-
-		-
-			message: '#^Direct instantiation of OpenEMR\\Common\\Logging\\SystemLogger is discouraged\. Use OpenEMR\\BC\\ServiceContainer\:\:getLogger\(\) instead\.$#'
-			identifier: openemr.forbiddenInstantiation
-			count: 2
 			path: src/RestControllers/TaskRestController.php
 
 		-
@@ -1451,12 +1403,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: src/Services/ClientMessageDispatcher.php
-
-		-
-			message: '#^Direct instantiation of OpenEMR\\Common\\Logging\\SystemLogger is discouraged\. Use OpenEMR\\BC\\ServiceContainer\:\:getLogger\(\) instead\.$#'
-			identifier: openemr.forbiddenInstantiation
-			count: 1
-			path: src/Services/ClientSearchRepository.php
 
 		-
 			message: '#^Property OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\ClientSearchRepository\:\:\$companyId is never read, only written\.$#'
@@ -1747,12 +1693,6 @@ parameters:
 			path: src/Services/FhirServices/QuestionnaireFormFHIRResourceService.php
 
 		-
-			message: '#^Direct instantiation of OpenEMR\\Common\\Logging\\SystemLogger is discouraged\. Use OpenEMR\\BC\\ServiceContainer\:\:getLogger\(\) instead\.$#'
-			identifier: openemr.forbiddenInstantiation
-			count: 1
-			path: src/Services/FhirServices/QuestionnaireFormFHIRResourceService.php
-
-		-
 			message: '#^Parameter \#1 \$dataRecord \(OpenEMR\\FHIR\\R4\\FHIRResource\\FHIRDomainResource\) of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\FhirServices\\QuestionnaireFormFHIRResourceService\:\:createProvenanceResource\(\) should be contravariant with parameter \$dataRecord \(mixed\) of method OpenEMR\\Services\\FHIR\\FhirServiceBase\:\:createProvenanceResource\(\)$#'
 			identifier: method.childParameterType
 			count: 1
@@ -1873,12 +1813,6 @@ parameters:
 			path: src/Services/MessageTemplateRepository.php
 
 		-
-			message: '#^Direct instantiation of OpenEMR\\Common\\Logging\\SystemLogger is discouraged\. Use OpenEMR\\BC\\ServiceContainer\:\:getLogger\(\) instead\.$#'
-			identifier: openemr.forbiddenInstantiation
-			count: 1
-			path: src/Services/PaginatedResultsService.php
-
-		-
 			message: '#^Parameter \#1 \$limit of class OpenEMR\\Common\\Database\\QueryPagination constructor expects int, mixed given\.$#'
 			identifier: argument.type
 			count: 1
@@ -1966,12 +1900,6 @@ parameters:
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
 			identifier: empty.notAllowed
 			count: 9
-			path: src/Services/ResourceImporterService.php
-
-		-
-			message: '#^Direct instantiation of OpenEMR\\Common\\Logging\\SystemLogger is discouraged\. Use OpenEMR\\BC\\ServiceContainer\:\:getLogger\(\) instead\.$#'
-			identifier: openemr.forbiddenInstantiation
-			count: 3
 			path: src/Services/ResourceImporterService.php
 
 		-
@@ -2373,12 +2301,6 @@ parameters:
 		-
 			message: '#^Constructor of class OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\TaskFHIRResourceService has an unused parameter \$portalQuestionnaireResourceService\.$#'
 			identifier: constructor.unusedParameter
-			count: 1
-			path: src/Services/TaskFHIRResourceService.php
-
-		-
-			message: '#^Direct instantiation of OpenEMR\\Common\\Logging\\SystemLogger is discouraged\. Use OpenEMR\\BC\\ServiceContainer\:\:getLogger\(\) instead\.$#'
-			identifier: openemr.forbiddenInstantiation
 			count: 1
 			path: src/Services/TaskFHIRResourceService.php
 

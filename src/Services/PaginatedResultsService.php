@@ -2,8 +2,8 @@
 
 namespace OpenEMR\Modules\DiscoverAndChange\Assessments\Services;
 
+use OpenEMR\BC\ServiceContainer;
 use Nyholm\Psr7\Factory\Psr17Factory;
-use OpenEMR\Common\Logging\SystemLogger;
 use OpenEMR\Common\Database\QueryPagination;
 use OpenEMR\Validators\ProcessingResult;
 
@@ -54,7 +54,7 @@ class PaginatedResultsService
         $resultsCount = count($results);
         $offset = (int) $pagination->getCurrentOffsetId() + $resultsCount;
         $cursor = null;
-        (new SystemLogger())->debug("returnPaginatedResultsResponse() inside", ["pagination" => $pagination->jsonSerialize(), "resultCount" => count($results)]);
+        ServiceContainer::getLogger()->debug("returnPaginatedResultsResponse() inside", ["pagination" => $pagination->jsonSerialize(), "resultCount" => count($results)]);
 
         if ($resultsCount >= $moreResultsLimit) {
             $returnData = array_slice($results, 0, $pagination->getLimit());

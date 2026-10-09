@@ -2,7 +2,7 @@
 
 namespace OpenEMR\Modules\DiscoverAndChange\Assessments\Controllers;
 
-use OpenEMR\Common\Logging\SystemLogger;
+use OpenEMR\BC\ServiceContainer;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Utils\RestUtils;
 
 class BackendDispatchController
@@ -42,7 +42,7 @@ class BackendDispatchController
                 $request = $this->configController->importConfigAction($action, $queryVars);
                 break;
             default:
-                (new SystemLogger())->error("Unknown action", ['action' => $action]);
+                ServiceContainer::getLogger()->error("Unknown action", ['action' => $action]);
                 $request = RestUtils::getNotFoundResponse();
                 break;
         }

@@ -2,11 +2,11 @@
 
 namespace OpenEMR\Modules\DiscoverAndChange\Assessments\RestControllers;
 
+use OpenEMR\BC\ServiceContainer;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use OpenEMR\Common\Acl\AccessDeniedException;
 use OpenEMR\Common\Acl\AclMain;
 use OpenEMR\Common\Database\QueryUtils;
-use OpenEMR\Common\Logging\SystemLogger;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\IRestController;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Models\AssessmentGroup;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Models\AssessmentSnippet;
@@ -23,11 +23,11 @@ use Psr\Log\LoggerInterface;
 
 class AssessmentGroupRestController implements IRestController
 {
-    private SystemLogger $logger;
+    private LoggerInterface $logger;
 
     public function __construct()
     {
-        $this->logger = new SystemLogger();
+        $this->logger = ServiceContainer::getLogger();
     }
 
     public function list(ServerRestRequest $request): ResponseInterface

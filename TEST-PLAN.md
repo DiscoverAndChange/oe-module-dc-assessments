@@ -514,6 +514,16 @@ proceed on the 489 exercised-method errors; keep deprecated/dead baselined; the 
 integration-heavy remainder is a future batch (or fix conservatively/PHPDoc-only).
 
 ## Progress log
+- 2026-10-09: PHPStan refactor pass 6 (v0.12.15) — SystemLogger instantiation sweep (mechanical
+  bucket). Replaced all 23 `new SystemLogger()` (forbiddenInstantiation) across 17 src files with
+  ServiceContainer::getLogger(); retyped the receiving slots (2 repo ctors, 4 logger props,
+  getErrorResponse param) SystemLogger -> LoggerInterface. Left DI-injected `private SystemLogger
+  $logger` ctor params alone (autowired via SystemLogger::class alias, not flagged). Baseline
+  688 -> 665 (0 added / 13 removed entries). Suite 529 green.
+  NOTE: investigated the catch(\Exception) bucket first and did NOT pursue it — the rule
+  (openemr.forbiddenCatchType) forbids \Exception/\Throwable/\ErrorException and is only cleared by
+  narrowing or ending the catch in `throw;`; the module's broad catches are intentional log-and-
+  recover boundaries that OpenEMR itself baselines (dispatch.php precedent). See [[phpstan-forbidden-catch-type]].
 - 2026-10-09: PHPStan refactor pass 5 (v0.12.14) — AssessmentResponseBlobFHIRResourceService
   (31 -> 13). Baseline 706 -> 688. Removed a duplicated unreachable item-validation block, fixed
   a misplaced-paren empty(bool-expr) in validateCreateAccessAndReturnClient, removed a dead

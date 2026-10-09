@@ -2,10 +2,10 @@
 
 namespace OpenEMR\Modules\DiscoverAndChange\Assessments\Controllers;
 
+use OpenEMR\BC\ServiceContainer;
 use Google\Service\AdMob\App;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use OpenEMR\Common\Csrf\CsrfUtils;
-use OpenEMR\Common\Logging\SystemLogger;
 use OpenEMR\Common\Session\SessionWrapperFactory;
 use OpenEMR\Common\Uuid\UuidRegistry;
 use OpenEMR\Events\Appointments\AppointmentDialogCloseEvent;
@@ -83,7 +83,7 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
                     $this->repository->removeAssignment($assignment->getClientId(), $assignment->getId(), SessionWrapperFactory::getInstance()->getActiveSession()->get('authUserID'));
                 }
             } catch (\Exception $e) {
-                (new SystemLogger())->error(
+                ServiceContainer::getLogger()->error(
                     'Failed to delete digital documents section for appointment id',
                     ['message' => $e->getMessage(), 'trace' => $e->getTraceAsString(), 'recordId' => $apptId]
                 );
@@ -216,7 +216,7 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
                 $data
             );
         } catch (\Exception $e) {
-            (new SystemLogger())->error($e->getMessage(), ['trace' => $e->getTraceAsString(), 'appt' => $appointment]);
+            ServiceContainer::getLogger()->error($e->getMessage(), ['trace' => $e->getTraceAsString(), 'appt' => $appointment]);
         }
     }
 
@@ -328,7 +328,7 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
             $notificationEvent = new SendNotificationEvent($patientPid, ['alt_content' => $finalMessage]);
             $this->dispatcher->dispatch($notificationEvent, SendNotificationEvent::SEND_NOTIFICATION_BY_SERVICE);
         } catch (\Exception $e) {
-            (new SystemLogger())->error($e->getMessage(), ['trace' => $e->getTraceAsString()]);
+            ServiceContainer::getLogger()->error($e->getMessage(), ['trace' => $e->getTraceAsString()]);
             return RestUtils::returnSingleObjectResponse(['type' => 'error']);
         }
         return RestUtils::returnSingleObjectResponse(['type' => 'success']);
@@ -366,7 +366,7 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
                 ]
             );
         } catch (\Exception $e) {
-            (new SystemLogger())->error($e->getMessage(), ['trace' => $e->getTraceAsString(), 'appt' => $appt]);
+            ServiceContainer::getLogger()->error($e->getMessage(), ['trace' => $e->getTraceAsString(), 'appt' => $appt]);
         }
 
         $this->renderNotificationsSection($event, $appt, $assignment);

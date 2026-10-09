@@ -2,8 +2,8 @@
 
 namespace OpenEMR\Modules\DiscoverAndChange\Assessments\Services;
 
+use Psr\Log\LoggerInterface;
 use OpenEMR\Common\Database\QueryUtils;
-use OpenEMR\Common\Logging\SystemLogger;
 use OpenEMR\Common\Uuid\UuidRegistry;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\DTO\LibraryAssetBlobDTO;
 use OpenEMR\Services\Search\FhirSearchWhereClauseBuilder;
@@ -14,7 +14,7 @@ class LibraryAssetBlobRepository
 {
     const TABLE_NAME = "dac_LibraryAssetBlob";
 
-    public function __construct(private SystemLogger $logger)
+    public function __construct(private LoggerInterface $logger)
     {
     }
 

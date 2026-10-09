@@ -2,8 +2,8 @@
 
 namespace OpenEMR\Modules\DiscoverAndChange\Assessments\Services;
 
+use Psr\Log\LoggerInterface;
 use OpenEMR\Common\Database\QueryUtils;
-use OpenEMR\Common\Logging\SystemLogger;
 use OpenEMR\Common\Uuid\UuidRegistry;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Models\AssessmentSummary;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Models\ErrorCode;
@@ -17,7 +17,7 @@ class AssessmentRepository
 
     const TABLE_VIEW_CURRENT_ASSESSMENT = "dac_view_current_assessments";
 
-    public function __construct(private SystemLogger $logger)
+    public function __construct(private LoggerInterface $logger)
     {
     }
     /** @return array<mixed> */
