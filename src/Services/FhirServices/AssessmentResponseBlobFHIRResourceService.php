@@ -9,7 +9,6 @@ use OpenEMR\Common\Logging\SystemLogger;
 use OpenEMR\Common\Session\SessionWrapperFactory;
 use OpenEMR\Common\Uuid\UuidRegistry;
 use OpenEMR\FHIR\Config\ServerConfig;
-use OpenEMR\FHIR\R4\FHIRDomainResource\FHIRProvenance;
 use OpenEMR\FHIR\R4\FHIRDomainResource\FHIRQuestionnaire;
 use OpenEMR\FHIR\R4\FHIRDomainResource\FHIRQuestionnaireResponse;
 use OpenEMR\FHIR\R4\FHIRElement\FHIRCode;
@@ -75,7 +74,7 @@ class AssessmentResponseBlobFHIRResourceService extends FhirServiceBase
     protected function createOpenEMRSearchParameters(array $fhirSearchParameters, ?string $puuidBind = null): array
     {
         // we don't do anything with the code once we have it, so we remove it.
-        if (!empty($fhirSearchParameters['questionnaire-code'])) {
+        if (isset($fhirSearchParameters['questionnaire-code'])) {
             unset($fhirSearchParameters['questionnaire-code']);
         }
         return parent::createOpenEMRSearchParameters($fhirSearchParameters, $puuidBind);
@@ -127,7 +126,7 @@ class AssessmentResponseBlobFHIRResourceService extends FhirServiceBase
         }
         /** @var \OpenEMR\FHIR\R4\FHIRElement\FHIRExtension[] $extensions */
         $extensions = UtilsService::getExtensionsByUrl("https://www.discoverandchange.com/fhir/" . self::CODE_DAC_ASSESSMENT, $fhirResource);
-        if (!empty($extensions)) { // we only care about the first one.
+        if ($extensions !== []) { // we only care about the first one.
             $valueString = $extensions[0]->getValueString();
             /** @var array<string, mixed> $dataRecord */
             $dataRecord = json_decode($valueString, true);
@@ -144,7 +143,7 @@ class AssessmentResponseBlobFHIRResourceService extends FhirServiceBase
     /** @param mixed $openEmrRecord */
     protected function insertOpenEmrRecord($openEmrRecord)
     {
-        /** @var array{data?: array<string, mixed>, ...} $openEmrRecord */
+        /** @var array{clientId: string, data: array{_assignmentItemId: string, ...}, ...} $openEmrRecord */
         $validator = new AssessmentResultBlobValidator();
         $transactionCommitted = false;
         try {
@@ -155,9 +154,13 @@ class AssessmentResponseBlobFHIRResourceService extends FhirServiceBase
                 return $validation;
             }
 
-            $client = $this->validateCreateAccessAndReturnClient($openEmrRecord['clientId'], SessionWrapperFactory::getInstance()->getActiveSession()->get('authUserID'));
-            $item = $assignmentRepo->getAssignmentItem($openEmrRecord['data']['_assignmentItemId'], $client['uuid']);
-            if (empty($item)) {
+            /** @var int|null $authUserId */
+            $authUserId = SessionWrapperFactory::getInstance()->getActiveSession()->get('authUserID');
+            $client = $this->validateCreateAccessAndReturnClient($openEmrRecord['clientId'], $authUserId);
+            /** @var string $clientUuid */
+            $clientUuid = $client['uuid'];
+            $item = $assignmentRepo->getAssignmentItem($openEmrRecord['data']['_assignmentItemId'], $clientUuid);
+            if ($item === null) {
                 throw new \InvalidArgumentException("Assignment item not found", ErrorCode::INVALID_REQUEST);
             } else if (!($item instanceof AssignedAssessment)) {
                 throw new \InvalidArgumentException("Assignment item is not an assessment", ErrorCode::INVALID_REQUEST);
@@ -165,25 +168,21 @@ class AssessmentResponseBlobFHIRResourceService extends FhirServiceBase
             $resultRepo = new AssessmentResultRepository();
             $resultId = Uuid::uuid4()->toString();
             $item->setResultId($resultId);
-            $savedResult = $resultRepo->createResult($resultId, (array) $openEmrRecord, $client['pid'], $item->getAssessmentId());
+            /** @var int $clientPid */
+            $clientPid = $client['pid'];
+            $savedResult = $resultRepo->createResult($resultId, (array) $openEmrRecord, $clientPid, $item->getAssessmentId());
 
-            if (empty($item)) {
-                throw new \InvalidArgumentException("Assignment item not found", ErrorCode::INVALID_REQUEST);
-            }
-            if (!($item instanceof AssignedAssessment)) {
-                throw new \InvalidArgumentException("Assignment item was not a valid assessment assignment.  This code should not have been reached", ErrorCode::INVALID_REQUEST);
-            }
             $result = new ProcessingResult();
             $result->addData($resultId);
             $this->completer->markAssignmentComplete($item, (array) $client);
             QueryUtils::commitTransaction();
             $transactionCommitted = true;
         } catch (AccessDeniedException $exception) {
-            $this->getLogger()->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
+            $this->getLogger()?->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             $result = new ProcessingResult();
             $result->addInternalError(xlt("You do not have permission to create this result"));
         } catch (\Exception $exception) {
-            $this->getLogger()->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
+            $this->getLogger()?->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             $result = new ProcessingResult();
             $result->addInternalError(xlt("A system error occurred in processing your request"));
         } finally {
@@ -216,9 +215,6 @@ class AssessmentResponseBlobFHIRResourceService extends FhirServiceBase
         } else {
             return $fhirProvenance;
         }
-        $provenenance = new FHIRProvenance();
-        UtilsService::createProvenanceResource($provenenance, $dataRecord, $encode);
-        return null;
     }
 
 
@@ -226,9 +222,9 @@ class AssessmentResponseBlobFHIRResourceService extends FhirServiceBase
     private function validateCreateAccessAndReturnClient(string $patientUuidString, ?int $userId)
     {
 
-        if (empty($patientUuidString)) {
+        if ($patientUuidString === '') {
             throw new AccessDeniedException("encounters", "notes", "You do not have permission to create this result");
-        } else if (!empty($userId && !AclMain::aclCheckCore("encounters", "Notes"))) {
+        } else if ($userId !== null && $userId !== 0 && !AclMain::aclCheckCore("encounters", "Notes")) {
             throw new AccessDeniedException("encounters", "notes", "You do not have permission to create this result");
         } else {
             // need to grab the patient pid from the uuid

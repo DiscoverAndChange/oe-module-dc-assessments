@@ -514,6 +514,14 @@ proceed on the 489 exercised-method errors; keep deprecated/dead baselined; the 
 integration-heavy remainder is a future batch (or fix conservatively/PHPDoc-only).
 
 ## Progress log
+- 2026-10-09: PHPStan refactor pass 5 (v0.12.14) — AssessmentResponseBlobFHIRResourceService
+  (31 -> 13). Baseline 706 -> 688. Removed a duplicated unreachable item-validation block, fixed
+  a misplaced-paren empty(bool-expr) in validateCreateAccessAndReturnClient, removed a dead
+  provenance stub + unused import; getLogger()?->, typed the post-validation $openEmrRecord shape
+  + authUserID/client locals, empty() -> strict. Left baselined (13): FHIR element setter arg
+  types (same core scalar/element mistyping as pass 4 — parse test asserts getName() === scalar),
+  parseFhirResource array|null childReturnType, QueryUtils transaction deprecation + its
+  error-swallowing catch. Suite 529 green. On ai/phpstan-assessment-blob-fhir.
 - 2026-10-09: PHPStan refactor pass 4 (v0.12.13) — QuestionnaireResponseFormFHIRResourceService
   (41 -> 16). Baseline 731 -> 706. parseOpenEMRRecord: wrapped scalars in FHIR element types
   (FHIRId/FHIRInstant/FHIRDateTime scalar; FHIRQuestionnaireResponseStatus needs ['value'=>]),
