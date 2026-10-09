@@ -111,7 +111,15 @@ password, and the SMART flow has no UI for the standard first-login reset/verify
       instead of die()ing. Refactor: die($body) -> return ResponseInterface (caller already emits it).
 - [x] `BootstrapOAuth2OverrideTest` (4) — oauth2 login/patient-select pages swap to module twigs when
       the layout-override global is on, are left untouched when off, and the error page is never swapped.
-- [ ] e2e tier decision (Panther vs Playwright) — DEFERRED per user; full 13-step workflow scenario.
+- [x] e2e tier decision — **Playwright** (chosen over Panther for the event-heavy Angular SPA: auto-
+      waiting, `waitForResponse` on FHIR calls, trace viewer). Driven FROM PHPUnit (PHPUnit seeds +
+      reports; Playwright is the browser engine via proc_open + JSON report). Scaffolded in
+      `tests/Uat/Browser/` (mirrors oe-module-ihi conventions). Run with `composer uat:browser`.
+      - [x] Harness: gating (DC_BROWSER_UAT), 4-stage preflight, PDO seeding, bounded teardown, bridge.
+      - [x] `patient login` spec wired end to end (login → SPA dashboard renders).
+      - [ ] `seedAssignment()` (inject battery + assign) on the PHP side.
+      - [ ] `test.fixme()` browser steps: open assignment → answer/submit → provider-side review
+            (need a running stack to author real selectors). Completes the full 13-step scenario.
 
 ## Findings / latent bugs surfaced by tests
 Candidates for the source-typing pass / follow-up fixes (tests characterize the

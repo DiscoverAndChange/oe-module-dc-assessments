@@ -1,0 +1,15 @@
+{
+  "name": "oe-module-dc-assessments-uat-browser",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Playwright browser specs for the DC Assessments patient SMART-app UAT tier. Driven by PHPUnit (tests/Uat/Browser); not a standalone suite.",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "install:browser": "playwright install chromium",
+    "report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.48.0"
+  }
+}
