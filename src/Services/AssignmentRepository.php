@@ -31,7 +31,10 @@ class AssignmentRepository
 
     const TEMPLATE_PROFILE_LIST_ID = "Document_Template_Profiles";
 
-    public function __construct()
+    // The onsite-portal-activity (audit) service is injectable so the completion flow can be
+    // tested without writing a real onsite_portal_activity row; defaults to a real instance so
+    // every existing `new AssignmentRepository()` caller is unaffected.
+    public function __construct(private ?TaskOnsitePortalActivityAccessService $onsitePortalActivityService = null)
     {
     }
 
@@ -871,7 +874,7 @@ class AssignmentRepository
 //            // TODO: @adunsulag if we can consolidate this code that would be wonderful
 //            return null;
 //        }
-        $onsiteService = new TaskOnsitePortalActivityAccessService();
+        $onsiteService = $this->onsitePortalActivityService ?? new TaskOnsitePortalActivityAccessService();
         /** @var int|string $portalAuditId */
         $portalAuditId = $onsiteService->createOnSitePortalActivity(
             $item->getClientId(),

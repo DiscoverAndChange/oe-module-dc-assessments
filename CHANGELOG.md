@@ -16,6 +16,11 @@ v0.12.9 Integration coverage for the questionnaire -> assignment-completion pipe
   - QuestionnaireResponseOnSiteDocumentService::createDocument: proves PDF generation still
     works end to end -- flattens the response to HTML, runs PatientPortalPDFDocumentCreator,
     and asserts a stored \Document (application/pdf) whose bytes start with "%PDF".
+  - Full completion chain: a saved QuestionnaireResponse (ServiceSaveEvent) -> Questionnaire
+    AssignmentListener -> PDF generation -> the questionnaire assignment item is marked
+    complete. AssignmentRepository's onsite-portal-activity (audit) service is now an optional
+    injected dependency (defaults to a real instance, so existing callers are unaffected), so
+    the completion UPDATE is exercised with the audit service mocked.
 
   Bug fix (with regression test): QuestionnaireResponseRestListener::dispatchFHIRInsertEvent
   used $extension[0] after array_filter() (which preserves keys), so a QuestionnaireResponse
