@@ -514,6 +514,12 @@ proceed on the 489 exercised-method errors; keep deprecated/dead baselined; the 
 integration-heavy remainder is a future batch (or fix conservatively/PHPDoc-only).
 
 ## Progress log
+- 2026-10-08: PHPStan refactor pass 2 (v0.12.11) — questionnaire-completion glue + client/user
+  repos: QuestionnaireResponseRestListener (11 -> 0; removed unreachable search-error branches),
+  QuestionnaireAssignmentListener (10 -> 4; return.void->break, empty(), SystemLogger, category
+  typing; LEFT the start/commit/rollbackTransaction deprecation + its error-swallowing catch),
+  ClientRepository (10 -> 0; fixed over-narrowed @var on getListOption/getGroup), SystemUserRepository
+  (1 -> 0). Baseline 784 -> 756. Suite 529 green, phpstan clean. On ai/phpstan-questionnaire-client.
 - 2026-10-08: PHPStan refactor pass 1 (v0.12.10) — baseline burn-down starts now the coverage
   safety net is in place. Core assignment/client domain: AssignmentRepository (38 -> 0),
   AssessmentRepository, AssignmentCompleter, Client, ClientSearchRepository. Module baseline
