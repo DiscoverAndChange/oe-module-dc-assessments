@@ -1261,18 +1261,6 @@ parameters:
 			path: src/RestControllers/QuestionnaireAuditController.php
 
 		-
-			message: '#^Binary operation "\." between mixed and mixed results in an error\.$#'
-			identifier: binaryOp.invalid
-			count: 1
-			path: src/RestControllers/QuestionnaireResponseRestController.php
-
-		-
-			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
-			identifier: empty.notAllowed
-			count: 2
-			path: src/RestControllers/QuestionnaireResponseRestController.php
-
-		-
 			message: '#^Direct access to \$GLOBALS is forbidden\. Use OEGlobalsBag\:\:getInstance\(\)\-\>get\(\) instead\.$#'
 			identifier: openemr.forbiddenGlobalsAccess
 			count: 1
@@ -1281,54 +1269,6 @@ parameters:
 		-
 			message: '#^Direct access to \$_SERVER is forbidden\. Use Symfony''s Request object instead\.$#'
 			identifier: openemr.forbiddenRequestGlobals
-			count: 1
-			path: src/RestControllers/QuestionnaireResponseRestController.php
-
-		-
-			message: '#^Direct instantiation of OpenEMR\\Common\\Logging\\SystemLogger is discouraged\. Use OpenEMR\\BC\\ServiceContainer\:\:getLogger\(\) instead\.$#'
-			identifier: openemr.forbiddenInstantiation
-			count: 2
-			path: src/RestControllers/QuestionnaireResponseRestController.php
-
-		-
-			message: '#^Loose comparison using \=\= between ''OperationOutcome'' and ''OperationOutcome'' will always evaluate to true\.$#'
-			identifier: equal.alwaysTrue
-			count: 1
-			path: src/RestControllers/QuestionnaireResponseRestController.php
-
-		-
-			message: '#^Method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\RestControllers\\QuestionnaireResponseRestController\:\:getAll\(\) should return array\<string, mixed\>\|OpenEMR\\FHIR\\R4\\FHIRResource\\FHIRBundle but returns mixed\.$#'
-			identifier: return.type
-			count: 1
-			path: src/RestControllers/QuestionnaireResponseRestController.php
-
-		-
-			message: '#^Method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\RestControllers\\QuestionnaireResponseRestController\:\:getOne\(\) is unused\.$#'
-			identifier: method.unused
-			count: 1
-			path: src/RestControllers/QuestionnaireResponseRestController.php
-
-		-
-			message: '#^Parameter \#2 \$id of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\RestControllers\\QuestionnaireResponseRestController\:\:one\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/RestControllers/QuestionnaireResponseRestController.php
-
-		-
-			message: '#^Parameter \#2 \$id of static method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Utils\\RestUtils\:\:getFhirOperationOutcomeSuccessResponse\(\) expects int\|string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/RestControllers/QuestionnaireResponseRestController.php
-
-		-
-			message: '#^Parameter \#3 \$id of static method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Utils\\RestUtils\:\:addFhirLocationHeader\(\) expects int\|string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/RestControllers/QuestionnaireResponseRestController.php
-
-		-
-			message: '#^Property OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\RestControllers\\QuestionnaireResponseRestController\:\:\$resourceService \(OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\QuestionnaireResponseFHIRResourceService\) does not accept OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\QuestionnaireResponseFHIRResourceService\|null\.$#'
-			identifier: assign.propertyType
 			count: 1
 			path: src/RestControllers/QuestionnaireResponseRestController.php
 
@@ -1339,12 +1279,6 @@ parameters:
 			path: src/RestControllers/QuestionnaireResponseRestController.php
 
 		-
-			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
-			identifier: empty.notAllowed
-			count: 1
-			path: src/RestControllers/QuestionnaireRestController.php
-
-		-
 			message: '#^Direct access to \$GLOBALS is forbidden\. Use OEGlobalsBag\:\:getInstance\(\)\-\>get\(\) instead\.$#'
 			identifier: openemr.forbiddenGlobalsAccess
 			count: 1
@@ -1353,18 +1287,6 @@ parameters:
 		-
 			message: '#^Direct access to \$_SERVER is forbidden\. Use Symfony''s Request object instead\.$#'
 			identifier: openemr.forbiddenRequestGlobals
-			count: 1
-			path: src/RestControllers/QuestionnaireRestController.php
-
-		-
-			message: '#^Method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\RestControllers\\QuestionnaireRestController\:\:getAll\(\) should return array\<string, mixed\>\|OpenEMR\\FHIR\\R4\\FHIRResource\\FHIRBundle but returns mixed\.$#'
-			identifier: return.type
-			count: 1
-			path: src/RestControllers/QuestionnaireRestController.php
-
-		-
-			message: '#^Method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\RestControllers\\QuestionnaireRestController\:\:getOne\(\) is unused\.$#'
-			identifier: method.unused
 			count: 1
 			path: src/RestControllers/QuestionnaireRestController.php
 
@@ -2119,64 +2041,10 @@ parameters:
 			path: src/Services/PaginatedResultsService.php
 
 		-
-			message: '#^Direct instantiation of OpenEMR\\Common\\Logging\\SystemLogger is discouraged\. Use OpenEMR\\BC\\ServiceContainer\:\:getLogger\(\) instead\.$#'
-			identifier: openemr.forbiddenInstantiation
-			count: 1
-			path: src/Services/QuestionnaireFHIRResourceService.php
-
-		-
-			message: '#^Method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\QuestionnaireFHIRResourceService\:\:getAll\(\) should return OpenEMR\\Validators\\ProcessingResult but returns mixed\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Services/QuestionnaireFHIRResourceService.php
-
-		-
-			message: '#^Parameter \#1 \$dataRecord \(OpenEMR\\FHIR\\R4\\FHIRResource\\FHIRDomainResource\) of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\QuestionnaireFHIRResourceService\:\:createProvenanceResource\(\) should be contravariant with parameter \$dataRecord \(mixed\) of method OpenEMR\\Services\\FHIR\\FhirServiceBase\:\:createProvenanceResource\(\)$#'
-			identifier: method.childParameterType
-			count: 1
-			path: src/Services/QuestionnaireFHIRResourceService.php
-
-		-
 			message: '#^Parameter \#2 \$puuidBind \(string\|null\) of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\QuestionnaireFHIRResourceService\:\:getAll\(\) should be contravariant with parameter \$puuidBind \(mixed\) of method OpenEMR\\Services\\FHIR\\IResourceReadableService\:\:getAll\(\)$#'
 			identifier: method.childParameterType
 			count: 1
 			path: src/Services/QuestionnaireFHIRResourceService.php
-
-		-
-			message: '#^Unreachable statement \- code above always terminates\.$#'
-			identifier: deadCode.unreachable
-			count: 1
-			path: src/Services/QuestionnaireFHIRResourceService.php
-
-		-
-			message: '#^Variable \$service in isset\(\) always exists and is not nullable\.$#'
-			identifier: isset.variable
-			count: 1
-			path: src/Services/QuestionnaireFHIRResourceService.php
-
-		-
-			message: '#^Instanceof between Symfony\\Component\\EventDispatcher\\GenericEvent and Symfony\\Component\\EventDispatcher\\GenericEvent will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 2
-			path: src/Services/QuestionnaireResponseFHIRResourceService.php
-
-		-
-			message: '#^Parameter \#1 \$other of method OpenEMR\\Validators\\ProcessingResult\:\:addProcessingResult\(\) expects OpenEMR\\Validators\\ProcessingResult, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/QuestionnaireResponseFHIRResourceService.php
-
-		-
-			message: '#^Parameter \#2 \$puuidBind \(string\|null\) of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\QuestionnaireResponseFHIRResourceService\:\:getAll\(\) should be contravariant with parameter \$puuidBind \(mixed\) of method OpenEMR\\Services\\FHIR\\IResourceReadableService\:\:getAll\(\)$#'
-			identifier: method.childParameterType
-			count: 1
-			path: src/Services/QuestionnaireResponseFHIRResourceService.php
-
-		-
-			message: '#^Property OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\QuestionnaireResponseFHIRResourceService\:\:\$service is unused\.$#'
-			identifier: property.unused
-			count: 1
-			path: src/Services/QuestionnaireResponseFHIRResourceService.php
 
 		-
 			message: '#^Method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\QuestionnaireResponseOnSiteDocumentService\:\:insertOnSiteDocumentRecord\(\) is unused\.$#'

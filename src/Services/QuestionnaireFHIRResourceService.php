@@ -14,7 +14,7 @@
 
 namespace OpenEMR\Modules\DiscoverAndChange\Assessments\Services;
 
-use OpenEMR\Common\Logging\SystemLogger;
+use OpenEMR\BC\ServiceContainer;
 use OpenEMR\FHIR\R4\FHIRDomainResource\FHIRProvenance;
 use OpenEMR\FHIR\R4\FHIRDomainResource\FHIRQuestionnaire;
 use OpenEMR\FHIR\R4\FHIRElement\FHIRId;
@@ -29,7 +29,6 @@ use OpenEMR\Services\FHIR\IResourceReadableService;
 use OpenEMR\Services\FHIR\IResourceSearchableService;
 use OpenEMR\Services\FHIR\Traits\FhirServiceBaseEmptyTrait;
 use OpenEMR\Services\FHIR\Traits\MappedServiceCodeTrait;
-use OpenEMR\Services\FHIR\UtilsService;
 use OpenEMR\Services\QuestionnaireService;
 use OpenEMR\Services\Search\FhirSearchParameterDefinition;
 use OpenEMR\Services\Search\SearchFieldException;
@@ -80,7 +79,7 @@ class QuestionnaireFHIRResourceService extends FhirServiceBase implements IResou
     /**
      * Retrieves all of the fhir observation resources mapped to the underlying openemr data elements.
      * @param mixed $fhirSearchParameters The FHIR resource search parameters
-     * @param $puuidBind - Optional variable to only allow visibility of the patient with this puuid.
+     * @param string|null $puuidBind - Optional variable to only allow visibility of the patient with this puuid.
      * @return ProcessingResult
      */
     public function getAll($fhirSearchParameters, $puuidBind = null): ProcessingResult
@@ -89,22 +88,24 @@ class QuestionnaireFHIRResourceService extends FhirServiceBase implements IResou
         $fhirSearchResult = new ProcessingResult();
         try {
             if (isset($fhirSearchParameters['questionnaire-code'])) {
-                /** @var \OpenEMR\Services\FHIR\FhirServiceBase $service */
+                /** @var \OpenEMR\Services\FHIR\FhirServiceBase|null $service */
                 $service = $this->getServiceForCode(
                     new TokenSearchField('questionnaire-code', $fhirSearchParameters['questionnaire-code']),
                     ''
                 );
                 // if we have a service let's search on that
-                if (isset($service)) {
+                if ($service !== null) {
                     $fhirSearchResult = $service->getAll($fhirSearchParameters, $puuidBind);
                 } else {
+                    /** @var ProcessingResult $fhirSearchResult */
                     $fhirSearchResult = $this->searchAllServices($fhirSearchParameters, $puuidBind);
                 }
             } else {
+                /** @var ProcessingResult $fhirSearchResult */
                 $fhirSearchResult = $this->searchAllServices($fhirSearchParameters, $puuidBind);
             }
         } catch (SearchFieldException $exception) {
-            $systemLogger = new SystemLogger();
+            $systemLogger = ServiceContainer::getLogger();
             $systemLogger->error("Failed to retrieve records", ['message' => $exception->getMessage(),
                 'field' => $exception->getField(), 'trace' => $exception->getTraceAsString()]);
             // put our exception information here
@@ -115,7 +116,7 @@ class QuestionnaireFHIRResourceService extends FhirServiceBase implements IResou
     /**
      * Healthcare resources often need to provide an AUDIT trail of who last touched a resource and when was it modified.
      * The ownership and AUDIT trail in FHIR is done via the Provenance record.
-     * @param FHIRDomainResource $dataRecord The record we are generating a provenance from
+     * @param mixed $dataRecord The record we are generating a provenance from
      * @param bool $encode Whether to serialize the record or not
      * @return FHIRProvenance|string|false|null
      */
@@ -136,8 +137,5 @@ class QuestionnaireFHIRResourceService extends FhirServiceBase implements IResou
         } else {
             return $fhirProvenance;
         }
-        $provenenance = new FHIRProvenance();
-        UtilsService::createProvenanceResource($provenenance, $dataRecord, $encode);
-        return null;
     }
 }
