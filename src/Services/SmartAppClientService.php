@@ -2,6 +2,7 @@
 
 namespace OpenEMR\Modules\DiscoverAndChange\Assessments\Services;
 
+use OpenEMR\Core\OEGlobalsBag;
 use OpenEMR\Common\Utils\RandomGenUtils;
 use OpenEMR\FHIR\Config\ServerConfig;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\GlobalConfig;
@@ -47,7 +48,7 @@ class SmartAppClientService
                 // as we are a module we want to skip the authentication/authorization flow.
                 'skip_ehr_launch_authorization_flow' => true
             );
-            $clientRepository->insertNewClient($clientId, $params, $GLOBALS['site_id']);
+            $clientRepository->insertNewClient($clientId, $params, OEGlobalsBag::getInstance()->get('site_id'));
             // make sure our client is enabled.
 
             $clientEntity = $clientRepository->getClientEntity($clientId);

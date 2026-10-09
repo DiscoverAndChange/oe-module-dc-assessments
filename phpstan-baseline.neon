@@ -145,12 +145,6 @@ parameters:
 			path: src/Bootstrap.php
 
 		-
-			message: '#^Direct access to \$GLOBALS is forbidden\. Use OEGlobalsBag\:\:getInstance\(\)\-\>get\(\) instead\.$#'
-			identifier: openemr.forbiddenGlobalsAccess
-			count: 4
-			path: src/Bootstrap.php
-
-		-
 			message: '#^Parameter \#1 \$string of function urlencode expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
@@ -190,12 +184,6 @@ parameters:
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
 			identifier: empty.notAllowed
 			count: 20
-			path: src/Controllers/AssessmentAppointmentController.php
-
-		-
-			message: '#^Direct access to \$GLOBALS is forbidden\. Use OEGlobalsBag\:\:getInstance\(\)\-\>get\(\) instead\.$#'
-			identifier: openemr.forbiddenGlobalsAccess
-			count: 2
 			path: src/Controllers/AssessmentAppointmentController.php
 
 		-
@@ -307,12 +295,6 @@ parameters:
 			path: src/Controllers/FrontendDispatchController.php
 
 		-
-			message: '#^Direct access to \$GLOBALS is forbidden\. Use OEGlobalsBag\:\:getInstance\(\)\-\>get\(\) instead\.$#'
-			identifier: openemr.forbiddenGlobalsAccess
-			count: 3
-			path: src/Controllers/FrontendDispatchController.php
-
-		-
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
 			identifier: empty.notAllowed
 			count: 1
@@ -412,12 +394,6 @@ parameters:
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
 			identifier: empty.notAllowed
 			count: 2
-			path: src/GlobalConfig.php
-
-		-
-			message: '#^Direct access to \$GLOBALS is forbidden\. Use OEGlobalsBag\:\:getInstance\(\)\-\>get\(\) instead\.$#'
-			identifier: openemr.forbiddenGlobalsAccess
-			count: 4
 			path: src/GlobalConfig.php
 
 		-
@@ -1207,12 +1183,6 @@ parameters:
 			path: src/RestControllers/QuestionnaireAuditController.php
 
 		-
-			message: '#^Direct access to \$GLOBALS is forbidden\. Use OEGlobalsBag\:\:getInstance\(\)\-\>get\(\) instead\.$#'
-			identifier: openemr.forbiddenGlobalsAccess
-			count: 1
-			path: src/RestControllers/QuestionnaireResponseRestController.php
-
-		-
 			message: '#^Direct access to \$_SERVER is forbidden\. Use Symfony''s Request object instead\.$#'
 			identifier: openemr.forbiddenRequestGlobals
 			count: 1
@@ -1223,12 +1193,6 @@ parameters:
 			identifier: openemr.forbiddenCatchType
 			count: 1
 			path: src/RestControllers/QuestionnaireResponseRestController.php
-
-		-
-			message: '#^Direct access to \$GLOBALS is forbidden\. Use OEGlobalsBag\:\:getInstance\(\)\-\>get\(\) instead\.$#'
-			identifier: openemr.forbiddenGlobalsAccess
-			count: 1
-			path: src/RestControllers/QuestionnaireRestController.php
 
 		-
 			message: '#^Direct access to \$_SERVER is forbidden\. Use Symfony''s Request object instead\.$#'
@@ -1252,12 +1216,6 @@ parameters:
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
 			identifier: empty.notAllowed
 			count: 2
-			path: src/RestControllers/TaskRestController.php
-
-		-
-			message: '#^Direct access to \$GLOBALS is forbidden\. Use OEGlobalsBag\:\:getInstance\(\)\-\>get\(\) instead\.$#'
-			identifier: openemr.forbiddenGlobalsAccess
-			count: 1
 			path: src/RestControllers/TaskRestController.php
 
 		-
@@ -2032,12 +1990,6 @@ parameters:
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
 			identifier: empty.notAllowed
 			count: 2
-			path: src/Services/SmartAppClientService.php
-
-		-
-			message: '#^Direct access to \$GLOBALS is forbidden\. Use OEGlobalsBag\:\:getInstance\(\)\-\>get\(\) instead\.$#'
-			identifier: openemr.forbiddenGlobalsAccess
-			count: 1
 			path: src/Services/SmartAppClientService.php
 
 		-

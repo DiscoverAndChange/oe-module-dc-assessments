@@ -13,6 +13,7 @@
 
 namespace OpenEMR\Modules\DiscoverAndChange\Assessments\RestControllers;
 
+use OpenEMR\Core\OEGlobalsBag;
 use OpenEMR\Common\Http\HttpRestRequest;
 use OpenEMR\Common\Http\HttpRestRouteHandler;
 use OpenEMR\Common\Logging\SystemLogger;
@@ -105,7 +106,7 @@ class QuestionnaireRestController implements IRestController
         /** @var list<FHIRQuestionnaire> $searchResults */
         $searchResults = $processingResult->getData();
         /** @var string $siteAddr */
-        $siteAddr = $GLOBALS['site_addr_oath'];
+        $siteAddr = OEGlobalsBag::getInstance()->get('site_addr_oath');
         /** @var string $redirectUrl */
         $redirectUrl = $_SERVER['REDIRECT_URL'] ?? '';
         foreach ($searchResults as $index => $searchResult) {

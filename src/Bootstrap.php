@@ -2,6 +2,7 @@
 
 namespace OpenEMR\Modules\DiscoverAndChange\Assessments;
 
+use OpenEMR\Core\OEGlobalsBag;
 use OpenEMR\BC\ServiceContainer;
 use http\Env;
 use OpenEMR\Common\Auth\OpenIDConnect\Repositories\ScopeRepository;
@@ -401,7 +402,7 @@ class Bootstrap
      */
     public function getURLPath()
     {
-        return $GLOBALS['webroot'] . self::MODULE_INSTALLATION_PATH . $this->moduleDirectoryName . "/public/";
+        return OEGlobalsBag::getInstance()->get('webroot') . self::MODULE_INSTALLATION_PATH . $this->moduleDirectoryName . "/public/";
     }
 
     /**
@@ -542,7 +543,7 @@ class Bootstrap
         // TODO: pull the install location into a constant into the codebase so if OpenEMR changes this location it
         // doesn't break any modules.
 //        $menuItem->url = "/interface/modules/custom_modules/oe-module-dc-assessments/public/frontend/login";
-        $menuItem->url = $GLOBALS['webroot'] . '/interface/smart/ehr-launch-client.php?client_id='
+        $menuItem->url = OEGlobalsBag::getInstance()->get('webroot') . '/interface/smart/ehr-launch-client.php?client_id='
             . urlencode($clientId) . '&intent=' . urlencode(SMARTLaunchToken::INTENT_MAIN_TAB)
             . '&csrf_token=' . urlencode(CsrfUtils::collectCsrfToken(SessionWrapperFactory::getInstance()->getActiveSession()));
         $menuItem->children = [];
@@ -646,6 +647,6 @@ class Bootstrap
      */
     public function getSmartStyleUrl()
     {
-        return $GLOBALS['site_addr_oath'] . $GLOBALS['web_root'] . "/oauth2/" . SessionWrapperFactory::getInstance()->getActiveSession()->get('site_id') . "/" . SMARTAuthorizationController::SMART_STYLE_URL;
+        return OEGlobalsBag::getInstance()->get('site_addr_oath') . OEGlobalsBag::getInstance()->get('web_root') . "/oauth2/" . SessionWrapperFactory::getInstance()->getActiveSession()->get('site_id') . "/" . SMARTAuthorizationController::SMART_STYLE_URL;
     }
 }

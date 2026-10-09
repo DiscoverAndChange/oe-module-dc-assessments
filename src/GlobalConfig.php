@@ -13,6 +13,7 @@
 
 namespace OpenEMR\Modules\DiscoverAndChange\Assessments;
 
+use OpenEMR\Core\OEGlobalsBag;
 use OpenEMR\Common\Crypto\CryptoGen;
 use OpenEMR\Common\Database\QueryUtils;
 use OpenEMR\FHIR\Config\ServerConfig;
@@ -165,7 +166,7 @@ class GlobalConfig
     {
         // return the public path with the fully qualified domain name in it
         // qualified_site_addr already has the webroot in it.
-        return $GLOBALS['qualified_site_addr'] . $this->getGlobalSetting("web_root")
+        return OEGlobalsBag::getInstance()->get('qualified_site_addr') . $this->getGlobalSetting("web_root")
         . self::MODULE_INSTALLATION_PATH . self::MODULE_NAME .  '/public/';
     }
 
@@ -209,7 +210,7 @@ class GlobalConfig
      */
     public function shouldSendAssignmentCompletionNotices()
     {
-        $shouldSendNotice = ($GLOBALS[self::DC_ASSESSMENTS_CONFIG_COMPLETION_SEND_NOTICES_FLAG] ?? '0') === '1';
+        $shouldSendNotice = (OEGlobalsBag::getInstance()->get(self::DC_ASSESSMENTS_CONFIG_COMPLETION_SEND_NOTICES_FLAG) ?? '0') === '1';
         $contactUserId = !empty($this->getAssignmentCompletionNoticeUserId());
         $providerNoticeEnabled = $this->shouldSendProviderNotification();
         return $shouldSendNotice && ($contactUserId || $providerNoticeEnabled);
@@ -220,7 +221,7 @@ class GlobalConfig
      */
     public function getAssignmentCompletionNoticeUserId()
     {
-        return $GLOBALS[self::DC_ASSESSMENTS_CONFIG_COMPLETION_ADDRESS_BOOK_ID] ?? null;
+        return OEGlobalsBag::getInstance()->get(self::DC_ASSESSMENTS_CONFIG_COMPLETION_ADDRESS_BOOK_ID) ?? null;
     }
 
     /**
@@ -228,7 +229,7 @@ class GlobalConfig
      */
     public function shouldSendProviderNotification()
     {
-        return ($GLOBALS[self::DC_ASSESSMENTS_CONFIG_COMPLETION_SEND_PROVIDER_NOTICES_FLAG] ?? '0') === '1';
+        return (OEGlobalsBag::getInstance()->get(self::DC_ASSESSMENTS_CONFIG_COMPLETION_SEND_PROVIDER_NOTICES_FLAG) ?? '0') === '1';
     }
 
     /**

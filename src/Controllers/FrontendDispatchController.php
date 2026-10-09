@@ -2,6 +2,7 @@
 
 namespace OpenEMR\Modules\DiscoverAndChange\Assessments\Controllers;
 
+use OpenEMR\Core\OEGlobalsBag;
 use OpenEMR\BC\ServiceContainer;
 use OpenEMR\Events\Core\TemplatePageEvent;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\GlobalConfig;
@@ -59,16 +60,16 @@ class FrontendDispatchController
         // TODO: @adunsulag I don't like the duplicate code here and in SMARTAuthorizationController->smartAppStyles()
         // TODO: @adunsulag look at refactoring this to be more DRY
         /** @var string $cssTheme */
-        $cssTheme = $GLOBALS['css_header'];
+        $cssTheme = OEGlobalsBag::getInstance()->getString('css_header');
         $baseNameCssTheme = basename($cssTheme);
         $parts = explode(".", $baseNameCssTheme);
         $coreTheme = $parts[0];
         $logoService = new LogoService();
         // do we want to expose each of the logos?  These really need to be cached instead of hitting FS each time...
         /** @var string $siteAddrOauth */
-        $siteAddrOauth = $GLOBALS['site_addr_oath'];
+        $siteAddrOauth = OEGlobalsBag::getInstance()->get('site_addr_oath');
         /** @var string $webRoot */
-        $webRoot = $GLOBALS['web_root'];
+        $webRoot = OEGlobalsBag::getInstance()->get('web_root');
         $primaryLogo = $siteAddrOauth . $webRoot . $logoService->getLogo("core/login/primary");
         $context = [
             'logo' => [

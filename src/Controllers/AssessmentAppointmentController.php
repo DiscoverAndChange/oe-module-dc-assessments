@@ -2,6 +2,7 @@
 
 namespace OpenEMR\Modules\DiscoverAndChange\Assessments\Controllers;
 
+use OpenEMR\Core\OEGlobalsBag;
 use OpenEMR\BC\ServiceContainer;
 use Google\Service\AdMob\App;
 use Nyholm\Psr7\Factory\Psr17Factory;
@@ -240,7 +241,7 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
     private function getCalendarEventBackUrl($appointment)
     {
         $linkDate = preg_replace("/-/", "", $appointment['pc_eventDate']);
-        $backUrl = $GLOBALS['webroot'] . '/interface/main/calendar/add_edit_event.php?date='
+        $backUrl = OEGlobalsBag::getInstance()->get('webroot') . '/interface/main/calendar/add_edit_event.php?date='
             . urlencode($linkDate) . '&eid=' . urlencode($appointment['pc_eid']) . '&prov=';
         return $backUrl;
     }
@@ -255,7 +256,7 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
             $smartAppService = $this->appClientService;
             /** @var string $clientId */
             $clientId = $smartAppService->getRegisteredClientId();
-            $url = $GLOBALS['webroot'] . '/interface/smart/ehr-launch-client.php?intent=' . urlencode(SMARTLaunchToken::INTENT_APPOINTMENT_DIALOG)
+            $url = OEGlobalsBag::getInstance()->get('webroot') . '/interface/smart/ehr-launch-client.php?intent=' . urlencode(SMARTLaunchToken::INTENT_APPOINTMENT_DIALOG)
                 . '&client_id=' . urlencode($clientId) . "&csrf_token=" . urlencode(CsrfUtils::collectCsrfToken())
                 . '&appointment_id=' . urlencode($appointmentId);
             $appointmentService = new AppointmentService();
