@@ -1,3 +1,17 @@
+v0.12.15 PHPStan refactor pass 6: SystemLogger instantiation sweep (baseline 688 -> 665)
+
+  Mechanical module-wide bucket: replaced every `new SystemLogger()` (23 forbiddenInstantiation
+  errors across 17 src files) with `ServiceContainer::getLogger()`, per the rule's own suggestion.
+  The handful of slots that receive the returned LoggerInterface were retyped SystemLogger ->
+  LoggerInterface (AssessmentRepository + LibraryAssetBlobRepository constructors; the logger
+  properties in ClientSearchRepository/AssessmentGroupRestController/AssessmentRestController/
+  Bootstrap; RestUtils::getErrorResponse()'s $logger param). Behaviour-preserving: SystemLogger IS
+  what ServiceContainer::getLogger() returns, only PSR ->error()/->debug() are called, and
+  SystemLogger implements LoggerInterface so all callers (including the test suite's
+  `new SystemLogger()`) stay compatible. DI-injected `private SystemLogger $logger` constructor
+  params were left untouched (autowired via Bootstrap's SystemLogger::class alias; never flagged).
+  Baseline diff adds 0 entries / removes 13; 529-test suite green, phpstan clean.
+
 v0.12.14 PHPStan refactor pass 5: AssessmentResponseBlob FHIR service (baseline 706 -> 688)
 
   Fifth burn-down pass over the assessment-response-blob FHIR insert/parse service (exercised by
