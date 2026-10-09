@@ -124,7 +124,14 @@ produces), so the first SMART login works.
   portal base with the Bearer header) instead of the SMART FHIR client's `client.create()`. The spec
   now asserts the submit POST hits `/portal/`, returns **201**, and the dashboard shows the
   "all of your assignments are complete" confirmation.
-- **TODO:** provider-side review step (log in as provider → assessment-management app → open result).
+- **Provider-review (in progress):** OpenEMR only grants `user/*` scopes to **confidential** clients, so
+  the module now registers a second, confidential **provider** client (v0.12.28) alongside the public
+  patient client — validated that a confidential user client gets `user/clients.read` and
+  `GET /api/reports/clients` returns 200 (public client → 401). **Remaining:** the admin SPA must use
+  the provider client via the **EHR launch** (`ehr-launch-client.php`), with the confidential
+  auth-code → token exchange brokered server-side (secret never in the browser). Once wired, author the
+  provider-review spec (provider login → assessment-management app → search patient → open submitted
+  result).
 
 ### Rebuilding the SPA
 

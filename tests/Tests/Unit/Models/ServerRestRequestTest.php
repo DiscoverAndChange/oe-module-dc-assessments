@@ -110,14 +110,19 @@ class ServerRestRequestTest extends TestCase
         $this->assertSame('_limit=10&_offset=20', $uri->getQuery());
     }
 
-    public function testGetBodyDelegates(): void
+    public function testGetBodyWrapsRawStringInStream(): void
     {
+        // OpenEMR's HttpRestRequest::getBody() returns the raw body as a STRING (Symfony getContent()),
+        // not a PSR-7 stream. ServerRestRequest::getBody() wraps it so callers can rewind()/getContents().
         $inner = $this->makeRequest();
-        $body = $this->createMock(StreamInterface::class);
-        $inner->method('getBody')->willReturn($body);
+        $inner->method('getBody')->willReturn('{"resourceType":"QuestionnaireResponse"}');
 
         $request = new ServerRestRequest($inner);
-        $this->assertSame($body, $request->getBody());
+        $result = $request->getBody();
+
+        $this->assertInstanceOf(StreamInterface::class, $result);
+        $result->rewind();
+        $this->assertSame('{"resourceType":"QuestionnaireResponse"}', $result->getContents());
     }
 
     public function testGetUserIdDelegatesToRequestUserId(): void

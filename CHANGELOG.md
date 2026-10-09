@@ -1,3 +1,25 @@
+v0.12.28 Register a confidential provider SMART client (two-client OAuth) + fix getBody() tests
+
+  Foundation for provider-side review. OpenEMR only grants user/* scopes to CONFIDENTIAL clients
+  (AuthorizationController: "system and user scopes are only allowed for confidential clients"), so a
+  single public patient client dropped the provider's user/clients.read -> /api/reports/clients 401.
+  SmartAppClientService now registers TWO clients: the existing PUBLIC patient client (standalone
+  patient launch, patient scopes) and a new CONFIDENTIAL provider client (client_role=user,
+  is_confidential=1, server-side secret, user/* scopes) for the in-EHR provider launch. GlobalConfig
+  gains provider client id/secret storage + getSmartAppProviderScopes()/getSmartAppPatientScopes()
+  (context-filtered). Bootstrap's EHR-launch menu now uses the provider client; the provisioner
+  registers both. Validated on the live 8.4 stack: a confidential user client is granted user/clients.read
+  and GET /api/reports/clients returns 200 (vs 401 for the public client).
+
+  Also fixes two unit tests that the v0.12.26 ServerRestRequest::getBody() stream-wrap change had
+  invalidated (they mocked getBody() as a PSR-7 stream; core actually returns the raw body STRING, so
+  they now mock a string and assert getBody() wraps it). phpstan clean, suite 543 green, patient e2e
+  still green.
+
+  REMAINING (not in this version): the admin SPA must USE the provider client via the EHR launch
+  (confidential auth-code exchange brokered server-side); until then the provider-review e2e stays
+  blocked. Tracked in tests/Uat/Browser/README.md.
+
 v0.12.27 Patient assessment submit works: SPA posts results to the portal route (rebuilt bundles)
 
   Completes the patient workflow. Rebuilt the Angular SPA so assessment results submit to the module's

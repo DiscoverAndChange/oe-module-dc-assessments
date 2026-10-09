@@ -129,28 +129,38 @@ try {
     }
     fwrite(STDERR, "[provision] stack API/oauth globals ensured" . ($baseUrl !== '' ? " (site_addr_oath={$baseUrl})" : "") . "\n");
 
-    // 3. register + enable the SMART client the patient SPA depends on
+    // 3. register + enable BOTH SMART clients: the public PATIENT client (patient SPA) and the
+    //    CONFIDENTIAL PROVIDER client (in-EHR provider app, user/* scopes).
     $kernel = $GLOBALS['kernel'] ?? null;
     $bootstrap = Bootstrap::instantiate($kernel->getEventDispatcher(), $kernel);
-    $clientId = $bootstrap->getClientId();
-    fwrite(STDERR, "[provision] SMART client id = " . (is_string($clientId) ? $clientId : var_export($clientId, true)) . "\n");
+    $clientId = $bootstrap->getClientId(); // patient client
+    /** @var \OpenEMR\Modules\DiscoverAndChange\Assessments\Services\SmartAppClientService $smartService */
+    $smartService = $bootstrap->getServiceContainer()->get(\OpenEMR\Modules\DiscoverAndChange\Assessments\Services\SmartAppClientService::class);
+    $providerClientId = $smartService->getRegisteredProviderClientId();
+    fwrite(STDERR, "[provision] patient client id = " . var_export($clientId, true) . "\n");
+    fwrite(STDERR, "[provision] provider client id = " . var_export($providerClientId, true) . "\n");
 
-    // 3b. The client is registered from this CLI context with no public port, so its redirect_uri
+    // 3b. Clients are registered from this CLI context with no public port, so their redirect_uri
     //     origin won't match the browser's (e.g. https://localhost vs https://localhost:9302).
-    //     Rewrite each redirect_uri's scheme+host to the public base URL so the OAuth2 authorize
-    //     step doesn't fail with invalid_client.
-    if ($baseUrl !== '' && is_string($clientId) && $clientId !== '') {
-        $row = sqlQuery("SELECT redirect_uri FROM oauth_clients WHERE client_id = ?", [$clientId]);
-        if (!empty($row['redirect_uri'])) {
-            $fixed = implode('|', array_map(
-                static function (string $uri) use ($baseUrl): string {
-                    $path = (string) parse_url(trim($uri), PHP_URL_PATH);
-                    return $path !== '' ? $baseUrl . $path : trim($uri);
-                },
-                explode('|', (string) $row['redirect_uri'])
-            ));
-            sqlStatement("UPDATE oauth_clients SET redirect_uri = ? WHERE client_id = ?", [$fixed, $clientId]);
-            fwrite(STDERR, "[provision] client redirect_uri set to {$fixed}\n");
+    //     Rewrite each redirect_uri's scheme+host to the public base URL so OAuth2 authorize doesn't
+    //     fail with invalid_client. Applies to both clients.
+    if ($baseUrl !== '') {
+        foreach (array_filter([$clientId, $providerClientId], 'is_string') as $cid) {
+            if ($cid === '') {
+                continue;
+            }
+            $row = sqlQuery("SELECT redirect_uri FROM oauth_clients WHERE client_id = ?", [$cid]);
+            if (!empty($row['redirect_uri'])) {
+                $fixed = implode('|', array_map(
+                    static function (string $uri) use ($baseUrl): string {
+                        $path = (string) parse_url(trim($uri), PHP_URL_PATH);
+                        return $path !== '' ? $baseUrl . $path : trim($uri);
+                    },
+                    explode('|', (string) $row['redirect_uri'])
+                ));
+                sqlStatement("UPDATE oauth_clients SET redirect_uri = ? WHERE client_id = ?", [$fixed, $cid]);
+                fwrite(STDERR, "[provision] {$cid} redirect_uri set to {$fixed}\n");
+            }
         }
     }
 
@@ -161,7 +171,8 @@ try {
         STDOUT,
         "PROVISION_OK mod_active=" . ($active['mod_active'] ?? '?')
         . " portal_force_credential_reset=" . ($reset['gl_value'] ?? 'unset')
-        . " smart_client=" . (is_string($clientId) && $clientId !== '' ? 'registered' : 'MISSING')
+        . " patient_client=" . (is_string($clientId) && $clientId !== '' ? 'registered' : 'MISSING')
+        . " provider_client=" . (is_string($providerClientId) && $providerClientId !== '' ? 'registered' : 'MISSING')
         . "\n"
     );
 } catch (\Throwable $e) {

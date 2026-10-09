@@ -33,6 +33,11 @@ class GlobalConfig
     const DC_ASSESSMENTS_CONFIG_COMPLETION_ADDRESS_BOOK_ID = 'dac_assessments_completion_address_book_id';
     const DC_ASSESSMENTS_CONFIG_PATIENT_CLIENT_ID = 'dc_assessments_smart_patient_client_id';
 
+    // The confidential provider/admin SMART client. OpenEMR only grants user/* scopes to confidential
+    // clients, so the EHR-launched provider app uses a separate client from the public patient client.
+    const DC_ASSESSMENTS_CONFIG_PROVIDER_CLIENT_ID = 'dc_assessments_smart_provider_client_id';
+    const DC_ASSESSMENTS_CONFIG_PROVIDER_CLIENT_SECRET = 'dc_assessments_smart_provider_client_secret';
+
     const MODULE_NAME = "oe-module-dc-assessments";
     const MODULE_INSTALLATION_PATH = "/interface/modules/custom_modules/";
     public const INSTALLATION_NAME  = "openemr_name";
@@ -402,14 +407,94 @@ class GlobalConfig
      */
     public function saveSmartAppClientId(string $clientId)
     {
-        $bind = [$clientId, self::DC_ASSESSMENTS_CONFIG_CLIENT_ID];
-        if ($this->getGlobalSetting(self::DC_ASSESSMENTS_CONFIG_CLIENT_ID) === null) {
-            $sql = "INSERT INTO globals ( gl_value, gl_index, gl_name ) " .
-                "VALUES ( ?, 0, ? )";
+        $this->saveGlobalSetting(self::DC_ASSESSMENTS_CONFIG_CLIENT_ID, $clientId);
+    }
+
+    /** Upsert a module global (gl_index 0). */
+    private function saveGlobalSetting(string $name, string $value): void
+    {
+        if ($this->getGlobalSetting($name) === null) {
+            $sql = "INSERT INTO globals ( gl_value, gl_index, gl_name ) VALUES ( ?, 0, ? )";
         } else {
             $sql = "UPDATE globals SET gl_value = ? WHERE gl_name = ?";
         }
-        QueryUtils::sqlStatementThrowException($sql, $bind);
+        QueryUtils::sqlStatementThrowException($sql, [$value, $name]);
+        // keep the in-memory snapshot in sync so a later read in the same request sees it
+        $this->globalsArray[$name] = $value;
+    }
+
+    /** @return mixed */
+    public function getProviderClientId()
+    {
+        return $this->getGlobalSetting(self::DC_ASSESSMENTS_CONFIG_PROVIDER_CLIENT_ID);
+    }
+
+    /** @return void */
+    public function saveProviderClientId(string $clientId)
+    {
+        $this->saveGlobalSetting(self::DC_ASSESSMENTS_CONFIG_PROVIDER_CLIENT_ID, $clientId);
+    }
+
+    /** @return mixed */
+    public function getProviderClientSecret()
+    {
+        return $this->getGlobalSetting(self::DC_ASSESSMENTS_CONFIG_PROVIDER_CLIENT_SECRET);
+    }
+
+    /**
+     * The confidential provider client's secret lives server-side only (never shipped to the browser);
+     * the module brokers the provider token exchange with it.
+     * @return void
+     */
+    public function saveProviderClientSecret(string $secret)
+    {
+        $this->saveGlobalSetting(self::DC_ASSESSMENTS_CONFIG_PROVIDER_CLIENT_SECRET, $secret);
+    }
+
+    /**
+     * Provider (confidential, user-context) scopes: the user/* subset of the full scope list plus the
+     * shared launch/openid scopes. No patient/* scopes -- those belong to the public patient client.
+     * @return string
+     */
+    public function getSmartAppProviderScopes()
+    {
+        return $this->filterScopesByContext(['user/'], ['fhirUser', 'api:port', 'api:oemr', 'openid', 'launch']);
+    }
+
+    /**
+     * Patient (public) scopes: the patient/* subset plus the shared launch/openid scopes.
+     * @return string
+     */
+    public function getSmartAppPatientScopes()
+    {
+        return $this->filterScopesByContext(['patient/'], ['fhirUser', 'api:port', 'api:oemr', 'openid', 'launch']);
+    }
+
+    /**
+     * @param list<string> $contextPrefixes
+     * @param list<string> $sharedScopes
+     * @return string
+     */
+    private function filterScopesByContext(array $contextPrefixes, array $sharedScopes)
+    {
+        $all = explode(' ', $this->getSmartAppScopes());
+        $kept = [];
+        foreach ($all as $scope) {
+            if ($scope === '') {
+                continue;
+            }
+            if (in_array($scope, $sharedScopes, true)) {
+                $kept[$scope] = true;
+                continue;
+            }
+            foreach ($contextPrefixes as $prefix) {
+                if (str_starts_with($scope, $prefix)) {
+                    $kept[$scope] = true;
+                    break;
+                }
+            }
+        }
+        return implode(' ', array_keys($kept));
     }
 
     /**
