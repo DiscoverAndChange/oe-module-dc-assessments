@@ -1,3 +1,38 @@
+v0.12.9 Integration coverage for the questionnaire -> assignment-completion pipeline (batch 6)
+
+  Covers the live server-side flow when the patient SPA submits a completed assessment/
+  questionnaire, scoped to patients/users/questionnaires/assignments (encounter-charting and
+  library-asset results are out of scope; their heavy collaborators are mocked).
+  - New test traits: tests/Tests/Support/AclIntegration.php (installs the default ACL tree
+    once + logs in the seeded admin so AclMain passes) and AssignmentFixture.php (patient
+    pid==id, published assessment, saved assignment + AssignedAssessment item, cleanup).
+  - AssessmentResponseBlobFHIRResourceService::insertOpenEmrRecord: success persists the
+    result blob + marks the assignment complete (mocked completer), invalid payload ->
+    validation errors, unknown assignment item -> clean internal error.
+  - QuestionnaireResponseRestController::create: Prefer/returnType handling + the 400
+    (bad body) and 500 (service error) paths (resourceService mocked).
+  - QuestionnaireResponseRestListener (insert/search routing) and QuestionnaireAssignmentListener
+    (guard + no-match branches).
+  - QuestionnaireResponseOnSiteDocumentService::createDocument: proves PDF generation still
+    works end to end -- flattens the response to HTML, runs PatientPortalPDFDocumentCreator,
+    and asserts a stored \Document (application/pdf) whose bytes start with "%PDF".
+  - Full completion chain: a saved QuestionnaireResponse (ServiceSaveEvent) -> Questionnaire
+    AssignmentListener -> PDF generation -> the questionnaire assignment item is marked
+    complete. AssignmentRepository's onsite-portal-activity (audit) service is now an optional
+    injected dependency (defaults to a real instance, so existing callers are unaffected), so
+    the completion UPDATE is exercised with the audit service mocked.
+
+  Bug fix (with regression test): QuestionnaireResponseRestListener::dispatchFHIRInsertEvent
+  used $extension[0] after array_filter() (which preserves keys), so a QuestionnaireResponse
+  whose DAC extension was not first would silently fail to route to the insert handler. Now
+  reindexes with array_values() before taking the first match.
+
+  Coverage ~54% -> ~56% lines; PHPStan-flagged errors in test-exercised methods 58% -> 64%.
+  Module PHPStan clean. Latent issues documented (not fixed) in TEST-PLAN: dead search-error
+  branches + an unused PHPUnit import in the QR listener/controller; QuestionnaireAssignment
+  Listener missing strict_types / first-item-only completion; a benign Array-to-string warning
+  at RestUtils.php:162.
+
 v0.12.8 Fix SMART-app crash on assessment-users (NULL username address-book entries)
 
   Launching the "Patient Portal Assignments" SMART app failed on GET /api/assessment-users/:uuid

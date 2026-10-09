@@ -401,12 +401,32 @@ Method: ran phpstan with the module baseline OFF (846 current errors, with line 
 mapped each error to its enclosing method, and checked that method's coverage via clover.
 Regenerate with: `<scratchpad>/precision.py <clover.xml> <phpstan-errors.json> <DEST>/src`.
 
-Where the 846 flagged errors live (UPDATED after batch 5 — ACL-gated write bodies now netted):
-- **489 (58%) in methods EXERCISED by tests** -> safe to do aggressive phpstan fixes now.
-  (was 355/42% before batch 5; the AclIntegration trait unblocked ~134 write-body errors.)
-- **316 (37%) in methods NOT exercised** -> integration-heavy remainder (list below).
+Where the 846 flagged errors live (UPDATED after batch 6 + the PDF/full-chain follow-up):
+- **540 (64%) in methods EXERCISED by tests** -> safe to do aggressive phpstan fixes now.
+  (355/42% before batch 5 -> 489/58% after batch 5 -> 540/64% after batch 6.)
+- **265 (31%) in methods NOT exercised** -> integration-heavy remainder (list below).
 - 34 (4%) in @deprecated methods -> leave in the baseline, do not test/fix.
 - 7 class-level (use/property/docblock) -> n/a.
+
+Batch 6 (v0.12.9) netted the questionnaire -> assignment-completion pipeline:
+AssessmentResponseBlob::insertOpenEmrRecord, QuestionnaireResponseRestController::create,
+and the QR listeners (guard/routing paths). Fixed the dispatchFHIRInsertEvent array_filter[0]
+routing bug (regression test added). New reusable traits: AclIntegration + AssignmentFixture.
+PDF GENERATION + FULL COMPLETION CHAIN ARE COVERED (owner confirmed PDF output is in active use):
+- QuestionnaireResponseOnSiteDocumentService::createDocument -> a real stored application/pdf
+  \Document (bytes start with %PDF).
+- End-to-end: saved QuestionnaireResponse (ServiceSaveEvent) -> QuestionnaireAssignmentListener ->
+  PDF -> assignment item marked complete. Enabled by making AssignmentRepository's onsite-portal-
+  activity (audit) service an optional injected dependency (mocked in the test); seeds a real
+  questionnaire_repository + questionnaire_response + onsite_portal_activity row for the FKs.
+Still-uncovered 265 are the out-of-scope / deep-fixture areas: AssessmentAppointmentController
+(calendar), QuestionnaireAuditController chart-to-encounter (encounters), LibraryAssetResult
+insert, and QuestionnairePortalTask getTaskDataForTemplates.
+Latent issues found in batch 6 (documented, not fixed): QuestionnaireResponseRestListener
+dead search-error branches + a stray `use PHPUnit\...\InvalidArgumentException` in the QR
+listener/controller; QuestionnaireAssignmentListener lacks declare(strict_types=1) and only
+completes the first matching item per event; a benign "Array to string conversion" warning at
+RestUtils.php:162 (getResponseForProcessingResult).
 
 RESOLVED (batch 5): the ACL blocker. tests/Tests/Support/AclIntegration.php installs OpenEMR's
 default ACL tree ONCE (idempotent) with the seeded user in the Administrators group and logs
@@ -494,6 +514,16 @@ proceed on the 489 exercised-method errors; keep deprecated/dead baselined; the 
 integration-heavy remainder is a future batch (or fix conservatively/PHPDoc-only).
 
 ## Progress log
+- 2026-10-08: Batch 6 — questionnaire -> assignment-completion pipeline integration coverage
+  (scoped to patients/users/questionnaires/assignments per the module owner; encounters/PDF/
+  documents/library-assets deferred). AclIntegration + AssignmentFixture traits; tests for
+  AssessmentResponseBlob insert, QR controller create, the two QR listeners. Fixed the
+  dispatchFHIRInsertEvent array_filter routing bug (+regression test). Also added a PDF-generation
+  test (QuestionnaireResponseOnSiteDocumentService::createDocument -> real stored %PDF Document),
+  confirming PDF output still works (owner uses it). Then made AssignmentRepository's audit service
+  injectable and added the FULL completion-chain test (QR save -> PDF -> mark complete). Suite
+  509 -> 529; coverage ~54% -> ~57% lines; phpstan-flagged errors in exercised methods 58% -> 64%
+  (540/846). phpstan clean. v0.12.9 on ai/coverage-batch-6.
 - 2026-10-08: Fixed a production SMART-app crash (v0.12.8): SystemUserRepository::getUsers fed
   NULL usernames (OpenEMR "address book" / non-login user rows) into SystemUser(string
   $username) -> TypeError on GET /api/assessment-users/:uuid. getUsers() now skips username-less
