@@ -2,7 +2,7 @@
 
 namespace OpenEMR\Modules\DiscoverAndChange\Assessments\Controllers;
 
-use OpenEMR\Common\Http\Psr17Factory;
+use OpenEMR\BC\ServiceContainer;
 use OpenEMR\Events\Core\TemplatePageEvent;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\GlobalConfig;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Services\SmartAppClientService;
@@ -48,8 +48,7 @@ class FrontendDispatchController
             ,'smartStyles' => $smartJSON
         ];
         $result = $twig->render("discoverandchange/frontend/frontend.html.twig", $vars);
-        $psr = new Psr17Factory();
-        return $psr->createResponse()->withBody($psr->createStream($result));
+        return ServiceContainer::getResponseFactory()->createResponse()->withBody(ServiceContainer::getStreamFactory()->createStream($result));
     }
 
     /**
