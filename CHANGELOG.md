@@ -1,3 +1,18 @@
+v0.12.13 PHPStan refactor pass 4: QuestionnaireResponseForm FHIR mapping (baseline 731 -> 706)
+
+  Fourth burn-down pass over the QR-response FHIR read/insert mapping (exercised by the parse
+  tests). 529-test suite green, phpstan clean. parseOpenEMRRecord now wraps scalars in their
+  FHIR element types before the setters -- new FHIRId/FHIRInstant/FHIRDateTime (scalar) and
+  new FHIRQuestionnaireResponseStatus(['value' => ...]) (array form required); createRelativeReference()
+  results (untyped -> mixed in core) captured in typed FHIRReference locals; DateTime::createFromFormat()
+  false-return guarded before ->format(). Plus empty() -> strict comparisons, new SystemLogger() ->
+  ServiceContainer::getLogger(), a widened createProvenanceResource @param (childParameterType), and
+  a removed unreachable provenance stub.
+  Left baselined (16): the parseFhirResource getter null-guards and three set*(null) field-clears --
+  OpenEMR's FHIR element getters/setters are typed non-null in core yet are genuinely nullable at
+  runtime (optional QuestionnaireResponse id/subject/encounter/source), so removing the guards would
+  reintroduce a real null-fatal.
+
 v0.12.12 PHPStan refactor pass 3: QR REST controllers + QR FHIR services (baseline 756 -> 731)
 
   Third burn-down pass over the questionnaire read/create REST controllers and the two QR FHIR

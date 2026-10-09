@@ -514,6 +514,15 @@ proceed on the 489 exercised-method errors; keep deprecated/dead baselined; the 
 integration-heavy remainder is a future batch (or fix conservatively/PHPDoc-only).
 
 ## Progress log
+- 2026-10-09: PHPStan refactor pass 4 (v0.12.13) — QuestionnaireResponseFormFHIRResourceService
+  (41 -> 16). Baseline 731 -> 706. parseOpenEMRRecord: wrapped scalars in FHIR element types
+  (FHIRId/FHIRInstant/FHIRDateTime scalar; FHIRQuestionnaireResponseStatus needs ['value'=>]),
+  typed FHIRReference locals for createRelativeReference, guarded createFromFormat false, empty()
+  -> strict, SystemLogger -> ServiceContainer, childParameterType widen, dead stub removed.
+  KEY LEARNING: OpenEMR core's FHIR element getters/setters are typed non-null but are nullable
+  at runtime -> the parseFhirResource getter null-guards (6) + three set*(null) clears can't be
+  removed without a real null-fatal, so they stay baselined (phpstan calls them always-true/
+  null-not-allowed). Suite 529 green. On ai/phpstan-qr-fhir-services.
 - 2026-10-08: PHPStan refactor pass 3 (v0.12.12) — QR read/create REST controllers + QR FHIR
   delegating services: QuestionnaireResponseRestController (15 -> 3), QuestionnaireRestController
   (6 -> 3), QuestionnaireResponseFHIRResourceService (5 -> 0), QuestionnaireFHIRResourceService
