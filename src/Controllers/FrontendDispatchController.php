@@ -34,9 +34,12 @@ class FrontendDispatchController
         /** @var string|null $clientId */
         $clientId = $this->config->getSmartAppClientId();
         if (($clientId === null || $clientId === '') || !$this->isClientEnabled($clientId)) {
-            // if the client is not enabled we need to present a message to the user
+            // if the client is not enabled we need to present a message to the user.
+            // return the error response (HTTP 500) so the caller can emit it -- previously this die()d,
+            // which stopped the request and made the controller untestable.
             $body = $this->twig->render('error/500.html.twig', ['exception' => "The client is not enabled. Please contact your administrator."]);
-            die($body);
+            return ServiceContainer::getResponseFactory()->createResponse(500)
+                ->withBody(ServiceContainer::getStreamFactory()->createStream($body));
         }
         $smartJSON = $this->getSmartStylesJson();
         $twig = $this->twig;
