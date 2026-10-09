@@ -104,7 +104,7 @@ class SystemUserRepository
         // we need a mapping from user.id => providerID
         $resultClientSystemUserMap = [];
         foreach ($mappedProviderIds as $clientId => $providerId) {
-            if (!empty($userIdIndex[$providerId])) {
+            if (isset($userIdIndex[$providerId])) {
                 $resultClientSystemUserMap[$clientId] = $userIdIndex[$providerId];
             }
         }

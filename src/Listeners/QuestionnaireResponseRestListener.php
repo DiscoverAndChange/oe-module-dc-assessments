@@ -55,7 +55,7 @@ class QuestionnaireResponseRestListener implements IStaticEventSubscriber
                 }
                 return false;
             });
-            if (!empty($extension)) {
+            if ($extension !== []) {
                 // array_filter preserves original keys, so the matching extension is not
                 // necessarily at index 0 (a non-DAC extension may precede it). Reindex
                 // before taking the first match, otherwise routing silently fails.
@@ -70,7 +70,7 @@ class QuestionnaireResponseRestListener implements IStaticEventSubscriber
         }
         // we have something so let's return our processing result
         // TODO: @adunsulag eventually we want to formalize this event.
-        if (!empty($result) && $result instanceof ProcessingResult) {
+        if ($result !== null) {
             $event->stopPropagation();
             $event->setArgument('result', $result);
         }
@@ -83,23 +83,14 @@ class QuestionnaireResponseRestListener implements IStaticEventSubscriber
         /** @var array<mixed> $fhirSearchParameters */
         $fhirSearchParameters = $event->getSubject();
         $processingResult = new ProcessingResult();
+        // getAll() always returns a ProcessingResult (errors are carried inside it, never by a
+        // null/falsy return), so the old "else" error branches were unreachable dead code;
+        // addProcessingResult already merges any internal errors from the sub-result.
         $result = $this->assessmentResponseBlobFHIRResourceService->getAll($fhirSearchParameters);
-        if (!empty($result) && $result instanceof ProcessingResult) {
-            $processingResult->addProcessingResult($result);
-        } else {
-            // we have something so let's return our processing result
-            $this->getLogger()?->error("Failed to process the search request for assessment response results.");
-            $processingResult->addInternalError(xlt("Failed to process the search request."));
-        }
+        $processingResult->addProcessingResult($result);
         if ($processingResult->isValid()) {
             $result = $this->libraryAssetResultBlobFHIRResourceService->getAll($fhirSearchParameters);
-            if (!empty($result) && $result instanceof ProcessingResult) {
-                $processingResult->addProcessingResult($result);
-            } else {
-                // we have something so let's return our processing result
-                $this->getLogger()?->error("Failed to process the search request for asset library response results.");
-                $processingResult->addInternalError(xlt("Failed to process the search request."));
-            }
+            $processingResult->addProcessingResult($result);
         }
         $event->setArgument('result', $processingResult);
         return $event;

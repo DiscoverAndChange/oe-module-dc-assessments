@@ -475,24 +475,6 @@ parameters:
 			path: src/GlobalConfig.php
 
 		-
-			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
-			identifier: empty.notAllowed
-			count: 3
-			path: src/Listeners/QuestionnaireAssignmentListener.php
-
-		-
-			message: '#^Direct instantiation of OpenEMR\\Common\\Logging\\SystemLogger is discouraged\. Use OpenEMR\\BC\\ServiceContainer\:\:getLogger\(\) instead\.$#'
-			identifier: openemr.forbiddenInstantiation
-			count: 1
-			path: src/Listeners/QuestionnaireAssignmentListener.php
-
-		-
-			message: '#^Method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Listeners\\QuestionnaireAssignmentListener\:\:updateQuestionnaireAssignments\(\) with return type void returns OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Models\\Assignment but should not return anything\.$#'
-			identifier: return.void
-			count: 1
-			path: src/Listeners/QuestionnaireAssignmentListener.php
-
-		-
 			message: '#^OpenEMR\\Common\\Database\\QueryUtils\:\:commitTransaction\(\) is deprecated\. Use QueryUtils\:\:inTransaction\(\) wrapper instead\.$#'
 			identifier: openemr.deprecatedSqlFunction
 			count: 1
@@ -511,40 +493,10 @@ parameters:
 			path: src/Listeners/QuestionnaireAssignmentListener.php
 
 		-
-			message: '#^Parameter \#2 \$documentCategory of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\QuestionnaireResponseOnSiteDocumentService\:\:createDocument\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Listeners/QuestionnaireAssignmentListener.php
-
-		-
 			message: '#^catch \(Exception\) would suppress ErrorException, which is forbidden\.$#'
 			identifier: openemr.forbiddenCatchType
 			count: 1
 			path: src/Listeners/QuestionnaireAssignmentListener.php
-
-		-
-			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
-			identifier: empty.notAllowed
-			count: 4
-			path: src/Listeners/QuestionnaireResponseRestListener.php
-
-		-
-			message: '#^Instanceof between OpenEMR\\Validators\\ProcessingResult and OpenEMR\\Validators\\ProcessingResult will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 3
-			path: src/Listeners/QuestionnaireResponseRestListener.php
-
-		-
-			message: '#^Result of && is always true\.$#'
-			identifier: booleanAnd.alwaysTrue
-			count: 2
-			path: src/Listeners/QuestionnaireResponseRestListener.php
-
-		-
-			message: '#^Variable \$result in empty\(\) always exists and is not falsy\.$#'
-			identifier: empty.variable
-			count: 2
-			path: src/Listeners/QuestionnaireResponseRestListener.php
 
 		-
 			message: '#^Property OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Models\\AssessmentGroup\:\:\$assessments on left side of \?\? is not nullable nor uninitialized\.$#'
@@ -1579,30 +1531,6 @@ parameters:
 			path: src/Services/ClientMessageDispatcher.php
 
 		-
-			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
-			identifier: empty.notAllowed
-			count: 7
-			path: src/Services/ClientRepository.php
-
-		-
-			message: '#^Parameter \#1 \$v of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Models\\Assignment\:\:setName\(\) expects string, string\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/ClientRepository.php
-
-		-
-			message: '#^Variable \$group in empty\(\) always exists and is not falsy\.$#'
-			identifier: empty.variable
-			count: 1
-			path: src/Services/ClientRepository.php
-
-		-
-			message: '#^Variable \$listOption in empty\(\) always exists and is not falsy\.$#'
-			identifier: empty.variable
-			count: 1
-			path: src/Services/ClientRepository.php
-
-		-
 			message: '#^Direct instantiation of OpenEMR\\Common\\Logging\\SystemLogger is discouraged\. Use OpenEMR\\BC\\ServiceContainer\:\:getLogger\(\) instead\.$#'
 			identifier: openemr.forbiddenInstantiation
 			count: 1
@@ -2489,12 +2417,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: src/Services/SmartAppClientService.php
-
-		-
-			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
-			identifier: empty.notAllowed
-			count: 1
-			path: src/Services/SystemUserRepository.php
 
 		-
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'

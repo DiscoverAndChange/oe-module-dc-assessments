@@ -30,16 +30,20 @@ class ClientRepository
 
         // need to make sure we actually have a template id
         // else we create a new assignment
-        if (empty($clientId)) {
+        if ($clientId === '') {
             throw new \InvalidArgumentException("No uuid found for patient pid " . $clientId);
         }
         $listService = new ListService();
-        /** @var array{title: string, option_id: string} $listOption */
+        /** @var array<string, mixed> $listOption */
         $listOption = $listService->getListOption(AssignmentRepository::TEMPLATE_PROFILE_LIST_ID, trim($profileId));
-        if (empty($listOption)) {
+        if ($listOption === []) {
             throw new \InvalidArgumentException("No list option found for profile id {$profileId}");
         }
-        return $assignmentRepository->createClientAssignmentForProfile($clientId, $appointmentId, $listOption['title'], $listOption['option_id'], $userId);
+        /** @var string $profileTitle */
+        $profileTitle = $listOption['title'];
+        /** @var string $profileOptionId */
+        $profileOptionId = $listOption['option_id'];
+        return $assignmentRepository->createClientAssignmentForProfile($clientId, $appointmentId, $profileTitle, $profileOptionId, $userId);
     }
 
     /**
@@ -56,21 +60,21 @@ class ClientRepository
         $assignment = new AssignedAssessmentGroup();
         $assignment->setDateAssigned($dateAssigned);
         $assignment->setAssessmentGroupId($groupId);
-        if (!empty($appointmentId)) {
+        if ($appointmentId !== null && $appointmentId !== '') {
             $assignment->setAppointmentId($appointmentId);
         }
 
         $assessmentGroupService = new AssessmentGroupService();
-        /** @var array{name: string, assessmentGroupAssessmentBlobs: list<array{assessmentBlob: array{id: string, name: ?string, uid: string}}>} $group */
+        /** @var array{name: string, assessmentGroupAssessmentBlobs: list<array{assessmentBlob: array{id: string, name: ?string, uid: string}}>}|null $group */
         $group = $assessmentGroupService->getGroup($groupId);
-        if (empty($group)) {
+        if ($group === null) {
             throw new \InvalidArgumentException("Invalid group id " . $groupId);
         }
         $assignment->setName($group['name']);
         foreach ($group['assessmentGroupAssessmentBlobs'] as $blob) {
             $assignmentItem = new AssignedAssessment();
             $assignmentItem->setDateAssigned($dateAssigned);
-            $assignmentItem->setName($blob['assessmentBlob']['name']);
+            $assignmentItem->setName($blob['assessmentBlob']['name'] ?? '');
             $assignmentItem->setUid($blob['assessmentBlob']['uid']);
             $assignmentItem->setAssessmentId((int) $blob['assessmentBlob']['id']);
             $assignment->addItem($assignmentItem);
@@ -95,7 +99,7 @@ class ClientRepository
     /** @param string $clientId */
     public function addAssignmentToClient($clientId, Assignment $assignment, int $getUserId): Assignment
     {
-        if (empty($assignment->getItems())) {
+        if ($assignment->getItems() === []) {
             throw new \InvalidArgumentException("Assignment must have at least one item");
         }
         $item = $assignment->getItems()[0];
@@ -104,7 +108,7 @@ class ClientRepository
         $item->setDateAssigned($dateAssigned);
 
         if ($item instanceof AssignedAssessment) {
-            if (empty($item->getUid())) {
+            if ($item->getUid() === '') {
                 throw new \InvalidArgumentException("Assessment id must be set");
             } else {
                 $assessmentRepo = new AssessmentRepository($this->logger);
@@ -116,7 +120,7 @@ class ClientRepository
                 $item->setAssessmentId((int) $assessmentId);
             }
         }
-        if ($item instanceof AssignedLibraryAsset && empty($item->getAssetId())) {
+        if ($item instanceof AssignedLibraryAsset && $item->getAssetId() === 0) {
             throw new \InvalidArgumentException("Asset id must be set");
         }
         $assignmentRepository = new AssignmentRepository();
