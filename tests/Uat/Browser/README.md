@@ -116,9 +116,14 @@ produces), so the first SMART login works.
   assessment (with a real question) + an assignment via the module's own services;
   `BrowserUatTestCase::seedAssignedAssessment()` invokes it over `docker exec`. The SPA specs verify
   the dashboard lists the assigned assessment and the patient can open it, answer, and submit.
-- **KNOWN BLOCKER (documented in the spec):** patient Submit posts `QuestionnaireResponse` to the
-  **FHIR** base and core denies patient FHIR writes (`AuthorizationListener` → 401). The module also
-  exposes the patient-write route on the **portal** base, which core allows — so the fix is to submit
-  there. The submit spec currently asserts the 401 so the test captures the real failure.
-- **TODO:** provider-side review step (log in as provider → assessment-management app → open result);
-  flip the submit assertion to success once the SPA targets the portal base.
+- **Submit — root-caused + server side fixed; one SPA change remains:** patient Submit posts
+  `QuestionnaireResponse` to the **FHIR** base, which core denies for patients
+  (`AuthorizationListener` → 401 "Patient user role is not allowed to write FHIR resources"; the token
+  *does* carry the write scope — it's a role policy). Replaying the same POST to the **portal** base
+  (`/apis/default/portal/QuestionnaireResponse`) returns **201** and saves the result, after the
+  `ServerRestRequest::getBody()` stream fix (v0.12.26). The one remaining change is the compiled SPA
+  posting to `${apiURL}portal/QuestionnaireResponse` (in `assessment.service.ts` `saveAssessmentResult`)
+  instead of the SMART FHIR client — needs an Angular rebuild. The submit spec asserts the current 401
+  until then.
+- **TODO:** rebuild the SPA to submit to the portal base (then flip the submit assertion to 201 +
+  completion); provider-side review step (log in as provider → assessment-management app → open result).

@@ -1,3 +1,19 @@
+v0.12.26 Fix ServerRestRequest::getBody() to return a PSR-7 stream (unblocks patient portal QR submit)
+
+  Root-caused the assessment-submit 401 via the browser UAT: the compiled SPA posts the
+  QuestionnaireResponse to the FHIR base, which OpenEMR core categorically blocks for the patient role
+  (AuthorizationListener -> 401; the token carries patient/QuestionnaireResponse.write, so it is a role
+  policy, not a scope gap). The module already registers the same patient-write route under the PORTAL
+  base. Replaying the POST there surfaced a module bug: ServerRestRequest::getBody() declared
+  `: StreamInterface` but returned core HttpRestRequest::getBody(), which returns the raw body STRING
+  (Symfony getContent()) -> TypeError -> 500 on every module POST route that reads getBody() (the FHIR
+  path never hit it because it 401s first). Fixed getBody() to wrap the string in a PSR-7 stream via
+  ServiceContainer::getStreamFactory(). With the fix, replaying the patient QuestionnaireResponse to
+  /apis/default/portal/QuestionnaireResponse returns 201 and persists the result. The remaining change
+  to make the in-app Submit work is SPA-side (post to the portal base instead of the SMART FHIR client)
+  and needs an Angular rebuild; the UAT submit spec asserts the current 401 until then. phpstan clean,
+  529+ unit suite green.
+
 v0.12.25 Browser UAT: assignment workflow (seed -> dashboard -> open/answer/submit) verified on live 8.4
 
   Extends the UAT tier to the assignment workflow. Adds tests/Uat/Browser/tools/seed-assignment.php:

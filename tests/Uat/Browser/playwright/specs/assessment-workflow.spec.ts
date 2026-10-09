@@ -77,17 +77,21 @@ test.describe('assessment workflow', () => {
     await page.locator('input[value="Submit"]').first().click();
     const resp = await submitPost;
 
-    // KNOWN BLOCKER (verified 2026-10-09 on OpenEMR 8.4): the SPA POSTs the QuestionnaireResponse to
-    // the FHIR base (/apis/default/fhir/QuestionnaireResponse), and core's AuthorizationListener
-    // (src/RestControllers/Subscriber/AuthorizationListener.php) categorically denies patient-role
-    // *writes* to FHIR resources -> HTTP 401 "Patient user role is not allowed to write FHIR
-    // resources." The module also registers the patient-write route under the PORTAL base
-    // (/apis/default/portal/QuestionnaireResponse, via addToPortalRouteMap), which core allows -- so
-    // the fix direction is submitting to the portal base, not FHIR. Until that is resolved, assert the
-    // current (blocked) behaviour so this test documents the exact failure instead of hanging.
-    expect(resp.status(), 'patient QuestionnaireResponse FHIR write is blocked by core (see comment)').toBe(401);
+    // REMAINING SPA FIX (verified 2026-10-09 on OpenEMR 8.4): the compiled SPA POSTs the
+    // QuestionnaireResponse to the FHIR base (/apis/default/fhir/QuestionnaireResponse) via the SMART
+    // fhir client (assessment.service.ts saveAssessmentResult -> client.create). Core's
+    // AuthorizationListener categorically denies patient-role *writes* to FHIR resources -> 401
+    // "Patient user role is not allowed to write FHIR resources" (the token DOES carry
+    // patient/QuestionnaireResponse.write -- it's a role policy, not a scope gap).
+    // The module registers the same patient-write route under the PORTAL base
+    // (/apis/default/portal/QuestionnaireResponse); replaying this exact POST there returns 201 and
+    // saves the result (after the ServerRestRequest::getBody() stream fix in v0.12.26). So the one
+    // remaining change is the SPA posting to `${environment.apiURL}portal/QuestionnaireResponse`
+    // instead of the FHIR client. Until the SPA is rebuilt, assert the current (blocked) behaviour so
+    // this test documents the exact failure instead of hanging.
+    expect(resp.status(), 'compiled SPA still posts QR to the FHIR base, which core blocks for patients (see comment)').toBe(401);
 
-    // TODO once the submit targets the portal base: assert 200/201 + a completion confirmation and
-    // that the assignment shows as completed back on the dashboard.
+    // TODO once the SPA submits to the portal base: assert 201 + a completion confirmation and that
+    // the assignment shows as completed back on the dashboard.
   });
 });

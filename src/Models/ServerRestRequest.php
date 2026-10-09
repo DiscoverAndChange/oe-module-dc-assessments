@@ -4,6 +4,7 @@ namespace OpenEMR\Modules\DiscoverAndChange\Assessments\Models;
 
 use Http\Message\Encoding\GzipDecodeStream;
 use Nyholm\Psr7\Factory\Psr17Factory;
+use OpenEMR\BC\ServiceContainer;
 use OpenEMR\Common\Acl\AclMain;
 use Psr\Http\Message\RequestInterface;
 use OpenEMR\Common\Http\HttpRestRequest;
@@ -102,7 +103,13 @@ final class ServerRestRequest implements ServerRequestInterface
 
     public function getBody(): StreamInterface
     {
-        return $this->httpRestRequest->getBody();
+        // OpenEMR's HttpRestRequest::getBody() returns the raw request body as a STRING
+        // (Symfony Request::getContent()), not a PSR-7 stream. On the portal route this value
+        // reaches callers that do getBody()->rewind()->getContents() (e.g. the FHIR REST
+        // controllers), which fataled with a TypeError. Wrap the string in a PSR-7 stream so the
+        // StreamInterface contract holds.
+        $body = $this->httpRestRequest->getBody();
+        return ServiceContainer::getStreamFactory()->createStream(is_string($body) ? $body : '');
     }
 
     /** @return mixed */
