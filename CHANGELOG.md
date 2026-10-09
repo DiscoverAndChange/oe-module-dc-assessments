@@ -1,3 +1,20 @@
+v0.12.11 PHPStan refactor pass 2: QR listeners + client/user repos (baseline 784 -> 756)
+
+  Second burn-down pass over the questionnaire-completion glue + client/user repositories
+  (all exercised by the completion-chain/listener tests). 529-test suite green, phpstan clean.
+  Dead-code / correctness fixes:
+  - QuestionnaireResponseRestListener::dispatchFHIRSearchEvent had unreachable "else" error
+    branches: getAll() always returns a ProcessingResult (errors are carried inside it, never
+    via a null return). Removed the dead branches; addProcessingResult already merges errors.
+  - QuestionnaireAssignmentListener returned a value from a void listener method (return.void);
+    the "first incomplete item wins" exit is now a break, leaving the commit/finally unchanged.
+  - ClientRepository's @var over-narrowed nullable/possibly-empty getListOption()/getGroup()
+    results to a required-key shape, making the empty() guards dead; retyped + null/=== [] checks.
+  Plus empty() -> strict comparisons, new SystemLogger() -> ServiceContainer::getLogger(), and a
+  string coercion for createDocument's category id.
+  Deferred (still baselined): QueryUtils start/commit/rollbackTransaction() deprecation + its
+  error-swallowing catch(\Exception).
+
 v0.12.10 PHPStan refactor: core assignment/client domain (baseline 846 -> 784)
 
   First phpstan burn-down pass, now that the completion-chain/fixture tests provide a safety

@@ -2,8 +2,8 @@
 
 namespace OpenEMR\Modules\DiscoverAndChange\Assessments\Listeners;
 
+use OpenEMR\BC\ServiceContainer;
 use OpenEMR\Common\Database\QueryUtils;
-use OpenEMR\Common\Logging\SystemLogger;
 use OpenEMR\Common\Uuid\UuidRegistry;
 use OpenEMR\Events\Services\ServiceSaveEvent;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Models\AssignedQuestionnaire;
@@ -43,24 +43,25 @@ class QuestionnaireAssignmentListener implements IStaticEventSubscriber
             $encounter = $data['encounter'];
             QueryUtils::startTransaction();
             try {
-                if (!empty($pid)) {
-                    if (!empty($encounter)) {
+                if ($pid !== '') {
+                    if ($encounter !== '') {
                         $items = $this->assignmentRepository->getQuestionnaireAssignmentItemsForEncounter($encounter, $questionnaireId);
                     } else {
                         $items = $this->assignmentRepository->getQuestionnaireAssignmentItemsForClient((int) $pid, $questionnaireId);
                     }
-                    if (!empty($items)) {
+                    if ($items !== []) {
                         foreach ($items as $item) {
                             if (!$item->getIsComplete() && $item instanceof AssignedQuestionnaire) {
-                                $assignment = $this->updateAssignmentItem($item, $data, $puuid);
+                                // only the first incomplete questionnaire item is completed per event
+                                $this->updateAssignmentItem($item, $data, $puuid);
                                 $commitTransaction = true;
-                                return $assignment;
+                                break;
                             }
                         }
                     }
                 }
             } catch (\Exception $exception) {
-                (new SystemLogger())->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
+                ServiceContainer::getLogger()->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
                 $commitTransaction = false;
             } finally {
                 if ($commitTransaction) {
@@ -84,7 +85,9 @@ class QuestionnaireAssignmentListener implements IStaticEventSubscriber
 //        $item->setAuditId($portalAuditId);
         // now create the pdf document
         // we stuff it in the In Review category
-        $category = QueryUtils::fetchSingleValue("SELECT id FROM categories WHERE name = ?", 'id', ['Reviewed']) ?: 3;
+        /** @var string|int|null $categoryId */
+        $categoryId = QueryUtils::fetchSingleValue("SELECT id FROM categories WHERE name = ?", 'id', ['Reviewed']);
+        $category = (string) ($categoryId ?? 3);
         $document = $this->questionnaireResponsePDFService->createDocument(
             $item->getDocumentTemplateId(),
             $category,
