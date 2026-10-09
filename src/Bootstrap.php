@@ -2,6 +2,7 @@
 
 namespace OpenEMR\Modules\DiscoverAndChange\Assessments;
 
+use OpenEMR\BC\ServiceContainer;
 use http\Env;
 use OpenEMR\Common\Auth\OpenIDConnect\Repositories\ScopeRepository;
 use OpenEMR\Common\Crypto\CryptoGen;
@@ -99,7 +100,7 @@ class Bootstrap
     private $moduleDirectoryName;
 
     /**
-     * @var SystemLogger
+     * @var LoggerInterface
      */
     private $logger;
 
@@ -138,7 +139,7 @@ class Bootstrap
         /** @var array<string, mixed> $globals */
         $globals = $GLOBALS;
         $this->globalsConfig = new GlobalConfig($globals);
-        $this->logger = new SystemLogger();
+        $this->logger = ServiceContainer::getLogger();
         $this->serviceContainer = $this->setupContainer();
     }
 

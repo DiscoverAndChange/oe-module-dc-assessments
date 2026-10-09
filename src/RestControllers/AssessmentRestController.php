@@ -2,6 +2,8 @@
 
 namespace OpenEMR\Modules\DiscoverAndChange\Assessments\RestControllers;
 
+use OpenEMR\BC\ServiceContainer;
+use Psr\Log\LoggerInterface;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use OpenEMR\Common\Acl\AccessDeniedException;
 use OpenEMR\Common\Acl\AclMain;
@@ -22,11 +24,11 @@ use Psr\Http\Message\ResponseInterface;
 
 class AssessmentRestController implements IRestController
 {
-    private SystemLogger $logger;
+    private LoggerInterface $logger;
 
     public function __construct(?SystemLogger $logger = null)
     {
-        $this->logger = $logger ?? new SystemLogger();
+        $this->logger = $logger ?? ServiceContainer::getLogger();
     }
 
     public function list(ServerRestRequest $request): ResponseInterface
@@ -35,7 +37,7 @@ class AssessmentRestController implements IRestController
         /** @var array{id?: int, name?: string}|null $facility */
         $facility = $facilityRepo->getPrimaryBusinessEntity();
         $facilityId = $facility['id'] ?? null;
-        $repo = new AssessmentRepository(new SystemLogger());
+        $repo = new AssessmentRepository(ServiceContainer::getLogger());
         $results = $repo->getAssessmentSummaryList($facilityId);
         if (empty($results)) {
             return RestUtils::getEmptyResponse();
@@ -52,7 +54,7 @@ class AssessmentRestController implements IRestController
     {
         // TODO: Implement one() method.
         try {
-            $repo = new AssessmentRepository(new SystemLogger());
+            $repo = new AssessmentRepository(ServiceContainer::getLogger());
             $query = $request->getQueryParams();
             $assignmentItemUuid = $query['assignmentItemID'] ?? null;
             $clientID = $query['clientID'] ?? null;
@@ -134,7 +136,7 @@ class AssessmentRestController implements IRestController
             // TODO: @adunsulag if we restrict companies down by facility we would handle that here.
             $companyId = $request->getAuthRole() == Role::SuperUser ? null : ($primaryBusinessEntity['id'] ?? null);
             $primaryBusinessEntity = $companyRepo->getPrimaryBusinessEntity();
-            $repo = new AssessmentRepository(new SystemLogger());
+            $repo = new AssessmentRepository(ServiceContainer::getLogger());
             // can't have duplicates on an insert
             if ($context == AssessmentValidator::DATABASE_INSERT_CONTEXT && $repo->existsAssessment($uid)) {
                 throw new \InvalidArgumentException("Assessment with uid already exists", ErrorCode::DUP_ENTRY);

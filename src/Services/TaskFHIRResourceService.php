@@ -14,7 +14,7 @@
 
 namespace OpenEMR\Modules\DiscoverAndChange\Assessments\Services;
 
-use OpenEMR\Common\Logging\SystemLogger;
+use OpenEMR\BC\ServiceContainer;
 use OpenEMR\Common\Uuid\UuidRegistry;
 use OpenEMR\FHIR\R4\FHIRDomainResource\FHIRProvenance;
 use OpenEMR\FHIR\R4\FHIRDomainResource\FHIRTask;
@@ -140,7 +140,7 @@ class TaskFHIRResourceService extends FhirServiceBase implements
                 $this->sortFhirSearchResult($fhirSearchResult);
             }
         } catch (SearchFieldException $exception) {
-            $systemLogger = new SystemLogger();
+            $systemLogger = ServiceContainer::getLogger();
             $systemLogger->error("exception thrown", ['message' => $exception->getMessage(),
                 'field' => $exception->getField(), 'trace' => $exception->getTraceAsString()]);
             // put our exception information here

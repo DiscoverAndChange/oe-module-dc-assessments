@@ -2,6 +2,7 @@
 
 namespace OpenEMR\Modules\DiscoverAndChange\Assessments;
 
+use OpenEMR\BC\ServiceContainer;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 use Nyholm\Psr7\Request;
@@ -589,7 +590,7 @@ class APIProxyController
             };
         } catch (ResourceNotFoundException $e) {
             // not really anything to do since we are proxying the requests so we return null here;
-            (new SystemLogger())->debug("APIProxyController() " . $e->getMessage());
+            ServiceContainer::getLogger()->debug("APIProxyController() " . $e->getMessage());
             return null;
         }
     }
@@ -670,7 +671,7 @@ class APIProxyController
             $client = new Client();
             $response = $client->send($request);
         } catch (GuzzleException $e) {
-            (new SystemLogger())->error(
+            ServiceContainer::getLogger()->error(
                 $e->getMessage(),
                 ['trace' => $e->getTraceAsString(), 'apiRequest' => $_REQUEST['API_REQUEST']]
             );

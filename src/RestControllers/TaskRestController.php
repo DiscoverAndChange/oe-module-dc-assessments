@@ -13,9 +13,9 @@
 
 namespace OpenEMR\Modules\DiscoverAndChange\Assessments\RestControllers;
 
+use OpenEMR\BC\ServiceContainer;
 use OpenEMR\Common\Http\HttpRestRequest;
 use OpenEMR\Common\Http\HttpRestRouteHandler;
-use OpenEMR\Common\Logging\SystemLogger;
 use OpenEMR\FHIR\R4\FHIRDomainResource\FHIRQuestionnaireResponse;
 use OpenEMR\FHIR\R4\FHIRDomainResource\FHIRTask;
 use OpenEMR\FHIR\R4\FHIRElement\FHIRTaskStatus;
@@ -193,12 +193,12 @@ class TaskRestController
             $response = RestUtils::addFhirLocationHeader($response, self::FHIR_RESOURCE_TYPE, $resultData[0]);
             return $response->withStatus(201);
         } catch (\InvalidArgumentException $exception) {
-            (new SystemLogger())->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
+            ServiceContainer::getLogger()->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             $operationOutcome = UtilsService::createOperationOutcomeResource('fatal', 'transient', xlt('Invalid request body'));
             $response = RestUtils::returnSingleObjectResponse($operationOutcome);
             return $response->withStatus(400);
         } catch (\Exception $exception) {
-            (new SystemLogger())->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
+            ServiceContainer::getLogger()->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             $operationOutcome = UtilsService::createOperationOutcomeResource('fatal', 'transient', xlt('Server Error in creating QuestionnaireResponse resource'));
             $response = RestUtils::returnSingleObjectResponse($operationOutcome);
             return $response->withStatus(500);

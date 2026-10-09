@@ -2,8 +2,8 @@
 
 namespace OpenEMR\Modules\DiscoverAndChange\Assessments\Services;
 
+use OpenEMR\BC\ServiceContainer;
 use OpenEMR\Common\Database\QueryUtils;
-use OpenEMR\Common\Logging\SystemLogger;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\DTO\LibraryAssetBlobDTO;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Models\Import\ImportLogEntry;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Validators\AssessmentValidator;
@@ -68,7 +68,7 @@ class ResourceImporterService
     public function getAssessmentRepository()
     {
         if (empty($this->assessmentRepository)) {
-            $this->assessmentRepository = new AssessmentRepository(new SystemLogger());
+            $this->assessmentRepository = new AssessmentRepository(ServiceContainer::getLogger());
         }
         return $this->assessmentRepository;
     }
@@ -101,7 +101,7 @@ class ResourceImporterService
     public function importAssessmentBlobResources(array $assessmentBlobs, &$index)
     {
         $validator = new AssessmentValidator();
-        $repo = new AssessmentRepository(new SystemLogger());
+        $repo = new AssessmentRepository(ServiceContainer::getLogger());
         foreach ($assessmentBlobs as $blob) {
             /** @var array<string, mixed> $blob */
             $logEntry = new ImportLogEntry();
@@ -157,7 +157,7 @@ class ResourceImporterService
     public function importLibraryAssetResources(array $assets, $importerUserId, &$index)
     {
         $validator = new LibraryAssetBlobValidator();
-        $repo = new LibraryAssetBlobRepository(new SystemLogger());
+        $repo = new LibraryAssetBlobRepository(ServiceContainer::getLogger());
         foreach ($assets as $assetBlob) {
             /** @var array<string, mixed> $assetBlob */
             $logEntry = new ImportLogEntry();

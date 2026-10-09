@@ -2,6 +2,7 @@
 
 namespace OpenEMR\Modules\DiscoverAndChange\Assessments\Utils;
 
+use Psr\Log\LoggerInterface;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use OpenApi\Util;
 use OpenEMR\Common\Acl\AccessDeniedException;
@@ -29,7 +30,7 @@ class RestUtils
 {
     const FHIR_PREFER_HEADER_RETURN_VALUES = ['minimal', 'representation', 'OperationOutcome'];
 
-    public static function getErrorResponse(SystemLogger $logger, \Exception $error): ResponseInterface
+    public static function getErrorResponse(LoggerInterface $logger, \Exception $error): ResponseInterface
     {
         $logger->error($error->getMessage(), ['trace' => $error->getTraceAsString()]);
 

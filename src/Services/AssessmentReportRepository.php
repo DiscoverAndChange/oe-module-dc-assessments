@@ -2,8 +2,8 @@
 
 namespace OpenEMR\Modules\DiscoverAndChange\Assessments\Services;
 
+use OpenEMR\BC\ServiceContainer;
 use OpenEMR\Common\Database\QueryUtils;
-use OpenEMR\Common\Logging\SystemLogger;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Models\AssessmentGroup;
 
 class AssessmentReportRepository
@@ -46,7 +46,7 @@ class AssessmentReportRepository
             try {
                 $report = json_decode($r['data'], true);
             } catch (\Exception $e) {
-                (new SystemLogger())->error($e);
+                ServiceContainer::getLogger()->error($e);
             }
             /** @var array<string, mixed> $report */
             $group = new AssessmentGroup();

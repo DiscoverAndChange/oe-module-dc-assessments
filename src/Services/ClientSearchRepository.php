@@ -2,7 +2,8 @@
 
 namespace OpenEMR\Modules\DiscoverAndChange\Assessments\Services;
 
-use OpenEMR\Common\Logging\SystemLogger;
+use OpenEMR\BC\ServiceContainer;
+use Psr\Log\LoggerInterface;
 use OpenEMR\Common\Uuid\UuidRegistry;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\DTO\ClientSearchQueryDTO;
 use OpenEMR\Common\Database\QueryPagination;
@@ -24,14 +25,14 @@ class ClientSearchRepository
 {
     private ?int $companyId;
 
-    private SystemLogger $logger;
+    private LoggerInterface $logger;
 
     public function __construct(?int $companyID)
     {
  // private dbUtils:DBUtils, private config:AppConfig, private logger:Logger, companyID?:string) {
         $this->companyId = $companyID;
 //        this._repo = this.dbUtils.getRepository(Patient);
-        $this->logger = new SystemLogger();
+        $this->logger = ServiceContainer::getLogger();
     }
 
     public function searchClientList(ClientSearchQueryDTO $search, SearchQueryConfig $config, ?int $assignedUserId): ProcessingResult
