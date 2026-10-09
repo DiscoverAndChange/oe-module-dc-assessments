@@ -514,6 +514,12 @@ proceed on the 489 exercised-method errors; keep deprecated/dead baselined; the 
 integration-heavy remainder is a future batch (or fix conservatively/PHPDoc-only).
 
 ## Progress log
+- 2026-10-09: PHPStan refactor pass 7 (v0.12.16) — OpenEMR Psr17Factory instantiation sweep.
+  Replaced the 10 `new OpenEMR\Common\Http\Psr17Factory()` (forbiddenInstantiation) in
+  EmptyRestController/FrontendDispatchController/QuestionnaireAuditController with
+  ServiceContainer::getResponseFactory()/getStreamFactory() (each local served both create calls,
+  so inlined). Only the OpenEMR Psr17Factory is flagged; the Nyholm\Psr7 one elsewhere is not.
+  Baseline 665 -> 655 (0 added / 3 removed entries = 10 errors). Suite 529 green.
 - 2026-10-09: PHPStan refactor pass 6 (v0.12.15) — SystemLogger instantiation sweep (mechanical
   bucket). Replaced all 23 `new SystemLogger()` (forbiddenInstantiation) across 17 src files with
   ServiceContainer::getLogger(); retyped the receiving slots (2 repo ctors, 4 logger props,
