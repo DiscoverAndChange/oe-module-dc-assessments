@@ -125,8 +125,5 @@ class AssessmentFHIRResourceService extends FhirServiceBase
         } else {
             return $fhirProvenance;
         }
-        $provenenance = new FHIRProvenance();
-        UtilsService::createProvenanceResource($provenenance, $dataRecord, $encode);
-        return null;
     }
 }

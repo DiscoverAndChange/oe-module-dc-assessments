@@ -13,6 +13,7 @@ use OpenEMR\Common\Database\QueryUtils;
 use OpenEMR\Common\Forms\FormQuestionnaireAssessment;
 use OpenEMR\BC\ServiceContainer;
 use OpenEMR\Common\Logging\SystemLogger;
+use OpenEMR\Common\Session\SessionWrapperFactory;
 use OpenEMR\Common\Uuid\UuidRegistry;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\GlobalConfig;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Models\AssignedAssessment;
@@ -81,7 +82,7 @@ class QuestionnaireAuditController
             if (($auditRecordId === null || $auditRecordId === '') || ($encounterId === null || $encounterId === '') || ($csrfToken === null || $csrfToken === '')) {
                 throw new \InvalidArgumentException('Missing eid, recordId, or csrfToken', ErrorCode::VALIDATE_DATA_MISSING);
             }
-            if (CsrfUtils::verifyCsrfToken($csrfToken) === false) {
+            if (CsrfUtils::verifyCsrfToken($csrfToken, SessionWrapperFactory::getInstance()->getActiveSession()) === false) {
                 throw new \InvalidArgumentException('Invalid csrfToken', ErrorCode::INVALID_REQUEST);
             }
             // make sure the current user can do this operation
@@ -261,7 +262,7 @@ class QuestionnaireAuditController
         $qr = json_decode($qrResponseContent, true, 512, JSON_THROW_ON_ERROR);
 
         $answers = $this->qrService->flattenQuestionnaireResponse($qr, '|', '');
-        $content = $this->qrService->buildQuestionnaireResponseHtml($answers, '|');
+        $content = $this->qrService->buildQuestionnaireResponseHtml($answers);
 
         $category = $this->getCategoryList();
         $encounterService = new EncounterService();

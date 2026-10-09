@@ -11,6 +11,24 @@ v0.12.21 Fix SMART-app patient first-login ("credentials invalid") by forcing po
   so the first SMART login succeeds. Added PatientPortalLoginPreconditionTest (3 tests, DB-backed)
   pinning the core precondition the SMART flow depends on: same correct password is rejected while
   unverified and accepted once verified, and a wrong password is still rejected.
+v0.12.20 PHPStan refactor pass 11: genuine correctness long-tail (baseline 394 -> 375)
+
+  Fixes real bugs + dead code (not rule-compliance). AssignmentTaskFHIRResourceService used three
+  classes with NO imports (QuestionnaireResponseService/QuestionnaireResponseOnSiteDocumentService/
+  QueryUtils) -> resolved to a non-existent \Services\Task\ class, so the Task-complete path would
+  fatal (class.notFound x5); the import fix then exposed a real arg bug (createDocument() was passed
+  the decoded $questionnaire ARRAY as its $questionnaireName string param -> now $questionnaireTitle).
+  Also: AssignmentEncounterController type-hinted Symfony Contracts EventDispatcherInterface (no
+  addListener) instead of the Component one (method.notFound); CsrfUtils collect/verifyCsrfToken now
+  require a SessionInterface (3 call sites passed too few args -> ArgumentCountError) -> pass the
+  active session; buildQuestionnaireResponseHtml() 1-param but 2 call sites passed a stray separator;
+  ->format() on nullable date getters -> ?->; removed 5 unreachable dead statements; collapsed an
+  always-true == 'OperationOutcome' else-if.
+  Left baselined (documented): injected-but-unread properties, GlobalConfig LOCAL_DEBUG dev-toggle,
+  ServerRestRequest getRequestTarget/withRequestTarget (needs core/PSR decision), ClientRestController
+  <1 pagination branch, APIProxyController dead proxy-fallback, SystemUser::fromJSON dynamic props,
+  unused feature-methods (kept for later wiring), getResultId/setResultId-on-base-Assignment (model
+  refactor). 529-test suite green, phpstan clean, baseline adds 0.
 
 v0.12.19 PHPStan refactor pass 10: QueryUtils transactions -> inTransaction() (baseline 465 -> 394)
 

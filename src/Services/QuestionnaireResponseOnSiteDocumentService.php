@@ -29,7 +29,7 @@ class QuestionnaireResponseOnSiteDocumentService
         $formFilename = $responseIdPart . '_' . $pidPart . '.pdf';
 
         $answers = $this->qrService->flattenQuestionnaireResponse($questionnaireResponse, '|', '');
-        $content = $this->qrService->buildQuestionnaireResponseHtml($answers, '|');
+        $content = $this->qrService->buildQuestionnaireResponseHtml($answers);
 
         // we could leverage Jerry's document pdf code here if we could include the classes.
         $pdfCreator = new PatientPortalPDFDocumentCreator();

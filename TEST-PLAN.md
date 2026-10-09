@@ -532,6 +532,16 @@ proceed on the 489 exercised-method errors; keep deprecated/dead baselined; the 
 integration-heavy remainder is a future batch (or fix conservatively/PHPDoc-only).
 
 ## Progress log
+- 2026-10-09: PHPStan refactor pass 11 (v0.12.20) — genuine correctness long-tail. Fixed real
+  bugs/dead code: class.notFound x5 (AssignmentTaskFHIRResourceService missing imports -> Task-
+  complete path would fatal; exposed+fixed a createDocument() arg bug passing the questionnaire
+  array instead of its title), EventDispatcherInterface wrong (Contracts vs Component), CsrfUtils
+  missing SessionInterface arg x3, buildQuestionnaireResponseHtml stray arg x2, ->format() on
+  nullable dates x2, 5 unreachable dead statements, an always-true OperationOutcome else-if.
+  Baseline 394 -> 375. Left baselined (documented, judgment/model/author-decision): DI unread
+  properties, LOCAL_DEBUG dev toggle, ServerRestRequest getRequestTarget (PSR), ClientRestController
+  <1 pagination, APIProxy dead fallback, SystemUser::fromJSON, unused feature-methods,
+  getResultId/setResultId-on-base-Assignment. Suite 529 green.
 - 2026-10-09: PHPStan refactor pass 10 (v0.12.19) — deprecatedSqlFunction bucket. All 19
   start/commit/rollbackTransaction blocks -> QueryUtils::inTransaction(fn closure) across 12 files
   (baseline 465 -> 394). Pattern: closure body + kept outer try/catch (inTransaction rethrows, so
