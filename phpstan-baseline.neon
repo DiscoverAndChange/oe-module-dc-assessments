@@ -211,28 +211,10 @@ parameters:
 			path: src/Controllers/AssessmentAppointmentController.php
 
 		-
-			message: '#^Static method OpenEMR\\Common\\Csrf\\CsrfUtils\:\:collectCsrfToken\(\) invoked with 0 parameters, 1\-2 required\.$#'
-			identifier: arguments.count
-			count: 1
-			path: src/Controllers/AssessmentAppointmentController.php
-
-		-
-			message: '#^Static method OpenEMR\\Common\\Csrf\\CsrfUtils\:\:verifyCsrfToken\(\) invoked with 1 parameter, 2\-3 required\.$#'
-			identifier: arguments.count
-			count: 1
-			path: src/Controllers/AssessmentAppointmentController.php
-
-		-
 			message: '#^catch \(Exception\) would suppress ErrorException, which is forbidden\.$#'
 			identifier: openemr.forbiddenCatchType
 			count: 4
 			path: src/Controllers/AssessmentAppointmentController.php
-
-		-
-			message: '#^Call to an undefined method Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface\:\:addListener\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/Controllers/AssignmentEncounterController.php
 
 		-
 			message: '#^Result of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Controllers\\AssessmentAppointmentController\:\:renderWizardScreenForAppointmentId\(\) \(void\) is used\.$#'
@@ -661,12 +643,6 @@ parameters:
 			path: src/RestControllers/AssessmentRestController.php
 
 		-
-			message: '#^Cannot call method format\(\) on DateTime\|null\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/RestControllers/AssessmentResultRestController.php
-
-		-
 			message: '#^Parameter \#1 \$clientId of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssessmentResultRepository\:\:getResultListForPatient\(\) expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
@@ -693,12 +669,6 @@ parameters:
 		-
 			message: '#^Parameter \#3 \$clientId of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssessmentResultRepository\:\:createResult\(\) expects int, mixed given\.$#'
 			identifier: argument.type
-			count: 1
-			path: src/RestControllers/AssessmentResultRestController.php
-
-		-
-			message: '#^Unreachable statement \- code above always terminates\.$#'
-			identifier: deadCode.unreachable
 			count: 1
 			path: src/RestControllers/AssessmentResultRestController.php
 
@@ -859,12 +829,6 @@ parameters:
 			path: src/RestControllers/QuestionnaireAuditController.php
 
 		-
-			message: '#^Method OpenEMR\\Services\\QuestionnaireResponseService\:\:buildQuestionnaireResponseHtml\(\) invoked with 2 parameters, 1 required\.$#'
-			identifier: arguments.count
-			count: 1
-			path: src/RestControllers/QuestionnaireAuditController.php
-
-		-
 			message: '#^Parameter \#1 \$auditRecord of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\RestControllers\\QuestionnaireAuditController\:\:saveEncounterForm\(\) expects array\<string, string\|null\>, array\<mixed\> given\.$#'
 			identifier: argument.type
 			count: 1
@@ -886,12 +850,6 @@ parameters:
 			message: '#^Parameter \#1 \$recordId of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssignmentRepository\:\:getAssignmentItemsForAuditId\(\) expects int\|string, mixed given\.$#'
 			identifier: argument.type
 			count: 2
-			path: src/RestControllers/QuestionnaireAuditController.php
-
-		-
-			message: '#^Static method OpenEMR\\Common\\Csrf\\CsrfUtils\:\:verifyCsrfToken\(\) invoked with 1 parameter, 2\-3 required\.$#'
-			identifier: arguments.count
-			count: 1
 			path: src/RestControllers/QuestionnaireAuditController.php
 
 		-
@@ -939,12 +897,6 @@ parameters:
 		-
 			message: '#^Direct access to \$_SERVER is forbidden\. Use Symfony''s Request object instead\.$#'
 			identifier: openemr.forbiddenRequestGlobals
-			count: 1
-			path: src/RestControllers/TaskRestController.php
-
-		-
-			message: '#^Loose comparison using \=\= between ''OperationOutcome'' and ''OperationOutcome'' will always evaluate to true\.$#'
-			identifier: equal.alwaysTrue
 			count: 1
 			path: src/RestControllers/TaskRestController.php
 
@@ -1075,12 +1027,6 @@ parameters:
 			path: src/Services/FhirServices/AssessmentFHIRResourceService.php
 
 		-
-			message: '#^Unreachable statement \- code above always terminates\.$#'
-			identifier: deadCode.unreachable
-			count: 1
-			path: src/Services/FhirServices/AssessmentFHIRResourceService.php
-
-		-
 			message: '#^Parameter \#1 \$code of method OpenEMR\\FHIR\\R4\\FHIRDomainResource\\FHIRQuestionnaire\:\:addCode\(\) expects OpenEMR\\FHIR\\R4\\FHIRElement\\FHIRCoding, OpenEMR\\FHIR\\R4\\FHIRElement\\FHIRCode given\.$#'
 			identifier: argument.type
 			count: 1
@@ -1183,12 +1129,6 @@ parameters:
 			path: src/Services/FhirServices/LibraryAssetFHIRResourceService.php
 
 		-
-			message: '#^Unreachable statement \- code above always terminates\.$#'
-			identifier: deadCode.unreachable
-			count: 1
-			path: src/Services/FhirServices/LibraryAssetFHIRResourceService.php
-
-		-
 			message: '#^Parameter \#1 \$assignmentItemUuid of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssignmentRepository\:\:getAssignmentItem\(\) expects string, string\|null given\.$#'
 			identifier: argument.type
 			count: 1
@@ -1243,12 +1183,6 @@ parameters:
 			path: src/Services/FhirServices/LibraryAssetResultBlobFHIRResourceService.php
 
 		-
-			message: '#^Unreachable statement \- code above always terminates\.$#'
-			identifier: deadCode.unreachable
-			count: 1
-			path: src/Services/FhirServices/LibraryAssetResultBlobFHIRResourceService.php
-
-		-
 			message: '#^catch \(Exception\) would suppress ErrorException, which is forbidden\.$#'
 			identifier: openemr.forbiddenCatchType
 			count: 1
@@ -1275,12 +1209,6 @@ parameters:
 		-
 			message: '#^Parameter \#1 \$versionId of method OpenEMR\\FHIR\\R4\\FHIRElement\\FHIRMeta\:\:setVersionId\(\) expects OpenEMR\\FHIR\\R4\\FHIRElement\\FHIRId, mixed given\.$#'
 			identifier: argument.type
-			count: 1
-			path: src/Services/FhirServices/QuestionnaireFormFHIRResourceService.php
-
-		-
-			message: '#^Unreachable statement \- code above always terminates\.$#'
-			identifier: deadCode.unreachable
 			count: 1
 			path: src/Services/FhirServices/QuestionnaireFormFHIRResourceService.php
 
@@ -1345,12 +1273,6 @@ parameters:
 			path: src/Services/LibraryAssetResultBlobRepository.php
 
 		-
-			message: '#^Cannot call method format\(\) on DateTime\|null\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/Services/LibraryAssetResultBlobRepository.php
-
-		-
 			message: '#^Parameter \#1 \$value of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\HTMLSanitizer\:\:sanitize\(\) expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
@@ -1389,12 +1311,6 @@ parameters:
 		-
 			message: '#^Method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\QuestionnaireResponseOnSiteDocumentService\:\:insertOnSiteDocumentRecord\(\) is unused\.$#'
 			identifier: method.unused
-			count: 1
-			path: src/Services/QuestionnaireResponseOnSiteDocumentService.php
-
-		-
-			message: '#^Method OpenEMR\\Services\\QuestionnaireResponseService\:\:buildQuestionnaireResponseHtml\(\) invoked with 2 parameters, 1 required\.$#'
-			identifier: arguments.count
 			count: 1
 			path: src/Services/QuestionnaireResponseOnSiteDocumentService.php
 
@@ -1579,38 +1495,8 @@ parameters:
 			path: src/Services/TagRepository.php
 
 		-
-			message: '#^Call to method createDocument\(\) on an unknown class OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\Task\\QuestionnaireResponseOnSiteDocumentService\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/Services/Task/AssignmentTaskFHIRResourceService.php
-
-		-
-			message: '#^Call to method fetchQuestionnaireResponseByResponseId\(\) on an unknown class OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\Task\\QuestionnaireResponseService\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/Services/Task/AssignmentTaskFHIRResourceService.php
-
-		-
-			message: '#^Call to static method fetchSingleValue\(\) on an unknown class OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\Task\\QueryUtils\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/Services/Task/AssignmentTaskFHIRResourceService.php
-
-		-
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
 			identifier: empty.notAllowed
-			count: 1
-			path: src/Services/Task/AssignmentTaskFHIRResourceService.php
-
-		-
-			message: '#^Instantiated class OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\Task\\QuestionnaireResponseOnSiteDocumentService not found\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/Services/Task/AssignmentTaskFHIRResourceService.php
-
-		-
-			message: '#^Instantiated class OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\Task\\QuestionnaireResponseService not found\.$#'
-			identifier: class.notFound
 			count: 1
 			path: src/Services/Task/AssignmentTaskFHIRResourceService.php
 

@@ -133,7 +133,7 @@ class AssessmentResultRestController implements IRestController
 
                 /** @var \OpenEMR\Modules\DiscoverAndChange\Assessments\Models\Assignment $updatedItem */
                 $updatedItem = $this->assignmentCompleter->markAssignmentComplete($item, $client);
-                $savedResult['date'] = $updatedItem->getDateCompleted()->format(DATE_ATOM);
+                $savedResult['date'] = $updatedItem->getDateCompleted()?->format(DATE_ATOM);
 
                 return RestUtils::returnSingleObjectResponse($savedResult);
             });
@@ -143,9 +143,6 @@ class AssessmentResultRestController implements IRestController
         } catch (\Exception $e) {
             return RestUtils::getErrorResponse($this->logger, $e);
         }
-        // TODO: Implement one() method.
-        $psrFactory = new Psr17Factory();
-        return $psrFactory->createResponse(400)->withBody(json_encode([]));
     }
 
     /**
