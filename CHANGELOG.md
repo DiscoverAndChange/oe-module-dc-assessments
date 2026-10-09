@@ -1,3 +1,14 @@
+v0.12.16 PHPStan refactor pass 7: OpenEMR Psr17Factory instantiation sweep (baseline 665 -> 655)
+
+  Mechanical bucket: replaced the 10 `new OpenEMR\Common\Http\Psr17Factory()` instantiations
+  (forbiddenInstantiation) across EmptyRestController / FrontendDispatchController /
+  QuestionnaireAuditController with ServiceContainer PSR-17 getters, per the rule's suggestion.
+  Each local served both createResponse() and createStream(), so calls were inlined to their
+  specific typed getter (ServiceContainer::getResponseFactory() / ::getStreamFactory()) and the
+  local dropped. Behaviour-preserving (same container-registered factories; identical semantics).
+  Only the OpenEMR Psr17Factory is flagged -- the Nyholm\Psr7 one used in other controllers is not
+  touched. Baseline diff adds 0 / removes 3 entries (10 errors); 529-test suite green, phpstan clean.
+
 v0.12.15 PHPStan refactor pass 6: SystemLogger instantiation sweep (baseline 688 -> 665)
 
   Mechanical module-wide bucket: replaced every `new SystemLogger()` (23 forbiddenInstantiation

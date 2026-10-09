@@ -313,12 +313,6 @@ parameters:
 			path: src/Controllers/FrontendDispatchController.php
 
 		-
-			message: '#^Direct instantiation of OpenEMR\\Common\\Http\\Psr17Factory is discouraged\. Use OpenEMR\\BC\\ServiceContainer\:\:get\{PsrType\}Factory\(\) instead\.$#'
-			identifier: openemr.forbiddenInstantiation
-			count: 1
-			path: src/Controllers/FrontendDispatchController.php
-
-		-
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
 			identifier: empty.notAllowed
 			count: 1
@@ -991,12 +985,6 @@ parameters:
 			path: src/RestControllers/ClientRestController.php
 
 		-
-			message: '#^Direct instantiation of OpenEMR\\Common\\Http\\Psr17Factory is discouraged\. Use OpenEMR\\BC\\ServiceContainer\:\:get\{PsrType\}Factory\(\) instead\.$#'
-			identifier: openemr.forbiddenInstantiation
-			count: 4
-			path: src/RestControllers/EmptyRestController.php
-
-		-
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
 			identifier: empty.notAllowed
 			count: 1
@@ -1144,12 +1132,6 @@ parameters:
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
 			identifier: empty.notAllowed
 			count: 8
-			path: src/RestControllers/QuestionnaireAuditController.php
-
-		-
-			message: '#^Direct instantiation of OpenEMR\\Common\\Http\\Psr17Factory is discouraged\. Use OpenEMR\\BC\\ServiceContainer\:\:get\{PsrType\}Factory\(\) instead\.$#'
-			identifier: openemr.forbiddenInstantiation
-			count: 5
 			path: src/RestControllers/QuestionnaireAuditController.php
 
 		-

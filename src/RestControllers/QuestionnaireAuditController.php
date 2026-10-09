@@ -11,7 +11,7 @@ use OpenEMR\Common\Acl\AclMain;
 use OpenEMR\Common\Csrf\CsrfUtils;
 use OpenEMR\Common\Database\QueryUtils;
 use OpenEMR\Common\Forms\FormQuestionnaireAssessment;
-use OpenEMR\Common\Http\Psr17Factory;
+use OpenEMR\BC\ServiceContainer;
 use OpenEMR\Common\Logging\SystemLogger;
 use OpenEMR\Common\Uuid\UuidRegistry;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\GlobalConfig;
@@ -216,9 +216,8 @@ class QuestionnaireAuditController
 //            header("Content-Disposition: attachment; filename=" . $fileName);
 //            $pdfObject->Output($fileName, 'D');
 //            exit();
-        $psrFactory = new Psr17Factory();
-        $response = $psrFactory->createResponse(200, 'OK');
-        return $response->withBody($psrFactory->createStream($body));
+        $response = ServiceContainer::getResponseFactory()->createResponse(200, 'OK');
+        return $response->withBody(ServiceContainer::getStreamFactory()->createStream($body));
     }
     /**
      * @param mixed $auditId
@@ -233,8 +232,7 @@ class QuestionnaireAuditController
         $puuid = UuidRegistry::uuidToString($patientService->getUuid($pid));
         $encounters = $encounterService->getEncountersForPatientByPid($pid);
 
-        $psrFactory = new Psr17Factory();
-        $response = $psrFactory->createResponse(200, 'OK');
+        $response = ServiceContainer::getResponseFactory()->createResponse(200, 'OK');
 
         $baseUrl = $this->config->getSmartAppAdminRootPath();
 
@@ -256,7 +254,7 @@ class QuestionnaireAuditController
             ,'smartUrl' => $smartUrl
         ];
         $body = $this->twig->render('discoverandchange/portal/audit/assignment-item-audit-view.html.twig', $data);
-        return $response->withBody($psrFactory->createStream($body));
+        return $response->withBody(ServiceContainer::getStreamFactory()->createStream($body));
     }
 
     /**
@@ -267,8 +265,7 @@ class QuestionnaireAuditController
     private function displayAuditForAssignedQuestionnaire($auditId, $pid, AssignedQuestionnaire $assignmentItem)
     {
 
-        $psrFactory = new Psr17Factory();
-        $response = $psrFactory->createResponse(200, 'OK');
+        $response = ServiceContainer::getResponseFactory()->createResponse(200, 'OK');
         /** @var array{questionnaire_response: string, questionnaire_name: ?string} $qrResponse */
         $qrResponse = $this->qrService->fetchQuestionnaireResponseByResponseId($assignmentItem->getResultId());
 
@@ -293,7 +290,7 @@ class QuestionnaireAuditController
             ,'questionnaireTitle' => $qrResponse['questionnaire_name']
         ];
         $body = $this->twig->render('discoverandchange/portal/audit/questionnaire-audit-view.html.twig', $data);
-        return $response->withBody($psrFactory->createStream($body));
+        return $response->withBody(ServiceContainer::getStreamFactory()->createStream($body));
     }
 
     // TODO: @adunsulag look at abstracting this out into a separate service class for our documents.
@@ -350,10 +347,9 @@ class QuestionnaireAuditController
      */
     private function actionNotFound($action)
     {
-        $psrFactory = new Psr17Factory();
-        $response = $psrFactory->createResponse(404, 'Page not found');
+        $response = ServiceContainer::getResponseFactory()->createResponse(404, 'Page not found');
         $body = $this->twig->render('error/404.html.twig');
-        return $response->withBody($psrFactory->createStream($body));
+        return $response->withBody(ServiceContainer::getStreamFactory()->createStream($body));
     }
 
     /**
@@ -361,11 +357,10 @@ class QuestionnaireAuditController
      */
     private function returnError(\Exception $exception)
     {
-        $psrFactory = new Psr17Factory();
-        $response = $psrFactory->createResponse(500, 'Internal Server Error');
+        $response = ServiceContainer::getResponseFactory()->createResponse(500, 'Internal Server Error');
         try {
             $body = $this->twig->render('error/500.html.twig', ['exception' => $exception]);
-            return $response->withBody($psrFactory->createStream($body));
+            return $response->withBody(ServiceContainer::getStreamFactory()->createStream($body));
         } catch (\Exception $exception) {
             // if we are having a problem with our twig rendering we are just going to return an invalid response
             return $response;
