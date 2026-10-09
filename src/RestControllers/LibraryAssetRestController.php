@@ -70,43 +70,33 @@ class LibraryAssetRestController implements IRestController
         $data = $request->getBodyAsJson();
         $validator = new LibraryAssetBlobValidator();
         $validation = $validator->validate($data, LibraryAssetBlobValidator::DATABASE_INSERT_CONTEXT);
-        $transactionCommitted = false;
         try {
-            QueryUtils::startTransaction();
-            if (!AclMain::aclCheckCore('admin', 'forms')) {
-                throw new AccessDeniedException("admin", "forms", "You do not have permission to create library assets");
-            }
-            if (!$validation->isValid()) {
-                $this->logger->error("Validation failed", ['errors' => $validation->getValidationMessages()]);
-                throw new \InvalidArgumentException("One or more fields was invalid", ErrorCode::VALIDATION_FAILED);
-            }
+            return QueryUtils::inTransaction(function () use ($request, $data, $validation) {
+                if (!AclMain::aclCheckCore('admin', 'forms')) {
+                    throw new AccessDeniedException("admin", "forms", "You do not have permission to create library assets");
+                }
+                if (!$validation->isValid()) {
+                    $this->logger->error("Validation failed", ['errors' => $validation->getValidationMessages()]);
+                    throw new \InvalidArgumentException("One or more fields was invalid", ErrorCode::VALIDATION_FAILED);
+                }
 
-            $asset = new LibraryAssetBlobDTO();
-            $asset->fromDTO($data);
+                $asset = new LibraryAssetBlobDTO();
+                $asset->fromDTO($data);
 
-            $sanitizer = new HTMLSanitizer();
-            $asset->setContent($sanitizer->sanitize((string) $asset->getContent()));
-            $asset->setDescription($sanitizer->sanitize((string) $asset->getDescription()));
-            $asset->setTitle($sanitizer->sanitize((string) $asset->getTitle()));
+                $sanitizer = new HTMLSanitizer();
+                $asset->setContent($sanitizer->sanitize((string) $asset->getContent()));
+                $asset->setDescription($sanitizer->sanitize((string) $asset->getDescription()));
+                $asset->setTitle($sanitizer->sanitize((string) $asset->getTitle()));
 
-            $libraryAssetsRepo = new LibraryAssetBlobRepository($this->logger);
-            $createdAsset = $libraryAssetsRepo->saveLibraryAssetBlob($asset, (int) $request->getUserId());
-            QueryUtils::commitTransaction();
-            $transactionCommitted = true;
-            return RestUtils::returnSingleObjectResponse($createdAsset);
+                $libraryAssetsRepo = new LibraryAssetBlobRepository($this->logger);
+                $createdAsset = $libraryAssetsRepo->saveLibraryAssetBlob($asset, (int) $request->getUserId());
+                return RestUtils::returnSingleObjectResponse($createdAsset);
+            });
         } catch (AccessDeniedException $exception) {
             $this->logger->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             return RestUtils::getAccessDeniedResponse($exception);
         } catch (\Exception $e) {
             return RestUtils::getErrorResponse($this->logger, $e);
-        } finally {
-            if (!$transactionCommitted) {
-                try {
-                    QueryUtils::rollbackTransaction();
-                } catch (\Exception $e) {
-                    $this->logger->error("Failed to rollback transaction", ['trace' => $e->getTraceAsString()]);
-                }
-            }
         }
     }
 

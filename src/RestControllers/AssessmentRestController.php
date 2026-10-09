@@ -109,55 +109,43 @@ class AssessmentRestController implements IRestController
         /** @var array<string, mixed> $data */
         $data = $request->getBodyAsJson();
 
-        $transactionCommitted = false;
         $companyRepo = new FacilityService();
         try {
-            QueryUtils::startTransaction();
+            return QueryUtils::inTransaction(function () use ($request, $validator, $data, $companyRepo, $context) {
+                $validation = $validator->validate($data, $context);
 
-            $validation = $validator->validate($data, $context);
-
-            if (!$validation->isValid()) {
-                $this->logger->error("Validation failed", ['errors' => $validation->getValidationMessages()]);
-                throw new \InvalidArgumentException("One or more fields was invalid", ErrorCode::VALIDATION_FAILED);
-            }
-            if (!AclMain::aclCheckCore('admin', 'forms')) {
-                throw new AccessDeniedException('admin', 'forms', "You do not have permission to create assessments");
-            }
-            $uid = $data['_uid'];
-            $name = $data['_name'];
-            $description = $data['_description'];
-            if (isset($data['token']) && $data['token'] !== '') {
-                // cleanup routine
-                unset($data['token']);
-            }
-            /** @var array{id?: int, name?: string}|null $primaryBusinessEntity */
-            $primaryBusinessEntity = $companyRepo->getPrimaryBusinessEntity();
-            // super users can create assessments for any company, otherwise we use the primary business entity for now
-            // TODO: @adunsulag if we restrict companies down by facility we would handle that here.
-            $companyId = $request->getAuthRole() == Role::SuperUser ? null : ($primaryBusinessEntity['id'] ?? null);
-            $primaryBusinessEntity = $companyRepo->getPrimaryBusinessEntity();
-            $repo = new AssessmentRepository(ServiceContainer::getLogger());
-            // can't have duplicates on an insert
-            if ($context == AssessmentValidator::DATABASE_INSERT_CONTEXT && $repo->existsAssessment($uid)) {
-                throw new \InvalidArgumentException("Assessment with uid already exists", ErrorCode::DUP_ENTRY);
-            }
-            $repo->createAssessment($uid, $name, $description, $data, $companyId);
-            QueryUtils::commitTransaction();
-            $transactionCommitted = true;
-            return RestUtils::returnSingleObjectResponse([]); // we return nothing as part of the create.
+                if (!$validation->isValid()) {
+                    $this->logger->error("Validation failed", ['errors' => $validation->getValidationMessages()]);
+                    throw new \InvalidArgumentException("One or more fields was invalid", ErrorCode::VALIDATION_FAILED);
+                }
+                if (!AclMain::aclCheckCore('admin', 'forms')) {
+                    throw new AccessDeniedException('admin', 'forms', "You do not have permission to create assessments");
+                }
+                $uid = $data['_uid'];
+                $name = $data['_name'];
+                $description = $data['_description'];
+                if (isset($data['token']) && $data['token'] !== '') {
+                    // cleanup routine
+                    unset($data['token']);
+                }
+                /** @var array{id?: int, name?: string}|null $primaryBusinessEntity */
+                $primaryBusinessEntity = $companyRepo->getPrimaryBusinessEntity();
+                // super users can create assessments for any company, otherwise we use the primary business entity for now
+                // TODO: @adunsulag if we restrict companies down by facility we would handle that here.
+                $companyId = $request->getAuthRole() == Role::SuperUser ? null : ($primaryBusinessEntity['id'] ?? null);
+                $repo = new AssessmentRepository(ServiceContainer::getLogger());
+                // can't have duplicates on an insert
+                if ($context == AssessmentValidator::DATABASE_INSERT_CONTEXT && $repo->existsAssessment($uid)) {
+                    throw new \InvalidArgumentException("Assessment with uid already exists", ErrorCode::DUP_ENTRY);
+                }
+                $repo->createAssessment($uid, $name, $description, $data, $companyId);
+                return RestUtils::returnSingleObjectResponse([]); // we return nothing as part of the create.
+            });
         } catch (AccessDeniedException $exception) {
             $this->logger->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             return RestUtils::getAccessDeniedResponse($exception);
         } catch (\Exception $e) {
             return RestUtils::getErrorResponse($this->logger, $e);
-        } finally {
-            if (!$transactionCommitted) {
-                try {
-                    QueryUtils::rollbackTransaction();
-                } catch (\Exception $e) {
-                    $this->logger->error("Failed to rollback transaction", ['trace' => $e->getTraceAsString()]);
-                }
-            }
         }
     }
 }

@@ -99,61 +99,49 @@ class AssessmentResultRestController implements IRestController
         $data = $request->getBodyAsJson();
         $validator = new AssessmentResultBlobValidator();
 
-        $transactionCommitted = false;
         $patientService = new PatientService();
         try {
-            QueryUtils::startTransaction();
+            return QueryUtils::inTransaction(function () use ($request, $validator, $data, $patientService) {
+                $validation = $validator->validate($data, AssessmentResultBlobValidator::DATABASE_INSERT_CONTEXT);
 
-            $validation = $validator->validate($data, AssessmentResultBlobValidator::DATABASE_INSERT_CONTEXT);
+                if (!$validation->isValid()) {
+                    $this->logger->error("Validation failed", ['errors' => $validation->getValidationMessages()]);
+                    throw new \InvalidArgumentException("One or more fields was invalid", ErrorCode::VALIDATION_FAILED);
+                }
+                /** @var string|null $createClientId */
+                $createClientId = $data['clientId'] ?? null;
+                $client = $this->validateCreateAccessAndReturnClient($request->getUserId(), $request->getPatientUUIDString(), $createClientId, $patientService);
 
-            if (!$validation->isValid()) {
-                $this->logger->error("Validation failed", ['errors' => $validation->getValidationMessages()]);
-                throw new \InvalidArgumentException("One or more fields was invalid", ErrorCode::VALIDATION_FAILED);
-            }
-            /** @var string|null $createClientId */
-            $createClientId = $data['clientId'] ?? null;
-            $client = $this->validateCreateAccessAndReturnClient($request->getUserId(), $request->getPatientUUIDString(), $createClientId, $patientService);
+                $assignmentRepo = new AssignmentRepository();
+                /** @var array{_assignmentItemId: string} $itemData */
+                $itemData = $data['data'];
+                $item = $assignmentRepo->getAssignmentItem($itemData['_assignmentItemId'], UuidRegistry::uuidToString($client['uuid']));
+                if ($item === null) {
+                    throw new \InvalidArgumentException("Assignment item not found", ErrorCode::INVALID_REQUEST);
+                } else if (!($item instanceof AssignedAssessment)) {
+                    throw new \InvalidArgumentException("Assignment item is not an assessment", ErrorCode::INVALID_REQUEST);
+                }
 
-            $assignmentRepo = new AssignmentRepository();
-            /** @var array{_assignmentItemId: string} $itemData */
-            $itemData = $data['data'];
-            $item = $assignmentRepo->getAssignmentItem($itemData['_assignmentItemId'], UuidRegistry::uuidToString($client['uuid']));
-            if ($item === null) {
-                throw new \InvalidArgumentException("Assignment item not found", ErrorCode::INVALID_REQUEST);
-            } else if (!($item instanceof AssignedAssessment)) {
-                throw new \InvalidArgumentException("Assignment item is not an assessment", ErrorCode::INVALID_REQUEST);
-            }
+                /** @var string|null $resultIdValue */
+                $resultIdValue = $data['id'];
+                $item->setResultId($resultIdValue);
 
-            /** @var string|null $resultIdValue */
-            $resultIdValue = $data['id'];
-            $item->setResultId($resultIdValue);
+                // now we can insert the result
+                $resultRepo = new AssessmentResultRepository();
+                $savedResult = $resultRepo->createResult($item->getResultId(), $data, $client['pid'], $item->getAssessmentId());
+                // TODO: @adunsulag if we allow external embeds w/o client assignment we would handle that here..
 
-            // now we can insert the result
-            $resultRepo = new AssessmentResultRepository();
-            $savedResult = $resultRepo->createResult($item->getResultId(), $data, $client['pid'], $item->getAssessmentId());
-            // TODO: @adunsulag if we allow external embeds w/o client assignment we would handle that here..
+                /** @var \OpenEMR\Modules\DiscoverAndChange\Assessments\Models\Assignment $updatedItem */
+                $updatedItem = $this->assignmentCompleter->markAssignmentComplete($item, $client);
+                $savedResult['date'] = $updatedItem->getDateCompleted()->format(DATE_ATOM);
 
-
-            /** @var \OpenEMR\Modules\DiscoverAndChange\Assessments\Models\Assignment $updatedItem */
-            $updatedItem = $this->assignmentCompleter->markAssignmentComplete($item, $client);
-            $savedResult['date'] = $updatedItem->getDateCompleted()->format(DATE_ATOM);
-            QueryUtils::commitTransaction();
-            $transactionCommitted = true;
-
-            return RestUtils::returnSingleObjectResponse($savedResult);
+                return RestUtils::returnSingleObjectResponse($savedResult);
+            });
         } catch (AccessDeniedException $exception) {
             $this->logger->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             return RestUtils::getAccessDeniedResponse($exception);
         } catch (\Exception $e) {
             return RestUtils::getErrorResponse($this->logger, $e);
-        } finally {
-            if (!$transactionCommitted) {
-                try {
-                    QueryUtils::rollbackTransaction();
-                } catch (\Exception $e) {
-                    $this->logger->error("Failed to rollback transaction", ['trace' => $e->getTraceAsString()]);
-                }
-            }
         }
         // TODO: Implement one() method.
         $psrFactory = new Psr17Factory();

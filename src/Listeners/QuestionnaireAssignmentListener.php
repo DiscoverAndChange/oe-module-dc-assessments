@@ -29,7 +29,6 @@ class QuestionnaireAssignmentListener implements IStaticEventSubscriber
     public function updateQuestionnaireAssignments(ServiceSaveEvent $saveEvent)
     {
         if ($saveEvent->getService() instanceof QuestionnaireResponseService) {
-            $commitTransaction  = false;
             /** @var array{isNew: bool, patient_id: string, questionnaire_id: string, encounter: string, response_id: string, questionnaire_name: string} $data */
             $data = $saveEvent->getSaveData();
             $isNew = $data['isNew'] === true;
@@ -41,34 +40,28 @@ class QuestionnaireAssignmentListener implements IStaticEventSubscriber
             $puuid = UuidRegistry::uuidToString($patientService->getUuid($pid));
             $questionnaireId = $data['questionnaire_id'];
             $encounter = $data['encounter'];
-            QueryUtils::startTransaction();
             try {
-                if ($pid !== '') {
-                    if ($encounter !== '') {
-                        $items = $this->assignmentRepository->getQuestionnaireAssignmentItemsForEncounter($encounter, $questionnaireId);
-                    } else {
-                        $items = $this->assignmentRepository->getQuestionnaireAssignmentItemsForClient((int) $pid, $questionnaireId);
-                    }
-                    if ($items !== []) {
-                        foreach ($items as $item) {
-                            if (!$item->getIsComplete() && $item instanceof AssignedQuestionnaire) {
-                                // only the first incomplete questionnaire item is completed per event
-                                $this->updateAssignmentItem($item, $data, $puuid);
-                                $commitTransaction = true;
-                                break;
+                QueryUtils::inTransaction(function () use ($pid, $encounter, $questionnaireId, $data, $puuid) {
+                    if ($pid !== '') {
+                        if ($encounter !== '') {
+                            $items = $this->assignmentRepository->getQuestionnaireAssignmentItemsForEncounter($encounter, $questionnaireId);
+                        } else {
+                            $items = $this->assignmentRepository->getQuestionnaireAssignmentItemsForClient((int) $pid, $questionnaireId);
+                        }
+                        if ($items !== []) {
+                            foreach ($items as $item) {
+                                if (!$item->getIsComplete() && $item instanceof AssignedQuestionnaire) {
+                                    // only the first incomplete questionnaire item is completed per event
+                                    $this->updateAssignmentItem($item, $data, $puuid);
+                                    break;
+                                }
                             }
                         }
                     }
-                }
+                });
             } catch (\Exception $exception) {
+                // completion is best-effort: log and let the QR save succeed even if it fails
                 ServiceContainer::getLogger()->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
-                $commitTransaction = false;
-            } finally {
-                if ($commitTransaction) {
-                    QueryUtils::commitTransaction();
-                } else {
-                    QueryUtils::rollbackTransaction();
-                }
             }
         }
     }

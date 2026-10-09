@@ -219,25 +219,24 @@ class ResourceImporterService
             $logEntry->importStatus = "failure";
             $this->importLog[] = $logEntry;
             try {
-                QueryUtils::startTransaction();
-                $companyId = null;
-                if ($repo->existsGroup($group['_name'], $companyId)) {
-                    throw new \InvalidArgumentException("Group with name " . $group['_name'] . " already exists");
-                }
-                $createdGroup = $repo->createGroup($group['_name'], $companyId);
-                /** @var array<mixed> $groupAssessments */
-                $groupAssessments = $group['_assessments'];
-                foreach ($groupAssessments as $uid) {
-                    if (!$assessmentRepo->existsAssessment($uid)) {
-                        throw new \InvalidArgumentException("Failed to find assessment with uid " . $uid);
+                QueryUtils::inTransaction(function () use ($repo, $assessmentRepo, $group, $logEntry) {
+                    $companyId = null;
+                    if ($repo->existsGroup($group['_name'], $companyId)) {
+                        throw new \InvalidArgumentException("Group with name " . $group['_name'] . " already exists");
                     }
-                    $repo->addAssessmentToGroup($uid, $createdGroup->getId(), $companyId);
-                }
-                $logEntry->importStatus = 'success';
-                $logEntry->successMessage = "Successfully imported group with name " . $group['_name'];
-                QueryUtils::commitTransaction();
+                    $createdGroup = $repo->createGroup($group['_name'], $companyId);
+                    /** @var array<mixed> $groupAssessments */
+                    $groupAssessments = $group['_assessments'];
+                    foreach ($groupAssessments as $uid) {
+                        if (!$assessmentRepo->existsAssessment($uid)) {
+                            throw new \InvalidArgumentException("Failed to find assessment with uid " . $uid);
+                        }
+                        $repo->addAssessmentToGroup($uid, $createdGroup->getId(), $companyId);
+                    }
+                    $logEntry->importStatus = 'success';
+                    $logEntry->successMessage = "Successfully imported group with name " . $group['_name'];
+                });
             } catch (\Exception $e) {
-                QueryUtils::rollbackTransaction();
                 $logEntry->error = "group " . ($group['_name'] ?? '<unknown>') . ' ' . $e->getMessage();
                 $logEntry->importStatus = "failure";
             }
@@ -285,34 +284,35 @@ class ResourceImporterService
             }
             $linkedGroupName = $report['_assessmentgroup'] ?? $report['linkedGroup'] ?? null;
             try {
-                QueryUtils::startTransaction();
-                if ($linkedAssessmentUid !== null && $linkedAssessmentUid !== '') {
-                    if (!$assessmentRepo->existsAssessment($linkedAssessmentUid)) {
-                        throw new \InvalidArgumentException("Failed to find assessment with uid " . $linkedAssessmentUid);
+                QueryUtils::inTransaction(function () use ($repo, $groupRepo, $assessmentRepo, $logEntry, $reportId, $reportName, $reportData, $importerId, $linkedAssessmentUid, $linkedGroupName) {
+                    $assessmentUid = null;
+                    $groupId = null;
+                    if ($linkedAssessmentUid !== null && $linkedAssessmentUid !== '') {
+                        if (!$assessmentRepo->existsAssessment($linkedAssessmentUid)) {
+                            throw new \InvalidArgumentException("Failed to find assessment with uid " . $linkedAssessmentUid);
+                        }
+                        $assessmentUid = $linkedAssessmentUid;
+                    } else if ($linkedGroupName !== null && $linkedGroupName !== '') {
+                        $result = $groupRepo->search(['name' => $linkedGroupName]);
+                        if (!$result->hasData()) {
+                            throw new \InvalidArgumentException("Failed to find assessment group with name " . $linkedGroupName);
+                        }
+                        /** @var array<int, array<string, mixed>> $groupResultData */
+                        $groupResultData = ProcessingResult::extractDataArray($result) ?? [];
+                        $groupId = $groupResultData[0]['id'];
+                    } else {
+                        throw new \InvalidArgumentException("Failed to find assessment or assessment group");
                     }
-                    $assessmentUid = $linkedAssessmentUid;
-                } else if ($linkedGroupName !== null && $linkedGroupName !== '') {
-                    $result = $groupRepo->search(['name' => $linkedGroupName]);
-                    if (!$result->hasData()) {
-                        throw new \InvalidArgumentException("Failed to find assessment group with name " . $linkedGroupName);
+                    if ($repo->existsReport($reportId)) {
+                        throw new \InvalidArgumentException("Report with id " . $reportId . " already exists");
                     }
-                    /** @var array<int, array<string, mixed>> $groupResultData */
-                    $groupResultData = ProcessingResult::extractDataArray($result) ?? [];
-                    $groupId = $groupResultData[0]['id'];
-                } else {
-                    throw new \InvalidArgumentException("Failed to find assessment or assessment group");
-                }
-                if ($repo->existsReport($reportId)) {
-                    throw new \InvalidArgumentException("Report with id " . $reportId . " already exists");
-                }
-                $repo->createReport($reportId, $reportName, $importerId, $reportData, $groupId, $assessmentUid);
-                QueryUtils::commitTransaction();
-                $logEntry->importStatus = "success";
-                $logEntry->successMessage = "Successfully imported report with title " . $reportName;
+                    $repo->createReport($reportId, $reportName, $importerId, $reportData, $groupId, $assessmentUid);
+                    $logEntry->importStatus = "success";
+                    $logEntry->successMessage = "Successfully imported report with title " . $reportName;
+                });
             } catch (\Exception $exception) {
                 $logEntry->error = "report " . ($reportName ?: '<unknown>') . " " . $exception->getMessage() . " " . $exception->getTraceAsString();
                 $logEntry->importStatus = "failure";
-                QueryUtils::rollbackTransaction();
             }
         }
     }

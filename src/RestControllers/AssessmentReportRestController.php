@@ -59,46 +59,35 @@ class AssessmentReportRestController implements IRestController
     public function create(ServerRestRequest $request): ResponseInterface
     {
         $validator = new AssessmentReportValidator();
-        $transactionCommitted = false;
         try {
             /** @var array{linkedGroup?: array<string, mixed>, ...} $data */
             $data = $request->getBodyAsJson();
             if (!AclMain::aclCheckCore("encounters", "forms")) {
                 throw new AccessDeniedException("encounters", "forms", "Access denied to create this resource");
             }
-            QueryUtils::startTransaction();
+            return QueryUtils::inTransaction(function () use ($request, $validator, $data) {
+                $validation = $validator->validate($data, AssessmentReportValidator::DATABASE_INSERT_CONTEXT);
 
-            $validation = $validator->validate($data, AssessmentReportValidator::DATABASE_INSERT_CONTEXT);
+                if (!$validation->isValid()) {
+                    $this->logger->error("Validation failed", ['errors' => $validation->getValidationMessages()]);
+                    throw new \InvalidArgumentException("One or more fields was invalid", ErrorCode::VALIDATION_FAILED);
+                }
 
-            if (!$validation->isValid()) {
-                $this->logger->error("Validation failed", ['errors' => $validation->getValidationMessages()]);
-                throw new \InvalidArgumentException("One or more fields was invalid", ErrorCode::VALIDATION_FAILED);
-            }
-
-            $assessmentGroupID = null;
-            if (isset($data['linkedGroup']) && $data['linkedGroup'] !== []) {
-                $assessmentGroupID = isset($data['linkedGroup']['id']) ? $data['linkedGroup']['id'] : null;
-                unset($data['linkedGroup']);
-            }
-            $assessmentUid = isset($data['assessmentUid']) ? $data['assessmentUid'] : null;
-            $repo = new AssessmentReportRepository();
-            $result = $repo->createReport($data['id'], $data['name'], $request->getUserId(), (array) $data, $assessmentGroupID, $assessmentUid);
-            QueryUtils::commitTransaction();
-            $transactionCommitted = true;
-            return RestUtils::returnSingleObjectResponse($result);
+                $assessmentGroupID = null;
+                if (isset($data['linkedGroup']) && $data['linkedGroup'] !== []) {
+                    $assessmentGroupID = isset($data['linkedGroup']['id']) ? $data['linkedGroup']['id'] : null;
+                    unset($data['linkedGroup']);
+                }
+                $assessmentUid = isset($data['assessmentUid']) ? $data['assessmentUid'] : null;
+                $repo = new AssessmentReportRepository();
+                $result = $repo->createReport($data['id'], $data['name'], $request->getUserId(), (array) $data, $assessmentGroupID, $assessmentUid);
+                return RestUtils::returnSingleObjectResponse($result);
+            });
         } catch (AccessDeniedException $exception) {
             $this->logger->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             return RestUtils::getAccessDeniedResponse($exception);
         } catch (\Exception $e) {
             return RestUtils::getErrorResponse($this->logger, $e);
-        } finally {
-            if (!$transactionCommitted) {
-                try {
-                    QueryUtils::rollbackTransaction();
-                } catch (\Exception $e) {
-                    $this->logger->error("Failed to rollback transaction", ['trace' => $e->getTraceAsString()]);
-                }
-            }
         }
     }
 
@@ -108,46 +97,35 @@ class AssessmentReportRestController implements IRestController
     public function update(ServerRestRequest $request, $id): ResponseInterface
     {
         $validator = new AssessmentReportValidator();
-        $transactionCommitted = false;
         try {
             /** @var array{linkedGroup?: array<string, mixed>, ...} $data */
             $data = $request->getBodyAsJson();
             if (!AclMain::aclCheckCore("encounters", "forms")) {
                 throw new AccessDeniedException("encounters", "forms", "Access denied to create this resource");
             }
-            QueryUtils::startTransaction();
+            return QueryUtils::inTransaction(function () use ($request, $validator, $data) {
+                $validation = $validator->validate($data, AssessmentReportValidator::DATABASE_UPDATE_CONTEXT);
 
-            $validation = $validator->validate($data, AssessmentReportValidator::DATABASE_UPDATE_CONTEXT);
+                if (!$validation->isValid()) {
+                    $this->logger->error("Validation failed", ['errors' => $validation->getValidationMessages()]);
+                    throw new \InvalidArgumentException("One or more fields was invalid", ErrorCode::VALIDATION_FAILED);
+                }
 
-            if (!$validation->isValid()) {
-                $this->logger->error("Validation failed", ['errors' => $validation->getValidationMessages()]);
-                throw new \InvalidArgumentException("One or more fields was invalid", ErrorCode::VALIDATION_FAILED);
-            }
-
-            $assessmentGroupID = null;
-            if (isset($data['linkedGroup']) && $data['linkedGroup'] !== []) {
-                $assessmentGroupID = isset($data['linkedGroup']['id']) ? $data['linkedGroup']['id'] : null;
-                unset($data['linkedGroup']);
-            }
-            $assessmentUid = isset($data['assessmentUid']) ? $data['assessmentUid'] : null;
-            $repo = new AssessmentReportRepository();
-            $result = $repo->updateReport($data['id'], $data['name'], $request->getUserId(), (array) $data, $assessmentGroupID, $assessmentUid);
-            QueryUtils::commitTransaction();
-            $transactionCommitted = true;
-            return RestUtils::returnSingleObjectResponse([]);
+                $assessmentGroupID = null;
+                if (isset($data['linkedGroup']) && $data['linkedGroup'] !== []) {
+                    $assessmentGroupID = isset($data['linkedGroup']['id']) ? $data['linkedGroup']['id'] : null;
+                    unset($data['linkedGroup']);
+                }
+                $assessmentUid = isset($data['assessmentUid']) ? $data['assessmentUid'] : null;
+                $repo = new AssessmentReportRepository();
+                $repo->updateReport($data['id'], $data['name'], $request->getUserId(), (array) $data, $assessmentGroupID, $assessmentUid);
+                return RestUtils::returnSingleObjectResponse([]);
+            });
         } catch (AccessDeniedException $exception) {
             $this->logger->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             return RestUtils::getAccessDeniedResponse($exception);
         } catch (\Exception $e) {
             return RestUtils::getErrorResponse($this->logger, $e);
-        } finally {
-            if (!$transactionCommitted) {
-                try {
-                    QueryUtils::rollbackTransaction();
-                } catch (\Exception $e) {
-                    $this->logger->error("Failed to rollback transaction", ['trace' => $e->getTraceAsString()]);
-                }
-            }
         }
     }
 }
