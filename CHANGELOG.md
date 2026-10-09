@@ -1,3 +1,20 @@
+v0.12.14 PHPStan refactor pass 5: AssessmentResponseBlob FHIR service (baseline 706 -> 688)
+
+  Fifth burn-down pass over the assessment-response-blob FHIR insert/parse service (exercised by
+  its parse + insert tests). 529-test suite green, phpstan clean. Dead-code / correctness fixes:
+  - insertOpenEmrRecord had a duplicated, unreachable item-validation block (the first checks
+    throw) -- removed.
+  - validateCreateAccessAndReturnClient's `!empty($userId && !AclMain::aclCheckCore(...))` wrapped
+    the whole && inside empty() (misplaced paren); rewrote as explicit && (same result, clear intent).
+  - removed a dead unreachable provenance stub + its now-unused import.
+  Plus getLogger()?->error() (nullable getter), typed post-validation $openEmrRecord shape +
+  authUserID/client-uuid/client-pid locals (fixing the offset + arg-type errors), and empty() ->
+  strict comparisons.
+  Left baselined (13): the FHIR element setter arg types (core types them as FHIR elements but
+  they store/return raw scalars -- the parse test asserts getName() === 'computable', so wrapping
+  would break behavior), the parseFhirResource array|null childReturnType (null-vs-[] contract),
+  and the QueryUtils transaction deprecation + its error-swallowing catch(\Exception).
+
 v0.12.13 PHPStan refactor pass 4: QuestionnaireResponseForm FHIR mapping (baseline 731 -> 706)
 
   Fourth burn-down pass over the QR-response FHIR read/insert mapping (exercised by the parse
