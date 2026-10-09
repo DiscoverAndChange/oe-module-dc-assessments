@@ -22,11 +22,12 @@ class AssignmentCompleter
      */
     public function markAssignmentComplete(Assignment $item, array $client)
     {
-        if (empty($item->getId())) {
+        if ($item->getId() === '') {
             throw new \InvalidArgumentException("AssignmentItem missing id", ErrorCode::VALIDATE_DATA_MISSING);
         }
         if ($item instanceof AssignedLibraryAsset || $item instanceof AssignedAssessment) {
-            if (empty($item->getResultId())) {
+            $resultId = $item->getResultId();
+            if ($resultId === null || $resultId === '') {
                 throw new \InvalidArgumentException("AssignmentItem missing resultId", ErrorCode::VALIDATE_DATA_MISSING);
             }
         }
@@ -64,13 +65,6 @@ class AssignmentCompleter
     {
         $repo = new AssignmentRepository();
         return $repo->updateCompletedAssignmentItem($item);
-    }
-
-    /** @return mixed */
-    private function getAssignmentForItem(Assignment $item)
-    {
-        $repo = new AssignmentRepository();
-        return $repo->getAssignmentForItem($item->getId());
     }
 
     /**

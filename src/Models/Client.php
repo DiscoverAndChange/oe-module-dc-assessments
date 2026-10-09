@@ -106,22 +106,6 @@ class Client implements \JsonSerializable
         $this->assignments = $v;
     }
 
-    public static function fromJSON(object $obj): Client
-    {
-        if (!is_object($obj)) {
-            throw new \InvalidArgumentException("Passed in object is not a JSON object");
-        }
-
-        $client = new Client();
-        $client = array_merge($client, (array) $obj);
-
-        if (isset($obj->assignedUser)) {
-            $client->setAssignedUser(SystemUser::fromJSON((object) $obj->assignedUser));
-        }
-
-        return $client;
-    }
-
     /** @return array<mixed> */
     public function jsonSerialize(): array
     {

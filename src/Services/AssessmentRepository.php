@@ -34,7 +34,7 @@ class AssessmentRepository
                 WHERE status = 'published'
                 GROUP BY uid
             )";
-        if (!empty($companyId)) {
+        if ($companyId !== null && $companyId !== 0) {
             $query .= " AND (
                 ab1.company_id IS NULL or ab1.company_id = ?
             ) ";
@@ -51,7 +51,7 @@ class AssessmentRepository
         $processingResult = new ProcessingResult();
 
         $sql = "SELECT ab1.uuid, ab1.id, ab1.uid, ab1.name, ab1.date, ab1.company_id, ab1.description, ab1.status ";
-        if (!empty($openEMRSearchParameters['uuid'])) {
+        if (isset($openEMRSearchParameters['uuid']) && $openEMRSearchParameters['uuid'] !== '') {
             // we will only return the data if we have an id search parameters
             $sql .= ", ab1.data ";
         }
@@ -101,7 +101,7 @@ class AssessmentRepository
          */
         /** @var array{id: string, uuid?: ?string, uid?: ?string, name?: ?string, description?: ?string, data?: ?string, date?: ?string, company_id?: ?string, ...} $record */
         $result = new AssessmentSummary();
-        if (empty($record['uuid'])) {
+        if (!isset($record['uuid']) || $record['uuid'] === '') {
             // lazy populate these
             $uuid = $this->updateAssessmentUuid((int) $record['id']);
         } else {
@@ -117,7 +117,7 @@ class AssessmentRepository
             // leave the constructor default when the column is absent/unparseable
             $result->date = $parsedDate;
         }
-        $result->isPublic = empty($record['company_id']);
+        $result->isPublic = !isset($record['company_id']) || $record['company_id'] === '';
         return $result;
     }
 
@@ -127,13 +127,13 @@ class AssessmentRepository
      */
     public function getAssessmentForAssignmentItem(string $assignmentItemUuid, $uid, string $clientID)
     {
-        if (empty($uid)) {
+        if ($uid === '') {
             throw new \InvalidArgumentException("Missing uid", ErrorCode::VALIDATE_DATA_MISSING);
         }
-        if (empty($clientID)) {
+        if ($clientID === '') {
             throw new \InvalidArgumentException("Missing clientID", ErrorCode::VALIDATE_DATA_MISSING);
         }
-        if (empty($assignmentItemUuid)) {
+        if ($assignmentItemUuid === '') {
             throw new \InvalidArgumentException("Missing assignmentUuid", ErrorCode::VALIDATE_DATA_MISSING);
         }
         // TODO: @adunsulag need to validate against $clientId
@@ -153,10 +153,10 @@ class AssessmentRepository
      */
     public function getAssessmentForVersion($uid, int $version)
     {
-        if (empty($uid)) {
+        if ($uid === '') {
             throw new \InvalidArgumentException("Missing uid", ErrorCode::VALIDATE_DATA_MISSING);
         }
-        if (empty($version)) {
+        if ($version === 0) {
             throw new \InvalidArgumentException("Missing version", ErrorCode::VALIDATE_DATA_MISSING);
         }
         $sql = "SELECT id, uid, data FROM " . self::TABLE_NAME . " WHERE id = ? AND uid = ? AND status = 'published'";
@@ -193,14 +193,14 @@ class AssessmentRepository
     {
         /** @var list<array{id: string, data: ?string, uid?: ?string, uuid?: ?string, status?: ?string, ...}> $result */
         $result = QueryUtils::fetchRecords($sql, $params);
-        if (empty($result[0])) {
+        if (!isset($result[0])) {
             throw new \InvalidArgumentException("Assessment not found", ErrorCode::RECORD_NOT_FOUND);
         }
         /** @var array<string, mixed> $blobData */
-        $blobData = json_decode($result[0]['data'], true);
+        $blobData = json_decode($result[0]['data'] ?? '', true);
         $blobData['_version'] = $result[0]['id'];
         $blobData['_id'] = $result[0]['id'];
-        if (empty($result[0]['uuid'])) {
+        if (!isset($result[0]['uuid']) || $result[0]['uuid'] === '') {
             // let's lazy update it.
             $uuid = $this->updateAssessmentUuid((int) $result[0]['id']);
         } else {
@@ -244,7 +244,7 @@ class AssessmentRepository
      */
     public function canEditAssessment($id, ?int $companyId)
     {
-        if (empty($companyId)) {
+        if ($companyId === null || $companyId === 0) {
             // super user return true
             return true;
         }

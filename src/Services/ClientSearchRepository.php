@@ -65,7 +65,7 @@ class ClientSearchRepository
 
         $processingResult = $patientService->search($searchParams, true, $config);
         if ($processingResult->hasErrors()) {
-            $this->logger->error("ClientSearchRepository.getClientList() - Error searching for clients", ["errors" => $processingResult->getErrors()]);
+            $this->logger->error("ClientSearchRepository.getClientList() - Error searching for clients", ["errors" => $processingResult->getInternalErrors()]);
             throw new SystemError(ErrorCode::INVALID_REQUEST, "Error searching for clients");
         } else if (!$processingResult->hasData()) {
             // no data found so we are returning nothing.
@@ -87,7 +87,7 @@ class ClientSearchRepository
             $client->setFirstName($record['fname']);
             $client->setLastName($record['lname']);
             $client->setEmail($record['email']);
-            if (!empty($primaryEntity)) {
+            if ($primaryEntity !== null && isset($primaryEntity['id'])) {
                 $client->setCompanyID($primaryEntity['id']);
             }
 
