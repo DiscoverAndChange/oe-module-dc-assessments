@@ -211,7 +211,7 @@ final class ServerRestRequest implements ServerRequestInterface
         // we need to handle cross site debugging in our requests which trigger debug sessions
         // but we don't want to mess up the server query params in our rest request so we purge
         // the debug key here
-        if (!empty($queryParams['XDEBUG_SESSION'])) {
+        if (isset($queryParams['XDEBUG_SESSION']) && $queryParams['XDEBUG_SESSION'] !== '') {
             unset($queryParams['XDEBUG_SESSION']);
         }
         return $queryParams;

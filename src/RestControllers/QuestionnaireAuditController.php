@@ -80,7 +80,7 @@ class QuestionnaireAuditController
             $auditRecordId = $phpInput['auditRecordId'] ?? null;
             $encounterId = $phpInput['encounterId'] ?? null;
             $csrfToken = $phpInput['csrfToken'] ?? null;
-            if (empty($auditRecordId) || empty($encounterId) || empty($csrfToken)) {
+            if (($auditRecordId === null || $auditRecordId === '') || ($encounterId === null || $encounterId === '') || ($csrfToken === null || $csrfToken === '')) {
                 throw new \InvalidArgumentException('Missing eid, recordId, or csrfToken', ErrorCode::VALIDATE_DATA_MISSING);
             }
             if (CsrfUtils::verifyCsrfToken($csrfToken) === false) {
@@ -92,12 +92,12 @@ class QuestionnaireAuditController
             }
             // how do we get the lform data...
             $auditRecord = QueryUtils::fetchRecords("select * from onsite_portal_activity where id = ?", [$auditRecordId]);
-            if (empty($auditRecord) || $auditRecord[0]['activity'] !== 'dc-assignment') {
+            if ($auditRecord === [] || $auditRecord[0]['activity'] !== 'dc-assignment') {
                 throw new \InvalidArgumentException('Invalid recordId', ErrorCode::INVALID_REQUEST);
             }
 
             $assignmentItems = $this->assignmentRepository->getAssignmentItemsForAuditId($auditRecordId);
-            if (empty($assignmentItems)) {
+            if ($assignmentItems === []) {
                 throw new \InvalidArgumentException('Invalid recordId', ErrorCode::INVALID_REQUEST);
             }
             $assignmentItem = $assignmentItems[0];
@@ -180,14 +180,14 @@ class QuestionnaireAuditController
         // TODO: check that pid, recordId, and qr are set otherwise throw invalidargumentexception
 
 
-        if (empty($queryVars['recordId'])) {
+        if (!isset($queryVars['recordId']) || $queryVars['recordId'] === '') {
             return $this->actionNotFound('view');
         }
         $assignmentItems = $this->assignmentRepository->getAssignmentItemsForAuditId($queryVars['recordId']);
         // for now there should only be one audit to one assignment item
         $assignmentItem = $assignmentItems[0] ?? null;
         // for now we are just handling questionnaires
-        if (empty($assignmentItem)) {
+        if ($assignmentItem === null) {
             return $this->actionNotFound('view');
         }
         $auditId = $queryVars['recordId'];
@@ -330,7 +330,7 @@ class QuestionnaireAuditController
             ,'depth' => $depth
             ,'tree' => []
         ];
-        if (!empty($children)) {
+        if ($children !== []) {
             foreach ($children as $key => $val) {
                 if ($key === 0) {
                     continue; // not sure why we'd end up with empty 0 keys but we are skipping them.

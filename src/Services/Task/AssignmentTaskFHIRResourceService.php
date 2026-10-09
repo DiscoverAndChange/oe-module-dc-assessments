@@ -139,15 +139,15 @@ class AssignmentTaskFHIRResourceService extends FhirServiceBase implements IReso
         // we are only working in the portal for assignments here so this is something for the patient to do.
         $fhirResource->setOwner(UtilsService::createRelativeReference('Patient', $dataRecord['clientId']));
 
-        if (!empty($dataRecord['assignment_uuid'])) {
+        if (isset($dataRecord['assignment_uuid']) && $dataRecord['assignment_uuid'] !== '') {
             $fhirResource->addPartOf(UtilsService::createRelativeReference('Task', $dataRecord['assignment_uuid']));
         }
 
-        if (!empty($dataRecord['dateAssigned'])) {
+        if (isset($dataRecord['dateAssigned']) && $dataRecord['dateAssigned'] !== '') {
             $fhirResource->setAuthoredOn($dataRecord['dateAssigned']);
         }
 
-        if (empty($dataRecord['dateCompleted'])) {
+        if (!isset($dataRecord['dateCompleted']) || $dataRecord['dateCompleted'] === '') {
             $fhirStatus = 'ready';
         } else {
             $fhirStatus = 'completed';
@@ -185,7 +185,7 @@ class AssignmentTaskFHIRResourceService extends FhirServiceBase implements IReso
         // for the specific uuid and exclude either the group or the child items based on the values of the _id
         $matchedUUids = [];
         $matchSearchId = false;
-        if (!empty($results)) {
+        if ($results !== []) {
             if (isset($openEMRSearchParameters['_id']) && $openEMRSearchParameters['_id'] instanceof \OpenEMR\Services\Search\ISearchField) {
                 $matchSearchId = true;
                 /** @var TokenSearchValue[] $values */

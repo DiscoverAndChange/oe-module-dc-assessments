@@ -33,7 +33,7 @@ class LibraryAssetBlobRepository
         $sql .= " FROM " . self::TABLE_NAME . " WHERE 1=1";
 
         $params = [];
-        if (!empty($tag)) {
+        if ($tag !== '') {
             $sql .= " AND id IN (SELECT library_asset_blob_id FROM " . TagRepository::TABLE_NAME_LIBRARY_ASSET_JOIN_TAG
                 . " WHERE tag_id IN (select id FROM " . TagRepository::TABLE_NAME . " WHERE tag = ?) )";
             $params[] = $tag;
@@ -58,11 +58,11 @@ class LibraryAssetBlobRepository
 
         /** @var list<int|string> $ids */
         $ids = QueryUtils::fetchTableColumn($query, 'id', $where->getBoundValues());
-        if (empty($ids)) {
+        if ($ids === []) {
             return $processingResult;
         }
         $sql = "SELECT la.uuid, la.id, la.title, la.type, la.description, la.original_creator, la.creation_date, la.last_update_date ";
-        if (!empty($searchParams['uuid'])) {
+        if (isset($searchParams['uuid'])) {
             // we will only return the data if we have an id search parameters
             $sql .= ", la.content, la.journal ";
         }
@@ -108,7 +108,7 @@ class LibraryAssetBlobRepository
                 ->setLastUpdateDate($row['last_update_date'])
                 ->setTags((array) ($tags[$row['id']] ?? []));
 
-            if (empty($row['uuid'])) {
+            if (!isset($row['uuid']) || $row['uuid'] === '') {
                 $uuid = self::updateLibraryAssetBlobUuid((int) $row['id']);
             } else {
                 $uuid = $row['uuid'];
@@ -148,7 +148,7 @@ class LibraryAssetBlobRepository
         $params = [];
         $params[] = $assetTitle;
         $records = QueryUtils::fetchRecords($sql, $params);
-        return !empty($records);
+        return $records !== [];
     }
 
     /**
@@ -186,16 +186,17 @@ class LibraryAssetBlobRepository
     {
         // seems like the easiest is to delete all the tags, and then relink them
         QueryUtils::fetchRecords("DELETE FROM " . TagRepository::TABLE_NAME_LIBRARY_ASSET_JOIN_TAG . " WHERE library_asset_blob_id = ?", [$assetBlob->getId()]);
-        if (!empty($assetBlob->getTags())) {
-            $tagRepeat = str_repeat('?,', count($assetBlob->getTags()) - 1) . '?';
+        $assetTags = $assetBlob->getTags();
+        if ($assetTags !== null && $assetTags !== []) {
+            $tagRepeat = str_repeat('?,', count($assetTags) - 1) . '?';
             $sql = "INSERT INTO " . TagRepository::TABLE_NAME_LIBRARY_ASSET_JOIN_TAG . " (library_asset_blob_id, tag_id) SELECT ?, t.id FROM "
                 . TagRepository::TABLE_NAME . " t WHERE t.tag IN ("
                 . $tagRepeat . ")";
-            QueryUtils::sqlStatementThrowException($sql, array_merge([$assetBlob->getId()], $assetBlob->getTags()));
+            QueryUtils::sqlStatementThrowException($sql, array_merge([$assetBlob->getId()], $assetTags));
 
             // some of the tags may not exist so we need to populate only the ones that are there
             $tags = QueryUtils::fetchTableColumn("SELECT tag FROM " . TagRepository::TABLE_NAME
-                . " WHERE tag IN (" . $tagRepeat . ")", 'tag', $assetBlob->getTags());
+                . " WHERE tag IN (" . $tagRepeat . ")", 'tag', $assetTags);
             $assetBlob->setTags($tags);
         }
         return $assetBlob;

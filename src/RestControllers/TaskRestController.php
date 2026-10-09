@@ -123,7 +123,7 @@ class TaskRestController
         // just {"headers":...} instead of the bundle. Also, FHIRBundle omits the
         // `entry` key entirely when there are no results, but the SPA expects an
         // array — so normalize the empty case to a plain array with entry: [].
-        if (empty($bundleEntries)) {
+        if ($bundleEntries === []) {
             /** @var array<string,mixed> $bundleSearchResult */
             $bundleSearchResult = json_decode((string) json_encode($bundleSearchResult), true);
             $bundleSearchResult['entry'] = [];
@@ -150,7 +150,7 @@ class TaskRestController
         $prefer = $request->getHeader('Prefer');
         $returnType = 'representation';
         try {
-            if (!empty($prefer)) {
+            if ($prefer !== []) {
                 $returnType = RestUtils::getReturnTypeFromPrefer($prefer[0]);
             }
 

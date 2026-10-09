@@ -97,7 +97,7 @@ class QuestionnaireFormFHIRResourceService extends FhirServiceBase implements IR
         $fhirResource->setMeta($meta);
 
         // some of our saved OpenEMR db records have an invalid source_url and so we updated this in the database.
-        if (!empty($dataRecord['source_url'])) {
+        if (isset($dataRecord['source_url']) && $dataRecord['source_url'] !== '') {
             $fhirResource->setUrl($dataRecord['source_url']);
         }
 

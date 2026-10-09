@@ -128,7 +128,7 @@ class Bootstrap
 
     public function __construct(EventDispatcherInterface $eventDispatcher, ?Kernel $kernel = null)
     {
-        if (empty($kernel)) {
+        if ($kernel === null) {
             $kernel = new Kernel();
         }
         $this->kernel = $kernel;
@@ -442,11 +442,12 @@ class Bootstrap
             }
         } else if ($template == 'oauth2/authorize/scopes-authorize') {
             if ($this->globalsConfig->shouldDisplayUpdatedOAuthPages()) {
-                if (!empty(SessionWrapperFactory::getInstance()->getActiveSession()->get('pid'))) {
+                $sessionPid = SessionWrapperFactory::getInstance()->getActiveSession()->get('pid');
+                if ($sessionPid !== null && $sessionPid !== '' && $sessionPid !== 0 && $sessionPid !== '0') {
                     $vars = $event->getTwigVariables();
                     /** @var array<string, mixed> $scopesByResource */
                     $scopesByResource = $vars['scopesByResource'] ?? [];
-                    if (!empty($scopesByResource['Questionnaire'])) {
+                    if (isset($scopesByResource['Questionnaire']) && $scopesByResource['Questionnaire'] !== []) {
                         $event->setTwigTemplate('discoverandchange/oauth2/scope-authorize.html.twig');
                     }
                 }
@@ -465,7 +466,7 @@ class Bootstrap
      */
     public function getServiceContainer()
     {
-        if (empty($this->serviceContainer)) {
+        if ($this->serviceContainer === null) {
             $this->serviceContainer = $this->setupContainer();
         }
         return $this->serviceContainer;

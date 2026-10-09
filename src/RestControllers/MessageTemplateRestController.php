@@ -32,7 +32,7 @@ class MessageTemplateRestController implements IRestController
             $patientRepo = new PatientService();
             /** @var list<array<string,mixed>>|null $patient */
             $patient = ProcessingResult::extractDataArray($patientRepo->getOne($puuid));
-            if (empty($patient)) {
+            if ($patient === null || $patient === []) {
                 return RestUtils::getNotFoundResponse();
             } else {
                 $patient = $patient[0];
@@ -43,7 +43,7 @@ class MessageTemplateRestController implements IRestController
             $userId = $request->getUserId();
             $userRepo = new UserService();
             $user = $userRepo->getUser((int) $userId);
-            if (empty($user)) {
+            if ($user === false) {
                 throw new \InvalidArgumentException("User not found for request");
             }
 

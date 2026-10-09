@@ -45,14 +45,14 @@ class AssessmentResultRestController implements IRestController
         try {
             /** @var list<array<string,mixed>>|null $patientData */
             $patientData = ProcessingResult::extractDataArray($patientRepo->getOne($clientId));
-            if (empty($patientData)) {
+            if ($patientData === null || $patientData === []) {
                 throw new \InvalidArgumentException("Invalid client id");
             } else {
                 $patientData = $patientData[0];
                 $patientUuid = $patientData['uuid'];
             }
             // have to have one or the other
-            if (empty($resultId) && empty($assessmentUID)) {
+            if (($resultId === null || $resultId === '') && ($assessmentUID === null || $assessmentUID === '')) {
                 throw new \InvalidArgumentException("Missing required query parameter assessmentUID or resultID");
             }
 
@@ -118,7 +118,7 @@ class AssessmentResultRestController implements IRestController
             /** @var array{_assignmentItemId: string} $itemData */
             $itemData = $data['data'];
             $item = $assignmentRepo->getAssignmentItem($itemData['_assignmentItemId'], UuidRegistry::uuidToString($client['uuid']));
-            if (empty($item)) {
+            if ($item === null) {
                 throw new \InvalidArgumentException("Assignment item not found", ErrorCode::INVALID_REQUEST);
             } else if (!($item instanceof AssignedAssessment)) {
                 throw new \InvalidArgumentException("Assignment item is not an assessment", ErrorCode::INVALID_REQUEST);
@@ -177,9 +177,9 @@ class AssessmentResultRestController implements IRestController
     {
 
         // first we check to see if we are working as a patient
-        if (empty($patientUuidString) && !AclMain::aclCheckCore('encounters', 'notes', (string) $userId)) {
+        if ($patientUuidString === '' && !AclMain::aclCheckCore('encounters', 'notes', (string) $userId)) {
             throw new AccessDeniedException("encounters", "notes", "You do not have permission to create this result");
-        } else if (!empty($patientUuidString)) {
+        } else if ($patientUuidString !== '') {
             // need to grab the patient pid from the uuid
             $result = $patientService->getOne($patientUuidString);
             if (!$result->hasData()) {
@@ -189,12 +189,12 @@ class AssessmentResultRestController implements IRestController
                 $resultData = $result->getData();
                 $client = $resultData[0];
             }
-        } else if (empty($clientId)) { // if we are a user and creating results we need a valid client_id
+        } else if ($clientId === null || $clientId === '') { // if we are a user and creating results we need a valid client_id
             throw new \InvalidArgumentException("clientId is required", ErrorCode::VALIDATION_FAILED);
         } else {
             /** @var list<array<string,mixed>>|null $client */
             $client = ProcessingResult::extractDataArray($patientService->getOne($clientId));
-            if (empty($client)) {
+            if ($client === null || $client === []) {
                 throw new \InvalidArgumentException("Invalid client_id in request", ErrorCode::VALIDATION_FAILED);
             } else {
                 $client = $client[0];

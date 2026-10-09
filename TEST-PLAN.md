@@ -514,6 +514,14 @@ proceed on the 489 exercised-method errors; keep deprecated/dead baselined; the 
 integration-heavy remainder is a future batch (or fix conservatively/PHPDoc-only).
 
 ## Progress log
+- 2026-10-09: PHPStan refactor pass 9 (v0.12.18) — empty.notAllowed bucket, module-wide.
+  Converted 174/190 empty() to strict comparisons across ~35 files (baseline 638 -> 465). Owner
+  approved extending scope to ResourceImporterService/AssessmentAppointmentController/
+  QuestionnaireAuditController/LibraryAsset* ("fix phpstan, resolve any behavior when that code is
+  turned on"). Per-operand idioms; string|false -> is_string(); nullable method results -> locals.
+  Left 16 as empty()+baselined: FHIR getter null-guards + shaped-array always-truthy guards
+  (core mistyping, converting trips always-true/false). Caught+fixed 12 narrowing-fallout errors
+  (count/array_merge/json_decode on now-nullable values) via phpstan-oracle loop. Suite 529 green.
 - 2026-10-09: PHPStan refactor pass 8 (v0.12.17) — superglobal bucket, $GLOBALS half. Replaced
   all 17 `$GLOBALS[...]` offset reads (forbiddenGlobalsAccess) with OEGlobalsBag::getInstance()->
   get(...) across 8 files (css_header -> getString() per the untypedGlobalGet typed-accessor rule;

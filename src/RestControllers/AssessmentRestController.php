@@ -39,7 +39,7 @@ class AssessmentRestController implements IRestController
         $facilityId = $facility['id'] ?? null;
         $repo = new AssessmentRepository(ServiceContainer::getLogger());
         $results = $repo->getAssessmentSummaryList($facilityId);
-        if (empty($results)) {
+        if ($results === []) {
             return RestUtils::getEmptyResponse();
         } else {
             $psrFactory = new Psr17Factory();
@@ -126,7 +126,7 @@ class AssessmentRestController implements IRestController
             $uid = $data['_uid'];
             $name = $data['_name'];
             $description = $data['_description'];
-            if (!empty($data['token'])) {
+            if (isset($data['token']) && $data['token'] !== '') {
                 // cleanup routine
                 unset($data['token']);
             }

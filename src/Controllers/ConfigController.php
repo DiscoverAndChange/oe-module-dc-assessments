@@ -57,24 +57,24 @@ class ConfigController
             /** @var string $importUrl */
             $importUrl = $queryVars['importUrl'];
 
-            if (empty($importUrl)) {
+            if ($importUrl === '') {
                 throw new \InvalidArgumentException(xl("Import URL is empty"));
             }
             $guzzle = new \GuzzleHttp\Client();
             // TODO: @adunsulag need to require SSL for this
+            // $guzzle->get() always returns a ResponseInterface (it throws on failure), so the
+            // old !empty($response) guard was always true; dropped it.
             $response = $guzzle->get($importUrl, ['verify' => false]);
-            if (!empty($response)) {
-                $response->getBody()->rewind();
-                $strings = $response->getBody()->getContents();
-                if (empty($strings)) {
-                    throw new \InvalidArgumentException(xl("Import URL returned empty"));
-                }
-                $importer = new ResourceImporterService();
-                $importer->import($strings, SessionWrapperFactory::getInstance()->getActiveSession()->get('authUserID'));
-
-                $data['logEntries'] = $importer->getLogEntries();
-                $data['msgSuccess'] = xl('Imported successfully');
+            $response->getBody()->rewind();
+            $strings = $response->getBody()->getContents();
+            if ($strings === '') {
+                throw new \InvalidArgumentException(xl("Import URL returned empty"));
             }
+            $importer = new ResourceImporterService();
+            $importer->import($strings, SessionWrapperFactory::getInstance()->getActiveSession()->get('authUserID'));
+
+            $data['logEntries'] = $importer->getLogEntries();
+            $data['msgSuccess'] = xl('Imported successfully');
             // TODO: @adunsulag do we want to validate this against a public signed certificate?
             $text = $this->twig->render("discoverandchange/config/config.html.twig", $data);
             return RestUtils::returnTextResponse($text);

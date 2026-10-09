@@ -45,7 +45,7 @@ class ClientMessageDispatcher
     {
         $patientService = new PatientService();
         $patient = $patientService->findByPid($patientPid);
-        if (!empty($patient['providerID'])) {
+        if (isset($patient['providerID']) && $patient['providerID'] !== '0') {
             $this->sendUserNotification($clientId, $patientPid, $patient['providerID']);
         }
     }
@@ -60,11 +60,11 @@ class ClientMessageDispatcher
     {
         $userService = new UserService();
         $user = $userService->getUser($userId);
-        if (empty($user)) {
+        if ($user === false) {
             $this->logger->error("Failed to find user for assignment completion notice", ['userId' => $userId]);
             return;
         }
-        if (empty($user['email'])) {
+        if (!isset($user['email']) || $user['email'] === '') {
             $this->logger->error("User missing valid email address for assignment completion notice", ['userId' => $userId]);
             return;
         }
@@ -129,7 +129,7 @@ class ClientMessageDispatcher
      */
     private function sendMessageViaMailer($subject, $user, $template, $templateData)
     {
-        if (empty($templateData['logo'])) {
+        if (!isset($templateData['logo']) || $templateData['logo'] === '') {
             $logoService = new LogoService();
             $templateData['logo'] = $this->config->getGlobalSetting('qualified_site_addr') . $logoService->getLogo("core/login/primary");
             $templateData['logoAlt'] = $this->config->getGlobalSetting("openemr_name");

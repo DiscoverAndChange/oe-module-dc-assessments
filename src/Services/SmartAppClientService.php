@@ -19,7 +19,7 @@ class SmartAppClientService
     public function getRegisteredClientId()
     {
         $clientId = $this->globalConfig->getSmartAppClientId();
-        if (empty($clientId)) {
+        if ($clientId === null || $clientId === '') {
             $clientRepository = new ClientRepository();
 
             // time to setup the data for this

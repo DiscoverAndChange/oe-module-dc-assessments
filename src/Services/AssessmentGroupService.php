@@ -70,7 +70,7 @@ class AssessmentGroupService extends BaseService
         $params = [$groupId];
         $sql .= "ORDER BY ag.name ASC, agab.display_order ASC";
         $groups = $this->getGroupsForSql($sql, $params);
-        if (!empty($groups)) {
+        if ($groups !== []) {
             return $groups[0];
         }
         return null;
@@ -92,7 +92,7 @@ class AssessmentGroupService extends BaseService
         // we're going to group things
         $groupedResults = [];
         foreach ($results as $result) {
-            if (empty($groupedResults[$result['id']])) {
+            if (!isset($groupedResults[$result['id']])) {
                 $groupedResults[$result['id']] = [
                     'id' => $result['id'],
                     'name' => $result['name'],
@@ -101,7 +101,7 @@ class AssessmentGroupService extends BaseService
                     'company' => null,
                     'assessmentGroupAssessmentBlobs' => []
                 ];
-                if (!empty($result['company_id'])) {
+                if (isset($result['company_id']) && $result['company_id'] !== '') {
                     $groupedResults[$result['id']]['company'] = [
                         'id' => $result['company_id'],
                         'name' => $result['company_name']
@@ -109,7 +109,7 @@ class AssessmentGroupService extends BaseService
                 }
             }
             // we can have groups with no attached assessments
-            if (!empty($result['assessmentblob_id'])) {
+            if (isset($result['assessmentblob_id'])) {
                 $groupedResults[$result['id']]['assessmentGroupAssessmentBlobs'][] = [
                     'assessmentBlob' => [
                         'id' => $result['assessmentblob_id']
@@ -133,7 +133,7 @@ class AssessmentGroupService extends BaseService
     public function existsGroup(string $name, ?int $companyId): bool
     {
         $data = ['name' => $name];
-        if (!empty($companyId)) {
+        if ($companyId !== null && $companyId !== 0) {
             $data['company_id'] = $companyId;
         }
         $search = $this->search($data);
@@ -166,7 +166,7 @@ class AssessmentGroupService extends BaseService
     public function addAssessmentToGroup(mixed $uid, $groupId, ?int $companyId)
     {
         $group = $this->getGroup($groupId);
-        if (empty($group)) {
+        if ($group === null) {
             throw new \InvalidArgumentException("Group not found");
         }
         $sql = "INSERT INTO " . self::ASSESSMENT_BLOB_JOIN_TABLE_NAME . " (assessmentblob_id,assessmentgroup_id) "

@@ -183,7 +183,7 @@ class QuestionnairePortalTaskFHIRResourceService extends FhirServiceBase impleme
         // TODO: @adunsulag need to handle both the owner_id search field here as well as the patient search field piece here
         // one approach is to force a requirement that the owner_id must be passed and we only respond to Patient/* reference requests.
 
-        if (empty($openEMRSearchParameters['patient'])) {
+        if (!isset($openEMRSearchParameters['patient'])) {
             // if we aren't doing an id and the patient field is empty we throw an exception
             throw new SearchFieldException('patient', "The patient field is required");
         }
@@ -200,7 +200,7 @@ class QuestionnairePortalTaskFHIRResourceService extends FhirServiceBase impleme
             $patientPids[] = $pid;
         }
         // super inefficient, but the only way to grab a single task is by hitting the patients right now
-        if (!empty($openEMRSearchParameters['_id'])) {
+        if (isset($openEMRSearchParameters['_id'])) {
             /** @var \OpenEMR\Services\Search\TokenSearchValue[] $idValues */
             $idValues = $openEMRSearchParameters['_id']->getValues();
             $filterByTemplateId = $idValues[0]->getCode();
@@ -211,7 +211,7 @@ class QuestionnairePortalTaskFHIRResourceService extends FhirServiceBase impleme
 //                }
 //            }
         }
-        if (!empty($patientPids)) {
+        if ($patientPids !== []) {
             $templates = [];
             // in the patient context there is always only going to be one, but if we open this up to providers there will
             // be multiples.
@@ -222,13 +222,13 @@ class QuestionnairePortalTaskFHIRResourceService extends FhirServiceBase impleme
                 $templates_call = $docTemplateService->getPortalAssignedTemplates($pid, 'questionnaire', true);
                 $questionnaires = $templates_call['questionnaire'] ?? []; // make sure we only deal with questionnaires.
                 foreach ($questionnaires as $questionnaire) {
-                    if (empty($filterByTemplateId) || $questionnaire['id'] == $filterByTemplateId) {
+                    if (($filterByTemplateId === null || $filterByTemplateId === '') || $questionnaire['id'] == $filterByTemplateId) {
                         $templates[] = $questionnaire;
                     }
                 }
             }
         }
-        if (empty($templates)) {
+        if ($templates === []) {
             return $processingResult; // nothing to do here as there are no assignments to be returned.
         }
 
@@ -258,7 +258,7 @@ class QuestionnairePortalTaskFHIRResourceService extends FhirServiceBase impleme
         $docMap = [];
         // TODO: @adunsulag I'm not sure how repeat of the same document are handled here...
         foreach ($docs as $doc) {
-            if (empty($docMap[$doc['id']])) {
+            if (!isset($docMap[$doc['id']])) {
                 $docMap[$doc['pid']] = [];
             }
             $docMap[$doc['pid']][$doc['file_path']] = $doc;
@@ -278,7 +278,7 @@ class QuestionnairePortalTaskFHIRResourceService extends FhirServiceBase impleme
             if (preg_match('/{Questionnaire:\s*(\d+)}/', $questionnaire, $matches)) {
                 $id = $matches[1];
             }
-            if (!empty($id)) {
+            if ($id !== null && $id !== '0') {
                 $templatePid = $template['pid'];
                 $shouldShow = true;
                 $resourceRecord = [

@@ -69,7 +69,7 @@ class LibraryAssetResultRestController implements IRestController
             } else {
                 throw new AccessDeniedException("encounters", "notes", "User missing encounter/forms ACL to access this result");
             }
-            if (empty($result)) {
+            if ($result === null) {
                 return RestUtils::getNotFoundResponse();
             }
             $asset = $this->getAsset($result->getAssetId());
@@ -109,7 +109,7 @@ class LibraryAssetResultRestController implements IRestController
 
             $assignmentRepo = new AssignmentRepository();
             $item = $assignmentRepo->getAssignmentItem($data['assignmentItemId'], UuidRegistry::uuidToString($client['uuid']));
-            if (empty($item)) {
+            if ($item === null) {
                 throw new \InvalidArgumentException("Assignment item not found", ErrorCode::INVALID_REQUEST);
             }
             $libraryAssetResultRepo = new LibraryAssetResultBlobRepository($this->logger, $this->cryptoGen);
@@ -169,9 +169,9 @@ class LibraryAssetResultRestController implements IRestController
     {
 
         // first we check to see if we are working as a patient
-        if (empty($patientUuidString) && !AclMain::aclCheckCore('encounters', 'notes', (string) $userId)) {
+        if ($patientUuidString === '' && !AclMain::aclCheckCore('encounters', 'notes', (string) $userId)) {
             throw new AccessDeniedException("encounters", "notes", "You do not have permission to create this result");
-        } else if (!empty($patientUuidString)) {
+        } else if ($patientUuidString !== '') {
             // need to grab the patient pid from the uuid
             $result = $patientService->getOne($patientUuidString);
             if (!$result->hasData()) {
@@ -181,12 +181,12 @@ class LibraryAssetResultRestController implements IRestController
                 /** @var list<array<string, mixed>> $resultData */
                 $client = $resultData[0];
             }
-        } else if (empty($clientId)) { // if we are a user and creating results we need a valid client_id
+        } else if ($clientId === null || $clientId === '') { // if we are a user and creating results we need a valid client_id
             throw new \InvalidArgumentException("clientId is required", ErrorCode::VALIDATION_FAILED);
         } else {
             /** @var list<array<string, mixed>>|null $client */
             $client = ProcessingResult::extractDataArray($patientService->getOne($clientId));
-            if (empty($client)) {
+            if ($client === null || $client === []) {
                 throw new \InvalidArgumentException("Invalid client_id in request", ErrorCode::VALIDATION_FAILED);
             } else {
                 $client = $client[0];
@@ -202,7 +202,7 @@ class LibraryAssetResultRestController implements IRestController
     {
         $libraryAssetsRepo = new LibraryAssetBlobRepository($this->logger);
         $asset = $libraryAssetsRepo->getAsset((int) $id);
-        if (empty($asset)) {
+        if ($asset === null) {
             throw new \InvalidArgumentException("Could not find library asset for response", ErrorCode::INVALID_REQUEST);
         }
         return $asset;

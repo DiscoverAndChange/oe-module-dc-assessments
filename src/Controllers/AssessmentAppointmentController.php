@@ -106,14 +106,14 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
     private function getWizardScreenFromCurrentRequest()
     {
         // checkbox for sending digital documents
-        if (!empty($_POST['dc_add_edit_event_digital_documents'])) {
+        if (isset($_POST['dc_add_edit_event_digital_documents']) && $_POST['dc_add_edit_event_digital_documents'] !== '') {
             // coming from the add_edit_event page
             return BackendDispatchController::RENDER_DIGITAL_DOCUMENTS;
             // checkbox for sending notification
-        } else if (!empty($_POST['dc_add_edit_event_send_notification'])) {
+        } else if (isset($_POST['dc_add_edit_event_send_notification']) && $_POST['dc_add_edit_event_send_notification'] !== '') {
             return BackendDispatchController::RENDER_APPOINTMENT_NOTIFICATION;
         }
-        if (!empty($_GET['action']) && $_GET['action'] == BackendDispatchController::RENDER_APPOINTMENT_NOTIFICATION) {
+        if (isset($_GET['action']) && $_GET['action'] == BackendDispatchController::RENDER_APPOINTMENT_NOTIFICATION) {
             return BackendDispatchController::RENDER_APPOINTMENT_NOTIFICATION;
         }
         return null;
@@ -138,7 +138,7 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
     public function renderAppointmentWizardScreens(AppointmentDialogCloseEvent $event)
     {
         $appointmentId = $event->getAppointmentId();
-        if (empty($appointmentId)) {
+        if ($appointmentId === null || $appointmentId === 0 || $appointmentId === '' || $appointmentId === '0') {
             return;
         }
         if ($this->hasWizardScreens($event)) {
@@ -157,7 +157,7 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
         $appointmentService = new AppointmentService();
         /** @var list<array{pc_pid: string, pc_eid: string, pc_eventDate: string}> $appointment */
         $appointment = $appointmentService->getAppointment($appointmentId);
-        if (empty($appointment) || empty($appointment[0]['pc_pid'])) { // patient appointment
+        if ($appointment === [] || $appointment[0]['pc_pid'] === '') { // patient appointment
             return; // nothing to do here
         }
         $appointment = $appointment[0];
@@ -166,7 +166,7 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
             $docService = new DocumentTemplateService();
             $templateList = $docService->getTemplateListByCategory('notification_template', '-1', 'Default Notification');
             $defaultMessage = '';
-            if (!empty($templateList)) {
+            if ($templateList !== []) {
                 $message = $templateList['template_content'] ?? '';
             } else {
                 $message = xl('You have been assigned new documents to complete on your patient portal.');
@@ -178,10 +178,10 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
             $email = $patient['email'];
             $hipaaAllowEmail = $patient['hipaa_allowemail'] === 'YES';
             $hipaaAllowSms = $patient['hipaa_allowsms'] === 'YES';
-            $noContactMethods = empty($phone) && empty($email) && !($hipaaAllowEmail || $hipaaAllowSms);
+            $noContactMethods = $phone === '' && $email === '' && !($hipaaAllowEmail || $hipaaAllowSms);
             $display = xl("Setup Notifications");
             $truncatedDisplay = mb_strimwidth($display, 0, 80, "...");
-            if (empty($_GET['previous_step'])) { // no previous step we are going back to the calendar
+            if (!isset($_GET['previous_step']) || $_GET['previous_step'] === '') { // no previous step we are going back to the calendar
                 $backUrl = $this->getCalendarEventBackUrl((array) $appointment);
             } else {
                 // currently the only other step is the documents... if more wizards steps are added we'd handle this.
@@ -252,7 +252,7 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
      */
     private function renderDigitalDocumentsScreen($appointmentId)
     {
-        if (!empty($appointmentId)) {
+        if (!($appointmentId === null || $appointmentId === 0 || $appointmentId === '' || $appointmentId === '0')) {
             $smartAppService = $this->appClientService;
             /** @var string $clientId */
             $clientId = $smartAppService->getRegisteredClientId();
@@ -262,7 +262,7 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
             $appointmentService = new AppointmentService();
             /** @var list<array{pc_pid: string, pc_eid: string, pc_eventDate: string}> $appointment */
             $appointment = $appointmentService->getAppointment($appointmentId);
-            if (!empty($appointment) && !empty($appointment[0]['pc_pid'])) { // patient appointment
+            if ($appointment !== [] && $appointment[0]['pc_pid'] !== '') { // patient appointment
                 $appointment = $appointment[0];
                 $display = xl("Assign Digital Documents");
                 $truncatedDisplay = mb_strimwidth($display, 0, 80, "...");
@@ -270,7 +270,7 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
                 $backUrl = $this->getCalendarEventBackUrl((array) $appointment);
                 $nextStepUrl = null;
                 $nextStepTitle = xl('Configure Notifications');
-                if (!empty($_REQUEST['dc_add_edit_event_send_notification'])) {
+                if (isset($_REQUEST['dc_add_edit_event_send_notification']) && $_REQUEST['dc_add_edit_event_send_notification'] !== '') {
                     $nextStepUrl = $this->getNotificatioNextStepUrl($appointment['pc_eid']);
                 }
                 echo $this->twig->render('discoverandchange/appointment/add_edit_event_documents_wizard.html.twig', [
@@ -302,15 +302,15 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
             $appt = $service->getAppointment($pc_eid);
             $appt = $appt[0] ?? [];
             $patientPid = $appt['pc_pid'] ?? null;
-            if (empty($patientPid)) {
+            if ($patientPid === null || $patientPid === '') {
                 // nothing to do here so we skip it
                 return RestUtils::returnSingleObjectResponse(['type' => 'error']);
             }
             $message = $_POST['dc_appointments_notification_message'] ?? '';
-            if (empty($message)) {
+            if ($message === '') {
                 $docService = new DocumentTemplateService();
                 $templateList = $docService->getTemplateListByCategory('notification_template', '-1', 'Default Notification');
-                if (!empty($templateList)) {
+                if ($templateList !== []) {
                     $message = $templateList['template_content'] ?? '';
                 } else {
                     $message = xl('You have been assigned new documents to complete on your patient portal.');
@@ -342,7 +342,7 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
     {
         // I don't like that I have to hit the query vars to find out if this is a provider or group appointment
         // documents don't make sense on provider, and group isn't supported right now.
-        if (!(empty($_GET['prov']) && empty($_GET['group']))) {
+        if ((isset($_GET['prov']) && $_GET['prov'] !== '') || (isset($_GET['group']) && $_GET['group'] !== '')) {
             return;
         }
         $assignment = null;
@@ -351,7 +351,7 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
             $appt = $event->getAppt();
             $assignmentIds = $this->repository->getAssignmentUuidsForAppointment((int) $appt['pc_eid']);
             $assignments = [];
-            if (!empty($assignmentIds)) {
+            if ($assignmentIds !== null && $assignmentIds !== []) {
                 $assignments = $this->repository->search([new TokenSearchField('assignment_uuid', $assignmentIds, true)]);
             }
             $assignmentItemsCount = 0;

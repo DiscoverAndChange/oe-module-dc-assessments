@@ -73,7 +73,7 @@ class GlobalConfig
                 xlt($config['description']),
                 true
             );
-            if (!empty($config['options'])) {
+            if (isset($config['options']) && $config['options'] !== []) {
                 foreach ($config['options'] as $key => $option) {
                     $setting->addFieldOption($key, $option);
                 }
@@ -211,7 +211,7 @@ class GlobalConfig
     public function shouldSendAssignmentCompletionNotices()
     {
         $shouldSendNotice = (OEGlobalsBag::getInstance()->get(self::DC_ASSESSMENTS_CONFIG_COMPLETION_SEND_NOTICES_FLAG) ?? '0') === '1';
-        $contactUserId = !empty($this->getAssignmentCompletionNoticeUserId());
+        $contactUserId = $this->getAssignmentCompletionNoticeUserId() !== null;
         $providerNoticeEnabled = $this->shouldSendProviderNotification();
         return $shouldSendNotice && ($contactUserId || $providerNoticeEnabled);
     }
