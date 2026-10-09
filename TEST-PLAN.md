@@ -92,6 +92,24 @@ Controller (151), AssessmentGroupRestController (146).
 - [ ] `AssignmentCompleter` — completion → notification/PDF flow
 - [ ] `parseOpenEMRRecord` on the FHIR services
 
+## Phase 3: patient SMART-app login coverage (v0.12.21) — IN PROGRESS
+The frontend SPA login ("credentials invalid" on a patient's first login) goes through OpenEMR
+core's OAuth2 "portal-api" flow (`AuthUtils::confirmPassword`), not module code — the module only
+overrides the login *template*. Core rejects an unverified portal account
+(`patient_access_onsite.portal_pwd_status != 1` / `portal_onetime` set) before checking the
+password, and the SMART flow has no UI for the standard first-login reset/verify step.
+- [x] `PatientPortalLoginPreconditionTest` (DB-backed, 3 tests) — pins the core precondition:
+      same correct password rejected while unverified, accepted once verified, wrong password
+      still rejected. Serves as the regression oracle for the fix.
+- [x] **FIX**: `table.sql` forces global `portal_force_credential_reset='1'` (Disable) on
+      install/upgrade so `create_portallogin.php` sets `portal_pwd_status=1` at credential creation
+      (new patients land verified → first SMART login works).
+- [ ] `SmartAppClientServiceTest` (integration) — SMART client registration/enable
+      (`getRegisteredClientId`, `isClientEnabled`); hardcoded `new ClientRepository()` dep.
+- [ ] `FrontendDispatchControllerTest` — SPA serving + config injection (needs die→return refactor).
+- [ ] `BootstrapOAuth2OverrideTest` — oauth2 template page overrides resolve to module twigs.
+- [ ] e2e tier decision (Panther vs Playwright) — see analysis; full 13-step workflow scenario.
+
 ## Findings / latent bugs surfaced by tests
 Candidates for the source-typing pass / follow-up fixes (tests characterize the
 SAFE path; none of these were "fixed" while writing tests):

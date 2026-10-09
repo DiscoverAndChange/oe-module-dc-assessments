@@ -1,3 +1,17 @@
+v0.12.21 Fix SMART-app patient first-login ("credentials invalid") by forcing portal_force_credential_reset='1'
+
+  The patient-facing SPA authenticates via OpenEMR's OAuth2 "portal-api" flow, which has no UI for
+  the standard portal first-login credential-reset/verify step. With the core default global
+  portal_force_credential_reset='0' (Allow), a newly-created patient is left unverified
+  (patient_access_onsite.portal_pwd_status != 1 / portal_onetime set), so AuthUtils rejects them
+  BEFORE checking the password -> "credentials invalid" on first login. table.sql now forces the
+  global to '1' (Disable) on install/upgrade via an #IfNotRow2D-guarded REPLACE (the global has no
+  DB row by default). create_portallogin.php then computes forced_reset_disable=1 and
+  PatientAccessOnsiteService::saveCredentials() stores portal_pwd_status=1 for every new patient,
+  so the first SMART login succeeds. Added PatientPortalLoginPreconditionTest (3 tests, DB-backed)
+  pinning the core precondition the SMART flow depends on: same correct password is rejected while
+  unverified and accepted once verified, and a wrong password is still rejected.
+
 v0.12.19 PHPStan refactor pass 10: QueryUtils transactions -> inTransaction() (baseline 465 -> 394)
 
   Converted all 19 start/commit/rollbackTransaction blocks (57 deprecatedSqlFunction errors) to
