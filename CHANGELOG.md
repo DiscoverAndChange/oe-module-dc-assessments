@@ -1,3 +1,19 @@
+v0.12.23 Scaffold the browser (Playwright) UAT tier for the patient SMART-app workflow
+
+  New end-to-end test tier under tests/Uat/Browser, mirroring oe-module-ihi's conventions (opt-in
+  flag, ordered preflight with markTestSkipped, bounded self-cleaning teardown, dedicated bootstrap,
+  #[Group('browser')], a `composer uat:browser` script) -- but PHPUnit drives Playwright as a
+  subprocess instead of Panther/Selenium. PHPUnit stays the entry point and reporter: BrowserUatTestCase
+  does opt-in gating (DC_BROWSER_UAT=1), 4-stage preflight (flag -> Playwright installed -> app TCP
+  reachable -> DB reachable + module active), raw-PDO patient seeding with ACTIVE portal credentials
+  (portal_pwd_status=1), runs Playwright via proc_open, and parses its JSON report back into assertions
+  (assertPlaywrightPassed). Teardown deletes only run-created rows (patient_data.id > baseline), child
+  tables first. Isolated Node project in tests/Uat/Browser/playwright (own package.json/node_modules,
+  not the module vendor). The `patient login` spec (login -> SPA dashboard renders) is wired end to
+  end; the deeper steps (open assignment -> answer/submit -> provider review) are test.fixme() and the
+  battery/assignment seeding is TODO, both pending authoring against a running stack. Default
+  `composer test` is unaffected (the tier is outside the tests/Tests suite and self-skips).
+
 v0.12.22 Patient SMART-login coverage: testability refactors + SmartAppClientService / FrontendDispatchController / OAuth2-override tests
 
   Builds on v0.12.21 (the credentials-invalid fix). Two behaviour-preserving testability refactors

@@ -43,7 +43,8 @@
         "phpstan": "MODULE_DIR=$(pwd) && cd ${MODULE_DIR}/../../../.. && php -d memory_limit=4G vendor/bin/phpstan analyze --configuration=${MODULE_DIR}/phpstan.neon.dist ${MODULE_DIR}/src",
         "rector-check": "MODULE_DIR=$(pwd) && cd ${MODULE_DIR}/../../../.. && php -d memory_limit=4G vendor/bin/rector process --dry-run ${MODULE_DIR}/src",
         "rector-fix": "MODULE_DIR=$(pwd) && cd ${MODULE_DIR}/../../../.. && php -d memory_limit=4G vendor/bin/rector process ${MODULE_DIR}/src",
-        "test": "MODULE_DIR=$(pwd) && cd ${MODULE_DIR}/../../../.. && vendor/bin/phpunit --configuration=${MODULE_DIR}/phpunit.xml"
+        "test": "MODULE_DIR=$(pwd) && cd ${MODULE_DIR}/../../../.. && vendor/bin/phpunit --configuration=${MODULE_DIR}/phpunit.xml",
+        "uat:browser": "DC_BROWSER_UAT=1 ../../../../vendor/bin/phpunit --no-configuration --bootstrap tests/Uat/Browser/bootstrap.php --group browser tests/Uat/Browser"
     },
   "config": {
     "allow-plugins": {
