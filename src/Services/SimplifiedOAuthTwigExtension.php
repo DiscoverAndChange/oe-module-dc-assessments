@@ -31,11 +31,11 @@ class SimplifiedOAuthTwigExtension extends AbstractExtension implements GlobalsI
                     /** @var array<string, mixed> $scopesByResource */
                     $session = SessionWrapperFactory::getInstance()->getActiveSession();
                     // no patient set right now but user is set.
-                    if (!empty($session->get('user_id')) && empty($session->get('pid'))) {
+                    if (($session->get('user_id') !== null && $session->get('user_id') !== '') && ($session->get('pid') === null || $session->get('pid') === '')) {
                         // logged in as user so we are going to bail out
                         return false;
                     }
-                    if (empty($scopesByResource['Questionnaire'])) {
+                    if (!isset($scopesByResource['Questionnaire']) || $scopesByResource['Questionnaire'] === []) {
                         return false; // we are only showing this page if we have people requesting the Questionnaire scope
                     }
                     return $this->globalConfig->shouldDisplayUpdatedOAuthPages();

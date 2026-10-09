@@ -528,7 +528,7 @@ class APIProxyController
     {
         $request = $this->createRequestFromHttpRestRequest($httpRestRequest);
         $callable = $this->getCallableForApiRequest($request);
-        if (!empty($callable)) {
+        if ($callable !== null) {
             return $callable(); // params are embedded in the request object
         } else {
             return $this->sendRequestAndReturnResponse($request);
@@ -558,7 +558,7 @@ class APIProxyController
         }
         $callable = $this->getCallableForApiRequest($request);
 
-        if (!empty($callable)) {
+        if ($callable !== null) {
             return $callable(); // params are embedded in the request object
         } else {
             return $this->sendRequestAndReturnResponse($request);
@@ -629,7 +629,7 @@ class APIProxyController
 //        $request = $this->addAuthorizationToRequest($request);
 
         $body = file_get_contents('php://input');
-        if (!empty($body)) {
+        if ($body !== false && $body !== '') {
             // TODO: @adunsulag Nyholm PSR points the stream at the end of the contents... really odd
             // so we have to rewind the stream when creating the body.
             $stream = $psr17Factory->createStream($body);
@@ -655,7 +655,7 @@ class APIProxyController
     private function addAuthorizationToRequest(HttpRestRequest $request, RequestInterface $proxyRequest)
     {
         $authorization = $request->getHeader("Authorization")[0] ?? '';
-        if (!empty($authorization)) {
+        if ($authorization !== '') {
             // no need to validate the authorization as OpenEMR has already done that by going through the api.
             $proxyRequest = $proxyRequest->withAddedHeader('Authorization', $authorization);
         }

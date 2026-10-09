@@ -69,7 +69,7 @@ class AssessmentReportRepository
      */
     public function createReport(string $id, string $name, int $userId, $data, ?int $groupId, ?string $assessmentUid)
     {
-        if (!empty($data['token'])) {
+        if (isset($data['token']) && $data['token'] !== '') {
             unset($data['token']); // we do not want this as a carryover from old data.
         }
         $dataJSON = json_encode($data);
@@ -113,19 +113,19 @@ class AssessmentReportRepository
         $params = [$id, $id];
         /** @var list<array{data: string, assessmentgroup_id: ?string, assessmentgroup_name: ?string, assessment_uid: ?string, reportpermission_id: ?string, show: ?string}> $reports */
         $reports = QueryUtils::fetchRecords($sql, $params);
-        if (!empty($reports)) {
+        if ($reports !== []) {
             $report = $reports[0];
             /** @var array<string, mixed> $data */
             $data = json_decode($report['data'], true);
 
-            if (!empty($report['assessmentgroup_id'])) {
+            if (isset($report['assessmentgroup_id']) && $report['assessmentgroup_id'] !== '') {
                 $group = new AssessmentGroup();
-                $group->setId(($report['assessmentgroup_id'] ?? 0));
+                $group->setId($report['assessmentgroup_id']);
                 $group->setName(($report['assessmentgroup_name'] ?? ''));
                 $data['linkedGroup'] = $group;
             }
 
-            if (!empty($report['assessment_uid'])) {
+            if (isset($report['assessment_uid']) && $report['assessment_uid'] !== '') {
                 $data['linkedAssessments'] = [$report['assessment_uid']];
             }
             return $data;
@@ -139,11 +139,11 @@ class AssessmentReportRepository
      */
     public function updateReport(string $id, string $name, int $userId, array $data, ?int $assessmentGroupID, ?string $assessmentUid)
     {
-        if (!empty($data['token'])) {
+        if (isset($data['token']) && $data['token'] !== '') {
             unset($data['token']); // we do not want this as a carryover from old data.
         }
         $report = $this->getOne($id);
-        if (empty($report)) {
+        if ($report === null) {
             throw new \InvalidArgumentException("Report not found");
         }
 
@@ -167,10 +167,8 @@ class AssessmentReportRepository
     {
         $sql = "SELECT count(*) as count FROM " . self::TABLE_NAME . " WHERE id = ?";
         $params = [$id];
+        /** @var int|string|null $result */
         $result = QueryUtils::fetchSingleValue($sql, 'count', $params);
-        if (!empty($result)) {
-            return $result > 0;
-        }
-        return false;
+        return $result !== null && (int) $result > 0;
     }
 }

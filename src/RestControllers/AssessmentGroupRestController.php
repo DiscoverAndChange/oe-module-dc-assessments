@@ -43,7 +43,7 @@ class AssessmentGroupRestController implements IRestController
         $groupService = new AssessmentGroupService();
         $results = $groupService->getAllGroups($showAllGroups, $primaryFacility['id'] ?? null);
 
-        if (empty($results)) {
+        if ($results === []) {
             return RestUtils::getEmptyResponse();
         } else {
             $groups = $this->createAssessmentGroupsFromEntities($results, $showAllGroups, $this->logger);
@@ -71,13 +71,13 @@ class AssessmentGroupRestController implements IRestController
             $group = new AssessmentGroup();
             $group->setName($result['name']);
             $group->setId($result['id']);
-            if (!empty($result['date_created'])) {
+            if (isset($result['date_created']) && $result['date_created'] !== '') {
                 $group->setCreated(\DateTime::createFromFormat('Y-m-d H:i:s.u', $result['date_created']));
             }
-            if (!empty($result['date_updated'])) {
+            if (isset($result['date_updated']) && $result['date_updated'] !== '') {
                 $group->setUpdated(\DateTime::createFromFormat('Y-m-d H:i:s.u', $result['date_updated']));
             }
-            if ($showAllGroups && !empty($result['company'])) {
+            if ($showAllGroups && isset($result['company'])) {
                 $group->setCompanyId((int) $result['company']['id']);
             }
             foreach ($result['assessmentGroupAssessmentBlobs'] as $agab) {
@@ -179,7 +179,7 @@ class AssessmentGroupRestController implements IRestController
             $companyId = $request->getAuthRole() == Role::SuperUser ? null : $request->getCompanyId();
             $createdGroup = $repo->addAssessmentToGroup($uid, $groupId, $companyId);
             $assessmentGroups = $this->createAssessmentGroupsFromEntities([$createdGroup], true, $this->logger);
-            if (!empty($assessmentGroups)) {
+            if ($assessmentGroups !== []) {
                 QueryUtils::commitTransaction();
                 $transactionCommitted = true;
                 return RestUtils::returnSingleObjectResponse($assessmentGroups[0]);
@@ -226,7 +226,7 @@ class AssessmentGroupRestController implements IRestController
             }
             $createdGroup = $repo->updateAssessmentVersionForGroup($groupId);
             $assessmentGroups = $this->createAssessmentGroupsFromEntities([$createdGroup], true, $this->logger);
-            if (!empty($assessmentGroups)) {
+            if ($assessmentGroups !== []) {
                 QueryUtils::commitTransaction();
                 $transactionCommitted = true;
                 return RestUtils::returnSingleObjectResponse($assessmentGroups[0]);
@@ -264,7 +264,7 @@ class AssessmentGroupRestController implements IRestController
             /** @var array<string, list<array{id: string, template_name: string}>> $templates */
             $templates = $documentTemplateService->getTemplateListByProfile($profile['option_id']);
             // if a profile has no templates, we don't want to work with it.
-            if (!empty($templates)) {
+            if ($templates !== []) {
                 $templateItems = [];
                 // we don't need to show categories in this breakdown
                 foreach ($templates as $category => $templates) {

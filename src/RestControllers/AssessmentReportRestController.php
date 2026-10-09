@@ -76,7 +76,7 @@ class AssessmentReportRestController implements IRestController
             }
 
             $assessmentGroupID = null;
-            if (!empty($data['linkedGroup'])) {
+            if (isset($data['linkedGroup']) && $data['linkedGroup'] !== []) {
                 $assessmentGroupID = isset($data['linkedGroup']['id']) ? $data['linkedGroup']['id'] : null;
                 unset($data['linkedGroup']);
             }
@@ -125,7 +125,7 @@ class AssessmentReportRestController implements IRestController
             }
 
             $assessmentGroupID = null;
-            if (!empty($data['linkedGroup'])) {
+            if (isset($data['linkedGroup']) && $data['linkedGroup'] !== []) {
                 $assessmentGroupID = isset($data['linkedGroup']['id']) ? $data['linkedGroup']['id'] : null;
                 unset($data['linkedGroup']);
             }

@@ -45,19 +45,19 @@ class ResourceImporterService
     public function importResources(array $resources, $importerUserId)
     {
         $index = 0;
-        if (!empty($resources['AssessmentBlob'])) {
+        if (isset($resources['AssessmentBlob']) && $resources['AssessmentBlob'] !== []) {
             $this->importAssessmentBlobResources($resources['AssessmentBlob'], $index);
         }
 
-        if (!empty($resources['LibraryAsset'])) {
+        if (isset($resources['LibraryAsset']) && $resources['LibraryAsset'] !== []) {
             $this->importLibraryAssetResources($resources['LibraryAsset'], $importerUserId, $index);
         }
 
-        if (!empty($resources['AssessmentGroup'])) {
+        if (isset($resources['AssessmentGroup']) && $resources['AssessmentGroup'] !== []) {
             $this->importAssessmentGroupResources($resources['AssessmentGroup'], $importerUserId, $index);
         }
 
-        if (!empty($resources['Report'])) {
+        if (isset($resources['Report']) && $resources['Report'] !== []) {
             $this->importReports($resources['Report'], $importerUserId, $index);
         }
     }
@@ -67,7 +67,7 @@ class ResourceImporterService
      */
     public function getAssessmentRepository()
     {
-        if (empty($this->assessmentRepository)) {
+        if ($this->assessmentRepository === null) {
             $this->assessmentRepository = new AssessmentRepository(ServiceContainer::getLogger());
         }
         return $this->assessmentRepository;
@@ -87,7 +87,7 @@ class ResourceImporterService
      */
     public function getAssessmentGroupService()
     {
-        if (empty($this->assessmentGroupService)) {
+        if ($this->assessmentGroupService === null) {
             $this->assessmentGroupService = new AssessmentGroupService();
         }
         return $this->assessmentGroupService;
@@ -122,7 +122,7 @@ class ResourceImporterService
                 $uid = $blob['_uid'];
                 $name = $blob['_name'];
                 $description = $blob['_description'];
-                if (!empty($blob['token'])) {
+                if (isset($blob['token']) && $blob['token'] !== '') {
                     // cleanup routine
                     unset($blob['token']);
                 }
@@ -286,12 +286,12 @@ class ResourceImporterService
             $linkedGroupName = $report['_assessmentgroup'] ?? $report['linkedGroup'] ?? null;
             try {
                 QueryUtils::startTransaction();
-                if (!empty($linkedAssessmentUid)) {
+                if ($linkedAssessmentUid !== null && $linkedAssessmentUid !== '') {
                     if (!$assessmentRepo->existsAssessment($linkedAssessmentUid)) {
                         throw new \InvalidArgumentException("Failed to find assessment with uid " . $linkedAssessmentUid);
                     }
                     $assessmentUid = $linkedAssessmentUid;
-                } else if (!empty($linkedGroupName)) {
+                } else if ($linkedGroupName !== null && $linkedGroupName !== '') {
                     $result = $groupRepo->search(['name' => $linkedGroupName]);
                     if (!$result->hasData()) {
                         throw new \InvalidArgumentException("Failed to find assessment group with name " . $linkedGroupName);

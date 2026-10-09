@@ -48,7 +48,7 @@ class ClientRestController implements IRestController
         // need to check whether this provider has a relationship with the patient...
         $params = $request->getQueryParams();
         $isAdmin = false;
-        if (empty($params['user']) && !($isAdmin = AclMain::aclCheckCore('admin', 'super') == true)) {
+        if ((!isset($params['user']) || $params['user'] === '') && !($isAdmin = AclMain::aclCheckCore('admin', 'super') == true)) {
             return RestUtils::returnAccessDeniedResponse($this->logger, 'assignedUserId missing and user missing admin/super ACL');
         }
 
@@ -183,13 +183,13 @@ class ClientRestController implements IRestController
             /** @var array{id?: int, _id?: int, appointmentId?: string, profileId?: string} $group */
             $group = $request->getBodyAsJson() ?? [];
             $groupId = $group['id'] ?? $group['_id'] ?? null;
-            if (empty($groupId)) {
+            if ($groupId === null || $groupId === 0) {
                 throw new \InvalidArgumentException('group.id is required');
             }
             $appointmentId = isset($group['appointmentId']) ? $group['appointmentId'] : null;
             $profileId = $group['profileId'] ?? null;
             $repo = new ClientRepository($this->logger);
-            if (!empty($profileId)) {
+            if ($profileId !== null && $profileId !== '') {
                 $createdAssignment = $repo->addTemplateProfileAssignmentToClient($id, $profileId, $request->getUserId(), $facilityId, $appointmentId);
             } else {
                 $createdAssignment = $repo->addGroupAssignmentToClient($id, $groupId, $request->getUserId(), $facilityId, $appointmentId);
@@ -271,7 +271,7 @@ class ClientRestController implements IRestController
             $subject = trim(($messageRequest['subject'] ?? ''));
             $isTest = ($messageRequest['isTest'] ?? 0) === 1;
 
-            if (empty($message)) {
+            if ($message === '') {
                 throw new \InvalidArgumentException("message is required", ErrorCode::VALIDATE_DATA_MISSING);
             }
 //            if (empty($subject)) {
@@ -280,7 +280,7 @@ class ClientRestController implements IRestController
             QueryUtils::startTransaction();
             $userId = $request->getUserId();
             $user = $userRepo->getUser((int)$userId);
-            if (empty($user)) {
+            if ($user === false) {
                 throw new \InvalidArgumentException("User not found for request", ErrorCode::SYSTEM_ERROR);
             }
             $senderEmail = $user['email'] ?? null;

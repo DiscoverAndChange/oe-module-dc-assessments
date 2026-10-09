@@ -32,7 +32,7 @@ class AssessmentResultRepository
         $query = $distinctIds . $fromClause . $where->getFragment() . $sql;
 
         $ids = QueryUtils::fetchTableColumn($query, 'id', $where->getBoundValues());
-        if (empty($ids)) {
+        if ($ids === []) {
             return $processingResult;
         }
 
@@ -59,7 +59,7 @@ class AssessmentResultRepository
      */
     public function getResultListForPatient(string $clientId, array $resultIds)
     {
-        if (empty($resultIds)) {
+        if ($resultIds === []) {
             throw new \InvalidArgumentException("Must provide a list of resultIds");
         }
         $params = $resultIds;
@@ -78,7 +78,7 @@ class AssessmentResultRepository
             . "ORDER BY arb.date DESC ";
         $params[] = UuidRegistry::uuidToBytes($clientId);
         $result = QueryUtils::fetchRecords($sql, $params);
-        if (empty($result)) {
+        if ($result === []) {
             return null;
         }
         $records = $this->hydrateRecordsFromResult($result);
@@ -87,7 +87,7 @@ class AssessmentResultRepository
     /** @return array<mixed>|null */
     public function getResultsForPatient(string $clientId, ?string $assessmentUID, ?string $resultId)
     {
-        if (empty($assessmentUID) && empty($resultId)) {
+        if (($assessmentUID === null || $assessmentUID === '') && ($resultId === null || $resultId === '')) {
             throw new \InvalidArgumentException("Must provide either an assessment UID or a result ID");
         }
         $params = [];
@@ -101,7 +101,7 @@ class AssessmentResultRepository
             . "JOIN " . PatientService::TABLE_NAME . " c ON (arb.client_id = c.pid) "
             . "LEFT JOIN " . AssignmentRepository::TABLE_NAME_ASSIGNMENT_ITEM . " ai ON (ai.assessmentresultblob_id = arb.id) "
             . "WHERE ";
-        if (!empty($assessmentUID)) {
+        if ($assessmentUID !== null && $assessmentUID !== '') {
             $sql .= "ab.uid = ? ";
             $params[] = $assessmentUID;
         } else {
@@ -115,7 +115,7 @@ class AssessmentResultRepository
 
         $params[] = UuidRegistry::uuidToBytes($clientId);
         $result = QueryUtils::fetchRecords($sql, $params);
-        if (empty($result)) {
+        if ($result === []) {
             return null;
         }
         $records = $this->hydrateRecordsFromResult($result);
@@ -158,7 +158,7 @@ class AssessmentResultRepository
         $sql = "INSERT INTO " . self::TABLE_NAME . " (id, assessment_id, client_id, data) VALUES (?, ?, ?, ?)";
 
         $sanitizer = new HTMLSanitizer();
-        if (!empty($resultData['_answers'])) {
+        if (isset($resultData['_answers']) && $resultData['_answers'] !== []) {
             $answers = [];
             /** @var list<array<string, mixed>> $inputAnswers */
             $inputAnswers = $resultData['_answers'];

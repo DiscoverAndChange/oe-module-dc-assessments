@@ -85,7 +85,7 @@ class LibraryAssetResultBlobFHIRResourceService extends FhirServiceBase
     protected function createOpenEMRSearchParameters(array $fhirSearchParameters, ?string $puuidBind = null): array
     {
         // we don't do anything with the code once we have it, so we remove it.
-        if (!empty($fhirSearchParameters['questionnaire-code'])) {
+        if (isset($fhirSearchParameters['questionnaire-code'])) {
             unset($fhirSearchParameters['questionnaire-code']);
         }
         return parent::createOpenEMRSearchParameters($fhirSearchParameters, $puuidBind);
@@ -99,7 +99,7 @@ class LibraryAssetResultBlobFHIRResourceService extends FhirServiceBase
         }
         /** @var \OpenEMR\FHIR\R4\FHIRElement\FHIRExtension[] $extensions */
         $extensions = UtilsService::getExtensionsByUrl("https://www.discoverandchange.com/fhir/" . self::CODE_DAC_LIBRARY_ASSET, $fhirResource);
-        if (!empty($extensions)) { // we only care about the first one.
+        if ($extensions !== []) { // we only care about the first one.
             $valueString = $extensions[0]->getValueString();
             /** @var array<string, mixed>|null $dataRecord */
             $dataRecord = json_decode($valueString, true);
@@ -140,12 +140,12 @@ class LibraryAssetResultBlobFHIRResourceService extends FhirServiceBase
             $resultDTO = new LibraryAssetBlobResultDTO();
             $resultDTO->fromDTO($openEmrRecord);
             $assetDTO = new LibraryAssetBlobDTO();
-            if (!empty($openEmrRecord['asset'])) {
+            if (isset($openEmrRecord['asset']) && $openEmrRecord['asset'] !== []) {
                 $assetDTO->fromDTO((array) $openEmrRecord['asset']);
             }
 
             $item = $assignmentRepo->getAssignmentItem($resultDTO->getAssignmentItemId(), $openEmrRecord['clientId']);
-            if (empty($item)) {
+            if ($item === null) {
                 throw new \InvalidArgumentException("Assignment item not found", ErrorCode::INVALID_REQUEST);
             }
             if (!($item instanceof AssignedLibraryAsset)) {
@@ -178,9 +178,9 @@ class LibraryAssetResultBlobFHIRResourceService extends FhirServiceBase
     private function validateCreateAccessAndReturnClient(string $patientUuidString, ?int $userId)
     {
 
-        if (empty($patientUuidString)) {
+        if ($patientUuidString === '') {
             throw new AccessDeniedException("encounters", "notes", "You do not have permission to create this result");
-        } else if (!empty($userId && !AclMain::aclCheckCore("encounters", "Notes"))) {
+        } else if ($userId !== null && $userId !== 0 && !AclMain::aclCheckCore("encounters", "Notes")) {
             throw new AccessDeniedException("encounters", "notes", "You do not have permission to create this result");
         } else {
             // need to grab the patient pid from the uuid

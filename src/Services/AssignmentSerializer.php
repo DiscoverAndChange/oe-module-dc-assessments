@@ -31,7 +31,7 @@ class AssignmentSerializer
         if ($assignmentJSON['type'] == 'AssessmentGroup') {
             $assignment = new AssignedAssessmentGroup();
             $assignment->fromJSON($assignmentJSON);
-            if (!empty($assignmentJSON['items'])) {
+            if (isset($assignmentJSON['items']) && $assignmentJSON['items'] !== []) {
                 /** @var array<mixed> $items */
                 $items = $assignmentJSON['items'];
                 foreach ($items as $item) {
@@ -53,7 +53,7 @@ class AssignmentSerializer
                 throw new \InvalidArgumentException('Invalid assignment type');
             }
             $assignment->fromJSON($assignmentJSON);
-            if (!empty($assignmentJSON['items'])) {
+            if (isset($assignmentJSON['items']) && $assignmentJSON['items'] !== []) {
                 /** @var array<mixed> $items */
                 $items = $assignmentJSON['items'];
                 /** @var array<mixed> $jsonItem */

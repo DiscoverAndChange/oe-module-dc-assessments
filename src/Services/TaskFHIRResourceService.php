@@ -225,7 +225,7 @@ class TaskFHIRResourceService extends FhirServiceBase implements
         }
         /** @var array<string, mixed> $patientRef */
         $patientRef = UtilsService::parseReference($fhirResource->getFor());
-        if ($patientRef['localResource'] != true || empty($patientRef['uuid'])) {
+        if ($patientRef['localResource'] != true || !isset($patientRef['uuid']) || $patientRef['uuid'] === '') {
             throw new \InvalidArgumentException("Invalid Task.for");
         }
         $originalResource = $this->getOne($fhirResourceId, $patientRef['uuid']);
@@ -239,7 +239,7 @@ class TaskFHIRResourceService extends FhirServiceBase implements
         foreach ($fhirResource->getCode()->getCoding() as $coding) {
             $code = $coding->getCode()->getValue();
             $service = $this->getServiceForCode(new TokenSearchField('code', $code), $code);
-            if (!empty($service) && $service instanceof IResourceUpdateableService) {
+            if ($service !== null && $service instanceof IResourceUpdateableService) {
                 return $service->update($fhirResourceId, $fhirResource);
             }
         }

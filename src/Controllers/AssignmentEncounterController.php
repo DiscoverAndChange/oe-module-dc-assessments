@@ -55,18 +55,18 @@ class AssignmentEncounterController implements IStaticEventSubscriber
         $pid = $event->getPid();
         $encounterId = $event->getEncounter();
 
-        if (empty($pid) || empty($encounterId)) {
+        if ($pid === 0 || $encounterId === 0) {
             $this->logger->error("Missing pid or encounterId");
         }
         $patientService = new PatientService();
         $puuid = $patientService->getUuid((string)$pid);
-        if (empty($puuid)) {
+        if ($puuid === '') {
             $this->logger->error("Missing patient uuid");
         } else {
             $puuid = UuidRegistry::uuidToString($puuid);
         }
         $euuid = EncounterService::getUuidById((string)$encounterId, EncounterService::ENCOUNTER_TABLE, 'encounter');
-        if (empty($euuid)) {
+        if ($euuid === '') {
             $this->logger->error("Missing encounter uuid");
         }
         $euuid = UuidRegistry::uuidToString($euuid);

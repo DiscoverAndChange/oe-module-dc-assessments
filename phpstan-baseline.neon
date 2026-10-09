@@ -25,12 +25,6 @@ parameters:
 			path: src/APIProxyController.php
 
 		-
-			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
-			identifier: empty.notAllowed
-			count: 4
-			path: src/APIProxyController.php
-
-		-
 			message: '#^Direct access to \$_REQUEST is forbidden\. Use Symfony''s Request object instead\.$#'
 			identifier: openemr.forbiddenRequestGlobals
 			count: 1
@@ -139,20 +133,8 @@ parameters:
 			path: src/Bootstrap.php
 
 		-
-			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
-			identifier: empty.notAllowed
-			count: 4
-			path: src/Bootstrap.php
-
-		-
 			message: '#^Parameter \#1 \$string of function urlencode expects string, mixed given\.$#'
 			identifier: argument.type
-			count: 1
-			path: src/Bootstrap.php
-
-		-
-			message: '#^Property OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Bootstrap\:\:\$serviceContainer \(Symfony\\Component\\DependencyInjection\\Container\) in empty\(\) is not falsy\.$#'
-			identifier: empty.property
 			count: 1
 			path: src/Bootstrap.php
 
@@ -181,27 +163,21 @@ parameters:
 			path: src/Controllers/AssessmentAppointmentController.php
 
 		-
-			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
-			identifier: empty.notAllowed
-			count: 20
-			path: src/Controllers/AssessmentAppointmentController.php
-
-		-
 			message: '#^Direct access to \$_GET is forbidden\. Use Symfony''s Request object instead\.$#'
 			identifier: openemr.forbiddenRequestGlobals
-			count: 5
+			count: 8
 			path: src/Controllers/AssessmentAppointmentController.php
 
 		-
 			message: '#^Direct access to \$_POST is forbidden\. Use Symfony''s Request object instead\.$#'
 			identifier: openemr.forbiddenRequestGlobals
-			count: 4
+			count: 6
 			path: src/Controllers/AssessmentAppointmentController.php
 
 		-
 			message: '#^Direct access to \$_REQUEST is forbidden\. Use Symfony''s Request object instead\.$#'
 			identifier: openemr.forbiddenRequestGlobals
-			count: 1
+			count: 2
 			path: src/Controllers/AssessmentAppointmentController.php
 
 		-
@@ -259,46 +235,16 @@ parameters:
 			path: src/Controllers/AssignmentEncounterController.php
 
 		-
-			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
-			identifier: empty.notAllowed
-			count: 4
-			path: src/Controllers/AssignmentEncounterController.php
-
-		-
 			message: '#^Result of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Controllers\\AssessmentAppointmentController\:\:renderWizardScreenForAppointmentId\(\) \(void\) is used\.$#'
 			identifier: method.void
 			count: 1
 			path: src/Controllers/BackendDispatchController.php
 
 		-
-			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
-			identifier: empty.notAllowed
-			count: 3
-			path: src/Controllers/ConfigController.php
-
-		-
-			message: '#^Variable \$response in empty\(\) always exists and is not falsy\.$#'
-			identifier: empty.variable
-			count: 1
-			path: src/Controllers/ConfigController.php
-
-		-
 			message: '#^catch \(Exception\) would suppress ErrorException, which is forbidden\.$#'
 			identifier: openemr.forbiddenCatchType
 			count: 1
 			path: src/Controllers/ConfigController.php
-
-		-
-			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
-			identifier: empty.notAllowed
-			count: 2
-			path: src/Controllers/FrontendDispatchController.php
-
-		-
-			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
-			identifier: empty.notAllowed
-			count: 1
-			path: src/DTO/ClientSearchQueryDTO.php
 
 		-
 			message: '#^Property OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\DTO\\ClientSearchQueryDTO\:\:\$email \(string\|null\) does not accept mixed\.$#'
@@ -388,12 +334,6 @@ parameters:
 			message: '#^Binary operation "\." between mixed and mixed results in an error\.$#'
 			identifier: binaryOp.invalid
 			count: 1
-			path: src/GlobalConfig.php
-
-		-
-			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
-			identifier: empty.notAllowed
-			count: 2
 			path: src/GlobalConfig.php
 
 		-
@@ -493,12 +433,6 @@ parameters:
 			path: src/Models/AssignedTemplateProfile.php
 
 		-
-			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
-			identifier: empty.notAllowed
-			count: 5
-			path: src/Models/Assignment.php
-
-		-
 			message: '#^Parameter \#1 \$v of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Models\\Assignment\:\:setDateAssigned\(\) expects DateTime, DateTime\|false given\.$#'
 			identifier: argument.type
 			count: 1
@@ -519,12 +453,6 @@ parameters:
 		-
 			message: '#^Call to an undefined method OpenEMR\\Common\\Http\\HttpRestRequest\:\:withRequestTarget\(\)\.$#'
 			identifier: method.notFound
-			count: 1
-			path: src/Models/ServerRestRequest.php
-
-		-
-			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
-			identifier: empty.notAllowed
 			count: 1
 			path: src/Models/ServerRestRequest.php
 
@@ -591,7 +519,7 @@ parameters:
 		-
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
 			identifier: empty.notAllowed
-			count: 8
+			count: 1
 			path: src/RestControllers/AssessmentGroupRestController.php
 
 		-
@@ -647,12 +575,6 @@ parameters:
 			identifier: openemr.forbiddenCatchType
 			count: 6
 			path: src/RestControllers/AssessmentGroupRestController.php
-
-		-
-			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
-			identifier: empty.notAllowed
-			count: 2
-			path: src/RestControllers/AssessmentReportRestController.php
 
 		-
 			message: '#^Method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssessmentReportRepository\:\:getAll\(\) invoked with 2 parameters, 1 required\.$#'
@@ -751,12 +673,6 @@ parameters:
 			path: src/RestControllers/AssessmentReportRestController.php
 
 		-
-			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
-			identifier: empty.notAllowed
-			count: 2
-			path: src/RestControllers/AssessmentRestController.php
-
-		-
 			message: '#^OpenEMR\\Common\\Database\\QueryUtils\:\:commitTransaction\(\) is deprecated\. Use QueryUtils\:\:inTransaction\(\) wrapper instead\.$#'
 			identifier: openemr.deprecatedSqlFunction
 			count: 1
@@ -820,12 +736,6 @@ parameters:
 			message: '#^Cannot call method format\(\) on DateTime\|null\.$#'
 			identifier: method.nonObject
 			count: 1
-			path: src/RestControllers/AssessmentResultRestController.php
-
-		-
-			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
-			identifier: empty.notAllowed
-			count: 8
 			path: src/RestControllers/AssessmentResultRestController.php
 
 		-
@@ -903,7 +813,7 @@ parameters:
 		-
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
 			identifier: empty.notAllowed
-			count: 6
+			count: 1
 			path: src/RestControllers/ClientRestController.php
 
 		-
@@ -961,12 +871,6 @@ parameters:
 			path: src/RestControllers/ClientRestController.php
 
 		-
-			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
-			identifier: empty.notAllowed
-			count: 1
-			path: src/RestControllers/LibraryAssetRestController.php
-
-		-
 			message: '#^OpenEMR\\Common\\Database\\QueryUtils\:\:commitTransaction\(\) is deprecated\. Use QueryUtils\:\:inTransaction\(\) wrapper instead\.$#'
 			identifier: openemr.deprecatedSqlFunction
 			count: 1
@@ -1000,12 +904,6 @@ parameters:
 			message: '#^Call to an undefined method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Models\\Assignment\:\:setResultId\(\)\.$#'
 			identifier: method.notFound
 			count: 1
-			path: src/RestControllers/LibraryAssetResultRestController.php
-
-		-
-			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
-			identifier: empty.notAllowed
-			count: 7
 			path: src/RestControllers/LibraryAssetResultRestController.php
 
 		-
@@ -1081,12 +979,6 @@ parameters:
 			path: src/RestControllers/LibraryAssetResultRestController.php
 
 		-
-			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
-			identifier: empty.notAllowed
-			count: 2
-			path: src/RestControllers/MessageTemplateRestController.php
-
-		-
 			message: '#^catch \(Exception\) would suppress ErrorException, which is forbidden\.$#'
 			identifier: openemr.forbiddenCatchType
 			count: 2
@@ -1102,12 +994,6 @@ parameters:
 			message: '#^Call to an undefined method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Models\\Assignment\:\:getResultId\(\)\.$#'
 			identifier: method.notFound
 			count: 1
-			path: src/RestControllers/QuestionnaireAuditController.php
-
-		-
-			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
-			identifier: empty.notAllowed
-			count: 8
 			path: src/RestControllers/QuestionnaireAuditController.php
 
 		-
@@ -1213,12 +1099,6 @@ parameters:
 			path: src/RestControllers/TagRestController.php
 
 		-
-			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
-			identifier: empty.notAllowed
-			count: 2
-			path: src/RestControllers/TaskRestController.php
-
-		-
 			message: '#^Direct access to \$_SERVER is forbidden\. Use Symfony''s Request object instead\.$#'
 			identifier: openemr.forbiddenRequestGlobals
 			count: 1
@@ -1243,32 +1123,14 @@ parameters:
 			path: src/RestControllers/TaskRestController.php
 
 		-
-			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
-			identifier: empty.notAllowed
-			count: 6
-			path: src/Services/AssessmentGroupService.php
-
-		-
 			message: '#^Parameter \#1 \$search of method OpenEMR\\Services\\BaseService\:\:search\(\) expects array\<string, OpenEMR\\Services\\Search\\ISearchField\>, array\<string, int\<min, \-1\>\|int\<1, max\>\|string\> given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Services/AssessmentGroupService.php
 
 		-
-			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
-			identifier: empty.notAllowed
-			count: 7
-			path: src/Services/AssessmentReportRepository.php
-
-		-
 			message: '#^Dead catch \- Exception is never thrown in the try block\.$#'
 			identifier: catch.neverThrown
-			count: 1
-			path: src/Services/AssessmentReportRepository.php
-
-		-
-			message: '#^Offset ''assessmentgroup_id'' on array\{data\: string, assessmentgroup_id\: non\-falsy\-string, assessmentgroup_name\: string\|null, assessment_uid\: string\|null, reportpermission_id\: string\|null, show\: string\|null\} on left side of \?\? always exists and is not nullable\.$#'
-			identifier: nullCoalesce.offset
 			count: 1
 			path: src/Services/AssessmentReportRepository.php
 
@@ -1283,12 +1145,6 @@ parameters:
 			identifier: property.onlyWritten
 			count: 1
 			path: src/Services/AssessmentRepository.php
-
-		-
-			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
-			identifier: empty.notAllowed
-			count: 8
-			path: src/Services/AssessmentResultRepository.php
 
 		-
 			message: '#^Method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssessmentResultRepository\:\:insertOnSiteDocumentRecord\(\) is unused\.$#'
@@ -1309,21 +1165,9 @@ parameters:
 			path: src/Services/AssignmentCompleter.php
 
 		-
-			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
-			identifier: empty.notAllowed
-			count: 2
-			path: src/Services/AssignmentSerializer.php
-
-		-
 			message: '#^Binary operation "\." between mixed and string results in an error\.$#'
 			identifier: binaryOp.invalid
 			count: 1
-			path: src/Services/ClientMessageDispatcher.php
-
-		-
-			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
-			identifier: empty.notAllowed
-			count: 4
 			path: src/Services/ClientMessageDispatcher.php
 
 		-
@@ -1349,12 +1193,6 @@ parameters:
 			identifier: property.onlyWritten
 			count: 1
 			path: src/Services/ClientSearchRepository.php
-
-		-
-			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
-			identifier: empty.notAllowed
-			count: 1
-			path: src/Services/FhirServices/AssessmentFHIRResourceService.php
 
 		-
 			message: '#^Parameter \#1 \$code of method OpenEMR\\FHIR\\R4\\FHIRDomainResource\\FHIRQuestionnaire\:\:addCode\(\) expects OpenEMR\\FHIR\\R4\\FHIRElement\\FHIRCoding, OpenEMR\\FHIR\\R4\\FHIRElement\\FHIRCode given\.$#'
@@ -1483,12 +1321,6 @@ parameters:
 			path: src/Services/FhirServices/AssessmentResponseBlobFHIRResourceService.php
 
 		-
-			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
-			identifier: empty.notAllowed
-			count: 1
-			path: src/Services/FhirServices/LibraryAssetFHIRResourceService.php
-
-		-
 			message: '#^Parameter \#1 \$code of method OpenEMR\\FHIR\\R4\\FHIRDomainResource\\FHIRQuestionnaire\:\:addCode\(\) expects OpenEMR\\FHIR\\R4\\FHIRElement\\FHIRCoding, OpenEMR\\FHIR\\R4\\FHIRElement\\FHIRCode given\.$#'
 			identifier: argument.type
 			count: 1
@@ -1535,12 +1367,6 @@ parameters:
 			identifier: deadCode.unreachable
 			count: 1
 			path: src/Services/FhirServices/LibraryAssetFHIRResourceService.php
-
-		-
-			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
-			identifier: empty.notAllowed
-			count: 6
-			path: src/Services/FhirServices/LibraryAssetResultBlobFHIRResourceService.php
 
 		-
 			message: '#^OpenEMR\\Common\\Database\\QueryUtils\:\:commitTransaction\(\) is deprecated\. Use QueryUtils\:\:inTransaction\(\) wrapper instead\.$#'
@@ -1627,12 +1453,6 @@ parameters:
 			path: src/Services/FhirServices/LibraryAssetResultBlobFHIRResourceService.php
 
 		-
-			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
-			identifier: empty.notAllowed
-			count: 1
-			path: src/Services/FhirServices/QuestionnaireFormFHIRResourceService.php
-
-		-
 			message: '#^Parameter \#1 \$dataRecord \(OpenEMR\\FHIR\\R4\\FHIRResource\\FHIRDomainResource\) of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\FhirServices\\QuestionnaireFormFHIRResourceService\:\:createProvenanceResource\(\) should be contravariant with parameter \$dataRecord \(mixed\) of method OpenEMR\\Services\\FHIR\\FhirServiceBase\:\:createProvenanceResource\(\)$#'
 			identifier: method.childParameterType
 			count: 1
@@ -1695,7 +1515,7 @@ parameters:
 		-
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
 			identifier: empty.notAllowed
-			count: 7
+			count: 1
 			path: src/Services/LibraryAssetBlobRepository.php
 
 		-
@@ -1726,12 +1546,6 @@ parameters:
 			message: '#^Cannot call method format\(\) on DateTime\|null\.$#'
 			identifier: method.nonObject
 			count: 1
-			path: src/Services/LibraryAssetResultBlobRepository.php
-
-		-
-			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
-			identifier: empty.notAllowed
-			count: 14
 			path: src/Services/LibraryAssetResultBlobRepository.php
 
 		-
@@ -1837,12 +1651,6 @@ parameters:
 			path: src/Services/ResourceImporterService.php
 
 		-
-			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
-			identifier: empty.notAllowed
-			count: 9
-			path: src/Services/ResourceImporterService.php
-
-		-
 			message: '#^OpenEMR\\Common\\Database\\QueryUtils\:\:commitTransaction\(\) is deprecated\. Use QueryUtils\:\:inTransaction\(\) wrapper instead\.$#'
 			identifier: openemr.deprecatedSqlFunction
 			count: 2
@@ -1945,28 +1753,10 @@ parameters:
 			path: src/Services/ResourceImporterService.php
 
 		-
-			message: '#^Property OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\ResourceImporterService\:\:\$assessmentGroupService \(OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssessmentGroupService\) in empty\(\) is not falsy\.$#'
-			identifier: empty.property
-			count: 1
-			path: src/Services/ResourceImporterService.php
-
-		-
-			message: '#^Property OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\ResourceImporterService\:\:\$assessmentRepository \(OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssessmentRepository\) in empty\(\) is not falsy\.$#'
-			identifier: empty.property
-			count: 1
-			path: src/Services/ResourceImporterService.php
-
-		-
 			message: '#^catch \(Exception\) would suppress ErrorException, which is forbidden\.$#'
 			identifier: openemr.forbiddenCatchType
 			count: 4
 			path: src/Services/ResourceImporterService.php
-
-		-
-			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
-			identifier: empty.notAllowed
-			count: 3
-			path: src/Services/SimplifiedOAuthTwigExtension.php
 
 		-
 			message: '#^Parameter \#1 \$constant of function xl expects literal\-string, mixed given\.$#'
@@ -1989,7 +1779,7 @@ parameters:
 		-
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
 			identifier: empty.notAllowed
-			count: 2
+			count: 1
 			path: src/Services/SmartAppClientService.php
 
 		-
@@ -1997,12 +1787,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: src/Services/SmartAppClientService.php
-
-		-
-			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
-			identifier: empty.notAllowed
-			count: 2
-			path: src/Services/TagRepository.php
 
 		-
 			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(mixed\)\: mixed\)\|null, Closure\(array\|bool\|float\|GMP\|int\|resource\|SimpleXMLElement\|string\|null, int\=\)\: int given\.$#'
@@ -2031,7 +1815,7 @@ parameters:
 		-
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
 			identifier: empty.notAllowed
-			count: 5
+			count: 1
 			path: src/Services/Task/AssignmentTaskFHIRResourceService.php
 
 		-
@@ -2109,7 +1893,7 @@ parameters:
 		-
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
 			identifier: empty.notAllowed
-			count: 8
+			count: 1
 			path: src/Services/Task/QuestionnairePortalTaskFHIRResourceService.php
 
 		-
@@ -2229,7 +2013,7 @@ parameters:
 		-
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
 			identifier: empty.notAllowed
-			count: 5
+			count: 3
 			path: src/Services/TaskFHIRResourceService.php
 
 		-

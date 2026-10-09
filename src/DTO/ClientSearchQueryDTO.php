@@ -23,7 +23,7 @@ class ClientSearchQueryDTO
     {
         $this->id = $request['id'] ?? null;
         $this->email = $request['email'] ?? null;
-        if (!empty($this->email)) {
+        if ($this->email !== null && $this->email !== '') {
             $this->email = urldecode($this->email);
         }
 

@@ -33,7 +33,7 @@ class FrontendDispatchController
     {
         /** @var string|null $clientId */
         $clientId = $this->config->getSmartAppClientId();
-        if (empty($clientId) || !$this->isClientEnabled($clientId)) {
+        if (($clientId === null || $clientId === '') || !$this->isClientEnabled($clientId)) {
             // if the client is not enabled we need to present a message to the user
             $body = $this->twig->render('error/500.html.twig', ['exception' => "The client is not enabled. Please contact your administrator."]);
             die($body);
@@ -87,7 +87,7 @@ class FrontendDispatchController
         $resolvedTemplate = $this->twig->resolveTemplate($templates);
         $stringVar = $resolvedTemplate->render($vars);
         $json = [];
-        if (!empty($stringVar)) {
+        if ($stringVar !== '') {
             /** @var array<mixed> $json */
             $json = json_decode($stringVar, true) ?? [];
         }

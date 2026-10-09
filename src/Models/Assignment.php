@@ -199,7 +199,7 @@ class Assignment implements \JsonSerializable
             "appointmentId" => $this->appointmentId,
             "items" => []
         ];
-        if (!empty($this->getItems())) {
+        if ($this->getItems() !== []) {
             $result["items"] = array_map(function ($item) {
                 return $item->jsonSerialize();
             }, $this->getItems());
@@ -210,7 +210,7 @@ class Assignment implements \JsonSerializable
         if ($this->dateCompleted !== null) {
             $result["dateCompleted"] = $this->dateCompleted->format(DateTime::ATOM);
         }
-        if (!empty($this->getClientId())) {
+        if ($this->getClientId() !== null && $this->getClientId() !== '') {
             $result["clientId"] = $this->getClientId();
         }
         return $result;
@@ -233,13 +233,13 @@ class Assignment implements \JsonSerializable
         if (isset($assignmentJSON["type"]) && $assignmentJSON["type"] !== '') {
             $this->setType($assignmentJSON["type"]);
         }
-        if (!empty($assignmentJSON['dateCompleted'])) {
+        if (isset($assignmentJSON['dateCompleted']) && $assignmentJSON['dateCompleted'] !== '') {
             $this->setDateCompleted(\DateTime::createFromFormat($dateFormat, $assignmentJSON['dateCompleted']));
         }
-        if (!empty($assignmentJSON['dateAssigned'])) {
+        if (isset($assignmentJSON['dateAssigned']) && $assignmentJSON['dateAssigned'] !== '') {
             $this->setDateAssigned(\DateTime::createFromFormat($dateFormat, $assignmentJSON['dateAssigned']));
         }
-        if (!empty($assignmentJSON['appointmentId'])) {
+        if (isset($assignmentJSON['appointmentId']) && $assignmentJSON['appointmentId'] !== '') {
             $this->setAppointmentId($assignmentJSON['appointmentId']);
         }
         // we skip over items as we can't do much there.

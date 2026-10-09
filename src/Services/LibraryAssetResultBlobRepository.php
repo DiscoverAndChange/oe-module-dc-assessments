@@ -33,7 +33,7 @@ class LibraryAssetResultBlobRepository
         $answersToSave = null;
         $journalToSave = null;
         // if we are a new object let's generate an id for it.
-        if (empty($resultBlob->getId())) {
+        if ($resultBlob->getId() === null || $resultBlob->getId() === '') {
             $resultBlob->generateId();
         }
         $sanitizer = new HTMLSanitizer();
@@ -43,23 +43,23 @@ class LibraryAssetResultBlobRepository
 
             $cleanedAnswers = array_map(function ($answer) use ($sanitizer) {
                 /** @var array<string, mixed> $answer */
-                if (!empty($answer['value'])) {
+                if (isset($answer['value']) && $answer['value'] !== '') {
                     $answer['value'] = $sanitizer->sanitize($answer['value']);
                 }
                 return $answer;
             }, $answers);
-            if (!empty($cleanedAnswers)) {
+            if ($cleanedAnswers !== []) {
                 $answersToSave = json_encode($cleanedAnswers);
             }
 
 
             if ($this->shouldEncrypt()) {
-                $answersToSave = !empty($answersToSave) ? $this->cryptoGen->encryptStandard($answersToSave) : null;
+                $answersToSave = is_string($answersToSave) ? $this->cryptoGen->encryptStandard($answersToSave) : null;
             }
         }
-        if (!empty($resultBlob->getJournal())) {
+        if ($resultBlob->getJournal() !== null && $resultBlob->getJournal() !== '') {
             $cleanJournal = $sanitizer->sanitize($resultBlob->getJournal());
-            if (!empty($cleanJournal)) {
+            if ($cleanJournal !== '') {
                 $journalToSave = $this->cryptoGen->encryptStandard($cleanJournal);
             }
         }
@@ -100,7 +100,7 @@ class LibraryAssetResultBlobRepository
         $query = $distinctIds . $fromClause . $where->getFragment();
 
         $ids = QueryUtils::fetchTableColumn($query, 'id', $where->getBoundValues());
-        if (empty($ids)) {
+        if ($ids === []) {
             return $processingResult;
         }
         $sql = "SELECT larb.id, larb.answers, larb.journal_entry, larb.creation_date, larb.asset_id, larb.client_id "
@@ -123,15 +123,16 @@ class LibraryAssetResultBlobRepository
     {
         // seems like the easiest is to delete all the tags, and then relink them
         QueryUtils::fetchRecords("DELETE FROM " . TagRepository::TABLE_NAME_LIBRARY_ASSET_JOIN_TAG . " WHERE library_asset_blob_id = ?", [$assetBlob->getId()]);
-        if (!empty($assetBlob->getTags())) {
-            $tagRepeat = str_repeat('?,', count($assetBlob->getTags()) - 1) . '?';
+        $assetTags = $assetBlob->getTags();
+        if ($assetTags !== null && $assetTags !== []) {
+            $tagRepeat = str_repeat('?,', count($assetTags) - 1) . '?';
             $sql = "INSERT INTO " . TagRepository::TABLE_NAME_LIBRARY_ASSET_JOIN_TAG
                 . " (library_asset_blob_id, tag_id) SELECT ?, t.id FROM " . TagRepository::TABLE_NAME . " t WHERE t.tag IN ("
                 . $tagRepeat . ")";
-            QueryUtils::sqlStatementThrowException($sql, array_merge([$assetBlob->getId()], $assetBlob->getTags()));
+            QueryUtils::sqlStatementThrowException($sql, array_merge([$assetBlob->getId()], $assetTags));
 
             // some of the tags may not exist so we need to populate only the ones that are there
-            $tags = QueryUtils::fetchTableColumn("SELECT t.tag FROM " . TagRepository::TABLE_NAME . " t WHERE t.tag IN (" . $tagRepeat . ")", 'tag', $assetBlob->getTags());
+            $tags = QueryUtils::fetchTableColumn("SELECT t.tag FROM " . TagRepository::TABLE_NAME . " t WHERE t.tag IN (" . $tagRepeat . ")", 'tag', $assetTags);
             $assetBlob->setTags($tags);
         }
         return $assetBlob;
@@ -158,7 +159,7 @@ class LibraryAssetResultBlobRepository
         . " LEFT JOIN (SELECT pid AS patient_pid, uuid AS patient_uuid FROM " . PatientService::TABLE_NAME . ") pd ON pd.patient_pid = larb.client_id "
         . " LEFT JOIN " . AssignmentRepository::TABLE_NAME_ASSIGNMENT_ITEM . " ai ON ai.assetresultblob_id = larb.id WHERE larb.id = ?";
         $params = [$id];
-        if (!empty($pid)) {
+        if ($pid !== null && $pid !== 0) {
             $sql .= " AND client_id = ?";
             $params[] = $pid;
         }
@@ -178,7 +179,7 @@ class LibraryAssetResultBlobRepository
     private function getRecordsForQuery($sql, $params)
     {
         $records = QueryUtils::fetchRecords($sql, $params);
-        if (empty($records)) {
+        if ($records === []) {
             return [];
         }
         $results = [];
@@ -202,16 +203,16 @@ class LibraryAssetResultBlobRepository
         $answers = $record['answers'];
         $journal = $record['journal_entry'];
         if ($this->shouldEncrypt()) {
-            if (!empty($answers)) {
+            if ($answers !== null && $answers !== '') {
                 $answers = $this->cryptoGen->decryptStandard($answers);
             }
-            if (!empty($journal)) {
+            if ($journal !== null && $journal !== '') {
                 $journal = (string) $this->cryptoGen->decryptStandard($journal);
             }
         }
-        $blob->setAnswers((array) (!empty($answers) ? json_decode($answers, true) : []));
+        $blob->setAnswers((array) ((is_string($answers) && $answers !== '') ? json_decode($answers, true) : []));
         $blob->setJournal($journal);
-        if (!empty($record['patient_uuid'])) {
+        if (isset($record['patient_uuid']) && $record['patient_uuid'] !== '') {
             $blob->setClientId(UuidRegistry::uuidToString($record['patient_uuid']));
         }
         $dateFormat = "Y-m-d H:i:s.u";

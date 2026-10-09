@@ -16,7 +16,7 @@ class TagRepository
     public function getTagsForAssetIds(array $assetIds): array
     {
         // nothing to return if we get an empty array
-        if (empty($assetIds)) {
+        if ($assetIds === []) {
             return [];
         }
         // make sure they are all integers and remove any that are not
@@ -36,7 +36,7 @@ class TagRepository
         $tags = [];
         // go through each record and group them by asset_id
         foreach ($records as $record) {
-            if (empty($tags[$record['library_asset_blob_id']])) {
+            if (!isset($tags[$record['library_asset_blob_id']])) {
                 $tags[$record['library_asset_blob_id']] = [];
             }
             $tags[$record['library_asset_blob_id']][] = $record['tag'];

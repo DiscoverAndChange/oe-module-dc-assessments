@@ -55,7 +55,7 @@ class LibraryAssetRestController implements IRestController
         try {
             $libraryAssetsRepo = new LibraryAssetBlobRepository($this->logger);
             $asset = $libraryAssetsRepo->getAsset((int) $id);
-            if (empty($asset)) {
+            if ($asset === null) {
                 return RestUtils::getNotFoundResponse();
             }
             return RestUtils::returnSingleObjectResponse($asset);
