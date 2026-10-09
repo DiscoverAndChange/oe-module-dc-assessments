@@ -1,3 +1,21 @@
+v0.12.22 Patient SMART-login coverage: testability refactors + SmartAppClientService / FrontendDispatchController / OAuth2-override tests
+
+  Builds on v0.12.21 (the credentials-invalid fix). Two behaviour-preserving testability refactors
+  plus the coverage they unlock:
+  - SmartAppClientService now constructor-injects its ClientRepository (default `new ClientRepository()`
+    preserves prior behaviour; Bootstrap wiring unchanged), so client registration/enable can be
+    tested without writing to oauth_clients. Also made isClientEnabled()'s guard rule-compliant
+    (!empty -> !== false).
+  - FrontendDispatchController's "client not enabled" branch now RETURNS a 500 ResponseInterface
+    instead of die($body); the caller (public/frontend/index.php) already emits the returned response,
+    so the error page still shows -- but the controller is now unit-testable and no longer halts the
+    request with a 200.
+  New tests (14): SmartAppClientServiceTest (5 -- existing-client short-circuit, first-time patient-
+  client registration + enable + id persistence, isClientEnabled states), FrontendDispatchControllerTest
+  (2 -- both not-enabled branches return 500 via an injected ArrayLoader twig), BootstrapOAuth2OverrideTest
+  (4 -- login/patient-select overridden when the layout flag is on, untouched when off, error page never
+  overridden), and PatientPortalLoginPreconditionTest (3, from v0.12.21). Suite 529 -> 543, phpstan clean.
+
 v0.12.21 Fix SMART-app patient first-login ("credentials invalid") by forcing portal_force_credential_reset='1'
 
   The patient-facing SPA authenticates via OpenEMR's OAuth2 "portal-api" flow, which has no UI for

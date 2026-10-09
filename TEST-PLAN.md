@@ -104,11 +104,14 @@ password, and the SMART flow has no UI for the standard first-login reset/verify
 - [x] **FIX**: `table.sql` forces global `portal_force_credential_reset='1'` (Disable) on
       install/upgrade so `create_portallogin.php` sets `portal_pwd_status=1` at credential creation
       (new patients land verified → first SMART login works).
-- [ ] `SmartAppClientServiceTest` (integration) — SMART client registration/enable
-      (`getRegisteredClientId`, `isClientEnabled`); hardcoded `new ClientRepository()` dep.
-- [ ] `FrontendDispatchControllerTest` — SPA serving + config injection (needs die→return refactor).
-- [ ] `BootstrapOAuth2OverrideTest` — oauth2 template page overrides resolve to module twigs.
-- [ ] e2e tier decision (Panther vs Playwright) — see analysis; full 13-step workflow scenario.
+- [x] `SmartAppClientServiceTest` (5) — SMART client registration/enable (`getRegisteredClientId`,
+      `isClientEnabled`). Refactor: ClientRepository is now constructor-injected (default preserves the
+      old `new ClientRepository()`), so the registration path is testable with a fake repo.
+- [x] `FrontendDispatchControllerTest` (2) — the "client not enabled" branch returns a 500 response
+      instead of die()ing. Refactor: die($body) -> return ResponseInterface (caller already emits it).
+- [x] `BootstrapOAuth2OverrideTest` (4) — oauth2 login/patient-select pages swap to module twigs when
+      the layout-override global is on, are left untouched when off, and the error page is never swapped.
+- [ ] e2e tier decision (Panther vs Playwright) — DEFERRED per user; full 13-step workflow scenario.
 
 ## Findings / latent bugs surfaced by tests
 Candidates for the source-typing pass / follow-up fixes (tests characterize the

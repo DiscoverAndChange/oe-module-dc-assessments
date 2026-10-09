@@ -11,8 +11,12 @@ use OpenEMR\Common\Auth\OpenIDConnect\Repositories\ClientRepository;
 
 class SmartAppClientService
 {
-    public function __construct(private GlobalConfig $globalConfig)
+    private ClientRepository $clientRepository;
+
+    public function __construct(private GlobalConfig $globalConfig, ?ClientRepository $clientRepository = null)
     {
+        // default preserves the previous hardcoded behaviour; tests inject a fake/real repo.
+        $this->clientRepository = $clientRepository ?? new ClientRepository();
     }
 
     /** @return mixed */
@@ -20,7 +24,7 @@ class SmartAppClientService
     {
         $clientId = $this->globalConfig->getSmartAppClientId();
         if ($clientId === null || $clientId === '') {
-            $clientRepository = new ClientRepository();
+            $clientRepository = $this->clientRepository;
 
             // time to setup the data for this
             // TODO: @adunsulag we need to abstract this out of the AuthorizationController into its own service
@@ -61,8 +65,7 @@ class SmartAppClientService
     /** @return bool */
     public function isClientEnabled(string $clientId)
     {
-        $clientRepository = new ClientRepository();
-        $client = $clientRepository->getClientEntity($clientId);
-        return !empty($client) && $client->isEnabled();
+        $client = $this->clientRepository->getClientEntity($clientId);
+        return $client !== false && $client->isEnabled();
     }
 }
