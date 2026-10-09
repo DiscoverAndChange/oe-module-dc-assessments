@@ -1,3 +1,15 @@
+v0.12.17 PHPStan refactor pass 8: $GLOBALS -> OEGlobalsBag (baseline 655 -> 638)
+
+  Superglobal bucket, $GLOBALS half: replaced all 17 `$GLOBALS['key']` / `$GLOBALS[self::CONST]`
+  offset reads (forbiddenGlobalsAccess) across 8 files with OEGlobalsBag::getInstance()->get(...),
+  keeping any `?? default`. css_header uses the typed getString() accessor (OEGlobalsBag's
+  untypedGlobalGet rule requires typed getters for its registered string globals). Behaviour-
+  preserving: OEGlobalsBag wraps the same OpenEMR globals. Baseline diff adds 0 / removes 8 entries
+  (17 errors); 529-test suite green, phpstan clean.
+  Deferred (still baselined, 18): the request-superglobal half ($_SERVER/$_POST/$_GET/$_REQUEST,
+  forbiddenRequestGlobals) -- needs a threaded Symfony/HttpRest request object and most sites are
+  in the out-of-scope appointment/calendar controller.
+
 v0.12.16 PHPStan refactor pass 7: OpenEMR Psr17Factory instantiation sweep (baseline 665 -> 655)
 
   Mechanical bucket: replaced the 10 `new OpenEMR\Common\Http\Psr17Factory()` instantiations

@@ -514,6 +514,13 @@ proceed on the 489 exercised-method errors; keep deprecated/dead baselined; the 
 integration-heavy remainder is a future batch (or fix conservatively/PHPDoc-only).
 
 ## Progress log
+- 2026-10-09: PHPStan refactor pass 8 (v0.12.17) — superglobal bucket, $GLOBALS half. Replaced
+  all 17 `$GLOBALS[...]` offset reads (forbiddenGlobalsAccess) with OEGlobalsBag::getInstance()->
+  get(...) across 8 files (css_header -> getString() per the untypedGlobalGet typed-accessor rule;
+  whole-array `$globals = $GLOBALS` left as-is, not flagged). Baseline 655 -> 638 (0 added / 8
+  removed entries). Suite 529 green. DEFERRED (18, still baselined): the request-superglobal half
+  ($_SERVER/$_POST/$_GET/$_REQUEST, forbiddenRequestGlobals) — needs a threaded request object;
+  most sites are the out-of-scope appointment/calendar controller.
 - 2026-10-09: PHPStan refactor pass 7 (v0.12.16) — OpenEMR Psr17Factory instantiation sweep.
   Replaced the 10 `new OpenEMR\Common\Http\Psr17Factory()` (forbiddenInstantiation) in
   EmptyRestController/FrontendDispatchController/QuestionnaireAuditController with
