@@ -514,6 +514,17 @@ proceed on the 489 exercised-method errors; keep deprecated/dead baselined; the 
 integration-heavy remainder is a future batch (or fix conservatively/PHPDoc-only).
 
 ## Progress log
+- 2026-10-08: PHPStan refactor pass 1 (v0.12.10) — baseline burn-down starts now the coverage
+  safety net is in place. Core assignment/client domain: AssignmentRepository (38 -> 0),
+  AssessmentRepository, AssignmentCompleter, Client, ClientSearchRepository. Module baseline
+  846 -> 784. Fixed real latent bugs (undefined $sql/$itemParams/$sqlItem on an unmatched item
+  subtype; ->format() on ?DateTime; createFromFormat DateTime|false; dead+broken Client::fromJSON
+  and AssignmentCompleter::getAssignmentForItem; ProcessingResult::getErrors() typo). empty() ->
+  strict comparisons (level 10 forbids mixed casts AND mixed-in-boolean, so use isset()+!==''/
+  !==0/!==[], or type comparisons for typed/always-defined operands). Suite 529 green, phpstan
+  clean. Deferred buckets (still baselined): new SystemLogger() (31), catch(\Exception) (57),
+  property.onlyWritten injected deps (10), FHIR R4 setter types (59), deprecated-wrapper (57),
+  + ClientRepository over-narrowed @var sites. On ai/phpstan-core-assignment.
 - 2026-10-08: Batch 6 — questionnaire -> assignment-completion pipeline integration coverage
   (scoped to patients/users/questionnaires/assignments per the module owner; encounters/PDF/
   documents/library-assets deferred). AclIntegration + AssignmentFixture traits; tests for
