@@ -188,7 +188,7 @@ class TaskRestController
                 if ($response->getStatusCode() !== 200) {
                     return $response; // error code
                 }
-            } else if ($returnType == 'OperationOutcome') {
+            } else {
                 $response = RestUtils::getFhirOperationOutcomeSuccessResponse(self::FHIR_RESOURCE_TYPE, $resultData[0]);
             }
             $response = RestUtils::addFhirLocationHeader($response, self::FHIR_RESOURCE_TYPE, $resultData[0]);

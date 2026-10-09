@@ -2,6 +2,7 @@
 
 namespace OpenEMR\Modules\DiscoverAndChange\Assessments\Services\Task;
 
+use OpenEMR\Common\Database\QueryUtils;
 use OpenEMR\Common\Uuid\UuidRegistry;
 use OpenEMR\FHIR\R4\FHIRDomainResource\FHIRTask;
 use OpenEMR\FHIR\R4\FHIRElement\FHIRId;
@@ -10,7 +11,9 @@ use OpenEMR\FHIR\R4\FHIRResource\FHIRDomainResource;
 use OpenEMR\FHIR\R4\FHIRResource\FHIRTask\FHIRTaskInput;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Models\Assignment;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Services\AssignmentRepository;
+use OpenEMR\Modules\DiscoverAndChange\Assessments\Services\QuestionnaireResponseOnSiteDocumentService;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Services\TaskOnsitePortalActivityAccessService;
+use OpenEMR\Services\QuestionnaireResponseService;
 use OpenEMR\Services\FHIR\FhirServiceBase;
 use OpenEMR\Services\FHIR\IResourceUpdateableService;
 use OpenEMR\Services\FHIR\Traits\FhirServiceBaseEmptyTrait;
@@ -285,9 +288,12 @@ class AssignmentTaskFHIRResourceService extends FhirServiceBase implements IReso
 
                 // now create the pdf document
                 // we stuff it in the In Review category
-                $category = QueryUtils::fetchSingleValue("SELECT id FROM categories WHERE name = ?", 'id', ['Reviewed']) ?: 3;
+                /** @var string|int|null $categoryId */
+                $categoryId = QueryUtils::fetchSingleValue("SELECT id FROM categories WHERE name = ?", 'id', ['Reviewed']);
+                $category = (string) ($categoryId ?? 3);
                 $questionnaireResponsePDFService = new QuestionnaireResponseOnSiteDocumentService($qrService);
-                $createdDoc = $questionnaireResponsePDFService->createDocument($fhirResourceId, $category, $response, $questionnaire);
+                // $questionnaireName is the title string, not the decoded questionnaire array
+                $createdDoc = $questionnaireResponsePDFService->createDocument($fhirResourceId, $category, $response, $questionnaireTitle);
 
                 // now we need to update the TemplateProfile task to point to the document
 
