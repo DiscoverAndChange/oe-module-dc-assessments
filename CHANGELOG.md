@@ -1,3 +1,18 @@
+v0.12.18 PHPStan refactor pass 9: empty() -> strict comparisons (baseline 638 -> 465)
+
+  Largest bucket. Converted 174 of the module's 190 empty() uses to strict comparisons across
+  ~35 files, per OpenEMR's empty.notAllowed rule. Per-operand idioms (level 10 forbids mixed casts
+  and mixed-in-boolean): arrays -> === []/!== []; possibly-unset offsets -> isset()+!==''/!==[];
+  ?string -> === null/=== ''; ints -> === 0; objects -> === null; string|false (json_encode/
+  decrypt) -> is_string(); nullable method results captured in narrowing locals. In-scope domain
+  done behavior-preservingly; the owner-approved out-of-scope files (ResourceImporterService,
+  AssessmentAppointmentController, QuestionnaireAuditController, LibraryAsset*) included. A few
+  dead/always-true guards exposed by the narrowing were cleaned up.
+  Left as empty() + baselined (16): FHIR-element getter null-guards and shaped-array "always
+  truthy" guards (mistyped-non-null in core / over-narrowed @var) -- converting them trips
+  always-true/false, so they stay baselined (same rationale as pass 4). 529-test suite green,
+  phpstan clean; baseline diff adds 0.
+
 v0.12.17 PHPStan refactor pass 8: $GLOBALS -> OEGlobalsBag (baseline 655 -> 638)
 
   Superglobal bucket, $GLOBALS half: replaced all 17 `$GLOBALS['key']` / `$GLOBALS[self::CONST]`
