@@ -9671,6 +9671,8 @@
         },
         smartConfig: {
           client_id: 'PH0namabmC0y4_SJtM07LHyN6y5AZt8-gV-9Bj9ac2k',
+          adminClientId: '',
+          adminScopes: '',
           scopes: 'launch user/Patient.read user/Task.read user/Questionnaire.read user/QuestionnaireResponse.read user/QuestionnaireResponse.write api:port api:oemr openid profile offline_access patient/patient.read user/reports.read patient/clients.read user/clients.read user/assignment-groups.write user/assignments.write user/assignments.write user/assessment-groups.read patient/assessment-groups.read user/assessment-groups.write user/assessments.write user/assessment-groups.write user/assessment-reports.read user/assessment-reports.write user/assessment-reports.read user/assessment-reports.write user/assessment-results.read user/assessment-results.write patient/assessment-results.write user/tags.read patient/tags.read user/message-templates.read user/assessment-users.read user/assessment-users.read user/library-assets.read user/library-assets.read patient/library-assets.read user/library-assets.write user/library-asset-results.write patient/library-asset-results.write user/library-asset-results.read user/assessments.read patient/assessments.read user/assessments.write patient/assessments.write user/assessments.read patient/assessments.read user/assessments.write user/announcements.read user/messages.write fhirUser',
           clientScopes: 'fhirUser api:port api:oemr openid launch patient/Patient.read patient/Task.read patient/Task.write patient/Questionnaire.read patient/QuestionnaireResponse.read patient/QuestionnaireResponse.write',
           fhirUrl: 'https://localhost:9300/apis/default/fhir',
@@ -43524,7 +43526,17 @@
           _classCallCheck(this, FhirService);
 
           this.dacConfig = dacConfig;
-          this.smartStyleService = smartStyleService;
+          this.smartStyleService = smartStyleService; // Admin/provider auth uses the CONFIDENTIAL provider client. OpenEMR only grants user/* scopes to
+          // confidential clients, whose token exchange needs the client_secret -- which must never ship to the
+          // browser. So we run the PKCE authorize here (public half) and hand the code to a server-side broker
+          // (public/backend/provider-token.php) that adds the secret. This deliberately does NOT use fhirclient's
+          // oauth2.authorize()/ready() (which can't do a confidential exchange without the secret in-browser).
+
+          this.ADMIN_FLAG = 'dc-admin-oauth';
+          this.ADMIN_VERIFIER_KEY = 'dc-admin-verifier';
+          this.ADMIN_STATE_KEY = 'dc-admin-state';
+          this.ADMIN_REDIRECT_KEY = 'dc-admin-redirect';
+          this.ADMIN_TOKEN_KEY = 'dc-admin-token';
         }
 
         _createClass(FhirService, [{
@@ -43564,6 +43576,20 @@
             var _this194 = this;
 
             if (!this.fhirClient) {
+              // admin/provider flow: rebuild the client from the brokered token (fhirclient's oauth2.ready()
+              // cannot complete the confidential exchange client-side).
+              if (this.isAdminOAuth()) {
+                var stored = sessionStorage.getItem(this.ADMIN_TOKEN_KEY);
+
+                if (stored) {
+                  this.fhirClient = Object(fhirclient__WEBPACK_IMPORTED_MODULE_3__["client"])({
+                    serverUrl: _environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].smartConfig.fhirUrl,
+                    tokenResponse: JSON.parse(stored)
+                  });
+                  return Promise.resolve(this.fhirClient);
+                }
+              }
+
               return fhirclient__WEBPACK_IMPORTED_MODULE_3__["oauth2"].ready().then(function (client) {
                 _this194.fhirClient = client;
                 return client;
@@ -43638,33 +43664,200 @@
         }, {
           key: "authorizeUserAdmin",
           value: function authorizeUserAdmin(redirectUrlPath) {
-            // TODO: need to look at saving off the return url in the sessionStorage if we can to handle the redirect.
-            var clientId = this.getClientId();
-            var scopes = _environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].smartConfig.scopes;
-            var fhirUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].smartConfig.fhirUrl; // example would be the baseUri + '/loginAdminFinalize' for users
-            // example would be the baseUri + '/loginFinalize' for patients
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee56() {
+              var clientId, scopes, fhirUrl, redirectUri, returnParam, verifier, challenge, state, authorizeUrl;
+              return regeneratorRuntime.wrap(function _callee56$(_context56) {
+                while (1) {
+                  switch (_context56.prev = _context56.next) {
+                    case 0:
+                      clientId = this.getAdminClientId();
+                      scopes = _environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].smartConfig.adminScopes || _environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].smartConfig.scopes;
+                      fhirUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].smartConfig.fhirUrl;
+                      redirectUri = this.buildRedirectUrl(redirectUrlPath);
+                      returnParam = new URL(window.document.location.href).searchParams.get('return') || '';
 
+                      if (returnParam) {
+                        sessionStorage.setItem("dc-return-url", returnParam);
+                      }
+
+                      verifier = this.randomUrlSafe(64);
+                      _context56.next = 9;
+                      return this.pkceChallenge(verifier);
+
+                    case 9:
+                      challenge = _context56.sent;
+                      state = this.randomUrlSafe(32);
+                      sessionStorage.setItem(this.ADMIN_FLAG, '1');
+                      sessionStorage.setItem(this.ADMIN_VERIFIER_KEY, verifier);
+                      sessionStorage.setItem(this.ADMIN_STATE_KEY, state);
+                      sessionStorage.setItem(this.ADMIN_REDIRECT_KEY, redirectUri);
+                      authorizeUrl = this.deriveOAuthBase(fhirUrl) + '/authorize' + '?response_type=code' + '&client_id=' + encodeURIComponent(clientId) + '&scope=' + encodeURIComponent(scopes) + '&redirect_uri=' + encodeURIComponent(redirectUri) + '&state=' + encodeURIComponent(state) + '&aud=' + encodeURIComponent(fhirUrl) + '&code_challenge=' + encodeURIComponent(challenge) + '&code_challenge_method=S256';
+                      window.location.href = authorizeUrl;
+
+                    case 17:
+                    case "end":
+                      return _context56.stop();
+                  }
+                }
+              }, _callee56, this);
+            }));
+          }
+          /** Complete the admin confidential flow: exchange the code via the server-side broker, build a client. */
+
+        }, {
+          key: "completeAdminAuth",
+          value: function completeAdminAuth() {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee57() {
+              var params, code, state, savedState, verifier, redirectUri, resp, token;
+              return regeneratorRuntime.wrap(function _callee57$(_context57) {
+                while (1) {
+                  switch (_context57.prev = _context57.next) {
+                    case 0:
+                      params = new URLSearchParams(window.location.search);
+                      code = params.get('code');
+                      state = params.get('state');
+                      savedState = sessionStorage.getItem(this.ADMIN_STATE_KEY);
+                      verifier = sessionStorage.getItem(this.ADMIN_VERIFIER_KEY);
+                      redirectUri = sessionStorage.getItem(this.ADMIN_REDIRECT_KEY);
+
+                      if (!(!code || !verifier || !state || state !== savedState)) {
+                        _context57.next = 8;
+                        break;
+                      }
+
+                      throw new Error("invalid_admin_auth_state");
+
+                    case 8:
+                      _context57.next = 10;
+                      return fetch(this.getProviderTokenBrokerUrl(), {
+                        method: 'POST',
+                        headers: {
+                          'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                          code: code,
+                          code_verifier: verifier,
+                          redirect_uri: redirectUri
+                        })
+                      });
+
+                    case 10:
+                      resp = _context57.sent;
+                      _context57.next = 13;
+                      return resp.json();
+
+                    case 13:
+                      token = _context57.sent;
+
+                      if (!(!token || token.error || !token.access_token)) {
+                        _context57.next = 16;
+                        break;
+                      }
+
+                      throw new Error("admin_token_exchange_failed" + (token && token.error ? ": " + token.error : ""));
+
+                    case 16:
+                      sessionStorage.setItem(this.ADMIN_TOKEN_KEY, JSON.stringify(token));
+                      sessionStorage.removeItem(this.ADMIN_VERIFIER_KEY);
+                      this.fhirClient = Object(fhirclient__WEBPACK_IMPORTED_MODULE_3__["client"])({
+                        serverUrl: _environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].smartConfig.fhirUrl,
+                        tokenResponse: token
+                      });
+                      return _context57.abrupt("return", this.fhirClient);
+
+                    case 20:
+                    case "end":
+                      return _context57.stop();
+                  }
+                }
+              }, _callee57, this);
+            }));
+          }
+        }, {
+          key: "isAdminOAuth",
+          value: function isAdminOAuth() {
+            return sessionStorage.getItem(this.ADMIN_FLAG) === '1';
+          }
+        }, {
+          key: "getAdminClientId",
+          value: function getAdminClientId() {
+            var bodyAdmin = document.body.dataset['adminClientId'];
+            var adminClientId = bodyAdmin || _environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].smartConfig.adminClientId;
+
+            if (!adminClientId) {
+              throw new Error("invalid_admin_client");
+            }
+
+            return adminClientId;
+          }
+        }, {
+          key: "buildRedirectUrl",
+          value: function buildRedirectUrl(redirectUrlPath) {
             var baseUri = document.baseURI;
-            var url; // redirectUrlPath always starts with a /
 
             if (baseUri.endsWith("/")) {
-              url = baseUri.substring(0, baseUri.length - 1) + redirectUrlPath;
-            } else {
-              url = document.baseURI + redirectUrlPath;
+              return baseUri.substring(0, baseUri.length - 1) + redirectUrlPath;
             }
 
-            var returnParam = new URL(window.document.location.href).searchParams.get('return') || '';
+            return baseUri + redirectUrlPath;
+          }
+          /** Derive the OAuth2 base (…/oauth2/<site>) from the FHIR base (…/apis/<site>/fhir). */
 
-            if (returnParam) {
-              sessionStorage.setItem("dc-return-url", returnParam);
+        }, {
+          key: "deriveOAuthBase",
+          value: function deriveOAuthBase(fhirUrl) {
+            return fhirUrl.replace(/\/apis\/([^/]+)\/fhir\/?$/, '/oauth2/$1');
+          }
+          /** The module's server-side provider token broker, relative to the SPA base href. */
+
+        }, {
+          key: "getProviderTokenBrokerUrl",
+          value: function getProviderTokenBrokerUrl() {
+            return new URL('../backend/provider-token.php', document.baseURI).href;
+          }
+        }, {
+          key: "randomUrlSafe",
+          value: function randomUrlSafe(bytes) {
+            var arr = new Uint8Array(bytes);
+            window.crypto.getRandomValues(arr);
+            return this.base64UrlEncode(arr.buffer);
+          }
+        }, {
+          key: "pkceChallenge",
+          value: function pkceChallenge(verifier) {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee58() {
+              var data, digest;
+              return regeneratorRuntime.wrap(function _callee58$(_context58) {
+                while (1) {
+                  switch (_context58.prev = _context58.next) {
+                    case 0:
+                      data = new TextEncoder().encode(verifier);
+                      _context58.next = 3;
+                      return window.crypto.subtle.digest('SHA-256', data);
+
+                    case 3:
+                      digest = _context58.sent;
+                      return _context58.abrupt("return", this.base64UrlEncode(digest));
+
+                    case 5:
+                    case "end":
+                      return _context58.stop();
+                  }
+                }
+              }, _callee58, this);
+            }));
+          }
+        }, {
+          key: "base64UrlEncode",
+          value: function base64UrlEncode(buffer) {
+            var bytes = new Uint8Array(buffer);
+            var str = '';
+
+            for (var i = 0; i < bytes.length; i++) {
+              str += String.fromCharCode(bytes[i]);
             }
 
-            fhirclient__WEBPACK_IMPORTED_MODULE_3__["oauth2"].authorize({
-              "client_id": clientId,
-              "scope": scopes,
-              "iss": fhirUrl,
-              "redirect_uri": url
-            });
+            return window.btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
           }
         }, {
           key: "getAuthorizationHeader",
@@ -43676,28 +43869,28 @@
         }, {
           key: "loadFhirStylesFromClient",
           value: function loadFhirStylesFromClient(client) {
-            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee56() {
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee59() {
               var url;
-              return regeneratorRuntime.wrap(function _callee56$(_context56) {
+              return regeneratorRuntime.wrap(function _callee59$(_context59) {
                 while (1) {
-                  switch (_context56.prev = _context56.next) {
+                  switch (_context59.prev = _context59.next) {
                     case 0:
                       if (!(client.state.tokenResponse && client.state.tokenResponse.smart_style_url)) {
-                        _context56.next = 5;
+                        _context59.next = 5;
                         break;
                       }
 
                       url = client.state.tokenResponse.smart_style_url;
                       this.dacConfig.smartConfigStyleUrl = url;
-                      _context56.next = 5;
+                      _context59.next = 5;
                       return this.smartStyleService.loadSmartStyles();
 
                     case 5:
                     case "end":
-                      return _context56.stop();
+                      return _context59.stop();
                   }
                 }
-              }, _callee56, this);
+              }, _callee59, this);
             }));
           }
         }, {
@@ -43729,6 +43922,24 @@
         }, {
           key: "fhirClientReady",
           value: function fhirClientReady() {
+            var _this195 = this;
+
+            // admin/provider finalize: complete the confidential exchange via the broker instead of
+            // fhirclient's oauth2.ready() (which would try a client-side confidential exchange and fail).
+            if (this.isAdminOAuth() && new URLSearchParams(window.location.search).has('code')) {
+              return this.completeAdminAuth().then(function (c) {
+                return _this195.loadFhirStylesFromClient(c).then(function () {
+                  return c;
+                })["catch"](function () {
+                  return c;
+                });
+              })["catch"](function (error) {
+                throw Object.assign({
+                  needsAuthentication: true
+                }, error);
+              });
+            }
+
             return fhirclient__WEBPACK_IMPORTED_MODULE_3__["oauth2"].ready()["catch"](function (error) {
               if (error && error.message && error.message.indexOf(":") !== -1) {
                 var errorParts = error.message.split(":");
@@ -44668,7 +44879,7 @@
         }, {
           key: "ngOnInit",
           value: function ngOnInit() {
-            var _this195 = this;
+            var _this196 = this;
 
             this.scaleList = [];
             this.dateList = [];
@@ -44698,15 +44909,15 @@
               var questionnaireIds = questionnaires.map(function (q) {
                 return q.id;
               });
-              return _this195.questionnaireService.getPreviousQuestionnaireResponsesAsAssessmentResults(patientId, questionnaireIds, _this195.result.dateCompleted, _this195.maxRows - 1);
+              return _this196.questionnaireService.getPreviousQuestionnaireResponsesAsAssessmentResults(patientId, questionnaireIds, _this196.result.dateCompleted, _this196.maxRows - 1);
             }).then(function (results) {
-              _this195.hasLoadedResults = true; // make sure we add in our current result to the previous result
+              _this196.hasLoadedResults = true; // make sure we add in our current result to the previous result
 
-              _this195.setupResultHistory([_this195.result].concat(results || []));
+              _this196.setupResultHistory([_this196.result].concat(results || []));
             })["catch"](function (error) {
-              _this195.hasLoadedResults = true;
+              _this196.hasLoadedResults = true;
 
-              _this195.alertService.error("Failed to load previous response scores");
+              _this196.alertService.error("Failed to load previous response scores");
 
               console.error(error);
             }); // this.dateList.push(new Date());
@@ -44719,7 +44930,7 @@
         }, {
           key: "setupResultHistory",
           value: function setupResultHistory(results) {
-            var _this196 = this;
+            var _this197 = this;
 
             this.dateList = [];
             this.scaleResults.clear();
@@ -44737,16 +44948,16 @@
             }
 
             this.resultHistory.forEach(function (result) {
-              if (_this196.isAfterVisitAssessment(result)) {
+              if (_this197.isAfterVisitAssessment(result)) {
                 return; // skip over adding any scores for an after visit assessment
               }
 
-              _this196.dateList.push(result.dateCompleted);
+              _this197.dateList.push(result.dateCompleted);
 
-              for (var key in _this196.resultsMapping) {
+              for (var key in _this197.resultsMapping) {
                 var scaleResult = new app_shared_models_scale_result__WEBPACK_IMPORTED_MODULE_5__["ScaleResult"]();
-                scaleResult.scale = _this196.scalesById.get(key);
-                var resultAnswer = result.getAnswerForQuestionId(_this196.resultsMapping[key]);
+                scaleResult.scale = _this197.scalesById.get(key);
+                var resultAnswer = result.getAnswerForQuestionId(_this197.resultsMapping[key]);
                 var score = resultAnswer ? +resultAnswer.answer : 0;
 
                 if (!isNaN(score)) {
@@ -44757,10 +44968,10 @@
 
                 scaleResult.range = scaleResult.scale.getRangeForScore(scaleResult.score);
 
-                if (!_this196.scaleResults.has(scaleResult.scale)) {
-                  _this196.scaleResults.set(scaleResult.scale, [scaleResult]);
+                if (!_this197.scaleResults.has(scaleResult.scale)) {
+                  _this197.scaleResults.set(scaleResult.scale, [scaleResult]);
                 } else {
-                  _this196.scaleResults.get(scaleResult.scale).push(scaleResult);
+                  _this197.scaleResults.get(scaleResult.scale).push(scaleResult);
                 }
               }
             });
@@ -46034,22 +46245,22 @@
         _createClass(AdminViewAssetComponent, [{
           key: "ngOnInit",
           value: function ngOnInit() {
-            var _this197 = this;
+            var _this198 = this;
 
             this.route.params.subscribe(function (params) {
               var assetId = params['assetId'];
-              _this197.hasLoaded = false;
+              _this198.hasLoaded = false;
 
-              _this197.assetService.getAsset(assetId).then(function (asset) {
-                _this197.hasLoaded = true;
-                _this197.asset = asset;
+              _this198.assetService.getAsset(assetId).then(function (asset) {
+                _this198.hasLoaded = true;
+                _this198.asset = asset;
               })["catch"](function (error) {
                 console.error(error);
 
                 if (error && error.status === 404 || error.status === 400) {
-                  _this197.alertService.error("404 This item could not be found");
+                  _this198.alertService.error("404 This item could not be found");
                 } else {
-                  _this197.alertService.error("There was a server error in loading this item.  Check your internet connection or contact support");
+                  _this198.alertService.error("There was a server error in loading this item.  Check your internet connection or contact support");
                 }
               });
             });
@@ -46238,14 +46449,14 @@
         var _super30 = _createSuper(SingleChoiceQuestion);
 
         function SingleChoiceQuestion() {
-          var _this198;
+          var _this199;
 
           _classCallCheck(this, SingleChoiceQuestion);
 
-          _this198 = _super30.call(this);
-          _this198.type = app_shared_models_question_type__WEBPACK_IMPORTED_MODULE_1__["QuestionType"].SingleChoice;
-          _this198.isSelected = false;
-          return _this198;
+          _this199 = _super30.call(this);
+          _this199.type = app_shared_models_question_type__WEBPACK_IMPORTED_MODULE_1__["QuestionType"].SingleChoice;
+          _this199.isSelected = false;
+          return _this199;
         }
 
         _createClass(SingleChoiceQuestion, [{
@@ -46356,7 +46567,7 @@
 
       var NavBarService = /*#__PURE__*/function () {
         function NavBarService(authService, activatedRoute, router, dacConfig) {
-          var _this199 = this;
+          var _this200 = this;
 
           _classCallCheck(this, NavBarService);
 
@@ -46365,10 +46576,10 @@
           this.router = router;
           this.dacConfig = dacConfig;
           this._userSubscription = this.authService.getLoginState().subscribe(function (stateUpdate) {
-            _this199.user = stateUpdate.user;
-            _this199._navItems = _this199.createNavItems(); // update our navigation items.
+            _this200.user = stateUpdate.user;
+            _this200._navItems = _this200.createNavItems(); // update our navigation items.
 
-            _this199._topNavBarItems = _this199.createTopNavItems();
+            _this200._topNavBarItems = _this200.createTopNavItems();
           }); // this._navItems = this.createNavItems();
 
           this._displaySideBarEvent = new rxjs__WEBPACK_IMPORTED_MODULE_4__["Subject"]();
@@ -46431,7 +46642,7 @@
         }, {
           key: "handleMenuItemClick",
           value: function handleMenuItemClick(navItem, event) {
-            var _this200 = this;
+            var _this201 = this;
 
             if (navItem.id == 'logout') {
               event.preventDefault();
@@ -46441,12 +46652,12 @@
                 if (resp && resp.redirectUrl) {
                   window.location.href = resp.redirectUrl;
                 } else {
-                  _this200.router.navigate(['/login']);
+                  _this201.router.navigate(['/login']);
                 }
               })["catch"](function (error) {
                 console.error(error);
 
-                _this200.router.navigate(["/login"]);
+                _this201.router.navigate(["/login"]);
               });
               return;
             }
@@ -46717,22 +46928,22 @@
         }, {
           key: "shouldDisplayItem",
           value: function shouldDisplayItem(navItem) {
-            var _this201 = this;
+            var _this202 = this;
 
             if (navItem.capability && navItem.capability.length) {
               return navItem.capability.some(function (c) {
-                return _this201.user.hasCapability(c);
+                return _this202.user.hasCapability(c);
               });
             }
 
             if (navItem.role.length) {
               if (navItem.roleExplicitMatch) {
                 return navItem.role.some(function (r) {
-                  return _this201.user.role === r;
+                  return _this202.user.role === r;
                 });
               } else {
                 return navItem.role.some(function (r) {
-                  return _this201.user.role <= r;
+                  return _this202.user.role <= r;
                 });
               }
             }
@@ -46752,34 +46963,9 @@
         }, {
           key: "topNavBarItemsForDisplay",
           get: function get() {
-            var _this202 = this;
-
-            var items = this._topNavBarItems; // any item with children... filter out the children based upon the display
-
-            items.filter(function (i) {
-              return i.children;
-            }).forEach(function (i) {
-              i.children = i.children.filter(function (ic) {
-                return _this202.shouldDisplayItem(ic);
-              });
-              i.hasChildren = i.children.length > 0;
-            }); // now filter out the parents.
-
-            return items.filter(function (ni) {
-              return _this202.shouldDisplayItem(ni);
-            });
-          }
-        }, {
-          key: "navItemsForDisplay",
-          get: function get() {
             var _this203 = this;
 
-            var items = this.navItems;
-
-            if (this._reportNavBarItems.length) {
-              items = this._reportNavBarItems;
-            } // any item with children... filter out the children based upon the display
-
+            var items = this._topNavBarItems; // any item with children... filter out the children based upon the display
 
             items.filter(function (i) {
               return i.children;
@@ -46792,6 +46978,31 @@
 
             return items.filter(function (ni) {
               return _this203.shouldDisplayItem(ni);
+            });
+          }
+        }, {
+          key: "navItemsForDisplay",
+          get: function get() {
+            var _this204 = this;
+
+            var items = this.navItems;
+
+            if (this._reportNavBarItems.length) {
+              items = this._reportNavBarItems;
+            } // any item with children... filter out the children based upon the display
+
+
+            items.filter(function (i) {
+              return i.children;
+            }).forEach(function (i) {
+              i.children = i.children.filter(function (ic) {
+                return _this204.shouldDisplayItem(ic);
+              });
+              i.hasChildren = i.children.length > 0;
+            }); // now filter out the parents.
+
+            return items.filter(function (ni) {
+              return _this204.shouldDisplayItem(ni);
             });
           }
         }, {
@@ -47032,6 +47243,14 @@
 
         if (dacAppConfig.clientId) {
           _environments_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].smartConfig.client_id = dacAppConfig.clientId;
+        }
+
+        if (dacAppConfig['adminClientId']) {
+          _environments_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].smartConfig.adminClientId = dacAppConfig['adminClientId'];
+        }
+
+        if (dacAppConfig['adminScopes']) {
+          _environments_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].smartConfig.adminScopes = dacAppConfig['adminScopes'];
         }
 
         if (dacAppConfig['fhirUrl']) {

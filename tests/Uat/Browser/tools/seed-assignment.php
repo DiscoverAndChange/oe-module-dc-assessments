@@ -118,6 +118,7 @@ try {
         'pid' => $pid,
         'username' => $username,
         'password' => $password,
+        'lastName' => 'dcuat-' . $suffix,
         'clientUuid' => $clientUuid,
         'assessmentId' => $assessmentId,
         'assessmentUid' => $assessmentUid,

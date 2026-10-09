@@ -1,3 +1,18 @@
+v0.12.30 Provider-review works: admin SPA uses the confidential client via the token broker (full e2e green)
+
+  Completes the 13-step scenario. The admin SPA now authenticates with the confidential provider client:
+  the SPA runs the PKCE authorize with the provider client id (injected as adminClientId / adminScopes)
+  and hands the code to the server-side broker (v0.12.29) for the secret-bearing token exchange, then
+  builds the FHIR client from the brokered token (FhirService.authorizeUserAdmin/completeAdminAuth +
+  getFhirClient/fhirClientReady branch on a dc-admin-oauth flag). SPA source change lives in the
+  assessments-angular repo (openemr-integration); recompiled public/frontend bundles are updated here.
+
+  Verified end to end on the live 8.4 stack: provider logs into the admin app (OpenEMR Login ->
+  scope-authorize -> broker 200 -> reports/clients 200), opens the patient's client record, and sees the
+  patient-submitted assessment marked complete with a View Report action. The browser UAT now runs all
+  three: patient login, patient workflow (submit 201), and provider review -- 3 tests green with bounded
+  teardown. phpstan clean, unit suite 543 green.
+
 v0.12.29 Server-side provider token broker for the confidential admin client
 
   Adds the backend-for-frontend token broker that lets the browser admin app use the CONFIDENTIAL

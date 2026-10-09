@@ -124,7 +124,7 @@ password, and the SMART flow has no UI for the standard first-login reset/verify
             (Get started) → answer → submit → **201 on the portal route** → "assignments complete"
             confirmation. Required the ServerRestRequest::getBody() stream fix (v0.12.26) + the SPA
             submitting assessment results to the portal base instead of the FHIR client (v0.12.27).
-      - [ ] provider-side review step (provider login → assessment-management app → open result).
+      - [x] provider-side review VERIFIED: provider login (confidential client + token broker) → open client → patient-completed assessment shows complete with View Report (v0.12.30).
 
 ## Findings / latent bugs surfaced by tests
 Candidates for the source-typing pass / follow-up fixes (tests characterize the

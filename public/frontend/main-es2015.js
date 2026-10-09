@@ -5408,6 +5408,8 @@ const environment = {
     },
     smartConfig: {
         client_id: 'PH0namabmC0y4_SJtM07LHyN6y5AZt8-gV-9Bj9ac2k',
+        adminClientId: '',
+        adminScopes: '',
         scopes: 'launch user/Patient.read user/Task.read user/Questionnaire.read user/QuestionnaireResponse.read user/QuestionnaireResponse.write api:port api:oemr openid profile offline_access patient/patient.read user/reports.read patient/clients.read user/clients.read user/assignment-groups.write user/assignments.write user/assignments.write user/assessment-groups.read patient/assessment-groups.read user/assessment-groups.write user/assessments.write user/assessment-groups.write user/assessment-reports.read user/assessment-reports.write user/assessment-reports.read user/assessment-reports.write user/assessment-results.read user/assessment-results.write patient/assessment-results.write user/tags.read patient/tags.read user/message-templates.read user/assessment-users.read user/assessment-users.read user/library-assets.read user/library-assets.read patient/library-assets.read user/library-assets.write user/library-asset-results.write patient/library-asset-results.write user/library-asset-results.read user/assessments.read patient/assessments.read user/assessments.write patient/assessments.write user/assessments.read patient/assessments.read user/assessments.write user/announcements.read user/messages.write fhirUser',
         clientScopes: 'fhirUser api:port api:oemr openid launch patient/Patient.read patient/Task.read patient/Task.write patient/Questionnaire.read patient/QuestionnaireResponse.read patient/QuestionnaireResponse.write',
         fhirUrl: 'https://localhost:9300/apis/default/fhir',
@@ -23845,6 +23847,16 @@ class FhirService {
     constructor(dacConfig, smartStyleService) {
         this.dacConfig = dacConfig;
         this.smartStyleService = smartStyleService;
+        // Admin/provider auth uses the CONFIDENTIAL provider client. OpenEMR only grants user/* scopes to
+        // confidential clients, whose token exchange needs the client_secret -- which must never ship to the
+        // browser. So we run the PKCE authorize here (public half) and hand the code to a server-side broker
+        // (public/backend/provider-token.php) that adds the secret. This deliberately does NOT use fhirclient's
+        // oauth2.authorize()/ready() (which can't do a confidential exchange without the secret in-browser).
+        this.ADMIN_FLAG = 'dc-admin-oauth';
+        this.ADMIN_VERIFIER_KEY = 'dc-admin-verifier';
+        this.ADMIN_STATE_KEY = 'dc-admin-state';
+        this.ADMIN_REDIRECT_KEY = 'dc-admin-redirect';
+        this.ADMIN_TOKEN_KEY = 'dc-admin-token';
     }
     isAuthorized() {
         // if there is no authorization header then we are not logged in for sure
@@ -23871,6 +23883,15 @@ class FhirService {
     }
     getFhirClient() {
         if (!this.fhirClient) {
+            // admin/provider flow: rebuild the client from the brokered token (fhirclient's oauth2.ready()
+            // cannot complete the confidential exchange client-side).
+            if (this.isAdminOAuth()) {
+                let stored = sessionStorage.getItem(this.ADMIN_TOKEN_KEY);
+                if (stored) {
+                    this.fhirClient = Object(fhirclient__WEBPACK_IMPORTED_MODULE_3__["client"])({ serverUrl: _environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].smartConfig.fhirUrl, tokenResponse: JSON.parse(stored) });
+                    return Promise.resolve(this.fhirClient);
+                }
+            }
             return fhirclient__WEBPACK_IMPORTED_MODULE_3__["oauth2"].ready().then(client => {
                 this.fhirClient = client;
                 return client;
@@ -23916,31 +23937,106 @@ class FhirService {
         });
     }
     authorizeUserAdmin(redirectUrlPath) {
-        // TODO: need to look at saving off the return url in the sessionStorage if we can to handle the redirect.
-        let clientId = this.getClientId();
-        let scopes = _environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].smartConfig.scopes;
-        let fhirUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].smartConfig.fhirUrl;
-        // example would be the baseUri + '/loginAdminFinalize' for users
-        // example would be the baseUri + '/loginFinalize' for patients
-        let baseUri = document.baseURI;
-        let url;
-        // redirectUrlPath always starts with a /
-        if (baseUri.endsWith("/")) {
-            url = baseUri.substring(0, baseUri.length - 1) + redirectUrlPath;
-        }
-        else {
-            url = document.baseURI + redirectUrlPath;
-        }
-        let returnParam = (new URL(window.document.location.href)).searchParams.get('return') || '';
-        if (returnParam) {
-            sessionStorage.setItem("dc-return-url", returnParam);
-        }
-        fhirclient__WEBPACK_IMPORTED_MODULE_3__["oauth2"].authorize({
-            "client_id": clientId,
-            "scope": scopes,
-            "iss": fhirUrl,
-            "redirect_uri": url
+        return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
+            let clientId = this.getAdminClientId();
+            let scopes = _environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].smartConfig.adminScopes || _environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].smartConfig.scopes;
+            let fhirUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].smartConfig.fhirUrl;
+            let redirectUri = this.buildRedirectUrl(redirectUrlPath);
+            let returnParam = (new URL(window.document.location.href)).searchParams.get('return') || '';
+            if (returnParam) {
+                sessionStorage.setItem("dc-return-url", returnParam);
+            }
+            let verifier = this.randomUrlSafe(64);
+            let challenge = yield this.pkceChallenge(verifier);
+            let state = this.randomUrlSafe(32);
+            sessionStorage.setItem(this.ADMIN_FLAG, '1');
+            sessionStorage.setItem(this.ADMIN_VERIFIER_KEY, verifier);
+            sessionStorage.setItem(this.ADMIN_STATE_KEY, state);
+            sessionStorage.setItem(this.ADMIN_REDIRECT_KEY, redirectUri);
+            let authorizeUrl = this.deriveOAuthBase(fhirUrl) + '/authorize'
+                + '?response_type=code'
+                + '&client_id=' + encodeURIComponent(clientId)
+                + '&scope=' + encodeURIComponent(scopes)
+                + '&redirect_uri=' + encodeURIComponent(redirectUri)
+                + '&state=' + encodeURIComponent(state)
+                + '&aud=' + encodeURIComponent(fhirUrl)
+                + '&code_challenge=' + encodeURIComponent(challenge)
+                + '&code_challenge_method=S256';
+            window.location.href = authorizeUrl;
         });
+    }
+    /** Complete the admin confidential flow: exchange the code via the server-side broker, build a client. */
+    completeAdminAuth() {
+        return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
+            let params = new URLSearchParams(window.location.search);
+            let code = params.get('code');
+            let state = params.get('state');
+            let savedState = sessionStorage.getItem(this.ADMIN_STATE_KEY);
+            let verifier = sessionStorage.getItem(this.ADMIN_VERIFIER_KEY);
+            let redirectUri = sessionStorage.getItem(this.ADMIN_REDIRECT_KEY);
+            if (!code || !verifier || !state || state !== savedState) {
+                throw new Error("invalid_admin_auth_state");
+            }
+            let resp = yield fetch(this.getProviderTokenBrokerUrl(), {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ code: code, code_verifier: verifier, redirect_uri: redirectUri })
+            });
+            let token = yield resp.json();
+            if (!token || token.error || !token.access_token) {
+                throw new Error("admin_token_exchange_failed" + (token && token.error ? (": " + token.error) : ""));
+            }
+            sessionStorage.setItem(this.ADMIN_TOKEN_KEY, JSON.stringify(token));
+            sessionStorage.removeItem(this.ADMIN_VERIFIER_KEY);
+            this.fhirClient = Object(fhirclient__WEBPACK_IMPORTED_MODULE_3__["client"])({ serverUrl: _environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].smartConfig.fhirUrl, tokenResponse: token });
+            return this.fhirClient;
+        });
+    }
+    isAdminOAuth() {
+        return sessionStorage.getItem(this.ADMIN_FLAG) === '1';
+    }
+    getAdminClientId() {
+        let bodyAdmin = document.body.dataset['adminClientId'];
+        let adminClientId = bodyAdmin || _environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].smartConfig.adminClientId;
+        if (!adminClientId) {
+            throw new Error("invalid_admin_client");
+        }
+        return adminClientId;
+    }
+    buildRedirectUrl(redirectUrlPath) {
+        let baseUri = document.baseURI;
+        if (baseUri.endsWith("/")) {
+            return baseUri.substring(0, baseUri.length - 1) + redirectUrlPath;
+        }
+        return baseUri + redirectUrlPath;
+    }
+    /** Derive the OAuth2 base (…/oauth2/<site>) from the FHIR base (…/apis/<site>/fhir). */
+    deriveOAuthBase(fhirUrl) {
+        return fhirUrl.replace(/\/apis\/([^/]+)\/fhir\/?$/, '/oauth2/$1');
+    }
+    /** The module's server-side provider token broker, relative to the SPA base href. */
+    getProviderTokenBrokerUrl() {
+        return new URL('../backend/provider-token.php', document.baseURI).href;
+    }
+    randomUrlSafe(bytes) {
+        let arr = new Uint8Array(bytes);
+        window.crypto.getRandomValues(arr);
+        return this.base64UrlEncode(arr.buffer);
+    }
+    pkceChallenge(verifier) {
+        return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
+            let data = new TextEncoder().encode(verifier);
+            let digest = yield window.crypto.subtle.digest('SHA-256', data);
+            return this.base64UrlEncode(digest);
+        });
+    }
+    base64UrlEncode(buffer) {
+        let bytes = new Uint8Array(buffer);
+        let str = '';
+        for (let i = 0; i < bytes.length; i++) {
+            str += String.fromCharCode(bytes[i]);
+        }
+        return window.btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
     }
     getAuthorizationHeader() {
         return this.getFhirClient().then(client => client.getAuthorizationHeader());
@@ -23971,6 +24067,13 @@ class FhirService {
         return resource;
     }
     fhirClientReady() {
+        // admin/provider finalize: complete the confidential exchange via the broker instead of
+        // fhirclient's oauth2.ready() (which would try a client-side confidential exchange and fail).
+        if (this.isAdminOAuth() && new URLSearchParams(window.location.search).has('code')) {
+            return this.completeAdminAuth()
+                .then(c => { return this.loadFhirStylesFromClient(c).then(() => c).catch(() => c); })
+                .catch(error => { throw Object.assign({ needsAuthentication: true }, error); });
+        }
         return fhirclient__WEBPACK_IMPORTED_MODULE_3__["oauth2"].ready()
             .catch(error => {
             if (error && error.message && error.message.indexOf(":") !== -1) {
@@ -25896,6 +25999,12 @@ if (window['dacAppConfig']) {
     let dacAppConfig = window['dacAppConfig'] || {};
     if (dacAppConfig.clientId) {
         _environments_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].smartConfig.client_id = dacAppConfig.clientId;
+    }
+    if (dacAppConfig['adminClientId']) {
+        _environments_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].smartConfig.adminClientId = dacAppConfig['adminClientId'];
+    }
+    if (dacAppConfig['adminScopes']) {
+        _environments_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].smartConfig.adminScopes = dacAppConfig['adminScopes'];
     }
     if (dacAppConfig['fhirUrl']) {
         _environments_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].smartConfig.fhirUrl = dacAppConfig['fhirUrl'];

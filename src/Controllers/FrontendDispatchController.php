@@ -49,6 +49,7 @@ class FrontendDispatchController
         $vars = [
             'clientId' => $clientId
             ,'adminClientId' => $adminClientId
+            ,'adminScopes' => $this->config->getSmartAppProviderScopes()
             ,'fhirUrl' => $this->config->getFHIRUrl()
             ,'apiUrl' => $this->config->getAPIUrl() . "/"
             ,'baseHref' => $this->config->getPublicFrontendPathFQDN()

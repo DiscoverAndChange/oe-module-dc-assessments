@@ -43,12 +43,8 @@ class AssessmentWorkflowBrowserTest extends BrowserUatTestCase
     /**
      * Assignment workflow: seed a patient + an assessment (with a real question) + an assignment via
      * the module's own services (container seeder), then drive the SPA: the dashboard lists the
-     * assigned assessment, and the patient can open it, answer, and submit.
-     *
-     * NB the submit step currently asserts the *known* HTTP 401 ("Patient user role is not allowed to
-     * write FHIR resources") -- core blocks patient FHIR writes and the SPA posts the
-     * QuestionnaireResponse to the FHIR base instead of the portal base. See the spec comment; the
-     * test documents the real blocker rather than hanging or silently passing.
+     * assigned assessment, and the patient opens it, answers, and submits (QuestionnaireResponse POST
+     * to the portal route -> 201 -> completion confirmation).
      */
     public function testPatientWorkflow(): void
     {
@@ -62,6 +58,28 @@ class AssessmentWorkflowBrowserTest extends BrowserUatTestCase
                 'DC_E2E_ASSESSMENT_NAME' => (string) $seed['assessmentName'],
             ],
             'assessment workflow'
+        );
+
+        $this->assertPlaywrightPassed($result);
+    }
+
+    /**
+     * Provider review: seed + have the patient complete the assessment, then the provider logs into the
+     * admin app (confidential provider client, server-side token broker) and sees the patient's
+     * completed assessment with a report to view -- the final step of the 13-step scenario.
+     */
+    public function testProviderReviewsResult(): void
+    {
+        $seed = self::seedAssignedAssessment();
+
+        $result = self::runPlaywright(
+            [
+                'DC_E2E_PATIENT_USER'     => (string) $seed['username'],
+                'DC_E2E_PATIENT_PASS'     => (string) $seed['password'],
+                'DC_E2E_PATIENT_LASTNAME' => (string) $seed['lastName'],
+                'DC_E2E_ASSESSMENT_NAME'  => (string) $seed['assessmentName'],
+            ],
+            'provider review'
         );
 
         $this->assertPlaywrightPassed($result);

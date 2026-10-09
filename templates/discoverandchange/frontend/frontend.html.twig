@@ -76,6 +76,7 @@
                 authToken: {{ AuthToken|js_escape }}
                 ,clientId: {{ clientId|js_escape }}
                 ,adminClientId: {{ adminClientId|js_escape }}
+                ,adminScopes: {{ adminScopes|json_encode }}
                 ,fhirUrl: {{ fhirUrl|json_encode }}
                 ,apiUrl: {{ apiUrl|json_encode }}
                 ,logoSrc: {{ smartStyles.logo_primary|json_encode }}
