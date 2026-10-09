@@ -14,14 +14,18 @@
 
 namespace OpenEMR\Modules\DiscoverAndChange\Assessments\Services\FhirServices;
 
-use OpenEMR\Common\Logging\SystemLogger;
+use OpenEMR\BC\ServiceContainer;
 use OpenEMR\Common\Uuid\UuidRegistry;
 use OpenEMR\FHIR\Config\ServerConfig;
 use OpenEMR\FHIR\R4\FHIRDomainResource\FHIRProvenance;
 use OpenEMR\FHIR\R4\FHIRDomainResource\FHIRQuestionnaire;
 use OpenEMR\FHIR\R4\FHIRDomainResource\FHIRQuestionnaireResponse;
+use OpenEMR\FHIR\R4\FHIRElement\FHIRDateTime;
 use OpenEMR\FHIR\R4\FHIRElement\FHIRId;
+use OpenEMR\FHIR\R4\FHIRElement\FHIRInstant;
 use OpenEMR\FHIR\R4\FHIRElement\FHIRMeta;
+use OpenEMR\FHIR\R4\FHIRElement\FHIRQuestionnaireResponseStatus;
+use OpenEMR\FHIR\R4\FHIRElement\FHIRReference;
 use OpenEMR\FHIR\R4\FHIRResource\FHIRDomainResource;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Utils\RestUtils;
 use OpenEMR\Services\EncounterService;
@@ -72,6 +76,9 @@ class QuestionnaireResponseFormFHIRResourceService extends FhirServiceBase imple
         }
 
         $parsedResource = [];
+        // NOTE: FHIR getters here are typed non-null in core but are genuinely nullable at
+        // runtime (id/subject/encounter/source are optional on a submitted QuestionnaireResponse),
+        // so these empty() null-guards are intentional and stay baselined (phpstan can't see it).
         if (!empty($fhirResource->getId())) {
             $parsedResource['response_id'] = $fhirResource->getId()->getValue();
             $parsedResource['uuid'] = UuidRegistry::uuidToBytes($parsedResource['response_id']);
@@ -156,7 +163,7 @@ class QuestionnaireResponseFormFHIRResourceService extends FhirServiceBase imple
         } catch (\JsonException $exception) {
             // log the error and move on
             $innerData = []; // nothing we can do here, but skip the questionnaire data as its invalid
-            (new SystemLogger())->error(
+            ServiceContainer::getLogger()->error(
                 "Unable to parse questionnaire json",
                 ['uuid' => $dataRecord['uuid'] ?? '', 'message' => $exception->getMessage()
                 ,
@@ -165,10 +172,12 @@ class QuestionnaireResponseFormFHIRResourceService extends FhirServiceBase imple
         }
         $fhirResource = new FHIRQuestionnaireResponse($innerData);
 
+        /** @var string|int $versionValue */
+        $versionValue = $dataRecord['version'] ?? '1';
         $meta = new FHIRMeta();
-        $meta->setVersionId($dataRecord['version'] ?? '1');
+        $meta->setVersionId(new FHIRId((string) $versionValue));
         // TODO: @adunsulag use modified_date
-        $meta->setLastUpdated(gmdate('c'));
+        $meta->setLastUpdated(new FHIRInstant(gmdate('c')));
         $fhirResource->setMeta($meta);
 
         $id = new FhirId();
@@ -178,44 +187,60 @@ class QuestionnaireResponseFormFHIRResourceService extends FhirServiceBase imple
         $fhirResource->setId($id);
 
         // we trust the db records rather than the JSON as our master record if we have it.
-        if (!empty($dataRecord['questionnaire_id'])) {
+        if (isset($dataRecord['questionnaire_id']) && $dataRecord['questionnaire_id'] !== '') {
             $fhirResource->setQuestionnaire(UtilsService::createCanonicalUrlForResource('Questionnaire', $dataRecord['questionnaire_id']));
         }
 
-        if (!empty($dataRecord['encounter_uuid'])) {
-            $fhirResource->setEncounter(UtilsService::createRelativeReference('Encounter', $dataRecord['encounter_uuid']));
+        if (isset($dataRecord['encounter_uuid']) && $dataRecord['encounter_uuid'] !== '') {
+            /** @var FHIRReference $encounterRef */
+            $encounterRef = UtilsService::createRelativeReference('Encounter', $dataRecord['encounter_uuid']);
+            $fhirResource->setEncounter($encounterRef);
         } else {
             $fhirResource->setEncounter(null);
         }
-        if (!empty($dataRecord['puuid'])) {
-            $fhirResource->setSubject(UtilsService::createRelativeReference('Patient', $dataRecord['puuid']));
+        if (isset($dataRecord['puuid']) && $dataRecord['puuid'] !== '') {
+            /** @var FHIRReference $subjectRef */
+            $subjectRef = UtilsService::createRelativeReference('Patient', $dataRecord['puuid']);
+            $fhirResource->setSubject($subjectRef);
         } else {
             $fhirResource->setSubject(null);
         }
-        if (empty($dataRecord['creator_user_id'])) {
-            $fhirResource->setSource(UtilsService::createRelativeReference('Patient', $dataRecord['puuid']));
-        } else if (!empty($dataRecord['creator_user_uuid'])) {
-            $fhirResource->setSource(UtilsService::createRelativeReference('Practitioner', $dataRecord['creator_user_uuid']));
+        $creatorUserId = $dataRecord['creator_user_id'] ?? null;
+        if ($creatorUserId === null || $creatorUserId === 0 || $creatorUserId === '0' || $creatorUserId === '') {
+            /** @var FHIRReference $sourceRef */
+            $sourceRef = UtilsService::createRelativeReference('Patient', $dataRecord['puuid']);
+            $fhirResource->setSource($sourceRef);
+        } else if (isset($dataRecord['creator_user_uuid']) && $dataRecord['creator_user_uuid'] !== '') {
+            /** @var FHIRReference $sourceRef */
+            $sourceRef = UtilsService::createRelativeReference('Practitioner', $dataRecord['creator_user_uuid']);
+            $fhirResource->setSource($sourceRef);
         } else {
             // TODO: if we ever want to support medical devices or organizations we would put that here.
             $fhirResource->setSource(null);
         }
-        if (!empty($dataRecord['create_time'])) {
-            $fhirResource->setAuthored(\DateTime::createFromFormat("Y-m-d H:i:s", $dataRecord['create_time'])->format(\DateTime::ATOM));
+        if (isset($dataRecord['create_time']) && $dataRecord['create_time'] !== '') {
+            /** @var string $createTime */
+            $createTime = $dataRecord['create_time'];
+            $authored = \DateTime::createFromFormat("Y-m-d H:i:s", $createTime);
+            if ($authored !== false) {
+                $fhirResource->setAuthored(new FHIRDateTime($authored->format(\DateTime::ATOM)));
+            }
         }
-        if (!empty($dataRecord['status'])) {
+        if (isset($dataRecord['status']) && $dataRecord['status'] !== '') {
             // map the statii
             switch ($dataRecord['status']) {
                 case 'completed':
                 case 'amended':
                 case 'entered-in-error':
                 case 'stopped':
-                    $fhirResource->setStatus($dataRecord['status']);
+                    /** @var string $statusValue */
+                    $statusValue = $dataRecord['status'];
+                    $fhirResource->setStatus(new FHIRQuestionnaireResponseStatus(['value' => $statusValue]));
                     break;
                 case 'incomplete':
                 case 'active':
                 default:
-                    $fhirResource->setStatus('in-progress');
+                    $fhirResource->setStatus(new FHIRQuestionnaireResponseStatus(['value' => 'in-progress']));
                     break;
             }
         }
@@ -263,7 +288,7 @@ class QuestionnaireResponseFormFHIRResourceService extends FhirServiceBase imple
     /**
      * Healthcare resources often need to provide an AUDIT trail of who last touched a resource and when was it modified.
      * The ownership and AUDIT trail in FHIR is done via the Provenance record.
-     * @param FHIRDomainResource $dataRecord The record we are generating a provenance from
+     * @param mixed $dataRecord The record we are generating a provenance from
      * @param bool $encode Whether to serialize the record or not
      * @return FHIRProvenance|string|false|null
      */
@@ -284,9 +309,6 @@ class QuestionnaireResponseFormFHIRResourceService extends FhirServiceBase imple
         } else {
             return $fhirProvenance;
         }
-        $provenenance = new FHIRProvenance();
-        UtilsService::createProvenanceResource($provenenance, $dataRecord, $encode);
-        return null;
     }
 
     /** @param mixed $openEmrRecord */
@@ -309,16 +331,16 @@ class QuestionnaireResponseFormFHIRResourceService extends FhirServiceBase imple
         $patientService = new PatientService();
         /** @var list<array<string,mixed>>|null $patientRecords */
         $patientRecords = ProcessingResult::extractDataArray($patientService->getOne($openEmrRecord['puuid']));
-        if (empty($patientRecords)) {
+        if ($patientRecords === null || $patientRecords === []) {
             throw new \InvalidArgumentException("Patient does not exist");
         }
         $patientId = $patientRecords[0]['pid'];
         $encounterId = null;
-        if (!empty($openEmrRecord['encounter_uuid'])) {
+        if (isset($openEmrRecord['encounter_uuid']) && $openEmrRecord['encounter_uuid'] !== '') {
             $encounterService = new EncounterService();
             /** @var list<array{eid: string}>|null $encounterRecords */
             $encounterRecords = ProcessingResult::extractDataArray($encounterService->getEncounter($openEmrRecord['encounter_uuid']));
-            if (empty($encounterRecords)) {
+            if ($encounterRecords === null || $encounterRecords === []) {
                 throw new \InvalidArgumentException("Encounter does not exist");
             }
             $encounterId = (int) $encounterRecords[0]['eid'];
@@ -332,7 +354,7 @@ class QuestionnaireResponseFormFHIRResourceService extends FhirServiceBase imple
         $tokenSearchValue = new TokenSearchField('uuid', [$openEmrRecord['questionnaire_id']], true);
         /** @var list<array{questionnaire: string}>|null $questionnaireRecords */
         $questionnaireRecords = ProcessingResult::extractDataArray($questionnaireService->search(['uuid' => $tokenSearchValue]));
-        if (empty($questionnaireRecords)) {
+        if ($questionnaireRecords === null || $questionnaireRecords === []) {
             throw new \InvalidArgumentException("Questionnaire does not exist");
         }
         $questionnaire = $questionnaireRecords[0];
