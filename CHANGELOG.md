@@ -1,3 +1,25 @@
+v0.12.10 PHPStan refactor: core assignment/client domain (baseline 846 -> 784)
+
+  First phpstan burn-down pass, now that the completion-chain/fixture tests provide a safety
+  net. Scoped to the in-scope core domain (patients/clients/assignments); the 529-test DB-backed
+  suite stays green and phpstan stays clean against the regenerated baseline.
+  Fixes real latent bugs surfaced by the analysis:
+  - AssignmentRepository::createAssignmentItemFromObject / updateCompletedAssignmentItem built
+    their SQL/params only inside if/elseif chains with no final else -> an unexpected item
+    subtype hit an undefined variable + null SQL. Now throw InvalidArgumentException instead.
+  - AssignmentRepository called ->format() directly on ?DateTime getters (fatal on null) and
+    passed DateTime::createFromFormat()'s DateTime|false straight into setDate*(DateTime);
+    added a requireDateAssigned() guard and a createFromFormat false-guard.
+  - Client::fromJSON was dead + broken (array_merge of an object; returned an array) -> removed.
+  - AssignmentCompleter::getAssignmentForItem (dead private method) called a nonexistent
+    AssignmentRepository method -> removed.
+  - ClientSearchRepository logged ProcessingResult::getErrors() (undefined) -> getInternalErrors().
+  Plus behavior-preserving rule compliance: empty() -> strict comparisons (no mixed casts, per
+  level-10), new SystemLogger() -> ServiceContainer::getLogger() where touched.
+  Deferred to dedicated passes (still baselined): the SystemLogger-instantiation and
+  catch(\Exception) buckets, injected-but-unread properties, and ClientRepository's
+  over-narrowed @var sites.
+
 v0.12.9 Integration coverage for the questionnaire -> assignment-completion pipeline (batch 6)
 
   Covers the live server-side flow when the patient SPA submits a completed assessment/
