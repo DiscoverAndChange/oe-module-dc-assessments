@@ -257,7 +257,7 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
             /** @var string $clientId */
             $clientId = $smartAppService->getRegisteredClientId();
             $url = OEGlobalsBag::getInstance()->get('webroot') . '/interface/smart/ehr-launch-client.php?intent=' . urlencode(SMARTLaunchToken::INTENT_APPOINTMENT_DIALOG)
-                . '&client_id=' . urlencode($clientId) . "&csrf_token=" . urlencode(CsrfUtils::collectCsrfToken())
+                . '&client_id=' . urlencode($clientId) . "&csrf_token=" . urlencode(CsrfUtils::collectCsrfToken(SessionWrapperFactory::getInstance()->getActiveSession()))
                 . '&appointment_id=' . urlencode($appointmentId);
             $appointmentService = new AppointmentService();
             /** @var list<array{pc_pid: string, pc_eid: string, pc_eventDate: string}> $appointment */
@@ -293,7 +293,7 @@ class AssessmentAppointmentController implements IStaticEventSubscriber
     {
         // no notification message to send so just return
         try {
-            if (CsrfUtils::verifyCsrfToken($_POST['csrf_token']) === false) {
+            if (CsrfUtils::verifyCsrfToken($_POST['csrf_token'], SessionWrapperFactory::getInstance()->getActiveSession()) === false) {
                 throw new \InvalidArgumentException("CSRF token mismatch");
             }
             // TODO: @adunsulag is there an ACL for sending messages to patients?

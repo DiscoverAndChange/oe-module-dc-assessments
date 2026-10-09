@@ -69,7 +69,7 @@ class LibraryAssetResultBlobRepository
         $params[] = $resultBlob->getId();
         $params[] = $answersToSave;
         $params[] = $journalToSave;
-        $params[] = $resultBlob->getCreationDate()->format("Y-m-d H:i:s.u");
+        $params[] = $resultBlob->getCreationDate()?->format("Y-m-d H:i:s.u");
         $params[] = $asset->getId();
         $params[] = $clientUuid;
         QueryUtils::sqlStatementThrowException($sql, $params);
