@@ -2,8 +2,8 @@
 
 namespace OpenEMR\Modules\DiscoverAndChange\Assessments\Services;
 
+use OpenEMR\BC\ServiceContainer;
 use OpenEMR\Common\Database\QueryUtils;
-use OpenEMR\Common\Logging\SystemLogger;
 use OpenEMR\Common\System\System;
 use OpenEMR\Common\Uuid\UuidRegistry;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Models\AssignedAssessment;
@@ -36,6 +36,20 @@ class AssignmentRepository
     // every existing `new AssignmentRepository()` caller is unaffected.
     public function __construct(private ?TaskOnsitePortalActivityAccessService $onsitePortalActivityService = null)
     {
+    }
+
+    /**
+     * Format an assignment's required date_assigned for persistence. The column is NOT NULL and
+     * every save path sets the value, so a missing date is a programming error -> fail loudly
+     * rather than fataling on a null ->format() call.
+     */
+    private function requireDateAssigned(Assignment $assignment): string
+    {
+        $date = $assignment->getDateAssigned();
+        if ($date === null) {
+            throw new \InvalidArgumentException("Assignment is missing a required dateAssigned value");
+        }
+        return $date->format("Y-m-d H:i:s.u");
     }
 
     /**
@@ -263,7 +277,7 @@ class AssignmentRepository
         $ids = QueryUtils::fetchTableColumn($sqlIds, 'id', $whereClause->getBoundValues());
         $recordsById = [];
         $assignments = [];
-        if (!empty($ids)) {
+        if ($ids !== []) {
             $boundIdString = rtrim(str_repeat("?,", count($ids) - 1)) . "?";
             $sql = $sqlColumns . $from . " WHERE a.id IN (" . $boundIdString . ")";
             /** @var list<array<string, mixed>> $records */
@@ -272,7 +286,7 @@ class AssignmentRepository
             foreach ($records as $record) {
                 /** @var string $recordId */
                 $recordId = $record['id'];
-                if (empty($recordsById[$recordId])) {
+                if (!isset($recordsById[$recordId])) {
                     $recordsById[$recordId] = $record;
                     $recordsById[$recordId]['items'] = [];
                 }
@@ -315,10 +329,12 @@ class AssignmentRepository
             $assignment->setClientId(UuidRegistry::uuidToString($record['client_uuid']));
         }
 
-        if (!empty($record['assignment_audit_id'])) {
+        if (isset($record['assignment_audit_id'])) {
             /** @var int|string $auditId */
             $auditId = $record['assignment_audit_id'];
-            $assignment->setAuditId((int) $auditId);
+            if ((int) $auditId !== 0) {
+                $assignment->setAuditId((int) $auditId);
+            }
         }
         $assignment->setId(UuidRegistry::uuidToString($record['assignment_uuid']));
         if (count($assignment->getItems()) == 1 && !$assignment->isGroupType()) {
@@ -339,15 +355,21 @@ class AssignmentRepository
     private function populateDatesForAssignment($record, Assignment $assignment)
     {
         $dateFormat = "Y-m-d H:i:s.u";
-        if (!empty($record['date_assigned'])) {
+        if (isset($record['date_assigned']) && $record['date_assigned'] !== '') {
             /** @var string $dateAssigned */
             $dateAssigned = $record['date_assigned'];
-            $assignment->setDateAssigned(\DateTime::createFromFormat($dateFormat, $dateAssigned));
+            $parsed = \DateTime::createFromFormat($dateFormat, $dateAssigned);
+            if ($parsed !== false) {
+                $assignment->setDateAssigned($parsed);
+            }
         }
-        if (!empty($record['date_completed'])) {
+        if (isset($record['date_completed']) && $record['date_completed'] !== '') {
             /** @var string $dateCompleted */
             $dateCompleted = $record['date_completed'];
-            $assignment->setDateCompleted(\DateTime::createFromFormat($dateFormat, $dateCompleted));
+            $parsed = \DateTime::createFromFormat($dateFormat, $dateCompleted);
+            if ($parsed !== false) {
+                $assignment->setDateCompleted($parsed);
+            }
         }
     }
 
@@ -363,7 +385,7 @@ class AssignmentRepository
         /** @var int|string $assessmentBlobId */
         $assessmentBlobId = $record['assessmentblob_id'];
         $assessment->setAssessmentId((int) $assessmentBlobId);
-        if (!empty($record['assessmentblob_uuid'])) {
+        if (isset($record['assessmentblob_uuid']) && $record['assessmentblob_uuid'] !== '') {
             $uuid = $record['assessmentblob_uuid'];
         } else {
             // we lazy generate our uuid if we need it so we can move forward
@@ -371,11 +393,13 @@ class AssignmentRepository
         }
         // now we are populating the uuid.
         $assessment->setAssessmentUuid(UuidRegistry::uuidToString($uuid));
-        $assessment->setName($record['assessmentblob_name']);
+        /** @var string $assessmentBlobName */
+        $assessmentBlobName = $record['assessmentblob_name'];
+        $assessment->setName($assessmentBlobName);
         /** @var string $assessmentBlobUid */
         $assessmentBlobUid = $record['assessmentblob_uid'];
         $assessment->setUid($assessmentBlobUid);
-        if (!empty($record['assessmentresultblob_id'])) {
+        if (isset($record['assessmentresultblob_id']) && $record['assessmentresultblob_id'] !== '') {
             /** @var string $assessmentResultBlobId */
             $assessmentResultBlobId = $record['assessmentresultblob_id'];
             $assessment->setResultId($assessmentResultBlobId);
@@ -393,7 +417,7 @@ class AssignmentRepository
         /** @var string $assessmentGroupName */
         $assessmentGroupName = $record['assessmentgroup_name'];
         $assessmentGroup->setName($assessmentGroupName);
-        if (!empty($record['items'])) {
+        if (isset($record['items']) && $record['items'] !== []) {
             /** @var list<array<string, mixed>> $items */
             $items = $record['items'];
             foreach ($items as $item) {
@@ -415,7 +439,7 @@ class AssignmentRepository
         /** @var string $profileName */
         $profileName = $record['profile_name'];
         $profile->setName($profileName);
-        if (!empty($record['items'])) {
+        if (isset($record['items']) && $record['items'] !== []) {
             /** @var list<array<string, mixed>> $items */
             $items = $record['items'];
             foreach ($items as $item) {
@@ -444,12 +468,14 @@ class AssignmentRepository
         } else {
             throw new \Exception("Unknown assignment item type");
         }
-        if (!empty($item['audit_id'])) {
+        if (isset($item['audit_id'])) {
             /** @var int|string $auditId */
             $auditId = $item['audit_id'];
-            $assignmentItem->setAuditId((int) $auditId);
+            if ((int) $auditId !== 0) {
+                $assignmentItem->setAuditId((int) $auditId);
+            }
         }
-        if (!empty($item['client_uuid'])) {
+        if (isset($item['client_uuid']) && $item['client_uuid'] !== '') {
             $assignmentItem->setClientId(UuidRegistry::uuidToString($item['client_uuid']));
         }
         $assignmentItem->setId(UuidRegistry::uuidToString($item['uuid']));
@@ -466,7 +492,7 @@ class AssignmentRepository
         /** @var int|string $assetId */
         $assetId = $item['asset_id'] ?? 0;
         $asset->setAssetId((int) $assetId);
-        if (empty($item['asset_uuid'])) {
+        if (!isset($item['asset_uuid']) || $item['asset_uuid'] === '') {
             $uuid = LibraryAssetBlobRepository::updateLibraryAssetBlobUuid((int) $assetId);
         } else {
             $uuid = $item['asset_uuid'];
@@ -492,15 +518,17 @@ class AssignmentRepository
         $uuid = (new UuidRegistry(['table_name' => self::TABLE_NAME_ASSIGNMENT_ITEM]))->createUuid();
         if ($item instanceof AssignedAssessment) {
             $sqlItem = "INSERT INTO " . self::TABLE_NAME_ASSIGNMENT_ITEM . " (uuid, assignment_id, assessmentblob_id, date_assigned) VALUES (?, ?, ?, ?)";
-            $itemParams = [$uuid, $assignmentId, $item->getAssessmentId(), $item->getDateAssigned()->format("Y-m-d H:i:s.u")];
+            $itemParams = [$uuid, $assignmentId, $item->getAssessmentId(), $this->requireDateAssigned($item)];
         } else if ($item instanceof AssignedLibraryAsset) {
             $sqlItem = "INSERT INTO " . self::TABLE_NAME_ASSIGNMENT_ITEM . " (uuid, assignment_id, asset_id, date_assigned) VALUES (?, ?, ?, ?)";
-            $itemParams = [$uuid, $assignmentId, $item->getAssetId(), $item->getDateAssigned()->format("Y-m-d H:i:s.u")];
+            $itemParams = [$uuid, $assignmentId, $item->getAssetId(), $this->requireDateAssigned($item)];
         } else if ($item instanceof AssignedQuestionnaire) {
             $sqlItem = "INSERT INTO " . self::TABLE_NAME_ASSIGNMENT_ITEM . "(uuid, assignment_id, questionnaire_id, document_template_id, "
                 . " date_assigned) VALUES (?, ?, (SELECT id FROM " . QuestionnaireService::TABLE_NAME . " WHERE questionnaire_id = ?), ?, ?)";
             $itemParams = [$uuid, $assignmentId, $item->getQuestionnaireId(), $item->getDocumentTemplateId(),
-                $item->getDateAssigned()->format("Y-m-d H:i:s.u")];
+                $this->requireDateAssigned($item)];
+        } else {
+            throw new \InvalidArgumentException("Unsupported assignment item type: " . $item::class);
         }
         QueryUtils::sqlInsert($sqlItem, $itemParams);
         $item->setId(UuidRegistry::uuidToString($uuid));
@@ -532,7 +560,7 @@ class AssignmentRepository
     public function saveAssignmentForClient($clientId, Assignment $assignment, int $userId)
     {
         $items = $assignment->getItems();
-        if (empty($items)) {
+        if ($items === []) {
             throw new \InvalidArgumentException("No items to save for assignment");
         }
         $item = $items[0];
@@ -545,9 +573,11 @@ class AssignmentRepository
         $assignmentUuid = (new UuidRegistry(['table_name' => self::TABLE_NAME]))->createUuid();
 
         $clientUuid = UuidRegistry::uuidToBytes($clientId);
-        $appointmentId = !empty($assignment->getAppointmentId()) ? UuidRegistry::uuidToBytes($assignment->getAppointmentId()) : null;
+        $assignmentAppointmentId = $assignment->getAppointmentId();
+        $appointmentId = ($assignmentAppointmentId !== null && $assignmentAppointmentId !== '')
+            ? UuidRegistry::uuidToBytes($assignmentAppointmentId) : null;
         $params = [$assignmentUuid, $clientUuid
-            , $assignment->getDateAssigned()->format("Y-m-d H:i:s.u")
+            , $this->requireDateAssigned($assignment)
             , $appointmentId, $clientUuid, $assignment->getAuditId()];
         if ($assignment instanceof AssignedTemplateProfile) {
             $params[] = $assignment->getProfileId();
@@ -578,7 +608,7 @@ class AssignmentRepository
         $search = [new TokenSearchField('assignmentitem_uuid', $assignmentItemUuid, true)];
         $search[] = new TokenSearchField('client_uuid', $puuid, true);
         $assignments = $this->search($search, true);
-        if (!empty($assignments)) {
+        if ($assignments !== []) {
             $assignment = $assignments[0];
             return $assignment->getItemForId($assignmentItemUuid);
         }
@@ -594,7 +624,7 @@ class AssignmentRepository
         $params = [$dateCompleted->format("Y-m-d H:i:s.u"), $resultId];
         $auditId = $this->createAuditRecordForItem($item);
         $item->setAuditId($auditId);
-        (new SystemLogger())->debug("Updating assignment item with audit id ", ['auditId' => $auditId]);
+        ServiceContainer::getLogger()->debug("Updating assignment item with audit id ", ['auditId' => $auditId]);
         $params[] = $auditId;
         if ($item instanceof AssignedAssessment) {
             $sql = "UPDATE " . self::TABLE_NAME_ASSIGNMENT_ITEM . " SET date_completed = ?, assessmentresultblob_id = ?, audit_id = ? WHERE uuid = ?";
@@ -607,13 +637,16 @@ class AssignmentRepository
                 . DocumentService::TABLE_NAME . " WHERE uuid = ?) WHERE uuid = ?";
             $params[1] = $item->getResultId();
             $params[] = $item->getDocumentTemplateId();
-            if (!empty($item->getDocumentId())) {
-                $params[] = UuidRegistry::uuidToBytes($item->getDocumentId());
+            $documentId = $item->getDocumentId();
+            if ($documentId !== null && $documentId !== '') {
+                $params[] = UuidRegistry::uuidToBytes($documentId);
             } else {
                 $params[] = null;
             }
+        } else {
+            throw new \InvalidArgumentException("Unsupported assignment item type: " . $item::class);
         }
-        (new SystemLogger())->debug("Running sql pre uuid", ['sql' => $sql, 'params' => $params]);
+        ServiceContainer::getLogger()->debug("Running sql pre uuid", ['sql' => $sql, 'params' => $params]);
         $params[] = UuidRegistry::uuidToBytes($item->getId());
         QueryUtils::sqlStatementThrowException($sql, $params);
 
@@ -669,13 +702,13 @@ class AssignmentRepository
         $templateId = $item['template_id'];
         $assignmentItem->setDocumentTemplateId((int) $templateId);
         // if we have a document result we can put that here.
-        if (!empty($item['document_uuid'])) {
+        if (isset($item['document_uuid']) && $item['document_uuid'] !== '') {
             $assignmentItem->setDocumentId(UuidRegistry::uuidToString($item['document_uuid']));
         }
-        if (!empty($item['questionnaire_uuid'])) {
+        if (isset($item['questionnaire_uuid']) && $item['questionnaire_uuid'] !== '') {
             $this->hydrateAssignedQuestionnaireFromRecord($item, $assignmentItem);
         } else {
-            (new SystemLogger())->error("No questionnaire uuid for document template profile assignment item, data integrity error", ['id' => $item['id']]);
+            ServiceContainer::getLogger()->error("No questionnaire uuid for document template profile assignment item, data integrity error", ['id' => $item['id']]);
         }
     }
 
@@ -689,7 +722,9 @@ class AssignmentRepository
         /** @var string $questionnaireUuid */
         $questionnaireUuid = $item['questionnaire_uuid'];
         $assignmentItem->setQuestionnaireId($questionnaireUuid);
-        $assignmentItem->setName($item['questionnaire_name']);
+        /** @var string $questionnaireName */
+        $questionnaireName = $item['questionnaire_name'];
+        $assignmentItem->setName($questionnaireName);
         /** @var string|null $questionnaireResponseId */
         $questionnaireResponseId = $item['questionnaire_response_id'];
         $assignmentItem->setResultId($questionnaireResponseId);
@@ -754,12 +789,12 @@ class AssignmentRepository
     /** @return array<string>|null */
     public function getAssignmentUuidsForAppointment(?int $pc_eid)
     {
-        if (empty($pc_eid)) {
+        if ($pc_eid === null || $pc_eid === 0) {
             return null;
         }
         $sql = "SELECT uuid FROM " . self::TABLE_NAME . " WHERE appointment_id = ?";
         $assignmentUuids = QueryUtils::fetchTableColumn($sql, 'uuid', [$pc_eid]);
-        if (!empty($assignmentUuids)) {
+        if ($assignmentUuids !== []) {
             return array_map(function ($val) {
                 return UuidRegistry::uuidToString($val);
             }, $assignmentUuids);
@@ -770,7 +805,7 @@ class AssignmentRepository
     /** @return array<mixed>|null */
     public function getAssignmentsForAppointmentId(?int $pc_eid): ?array
     {
-        if (empty($pc_eid)) {
+        if ($pc_eid === null || $pc_eid === 0) {
             return null;
         }
         // TokenSearchField requires string values; passing the int $pc_eid threw
@@ -830,7 +865,7 @@ class AssignmentRepository
                     }
                     $item = new AssignedQuestionnaire();
                     $uuid = BaseService::getUuidById($id, QuestionnaireService::TABLE_NAME, 'id');
-                    if (empty($uuid)) {
+                    if ($uuid === false || $uuid === '') {
                         continue; // invalid questionnaire id so we can't continue
                     }
                     $item->setQuestionnaireId(UuidRegistry::uuidToString($uuid));
@@ -877,7 +912,7 @@ class AssignmentRepository
         $onsiteService = $this->onsitePortalActivityService ?? new TaskOnsitePortalActivityAccessService();
         /** @var int|string $portalAuditId */
         $portalAuditId = $onsiteService->createOnSitePortalActivity(
-            $item->getClientId(),
+            (string) $item->getClientId(),
             'dc-assignment',
             $item->getName(),
             ''

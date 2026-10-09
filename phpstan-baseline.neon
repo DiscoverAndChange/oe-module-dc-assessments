@@ -403,12 +403,6 @@ parameters:
 			path: src/DTO/LibraryAssetBlobResultDTO.php
 
 		-
-			message: '#^Parameter \#1 \$creationDate of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\DTO\\LibraryAssetBlobResultDTO\:\:setCreationDate\(\) expects DateTime, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/DTO/LibraryAssetBlobResultDTO.php
-
-		-
 			message: '#^Parameter \#1 \$id of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\DTO\\LibraryAssetBlobResultDTO\:\:setId\(\) expects string\|null, mixed given\.$#'
 			identifier: argument.type
 			count: 1
@@ -691,12 +685,6 @@ parameters:
 			path: src/Models/ServerRestRequest.php
 
 		-
-			message: '#^Method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Models\\ServerRestRequest\:\:getUri\(\) should return Psr\\Http\\Message\\UriInterface but returns string\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Models/ServerRestRequest.php
-
-		-
 			message: '#^Parameter \#1 \$data of method OpenEMR\\Common\\Http\\HttpRestRequest\:\:withParsedBody\(\) expects array\<string, mixed\>\|null, array\<mixed\>\|object\|null given\.$#'
 			identifier: argument.type
 			count: 1
@@ -885,12 +873,6 @@ parameters:
 		-
 			message: '#^Result of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssessmentReportRepository\:\:createReport\(\) \(void\) is used\.$#'
 			identifier: method.void
-			count: 1
-			path: src/RestControllers/AssessmentReportRestController.php
-
-		-
-			message: '#^Unreachable statement \- code above always terminates\.$#'
-			identifier: deadCode.unreachable
 			count: 1
 			path: src/RestControllers/AssessmentReportRestController.php
 
@@ -1233,12 +1215,6 @@ parameters:
 		-
 			message: '#^Parameter \#3 \$clientId of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\RestControllers\\LibraryAssetResultRestController\:\:validateCreateAccessAndReturnClient\(\) expects string\|null, mixed given\.$#'
 			identifier: argument.type
-			count: 1
-			path: src/RestControllers/LibraryAssetResultRestController.php
-
-		-
-			message: '#^Variable \$result in empty\(\) always exists and is not falsy\.$#'
-			identifier: empty.variable
 			count: 1
 			path: src/RestControllers/LibraryAssetResultRestController.php
 
@@ -1619,66 +1595,6 @@ parameters:
 			identifier: openemr.forbiddenCatchType
 			count: 1
 			path: src/Services/AssignmentCompleter.php
-
-		-
-			message: '#^Cannot call method format\(\) on DateTime\|null\.$#'
-			identifier: method.nonObject
-			count: 4
-			path: src/Services/AssignmentRepository.php
-
-		-
-			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
-			identifier: empty.notAllowed
-			count: 22
-			path: src/Services/AssignmentRepository.php
-
-		-
-			message: '#^Direct instantiation of OpenEMR\\Common\\Logging\\SystemLogger is discouraged\. Use OpenEMR\\BC\\ServiceContainer\:\:getLogger\(\) instead\.$#'
-			identifier: openemr.forbiddenInstantiation
-			count: 3
-			path: src/Services/AssignmentRepository.php
-
-		-
-			message: '#^Parameter \#1 \$puuid of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\TaskOnsitePortalActivityAccessService\:\:createOnSitePortalActivity\(\) expects string, string\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/AssignmentRepository.php
-
-		-
-			message: '#^Parameter \#1 \$v of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Models\\Assignment\:\:setDateAssigned\(\) expects DateTime, DateTime\|false given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/AssignmentRepository.php
-
-		-
-			message: '#^Parameter \#1 \$v of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Models\\Assignment\:\:setDateCompleted\(\) expects DateTime, DateTime\|false given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/AssignmentRepository.php
-
-		-
-			message: '#^Parameter \#1 \$v of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Models\\Assignment\:\:setName\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 2
-			path: src/Services/AssignmentRepository.php
-
-		-
-			message: '#^Variable \$itemParams might not be defined\.$#'
-			identifier: variable.undefined
-			count: 1
-			path: src/Services/AssignmentRepository.php
-
-		-
-			message: '#^Variable \$sql might not be defined\.$#'
-			identifier: variable.undefined
-			count: 2
-			path: src/Services/AssignmentRepository.php
-
-		-
-			message: '#^Variable \$sqlItem might not be defined\.$#'
-			identifier: variable.undefined
-			count: 1
-			path: src/Services/AssignmentRepository.php
 
 		-
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
@@ -2169,7 +2085,7 @@ parameters:
 		-
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
 			identifier: empty.notAllowed
-			count: 20
+			count: 18
 			path: src/Services/FhirServices/QuestionnaireResponseFormFHIRResourceService.php
 
 		-
@@ -2347,30 +2263,6 @@ parameters:
 			path: src/Services/PaginatedResultsService.php
 
 		-
-			message: '#^Call to method getField\(\) on an unknown class OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\SearchFieldException\.$#'
-			identifier: class.notFound
-			count: 2
-			path: src/Services/QuestionnaireFHIRResourceService.php
-
-		-
-			message: '#^Call to method getMessage\(\) on an unknown class OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\SearchFieldException\.$#'
-			identifier: class.notFound
-			count: 2
-			path: src/Services/QuestionnaireFHIRResourceService.php
-
-		-
-			message: '#^Call to method getTraceAsString\(\) on an unknown class OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\SearchFieldException\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/Services/QuestionnaireFHIRResourceService.php
-
-		-
-			message: '#^Caught class OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\SearchFieldException not found\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/Services/QuestionnaireFHIRResourceService.php
-
-		-
 			message: '#^Direct instantiation of OpenEMR\\Common\\Logging\\SystemLogger is discouraged\. Use OpenEMR\\BC\\ServiceContainer\:\:getLogger\(\) instead\.$#'
 			identifier: openemr.forbiddenInstantiation
 			count: 1
@@ -2391,12 +2283,6 @@ parameters:
 		-
 			message: '#^Parameter \#2 \$puuidBind \(string\|null\) of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\QuestionnaireFHIRResourceService\:\:getAll\(\) should be contravariant with parameter \$puuidBind \(mixed\) of method OpenEMR\\Services\\FHIR\\IResourceReadableService\:\:getAll\(\)$#'
 			identifier: method.childParameterType
-			count: 1
-			path: src/Services/QuestionnaireFHIRResourceService.php
-
-		-
-			message: '#^Possibly invalid array key type mixed\.$#'
-			identifier: array.invalidKey
 			count: 1
 			path: src/Services/QuestionnaireFHIRResourceService.php
 
@@ -2473,15 +2359,9 @@ parameters:
 			path: src/Services/ResourceImporterService.php
 
 		-
-			message: '#^Binary operation "\." between ''Report with id '' and mixed results in an error\.$#'
-			identifier: binaryOp.invalid
-			count: 1
-			path: src/Services/ResourceImporterService.php
-
-		-
 			message: '#^Binary operation "\." between ''Successfully…'' and mixed results in an error\.$#'
 			identifier: binaryOp.invalid
-			count: 3
+			count: 2
 			path: src/Services/ResourceImporterService.php
 
 		-
@@ -2498,12 +2378,6 @@ parameters:
 
 		-
 			message: '#^Binary operation "\." between ''group '' and mixed results in an error\.$#'
-			identifier: binaryOp.invalid
-			count: 1
-			path: src/Services/ResourceImporterService.php
-
-		-
-			message: '#^Binary operation "\." between ''report '' and mixed results in an error\.$#'
 			identifier: binaryOp.invalid
 			count: 1
 			path: src/Services/ResourceImporterService.php
@@ -2551,18 +2425,6 @@ parameters:
 			path: src/Services/ResourceImporterService.php
 
 		-
-			message: '#^Parameter \#1 \$id of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssessmentReportRepository\:\:createReport\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/ResourceImporterService.php
-
-		-
-			message: '#^Parameter \#1 \$id of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssessmentReportRepository\:\:existsReport\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/ResourceImporterService.php
-
-		-
 			message: '#^Parameter \#1 \$name of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssessmentGroupService\:\:createGroup\(\) expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
@@ -2594,12 +2456,6 @@ parameters:
 
 		-
 			message: '#^Parameter \#2 \$array of function implode expects array\<string\>, array\<mixed, mixed\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/ResourceImporterService.php
-
-		-
-			message: '#^Parameter \#2 \$name of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssessmentReportRepository\:\:createReport\(\) expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Services/ResourceImporterService.php
@@ -2941,30 +2797,6 @@ parameters:
 			path: src/Services/Task/QuestionnairePortalTaskFHIRResourceService.php
 
 		-
-			message: '#^Call to method getField\(\) on an unknown class OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\SearchFieldException\.$#'
-			identifier: class.notFound
-			count: 2
-			path: src/Services/TaskFHIRResourceService.php
-
-		-
-			message: '#^Call to method getMessage\(\) on an unknown class OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\SearchFieldException\.$#'
-			identifier: class.notFound
-			count: 2
-			path: src/Services/TaskFHIRResourceService.php
-
-		-
-			message: '#^Call to method getTraceAsString\(\) on an unknown class OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\SearchFieldException\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/Services/TaskFHIRResourceService.php
-
-		-
-			message: '#^Caught class OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\SearchFieldException not found\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/Services/TaskFHIRResourceService.php
-
-		-
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
 			identifier: empty.notAllowed
 			count: 5
@@ -3055,12 +2887,6 @@ parameters:
 			path: src/Services/TaskFHIRResourceService.php
 
 		-
-			message: '#^Possibly invalid array key type mixed\.$#'
-			identifier: array.invalidKey
-			count: 1
-			path: src/Services/TaskFHIRResourceService.php
-
-		-
 			message: '#^Property OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\TaskFHIRResourceService\:\:\$dataStore has unknown class OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\TaskDataStore as its type\.$#'
 			identifier: class.notFound
 			count: 1
@@ -3081,12 +2907,6 @@ parameters:
 		-
 			message: '#^Parameter \#3 \$id of static method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Utils\\RestUtils\:\:addFhirLocationHeader\(\) expects int\|string, mixed given\.$#'
 			identifier: argument.type
-			count: 1
-			path: src/Utils/RestUtils.php
-
-		-
-			message: '#^Variable \$status might not be defined\.$#'
-			identifier: variable.undefined
 			count: 1
 			path: src/Utils/RestUtils.php
 
