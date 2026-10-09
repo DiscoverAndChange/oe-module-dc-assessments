@@ -2,4 +2,4 @@
 
 $v_major = '0';
 $v_minor = '12';
-$v_patch = '24';
+$v_patch = '25';

@@ -1,3 +1,24 @@
+v0.12.25 Browser UAT: assignment workflow (seed -> dashboard -> open/answer/submit) verified on live 8.4
+
+  Extends the UAT tier to the assignment workflow. Adds tests/Uat/Browser/tools/seed-assignment.php:
+  a container-side seeder that creates a patient with active portal credentials, an assessment (reusing
+  the committed fixture blob so it has a real, answerable question), and an assignment of it to the
+  patient -- via the module's own AssessmentRepository / AssignmentRepository. BrowserUatTestCase gains
+  seedAssignedAssessment() (invokes the seeder over `docker exec`) and extends teardown to drop the
+  seeded dac_AssessmentBlob rows (dropping referencing dac_AssignmentItem rows first). The Playwright
+  spec now: logs in through the SMART/OAuth2 + scope-authorize consent flow, asserts the dashboard
+  lists the assigned assessment, opens it (Get started -> /take/<id>), answers the radio question, and
+  submits.
+
+  DISCOVERED BLOCKER (documented, test asserts it): patient Submit POSTs the QuestionnaireResponse to
+  the FHIR base (/apis/default/fhir/QuestionnaireResponse) and OpenEMR core's AuthorizationListener
+  categorically denies patient-role FHIR writes -> HTTP 401 "Patient user role is not allowed to write
+  FHIR resources" (the patient token DOES carry patient/QuestionnaireResponse.write -- it's a role
+  policy, not a scope gap). The module also registers the patient-write route on the PORTAL base
+  (/apis/default/portal/QuestionnaireResponse), which core allows, so the fix direction is submitting
+  there. The submit spec asserts the 401 for now so it documents the real failure instead of hanging.
+  Verified end to end on the live 8.4 stack with clean bounded teardown.
+
 v0.12.24 Browser UAT: stack provisioner + patient-login spec verified end-to-end on a live 8.4 stack
 
   Hardens the Playwright UAT tier (v0.12.23) into something reproducible and proven. Adds

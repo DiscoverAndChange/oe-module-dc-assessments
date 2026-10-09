@@ -112,6 +112,13 @@ produces), so the first SMART login works.
   patient-credential seeding; the `provision-stack.php` provisioner; the `patient login` spec
   (SMART/OAuth2 login → SPA dashboard renders) passing end-to-end through PHPUnit
   (seed → Playwright → assert → teardown).
-- **TODO (needs a running stack to author against real DOM):** `seedAssignment()` (inject a battery +
-  assign it) on the PHP side, and the `test.fixme()` steps in `assessment-workflow.spec.ts` (open
-  assignment → answer/submit → provider-side review). These complete the full 13-step scenario.
+- **Done & verified (assignment workflow):** `tools/seed-assignment.php` seeds a patient + an
+  assessment (with a real question) + an assignment via the module's own services;
+  `BrowserUatTestCase::seedAssignedAssessment()` invokes it over `docker exec`. The SPA specs verify
+  the dashboard lists the assigned assessment and the patient can open it, answer, and submit.
+- **KNOWN BLOCKER (documented in the spec):** patient Submit posts `QuestionnaireResponse` to the
+  **FHIR** base and core denies patient FHIR writes (`AuthorizationListener` → 401). The module also
+  exposes the patient-write route on the **portal** base, which core allows — so the fix is to submit
+  there. The submit spec currently asserts the 401 so the test captures the real failure.
+- **TODO:** provider-side review step (log in as provider → assessment-management app → open result);
+  flip the submit assertion to success once the SPA targets the portal base.

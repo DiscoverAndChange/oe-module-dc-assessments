@@ -41,20 +41,29 @@ class AssessmentWorkflowBrowserTest extends BrowserUatTestCase
     }
 
     /**
-     * The full 13-step scenario (enable module -> inject battery -> assign -> create patient +
-     * credentials -> patient login -> take assessment(s) -> submit -> provider review). The browser
-     * steps beyond login are authored as Playwright test.fixme() until they can be filled in against
-     * a running stack's live DOM; the matching PHP-side seeding (battery injection + assignment) is
-     * still TODO -- see seedPatientWithPortalCredentials() for the credential half that is done.
+     * Assignment workflow: seed a patient + an assessment (with a real question) + an assignment via
+     * the module's own services (container seeder), then drive the SPA: the dashboard lists the
+     * assigned assessment, and the patient can open it, answer, and submit.
      *
-     * Kept incomplete (not skipped-by-gating) so it shows up as a visible TODO in UAT runs.
+     * NB the submit step currently asserts the *known* HTTP 401 ("Patient user role is not allowed to
+     * write FHIR resources") -- core blocks patient FHIR writes and the SPA posts the
+     * QuestionnaireResponse to the FHIR base instead of the portal base. See the spec comment; the
+     * test documents the real blocker rather than hanging or silently passing.
      */
-    public function testFullAssessmentWorkflow(): void
+    public function testPatientWorkflow(): void
     {
-        $this->markTestIncomplete(
-            'Full enable->assign->take->submit->review workflow pending: assignment/battery seeding '
-            . '(BrowserUatTestCase::seedAssignment, TODO) + the test.fixme() browser steps in '
-            . 'assessment-workflow.spec.ts need the running stack to author real selectors.'
+        $seed = self::seedAssignedAssessment();
+
+        $result = self::runPlaywright(
+            [
+                'DC_E2E_PATIENT_USER'   => (string) $seed['username'],
+                'DC_E2E_PATIENT_PASS'   => (string) $seed['password'],
+                'DC_E2E_PATIENT_PID'    => (string) $seed['pid'],
+                'DC_E2E_ASSESSMENT_NAME' => (string) $seed['assessmentName'],
+            ],
+            'assessment workflow'
         );
+
+        $this->assertPlaywrightPassed($result);
     }
 }

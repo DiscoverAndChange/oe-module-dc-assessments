@@ -140,6 +140,12 @@ abstract class BrowserUatTestCase extends TestCase
             $pdo->exec("DELETE ai FROM dac_AssignmentItem ai JOIN dac_Assignment a ON ai.assignment_id = a.id JOIN patient_data p ON a.client_id = p.id WHERE p.id > {$baseline}");
             $pdo->exec("DELETE a FROM dac_Assignment a JOIN patient_data p ON a.client_id = p.id WHERE p.id > {$baseline}");
             $pdo->exec("DELETE pao FROM patient_access_onsite pao JOIN patient_data p ON pao.pid = p.pid WHERE p.id > {$baseline}");
+            // seeded assessments are standalone (keyed by the dcuat uid, not pid). Drop any assignment
+            // items still referencing a dcuat blob first (assessmentblob_id FK), then the result blobs,
+            // then the blobs themselves.
+            $pdo->exec("DELETE ai FROM dac_AssignmentItem ai JOIN dac_AssessmentBlob ab ON ai.assessmentblob_id = ab.id WHERE ab.uid LIKE 'dcuat-%'");
+            $pdo->exec("DELETE FROM dac_AssessmentResultBlob WHERE assessment_id IN (SELECT id FROM dac_AssessmentBlob WHERE uid LIKE 'dcuat-%')");
+            $pdo->exec("DELETE FROM dac_AssessmentBlob WHERE uid LIKE 'dcuat-%'");
             $count = $pdo->exec("DELETE FROM patient_data WHERE id > {$baseline}");
             fwrite(STDERR, "[dc-uat] teardown removed {$count} run-created patient(s) (id > {$baseline}).\n");
         } catch (\Throwable $e) {
@@ -181,6 +187,31 @@ abstract class BrowserUatTestCase extends TestCase
         )->execute([$pid, $username, $username, $hash]);
 
         return ['pid' => $pid, 'username' => $username, 'password' => $password];
+    }
+
+    /**
+     * Seed a patient + an assessment (with a real question) + an assignment, using the module's own
+     * services via the container-side seeder (the UAT PHPUnit process has no OpenEMR DB globals, so
+     * service-based seeding runs inside the container like the provisioner). Returns the decoded JSON
+     * {pid, username, password, assessmentName, assignmentItemId, ...}.
+     *
+     * @return array<string, mixed>
+     */
+    protected static function seedAssignedAssessment(): array
+    {
+        $container = getenv('DC_OE_CONTAINER') ?: 'development-easy-openemr-1';
+        $webroot = getenv('DC_OE_WEBROOT') ?: '/var/www/localhost/htdocs/openemr';
+        $tool = 'interface/modules/custom_modules/oe-module-dc-assessments/tests/Uat/Browser/tools/seed-assignment.php';
+        $inner = sprintf('cd %s && su -s /bin/sh apache -c %s', escapeshellarg($webroot), escapeshellarg('php ' . $tool));
+        $cmd = sprintf('docker exec %s sh -c %s 2>/dev/null', escapeshellarg($container), escapeshellarg($inner));
+
+        $out = shell_exec($cmd);
+        $json = json_decode(trim((string) $out), true);
+        if (!is_array($json) || empty($json['username'])) {
+            throw new \RuntimeException("[dc-uat] container seeder did not return JSON (container={$container}). Output:\n" . $out);
+        }
+        /** @var array<string, mixed> $json */
+        return $json;
     }
 
     // ---------------------------------------------------------------------------------------------
