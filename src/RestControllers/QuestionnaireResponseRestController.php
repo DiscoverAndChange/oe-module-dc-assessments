@@ -13,9 +13,9 @@
 
 namespace OpenEMR\Modules\DiscoverAndChange\Assessments\RestControllers;
 
+use OpenEMR\BC\ServiceContainer;
 use OpenEMR\Common\Http\HttpRestRequest;
 use OpenEMR\Common\Http\HttpRestRouteHandler;
-use OpenEMR\Common\Logging\SystemLogger;
 use OpenEMR\FHIR\R4\FHIRDomainResource\FHIRQuestionnaire;
 use OpenEMR\FHIR\R4\FHIRDomainResource\FHIRQuestionnaireResponse;
 use OpenEMR\FHIR\R4\FHIRElement\FHIRCanonical;
@@ -27,10 +27,8 @@ use OpenEMR\Modules\DiscoverAndChange\Assessments\Models\ServerRestRequest;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Services\QuestionnaireFHIRResourceService;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Services\QuestionnaireResponseFHIRResourceService;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Utils\RestUtils;
-use OpenEMR\RestControllers\RestControllerHelper;
 use OpenEMR\Services\FHIR\FhirResourcesService;
 use OpenEMR\Services\FHIR\UtilsService;
-use PHPUnit\Framework\InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -54,7 +52,7 @@ class QuestionnaireResponseRestController implements IRestController
      */
     private $fhirService;
 
-    public function __construct(QuestionnaireResponseFHIRResourceService $resourceService = null)
+    public function __construct(QuestionnaireResponseFHIRResourceService $resourceService)
     {
         $this->resourceService = $resourceService;
         $this->fhirService = new FhirResourcesService();
@@ -107,7 +105,7 @@ class QuestionnaireResponseRestController implements IRestController
         $prefer = $request->getHeader('Prefer');
         $returnType = 'representation';
         try {
-            if (!empty($prefer)) {
+            if ($prefer !== []) {
                 $returnType = RestUtils::getReturnTypeFromPrefer($prefer[0]);
             }
             $stream = $request->getBody();
@@ -120,23 +118,27 @@ class QuestionnaireResponseRestController implements IRestController
             $resultData = $result->getData();
             if (!$result->isValid() || !($returnType === 'representation' || $returnType === 'OperationOutcome')) {
                 return RestUtils::getFhirCreateResponseForProcessingResult('QuestionnaireResponse', $result);
-            } else if ($returnType == 'representation') {
-                $response = $this->one($request, $resultData[0]);
+            }
+            // only 'representation' and 'OperationOutcome' remain here (guarded above)
+            /** @var string $createdId */
+            $createdId = $resultData[0];
+            if ($returnType === 'representation') {
+                $response = $this->one($request, $createdId);
                 if ($response->getStatusCode() !== 200) {
                     return $response; // error code
                 }
-            } else if ($returnType == 'OperationOutcome') {
-                $response = RestUtils::getFhirOperationOutcomeSuccessResponse('QuestionnaireResponse', $resultData[0]);
+            } else {
+                $response = RestUtils::getFhirOperationOutcomeSuccessResponse('QuestionnaireResponse', $createdId);
             }
-            $response = RestUtils::addFhirLocationHeader($response, 'QuestionnaireResponse', $resultData[0]);
+            $response = RestUtils::addFhirLocationHeader($response, 'QuestionnaireResponse', $createdId);
             return $response->withStatus(201);
         } catch (\InvalidArgumentException $exception) {
-            (new SystemLogger())->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
+            ServiceContainer::getLogger()->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             $operationOutcome = UtilsService::createOperationOutcomeResource('fatal', 'value', $exception->getMessage());
             $response = RestUtils::returnSingleObjectResponse($operationOutcome);
             return $response->withStatus(400);
         } catch (\Exception $exception) {
-            (new SystemLogger())->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
+            ServiceContainer::getLogger()->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             $operationOutcome = UtilsService::createOperationOutcomeResource('fatal', 'transient', xlt('Server Error in creating QuestionnaireResponse resource'));
             $response = RestUtils::returnSingleObjectResponse($operationOutcome);
             return $response->withStatus(500);
@@ -165,36 +167,28 @@ class QuestionnaireResponseRestController implements IRestController
         $bundleEntries = array();
         /** @var array<int, \OpenEMR\FHIR\R4\FHIRResource\FHIRDomainResource> $resultData */
         $resultData = $processingResult->getData();
+        /** @var string $siteAddr */
+        $siteAddr = $GLOBALS['site_addr_oath'];
+        /** @var string $redirectUrl */
+        $redirectUrl = $_SERVER['REDIRECT_URL'] ?? '';
         foreach ($resultData as $index => $searchResult) {
             $bundleEntry = [
-                'fullUrl' =>  $GLOBALS['site_addr_oath'] . ($_SERVER['REDIRECT_URL'] ?? '') . '/' . $searchResult->getId(),
+                'fullUrl' =>  $siteAddr . $redirectUrl . '/' . $searchResult->getId(),
                 'resource' => $searchResult
             ];
             $fhirBundleEntry = new FHIRBundleEntry($bundleEntry);
             array_push($bundleEntries, $fhirBundleEntry);
         }
+        /** @var FHIRBundle $bundleSearchResult */
         $bundleSearchResult = $this->fhirService->createBundle('Questionnaire', $bundleEntries, false);
         // FHIRBundle omits the `entry` key when empty, but the SPA expects an
         // array; normalize the empty case to a plain array with entry: [].
-        if (empty($bundleEntries)) {
+        if ($bundleEntries === []) {
             /** @var array<string, mixed> $bundleSearchResult */
             $bundleSearchResult = json_decode((string) json_encode($bundleSearchResult), true);
             $bundleSearchResult['entry'] = [];
         }
         return $bundleSearchResult;
-    }
-
-    /**
-     * Queries for a single FHIR encounter resource by FHIR id
-     * @param string $fhirId The FHIR encounter resource id (uuid)
-     * @param string|null $puuidBind - Optional variable to only allow visibility of the patient with this puuid.
-     * @returns 200 if the operation completes successfully
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    private function getOne($fhirId, $puuidBind = null)
-    {
-        $processingResult = $this->resourceService->getOne($fhirId, $puuidBind);
-        return RestControllerHelper::handleFhirProcessingResult($processingResult, 200);
     }
 
     /**

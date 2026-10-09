@@ -23,7 +23,6 @@ use OpenEMR\Modules\DiscoverAndChange\Assessments\IRestController;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Models\ServerRestRequest;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Services\QuestionnaireFHIRResourceService;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Utils\RestUtils;
-use OpenEMR\RestControllers\RestControllerHelper;
 use OpenEMR\Services\FHIR\FhirResourcesService;
 use Psr\Http\Message\ResponseInterface;
 
@@ -117,27 +116,15 @@ class QuestionnaireRestController implements IRestController
             $fhirBundleEntry = new FHIRBundleEntry($bundleEntry);
             array_push($bundleEntries, $fhirBundleEntry);
         }
+        /** @var FHIRBundle $bundleSearchResult */
         $bundleSearchResult = $this->fhirService->createBundle('Questionnaire', $bundleEntries, false);
         // FHIRBundle omits the `entry` key when empty, but the SPA expects an
         // array; normalize the empty case to a plain array with entry: [].
-        if (empty($bundleEntries)) {
+        if ($bundleEntries === []) {
             /** @var array<string,mixed> $bundleSearchResult */
             $bundleSearchResult = json_decode((string) json_encode($bundleSearchResult), true);
             $bundleSearchResult['entry'] = [];
         }
         return $bundleSearchResult;
-    }
-
-    /**
-     * Queries for a single FHIR encounter resource by FHIR id
-     * @param string $fhirId The FHIR encounter resource id (uuid)
-     * @param string|null $puuidBind - Optional variable to only allow visibility of the patient with this puuid.
-     * @returns 200 if the operation completes successfully
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    private function getOne($fhirId, $puuidBind = null)
-    {
-        $processingResult = $this->questionnaireResourceService->getOne($fhirId, $puuidBind);
-        return RestControllerHelper::handleFhirProcessingResult($processingResult, 200);
     }
 }

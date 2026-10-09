@@ -1,3 +1,22 @@
+v0.12.12 PHPStan refactor pass 3: QR REST controllers + QR FHIR services (baseline 756 -> 731)
+
+  Third burn-down pass over the questionnaire read/create REST controllers and the two QR FHIR
+  delegating services (all exercised by the QR controller-create + FHIR tests). 529-test suite
+  green, phpstan clean. Dead-code / correctness fixes:
+  - Removed a dead private getOne() from both QR REST controllers (the public one() is used).
+  - QuestionnaireResponseRestController: dropped a stray production `use PHPUnit\...\
+    InvalidArgumentException`, collapsed an always-true == 'OperationOutcome' branch to else,
+    made the constructor's resource service non-nullable (DI + the test both inject it).
+  - QuestionnaireResponseFHIRResourceService: removed an unused $service property and two
+    always-true `instanceof GenericEvent` guards.
+  - QuestionnaireFHIRResourceService: getServiceForCode() can return null but the @var asserted
+    non-null (isset always true) -> retyped + !== null; removed an unreachable provenance stub.
+  Plus empty() -> strict comparisons, new SystemLogger() -> ServiceContainer::getLogger(),
+  createBundle() result typed FHIRBundle, and $GLOBALS/$_SERVER hoisted to typed locals (clearing
+  a mixed-concat binaryOp.invalid).
+  Deferred (still baselined): the $GLOBALS/$_SERVER superglobal bucket, catch(\Exception), an
+  injected-but-unread logger, and one inherited FHIR getAll() contravariance quirk from core.
+
 v0.12.11 PHPStan refactor pass 2: QR listeners + client/user repos (baseline 784 -> 756)
 
   Second burn-down pass over the questionnaire-completion glue + client/user repositories

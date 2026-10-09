@@ -514,6 +514,14 @@ proceed on the 489 exercised-method errors; keep deprecated/dead baselined; the 
 integration-heavy remainder is a future batch (or fix conservatively/PHPDoc-only).
 
 ## Progress log
+- 2026-10-08: PHPStan refactor pass 3 (v0.12.12) — QR read/create REST controllers + QR FHIR
+  delegating services: QuestionnaireResponseRestController (15 -> 3), QuestionnaireRestController
+  (6 -> 3), QuestionnaireResponseFHIRResourceService (5 -> 0), QuestionnaireFHIRResourceService
+  (6 -> 1). Baseline 756 -> 731. Removed dead getOne()s, a stray PHPUnit import in prod code, an
+  always-true OperationOutcome branch + instanceof GenericEvent guards, an unused $service
+  property, an unreachable provenance stub; fixed getServiceForCode null-handling and a nullable
+  ctor. Deferred (baselined): $GLOBALS/$_SERVER superglobal access, catch(\Exception), unread
+  logger, one inherited FHIR getAll() contravariance quirk. Suite 529 green. On ai/phpstan-qr-controllers.
 - 2026-10-08: PHPStan refactor pass 2 (v0.12.11) — questionnaire-completion glue + client/user
   repos: QuestionnaireResponseRestListener (11 -> 0; removed unreachable search-error branches),
   QuestionnaireAssignmentListener (10 -> 4; return.void->break, empty(), SystemLogger, category
