@@ -1855,21 +1855,9 @@ parameters:
 			path: src/Services/FhirServices/QuestionnaireFormFHIRResourceService.php
 
 		-
-			message: '#^Cannot call method format\(\) on DateTime\|false\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/Services/FhirServices/QuestionnaireResponseFormFHIRResourceService.php
-
-		-
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
 			identifier: empty.notAllowed
-			count: 18
-			path: src/Services/FhirServices/QuestionnaireResponseFormFHIRResourceService.php
-
-		-
-			message: '#^Direct instantiation of OpenEMR\\Common\\Logging\\SystemLogger is discouraged\. Use OpenEMR\\BC\\ServiceContainer\:\:getLogger\(\) instead\.$#'
-			identifier: openemr.forbiddenInstantiation
-			count: 1
+			count: 7
 			path: src/Services/FhirServices/QuestionnaireResponseFormFHIRResourceService.php
 
 		-
@@ -1879,39 +1867,9 @@ parameters:
 			path: src/Services/FhirServices/QuestionnaireResponseFormFHIRResourceService.php
 
 		-
-			message: '#^Parameter \#1 \$authored of method OpenEMR\\FHIR\\R4\\FHIRDomainResource\\FHIRQuestionnaireResponse\:\:setAuthored\(\) expects OpenEMR\\FHIR\\R4\\FHIRElement\\FHIRDateTime, string given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/FhirServices/QuestionnaireResponseFormFHIRResourceService.php
-
-		-
-			message: '#^Parameter \#1 \$dataRecord \(OpenEMR\\FHIR\\R4\\FHIRResource\\FHIRDomainResource\) of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\FhirServices\\QuestionnaireResponseFormFHIRResourceService\:\:createProvenanceResource\(\) should be contravariant with parameter \$dataRecord \(mixed\) of method OpenEMR\\Services\\FHIR\\FhirServiceBase\:\:createProvenanceResource\(\)$#'
-			identifier: method.childParameterType
-			count: 1
-			path: src/Services/FhirServices/QuestionnaireResponseFormFHIRResourceService.php
-
-		-
-			message: '#^Parameter \#1 \$encounter of method OpenEMR\\FHIR\\R4\\FHIRDomainResource\\FHIRQuestionnaireResponse\:\:setEncounter\(\) expects OpenEMR\\FHIR\\R4\\FHIRElement\\FHIRReference, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/FhirServices/QuestionnaireResponseFormFHIRResourceService.php
-
-		-
 			message: '#^Parameter \#1 \$encounter of method OpenEMR\\FHIR\\R4\\FHIRDomainResource\\FHIRQuestionnaireResponse\:\:setEncounter\(\) expects OpenEMR\\FHIR\\R4\\FHIRElement\\FHIRReference, null given\.$#'
 			identifier: argument.type
 			count: 1
-			path: src/Services/FhirServices/QuestionnaireResponseFormFHIRResourceService.php
-
-		-
-			message: '#^Parameter \#1 \$lastUpdated of method OpenEMR\\FHIR\\R4\\FHIRElement\\FHIRMeta\:\:setLastUpdated\(\) expects OpenEMR\\FHIR\\R4\\FHIRElement\\FHIRInstant, string given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/FhirServices/QuestionnaireResponseFormFHIRResourceService.php
-
-		-
-			message: '#^Parameter \#1 \$source of method OpenEMR\\FHIR\\R4\\FHIRDomainResource\\FHIRQuestionnaireResponse\:\:setSource\(\) expects OpenEMR\\FHIR\\R4\\FHIRElement\\FHIRReference, mixed given\.$#'
-			identifier: argument.type
-			count: 2
 			path: src/Services/FhirServices/QuestionnaireResponseFormFHIRResourceService.php
 
 		-
@@ -1921,44 +1879,8 @@ parameters:
 			path: src/Services/FhirServices/QuestionnaireResponseFormFHIRResourceService.php
 
 		-
-			message: '#^Parameter \#1 \$status of method OpenEMR\\FHIR\\R4\\FHIRDomainResource\\FHIRQuestionnaireResponse\:\:setStatus\(\) expects OpenEMR\\FHIR\\R4\\FHIRElement\\FHIRQuestionnaireResponseStatus, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/FhirServices/QuestionnaireResponseFormFHIRResourceService.php
-
-		-
-			message: '#^Parameter \#1 \$status of method OpenEMR\\FHIR\\R4\\FHIRDomainResource\\FHIRQuestionnaireResponse\:\:setStatus\(\) expects OpenEMR\\FHIR\\R4\\FHIRElement\\FHIRQuestionnaireResponseStatus, string given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/FhirServices/QuestionnaireResponseFormFHIRResourceService.php
-
-		-
-			message: '#^Parameter \#1 \$subject of method OpenEMR\\FHIR\\R4\\FHIRDomainResource\\FHIRQuestionnaireResponse\:\:setSubject\(\) expects OpenEMR\\FHIR\\R4\\FHIRElement\\FHIRReference, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/FhirServices/QuestionnaireResponseFormFHIRResourceService.php
-
-		-
 			message: '#^Parameter \#1 \$subject of method OpenEMR\\FHIR\\R4\\FHIRDomainResource\\FHIRQuestionnaireResponse\:\:setSubject\(\) expects OpenEMR\\FHIR\\R4\\FHIRElement\\FHIRReference, null given\.$#'
 			identifier: argument.type
-			count: 1
-			path: src/Services/FhirServices/QuestionnaireResponseFormFHIRResourceService.php
-
-		-
-			message: '#^Parameter \#1 \$versionId of method OpenEMR\\FHIR\\R4\\FHIRElement\\FHIRMeta\:\:setVersionId\(\) expects OpenEMR\\FHIR\\R4\\FHIRElement\\FHIRId, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/FhirServices/QuestionnaireResponseFormFHIRResourceService.php
-
-		-
-			message: '#^Parameter \#2 \$datetime of static method DateTime\:\:createFromFormat\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Services/FhirServices/QuestionnaireResponseFormFHIRResourceService.php
-
-		-
-			message: '#^Unreachable statement \- code above always terminates\.$#'
-			identifier: deadCode.unreachable
 			count: 1
 			path: src/Services/FhirServices/QuestionnaireResponseFormFHIRResourceService.php
 
