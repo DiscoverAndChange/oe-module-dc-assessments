@@ -107,7 +107,6 @@ class AssessmentGroupRestController implements IRestController
 
     public function create(ServerRestRequest $request): ResponseInterface
     {
-        $transactionCommitted = false;
         $validator = new AssessmentGroupValidator();
         $repo = new AssessmentGroupService();
         try {
@@ -116,31 +115,22 @@ class AssessmentGroupRestController implements IRestController
             if (!AclMain::aclCheckCore("encounters", "forms")) {
                 throw new AccessDeniedException("encounters", "forms", "Access denied to create this resource");
             }
-            QueryUtils::startTransaction();
-            $validation = $validator->validate($data, AssessmentGroupValidator::DATABASE_INSERT_CONTEXT);
+            return QueryUtils::inTransaction(function () use ($request, $repo, $validator, $data) {
+                $validation = $validator->validate($data, AssessmentGroupValidator::DATABASE_INSERT_CONTEXT);
 
-            if (!$validation->isValid()) {
-                $this->logger->error("Validation failed", ['errors' => $validation->getValidationMessages()]);
-                throw new \InvalidArgumentException("One or more fields was invalid", ErrorCode::VALIDATION_FAILED);
-            }
-            $companyId = $request->getAuthRole() == Role::SuperUser ? null : $request->getCompanyId();
-            $createdGroup = $repo->createGroup($data['name'], $companyId);
-            QueryUtils::commitTransaction();
-            $transactionCommitted = true;
-            return RestUtils::returnSingleObjectResponse($createdGroup);
+                if (!$validation->isValid()) {
+                    $this->logger->error("Validation failed", ['errors' => $validation->getValidationMessages()]);
+                    throw new \InvalidArgumentException("One or more fields was invalid", ErrorCode::VALIDATION_FAILED);
+                }
+                $companyId = $request->getAuthRole() == Role::SuperUser ? null : $request->getCompanyId();
+                $createdGroup = $repo->createGroup($data['name'], $companyId);
+                return RestUtils::returnSingleObjectResponse($createdGroup);
+            });
         } catch (AccessDeniedException $exception) {
             $this->logger->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             return RestUtils::getAccessDeniedResponse($exception);
         } catch (\Exception $e) {
             return RestUtils::getErrorResponse($this->logger, $e);
-        } finally {
-            if (!$transactionCommitted) {
-                try {
-                    QueryUtils::rollbackTransaction();
-                } catch (\Exception $e) {
-                    $this->logger->error("Failed to rollback transaction", ['trace' => $e->getTraceAsString()]);
-                }
-            }
         }
     }
 
@@ -158,7 +148,6 @@ class AssessmentGroupRestController implements IRestController
      */
     public function addAssessmentToGroup(ServerRestRequest $request, $groupId): ResponseInterface
     {
-        $transactionCommitted = false;
         $validator = new AssessmentGroupValidator();
         $repo = new AssessmentGroupService();
         try {
@@ -167,38 +156,28 @@ class AssessmentGroupRestController implements IRestController
             if (!AclMain::aclCheckCore("encounters", "forms")) {
                 throw new AccessDeniedException("encounters", "forms", "Access denied to create this resource");
             }
-            QueryUtils::startTransaction();
-            $data['groupId'] = $groupId;
-            $validation = $validator->validate($data, AssessmentGroupValidator::DATABASE_ADD_ASSESSMENT_CONTEXT);
+            return QueryUtils::inTransaction(function () use ($request, $repo, $validator, $groupId, $data) {
+                $data['groupId'] = $groupId;
+                $validation = $validator->validate($data, AssessmentGroupValidator::DATABASE_ADD_ASSESSMENT_CONTEXT);
 
-            if (!$validation->isValid()) {
-                $this->logger->error("Validation failed", ['errors' => $validation->getValidationMessages()]);
-                throw new \InvalidArgumentException("One or more fields was invalid", ErrorCode::VALIDATION_FAILED);
-            }
-            $uid = $data['uid'];
-            $companyId = $request->getAuthRole() == Role::SuperUser ? null : $request->getCompanyId();
-            $createdGroup = $repo->addAssessmentToGroup($uid, $groupId, $companyId);
-            $assessmentGroups = $this->createAssessmentGroupsFromEntities([$createdGroup], true, $this->logger);
-            if ($assessmentGroups !== []) {
-                QueryUtils::commitTransaction();
-                $transactionCommitted = true;
-                return RestUtils::returnSingleObjectResponse($assessmentGroups[0]);
-            } else {
+                if (!$validation->isValid()) {
+                    $this->logger->error("Validation failed", ['errors' => $validation->getValidationMessages()]);
+                    throw new \InvalidArgumentException("One or more fields was invalid", ErrorCode::VALIDATION_FAILED);
+                }
+                $uid = $data['uid'];
+                $companyId = $request->getAuthRole() == Role::SuperUser ? null : $request->getCompanyId();
+                $createdGroup = $repo->addAssessmentToGroup($uid, $groupId, $companyId);
+                $assessmentGroups = $this->createAssessmentGroupsFromEntities([$createdGroup], true, $this->logger);
+                if ($assessmentGroups !== []) {
+                    return RestUtils::returnSingleObjectResponse($assessmentGroups[0]);
+                }
                 throw new \Exception("Failed to create JSON object from created group");
-            }
+            });
         } catch (AccessDeniedException $exception) {
             $this->logger->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             return RestUtils::getAccessDeniedResponse($exception);
         } catch (\Exception $e) {
             return RestUtils::getErrorResponse($this->logger, $e);
-        } finally {
-            if (!$transactionCommitted) {
-                try {
-                    QueryUtils::rollbackTransaction();
-                } catch (\Exception $e) {
-                    $this->logger->error("Failed to rollback transaction", ['trace' => $e->getTraceAsString()]);
-                }
-            }
         }
     }
 
@@ -207,7 +186,6 @@ class AssessmentGroupRestController implements IRestController
      */
     public function updateAssessmentVersionForGroup(ServerRestRequest $request, $groupId): ResponseInterface
     {
-        $transactionCommitted = false;
         $validator = new AssessmentGroupValidator();
         $repo = new AssessmentGroupService();
         try {
@@ -216,36 +194,26 @@ class AssessmentGroupRestController implements IRestController
             if (!AclMain::aclCheckCore("encounters", "forms")) {
                 throw new AccessDeniedException("encounters", "forms", "Access denied to create this resource");
             }
-            QueryUtils::startTransaction();
-            $data['groupId'] = $groupId;
-            $validation = $validator->validate($data, AssessmentGroupValidator::DATABASE_UPDATE_ASSESSMENT_CONTEXT);
+            return QueryUtils::inTransaction(function () use ($repo, $validator, $groupId, $data) {
+                $data['groupId'] = $groupId;
+                $validation = $validator->validate($data, AssessmentGroupValidator::DATABASE_UPDATE_ASSESSMENT_CONTEXT);
 
-            if (!$validation->isValid()) {
-                $this->logger->error("Validation failed", ['errors' => $validation->getValidationMessages()]);
-                throw new \InvalidArgumentException("One or more fields was invalid", ErrorCode::VALIDATION_FAILED);
-            }
-            $createdGroup = $repo->updateAssessmentVersionForGroup($groupId);
-            $assessmentGroups = $this->createAssessmentGroupsFromEntities([$createdGroup], true, $this->logger);
-            if ($assessmentGroups !== []) {
-                QueryUtils::commitTransaction();
-                $transactionCommitted = true;
-                return RestUtils::returnSingleObjectResponse($assessmentGroups[0]);
-            } else {
+                if (!$validation->isValid()) {
+                    $this->logger->error("Validation failed", ['errors' => $validation->getValidationMessages()]);
+                    throw new \InvalidArgumentException("One or more fields was invalid", ErrorCode::VALIDATION_FAILED);
+                }
+                $createdGroup = $repo->updateAssessmentVersionForGroup($groupId);
+                $assessmentGroups = $this->createAssessmentGroupsFromEntities([$createdGroup], true, $this->logger);
+                if ($assessmentGroups !== []) {
+                    return RestUtils::returnSingleObjectResponse($assessmentGroups[0]);
+                }
                 throw new \Exception("Failed to create JSON object from created group");
-            }
+            });
         } catch (AccessDeniedException $exception) {
             $this->logger->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             return RestUtils::getAccessDeniedResponse($exception);
         } catch (\Exception $e) {
             return RestUtils::getErrorResponse($this->logger, $e);
-        } finally {
-            if (!$transactionCommitted) {
-                try {
-                    QueryUtils::rollbackTransaction();
-                } catch (\Exception $e) {
-                    $this->logger->error("Failed to rollback transaction", ['trace' => $e->getTraceAsString()]);
-                }
-            }
         }
     }
 

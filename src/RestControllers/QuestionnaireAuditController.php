@@ -69,14 +69,12 @@ class QuestionnaireAuditController
         ,encounterId: eid
         ,csrfToken: csrfToken
          */
-        $transactionCommitted = false;
         try {
             // we do this before we start the transaction to avoid autocommits during the service.
             $encounterService = new EncounterService();
-            QueryUtils::startTransaction();
-
-            /** @var array<string, mixed> $phpInput */
-            $phpInput = json_decode((string) file_get_contents('php://input'), true, 512, JSON_THROW_ON_ERROR);
+            return QueryUtils::inTransaction(function () use ($encounterService) {
+                /** @var array<string, mixed> $phpInput */
+                $phpInput = json_decode((string) file_get_contents('php://input'), true, 512, JSON_THROW_ON_ERROR);
             $auditRecordId = $phpInput['auditRecordId'] ?? null;
             $encounterId = $phpInput['encounterId'] ?? null;
             $csrfToken = $phpInput['csrfToken'] ?? null;
@@ -124,20 +122,10 @@ class QuestionnaireAuditController
             // now we need to mark the audit record as locked and saved.
             $this->updateOnSitePortalActivityWithCompletion($auditRecord['id']);
 
-            QueryUtils::commitTransaction();
-            $transactionCommitted = true;
-            return RestUtils::returnSingleObjectResponse(['formid' => $formId]);
+                return RestUtils::returnSingleObjectResponse(['formid' => $formId]);
+            });
         } catch (\Exception $exception) {
             return RestUtils::getErrorResponse($this->logger, $exception);
-        } finally {
-            if (!$transactionCommitted) {
-                try {
-                    QueryUtils::rollbackTransaction();
-                } catch (\Exception $exception) {
-                    // if we can't rollback we just log and ignore.
-                    $this->logger->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
-                }
-            }
         }
     }
 

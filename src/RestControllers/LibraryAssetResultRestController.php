@@ -95,60 +95,48 @@ class LibraryAssetResultRestController implements IRestController
         $data = $request->getBodyAsJson();
         $validator = new LibraryAssetResultBlobValidator();
         $validation = $validator->validate($data, LibraryAssetResultBlobValidator::DATABASE_INSERT_CONTEXT);
-        $transactionCommitted = false;
         $patientService = new PatientService();
         try {
-            QueryUtils::startTransaction();
+            return QueryUtils::inTransaction(function () use ($request, $data, $validation, $patientService) {
+                if (!$validation->isValid()) {
+                    $this->logger->error("Validation failed", ['errors' => $validation->getValidationMessages()]);
+                    throw new \InvalidArgumentException("One or more fields was invalid", ErrorCode::VALIDATION_FAILED);
+                }
 
-            if (!$validation->isValid()) {
-                $this->logger->error("Validation failed", ['errors' => $validation->getValidationMessages()]);
-                throw new \InvalidArgumentException("One or more fields was invalid", ErrorCode::VALIDATION_FAILED);
-            }
+                $client = $this->validateCreateAccessAndReturnClient($request->getUserId(), $request->getPatientUUIDString(), ($data['clientId'] ?? null), $patientService);
 
-            $client = $this->validateCreateAccessAndReturnClient($request->getUserId(), $request->getPatientUUIDString(), ($data['clientId'] ?? null), $patientService);
+                $assignmentRepo = new AssignmentRepository();
+                $item = $assignmentRepo->getAssignmentItem($data['assignmentItemId'], UuidRegistry::uuidToString($client['uuid']));
+                if ($item === null) {
+                    throw new \InvalidArgumentException("Assignment item not found", ErrorCode::INVALID_REQUEST);
+                }
+                $libraryAssetResultRepo = new LibraryAssetResultBlobRepository($this->logger, $this->cryptoGen);
+                $asset = $this->getAsset($data['asset']['id']);
+                $dto = new LibraryAssetBlobResultDTO();
+                $dto->fromDTO($data);
+                $createdResult = $libraryAssetResultRepo->saveLibraryAssetResultBlob(
+                    $dto,
+                    $asset,
+                    $client['uuid'],
+                    $request->getUserId(),
+                    $request->getPatientUUIDString()
+                );
 
-            $assignmentRepo = new AssignmentRepository();
-            $item = $assignmentRepo->getAssignmentItem($data['assignmentItemId'], UuidRegistry::uuidToString($client['uuid']));
-            if ($item === null) {
-                throw new \InvalidArgumentException("Assignment item not found", ErrorCode::INVALID_REQUEST);
-            }
-            $libraryAssetResultRepo = new LibraryAssetResultBlobRepository($this->logger, $this->cryptoGen);
-            $asset = $this->getAsset($data['asset']['id']);
-            $dto = new LibraryAssetBlobResultDTO();
-            $dto->fromDTO($data);
-            $createdResult = $libraryAssetResultRepo->saveLibraryAssetResultBlob(
-                $dto,
-                $asset,
-                $client['uuid'],
-                $request->getUserId(),
-                $request->getPatientUUIDString()
-            );
+                $item->setResultId($createdResult->getId());
 
-            $item->setResultId($createdResult->getId());
+                // TODO: @adunsulag if we ever allow outside embedding into another webpage again we could lazy create the assignment item here
+                $this->completer->markAssignmentComplete($item, $client);
+                $resultResponse = array_merge($createdResult->jsonSerialize(), [
+                    'asset' => $asset->jsonSerialize()
+                ]);
 
-
-            // TODO: @adunsulag if we ever allow outside embedding into another webpage again we could lazy create the assignment item here
-            $this->completer->markAssignmentComplete($item, $client);
-            QueryUtils::commitTransaction();
-            $transactionCommitted = true;
-            $resultResponse = array_merge($createdResult->jsonSerialize(), [
-                'asset' => $asset->jsonSerialize()
-            ]);
-
-            return RestUtils::returnSingleObjectResponse($resultResponse);
+                return RestUtils::returnSingleObjectResponse($resultResponse);
+            });
         } catch (AccessDeniedException $exception) {
             $this->logger->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             return RestUtils::getAccessDeniedResponse($exception);
         } catch (\Exception $e) {
             return RestUtils::getErrorResponse($this->logger, $e);
-        } finally {
-            if (!$transactionCommitted) {
-                try {
-                    QueryUtils::rollbackTransaction();
-                } catch (\Exception $e) {
-                    $this->logger->error("Failed to rollback transaction", ['trace' => $e->getTraceAsString()]);
-                }
-            }
         }
     }
 

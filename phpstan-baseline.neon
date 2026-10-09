@@ -361,24 +361,6 @@ parameters:
 			path: src/GlobalConfig.php
 
 		-
-			message: '#^OpenEMR\\Common\\Database\\QueryUtils\:\:commitTransaction\(\) is deprecated\. Use QueryUtils\:\:inTransaction\(\) wrapper instead\.$#'
-			identifier: openemr.deprecatedSqlFunction
-			count: 1
-			path: src/Listeners/QuestionnaireAssignmentListener.php
-
-		-
-			message: '#^OpenEMR\\Common\\Database\\QueryUtils\:\:rollbackTransaction\(\) is deprecated\. Use QueryUtils\:\:inTransaction\(\) wrapper instead\.$#'
-			identifier: openemr.deprecatedSqlFunction
-			count: 1
-			path: src/Listeners/QuestionnaireAssignmentListener.php
-
-		-
-			message: '#^OpenEMR\\Common\\Database\\QueryUtils\:\:startTransaction\(\) is deprecated\. Use QueryUtils\:\:inTransaction\(\) wrapper instead\.$#'
-			identifier: openemr.deprecatedSqlFunction
-			count: 1
-			path: src/Listeners/QuestionnaireAssignmentListener.php
-
-		-
 			message: '#^catch \(Exception\) would suppress ErrorException, which is forbidden\.$#'
 			identifier: openemr.forbiddenCatchType
 			count: 1
@@ -529,24 +511,6 @@ parameters:
 			path: src/RestControllers/AssessmentGroupRestController.php
 
 		-
-			message: '#^OpenEMR\\Common\\Database\\QueryUtils\:\:commitTransaction\(\) is deprecated\. Use QueryUtils\:\:inTransaction\(\) wrapper instead\.$#'
-			identifier: openemr.deprecatedSqlFunction
-			count: 3
-			path: src/RestControllers/AssessmentGroupRestController.php
-
-		-
-			message: '#^OpenEMR\\Common\\Database\\QueryUtils\:\:rollbackTransaction\(\) is deprecated\. Use QueryUtils\:\:inTransaction\(\) wrapper instead\.$#'
-			identifier: openemr.deprecatedSqlFunction
-			count: 3
-			path: src/RestControllers/AssessmentGroupRestController.php
-
-		-
-			message: '#^OpenEMR\\Common\\Database\\QueryUtils\:\:startTransaction\(\) is deprecated\. Use QueryUtils\:\:inTransaction\(\) wrapper instead\.$#'
-			identifier: openemr.deprecatedSqlFunction
-			count: 3
-			path: src/RestControllers/AssessmentGroupRestController.php
-
-		-
 			message: '#^Parameter \#1 \$created of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Models\\AssessmentGroup\:\:setCreated\(\) expects DateTime, DateTime\|false given\.$#'
 			identifier: argument.type
 			count: 1
@@ -573,31 +537,13 @@ parameters:
 		-
 			message: '#^catch \(Exception\) would suppress ErrorException, which is forbidden\.$#'
 			identifier: openemr.forbiddenCatchType
-			count: 6
+			count: 3
 			path: src/RestControllers/AssessmentGroupRestController.php
 
 		-
 			message: '#^Method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssessmentReportRepository\:\:getAll\(\) invoked with 2 parameters, 1 required\.$#'
 			identifier: arguments.count
 			count: 1
-			path: src/RestControllers/AssessmentReportRestController.php
-
-		-
-			message: '#^OpenEMR\\Common\\Database\\QueryUtils\:\:commitTransaction\(\) is deprecated\. Use QueryUtils\:\:inTransaction\(\) wrapper instead\.$#'
-			identifier: openemr.deprecatedSqlFunction
-			count: 2
-			path: src/RestControllers/AssessmentReportRestController.php
-
-		-
-			message: '#^OpenEMR\\Common\\Database\\QueryUtils\:\:rollbackTransaction\(\) is deprecated\. Use QueryUtils\:\:inTransaction\(\) wrapper instead\.$#'
-			identifier: openemr.deprecatedSqlFunction
-			count: 2
-			path: src/RestControllers/AssessmentReportRestController.php
-
-		-
-			message: '#^OpenEMR\\Common\\Database\\QueryUtils\:\:startTransaction\(\) is deprecated\. Use QueryUtils\:\:inTransaction\(\) wrapper instead\.$#'
-			identifier: openemr.deprecatedSqlFunction
-			count: 2
 			path: src/RestControllers/AssessmentReportRestController.php
 
 		-
@@ -669,26 +615,8 @@ parameters:
 		-
 			message: '#^catch \(Exception\) would suppress ErrorException, which is forbidden\.$#'
 			identifier: openemr.forbiddenCatchType
-			count: 5
+			count: 3
 			path: src/RestControllers/AssessmentReportRestController.php
-
-		-
-			message: '#^OpenEMR\\Common\\Database\\QueryUtils\:\:commitTransaction\(\) is deprecated\. Use QueryUtils\:\:inTransaction\(\) wrapper instead\.$#'
-			identifier: openemr.deprecatedSqlFunction
-			count: 1
-			path: src/RestControllers/AssessmentRestController.php
-
-		-
-			message: '#^OpenEMR\\Common\\Database\\QueryUtils\:\:rollbackTransaction\(\) is deprecated\. Use QueryUtils\:\:inTransaction\(\) wrapper instead\.$#'
-			identifier: openemr.deprecatedSqlFunction
-			count: 1
-			path: src/RestControllers/AssessmentRestController.php
-
-		-
-			message: '#^OpenEMR\\Common\\Database\\QueryUtils\:\:startTransaction\(\) is deprecated\. Use QueryUtils\:\:inTransaction\(\) wrapper instead\.$#'
-			identifier: openemr.deprecatedSqlFunction
-			count: 1
-			path: src/RestControllers/AssessmentRestController.php
 
 		-
 			message: '#^Parameter \#1 \$assignmentItemUuid of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssessmentRepository\:\:getAssessmentForAssignmentItem\(\) expects string, mixed given\.$#'
@@ -729,30 +657,12 @@ parameters:
 		-
 			message: '#^catch \(Exception\) would suppress ErrorException, which is forbidden\.$#'
 			identifier: openemr.forbiddenCatchType
-			count: 4
+			count: 3
 			path: src/RestControllers/AssessmentRestController.php
 
 		-
 			message: '#^Cannot call method format\(\) on DateTime\|null\.$#'
 			identifier: method.nonObject
-			count: 1
-			path: src/RestControllers/AssessmentResultRestController.php
-
-		-
-			message: '#^OpenEMR\\Common\\Database\\QueryUtils\:\:commitTransaction\(\) is deprecated\. Use QueryUtils\:\:inTransaction\(\) wrapper instead\.$#'
-			identifier: openemr.deprecatedSqlFunction
-			count: 1
-			path: src/RestControllers/AssessmentResultRestController.php
-
-		-
-			message: '#^OpenEMR\\Common\\Database\\QueryUtils\:\:rollbackTransaction\(\) is deprecated\. Use QueryUtils\:\:inTransaction\(\) wrapper instead\.$#'
-			identifier: openemr.deprecatedSqlFunction
-			count: 1
-			path: src/RestControllers/AssessmentResultRestController.php
-
-		-
-			message: '#^OpenEMR\\Common\\Database\\QueryUtils\:\:startTransaction\(\) is deprecated\. Use QueryUtils\:\:inTransaction\(\) wrapper instead\.$#'
-			identifier: openemr.deprecatedSqlFunction
 			count: 1
 			path: src/RestControllers/AssessmentResultRestController.php
 
@@ -795,7 +705,7 @@ parameters:
 		-
 			message: '#^catch \(Exception\) would suppress ErrorException, which is forbidden\.$#'
 			identifier: openemr.forbiddenCatchType
-			count: 3
+			count: 2
 			path: src/RestControllers/AssessmentResultRestController.php
 
 		-
@@ -814,24 +724,6 @@ parameters:
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
 			identifier: empty.notAllowed
 			count: 1
-			path: src/RestControllers/ClientRestController.php
-
-		-
-			message: '#^OpenEMR\\Common\\Database\\QueryUtils\:\:commitTransaction\(\) is deprecated\. Use QueryUtils\:\:inTransaction\(\) wrapper instead\.$#'
-			identifier: openemr.deprecatedSqlFunction
-			count: 4
-			path: src/RestControllers/ClientRestController.php
-
-		-
-			message: '#^OpenEMR\\Common\\Database\\QueryUtils\:\:rollbackTransaction\(\) is deprecated\. Use QueryUtils\:\:inTransaction\(\) wrapper instead\.$#'
-			identifier: openemr.deprecatedSqlFunction
-			count: 4
-			path: src/RestControllers/ClientRestController.php
-
-		-
-			message: '#^OpenEMR\\Common\\Database\\QueryUtils\:\:startTransaction\(\) is deprecated\. Use QueryUtils\:\:inTransaction\(\) wrapper instead\.$#'
-			identifier: openemr.deprecatedSqlFunction
-			count: 4
 			path: src/RestControllers/ClientRestController.php
 
 		-
@@ -867,26 +759,8 @@ parameters:
 		-
 			message: '#^catch \(Exception\) would suppress ErrorException, which is forbidden\.$#'
 			identifier: openemr.forbiddenCatchType
-			count: 8
+			count: 4
 			path: src/RestControllers/ClientRestController.php
-
-		-
-			message: '#^OpenEMR\\Common\\Database\\QueryUtils\:\:commitTransaction\(\) is deprecated\. Use QueryUtils\:\:inTransaction\(\) wrapper instead\.$#'
-			identifier: openemr.deprecatedSqlFunction
-			count: 1
-			path: src/RestControllers/LibraryAssetRestController.php
-
-		-
-			message: '#^OpenEMR\\Common\\Database\\QueryUtils\:\:rollbackTransaction\(\) is deprecated\. Use QueryUtils\:\:inTransaction\(\) wrapper instead\.$#'
-			identifier: openemr.deprecatedSqlFunction
-			count: 1
-			path: src/RestControllers/LibraryAssetRestController.php
-
-		-
-			message: '#^OpenEMR\\Common\\Database\\QueryUtils\:\:startTransaction\(\) is deprecated\. Use QueryUtils\:\:inTransaction\(\) wrapper instead\.$#'
-			identifier: openemr.deprecatedSqlFunction
-			count: 1
-			path: src/RestControllers/LibraryAssetRestController.php
 
 		-
 			message: '#^Parameter \#1 \$string of function trim expects string, mixed given\.$#'
@@ -897,7 +771,7 @@ parameters:
 		-
 			message: '#^catch \(Exception\) would suppress ErrorException, which is forbidden\.$#'
 			identifier: openemr.forbiddenCatchType
-			count: 4
+			count: 3
 			path: src/RestControllers/LibraryAssetRestController.php
 
 		-
@@ -921,24 +795,6 @@ parameters:
 		-
 			message: '#^Offset ''assignmentItemId'' might not exist on array\{asset\?\: array\<string, mixed\>, \.\.\.\}\.$#'
 			identifier: offsetAccess.notFound
-			count: 1
-			path: src/RestControllers/LibraryAssetResultRestController.php
-
-		-
-			message: '#^OpenEMR\\Common\\Database\\QueryUtils\:\:commitTransaction\(\) is deprecated\. Use QueryUtils\:\:inTransaction\(\) wrapper instead\.$#'
-			identifier: openemr.deprecatedSqlFunction
-			count: 1
-			path: src/RestControllers/LibraryAssetResultRestController.php
-
-		-
-			message: '#^OpenEMR\\Common\\Database\\QueryUtils\:\:rollbackTransaction\(\) is deprecated\. Use QueryUtils\:\:inTransaction\(\) wrapper instead\.$#'
-			identifier: openemr.deprecatedSqlFunction
-			count: 1
-			path: src/RestControllers/LibraryAssetResultRestController.php
-
-		-
-			message: '#^OpenEMR\\Common\\Database\\QueryUtils\:\:startTransaction\(\) is deprecated\. Use QueryUtils\:\:inTransaction\(\) wrapper instead\.$#'
-			identifier: openemr.deprecatedSqlFunction
 			count: 1
 			path: src/RestControllers/LibraryAssetResultRestController.php
 
@@ -975,7 +831,7 @@ parameters:
 		-
 			message: '#^catch \(Exception\) would suppress ErrorException, which is forbidden\.$#'
 			identifier: openemr.forbiddenCatchType
-			count: 4
+			count: 3
 			path: src/RestControllers/LibraryAssetResultRestController.php
 
 		-
@@ -1005,24 +861,6 @@ parameters:
 		-
 			message: '#^Method OpenEMR\\Services\\QuestionnaireResponseService\:\:buildQuestionnaireResponseHtml\(\) invoked with 2 parameters, 1 required\.$#'
 			identifier: arguments.count
-			count: 1
-			path: src/RestControllers/QuestionnaireAuditController.php
-
-		-
-			message: '#^OpenEMR\\Common\\Database\\QueryUtils\:\:commitTransaction\(\) is deprecated\. Use QueryUtils\:\:inTransaction\(\) wrapper instead\.$#'
-			identifier: openemr.deprecatedSqlFunction
-			count: 1
-			path: src/RestControllers/QuestionnaireAuditController.php
-
-		-
-			message: '#^OpenEMR\\Common\\Database\\QueryUtils\:\:rollbackTransaction\(\) is deprecated\. Use QueryUtils\:\:inTransaction\(\) wrapper instead\.$#'
-			identifier: openemr.deprecatedSqlFunction
-			count: 1
-			path: src/RestControllers/QuestionnaireAuditController.php
-
-		-
-			message: '#^OpenEMR\\Common\\Database\\QueryUtils\:\:startTransaction\(\) is deprecated\. Use QueryUtils\:\:inTransaction\(\) wrapper instead\.$#'
-			identifier: openemr.deprecatedSqlFunction
 			count: 1
 			path: src/RestControllers/QuestionnaireAuditController.php
 
@@ -1065,7 +903,7 @@ parameters:
 		-
 			message: '#^catch \(Exception\) would suppress ErrorException, which is forbidden\.$#'
 			identifier: openemr.forbiddenCatchType
-			count: 4
+			count: 3
 			path: src/RestControllers/QuestionnaireAuditController.php
 
 		-
@@ -1243,24 +1081,6 @@ parameters:
 			path: src/Services/FhirServices/AssessmentFHIRResourceService.php
 
 		-
-			message: '#^OpenEMR\\Common\\Database\\QueryUtils\:\:commitTransaction\(\) is deprecated\. Use QueryUtils\:\:inTransaction\(\) wrapper instead\.$#'
-			identifier: openemr.deprecatedSqlFunction
-			count: 1
-			path: src/Services/FhirServices/AssessmentResponseBlobFHIRResourceService.php
-
-		-
-			message: '#^OpenEMR\\Common\\Database\\QueryUtils\:\:rollbackTransaction\(\) is deprecated\. Use QueryUtils\:\:inTransaction\(\) wrapper instead\.$#'
-			identifier: openemr.deprecatedSqlFunction
-			count: 1
-			path: src/Services/FhirServices/AssessmentResponseBlobFHIRResourceService.php
-
-		-
-			message: '#^OpenEMR\\Common\\Database\\QueryUtils\:\:startTransaction\(\) is deprecated\. Use QueryUtils\:\:inTransaction\(\) wrapper instead\.$#'
-			identifier: openemr.deprecatedSqlFunction
-			count: 1
-			path: src/Services/FhirServices/AssessmentResponseBlobFHIRResourceService.php
-
-		-
 			message: '#^Parameter \#1 \$code of method OpenEMR\\FHIR\\R4\\FHIRDomainResource\\FHIRQuestionnaire\:\:addCode\(\) expects OpenEMR\\FHIR\\R4\\FHIRElement\\FHIRCoding, OpenEMR\\FHIR\\R4\\FHIRElement\\FHIRCode given\.$#'
 			identifier: argument.type
 			count: 1
@@ -1367,24 +1187,6 @@ parameters:
 			identifier: deadCode.unreachable
 			count: 1
 			path: src/Services/FhirServices/LibraryAssetFHIRResourceService.php
-
-		-
-			message: '#^OpenEMR\\Common\\Database\\QueryUtils\:\:commitTransaction\(\) is deprecated\. Use QueryUtils\:\:inTransaction\(\) wrapper instead\.$#'
-			identifier: openemr.deprecatedSqlFunction
-			count: 1
-			path: src/Services/FhirServices/LibraryAssetResultBlobFHIRResourceService.php
-
-		-
-			message: '#^OpenEMR\\Common\\Database\\QueryUtils\:\:rollbackTransaction\(\) is deprecated\. Use QueryUtils\:\:inTransaction\(\) wrapper instead\.$#'
-			identifier: openemr.deprecatedSqlFunction
-			count: 1
-			path: src/Services/FhirServices/LibraryAssetResultBlobFHIRResourceService.php
-
-		-
-			message: '#^OpenEMR\\Common\\Database\\QueryUtils\:\:startTransaction\(\) is deprecated\. Use QueryUtils\:\:inTransaction\(\) wrapper instead\.$#'
-			identifier: openemr.deprecatedSqlFunction
-			count: 1
-			path: src/Services/FhirServices/LibraryAssetResultBlobFHIRResourceService.php
 
 		-
 			message: '#^Parameter \#1 \$assignmentItemUuid of method OpenEMR\\Modules\\DiscoverAndChange\\Assessments\\Services\\AssignmentRepository\:\:getAssignmentItem\(\) expects string, string\|null given\.$#'
@@ -1648,24 +1450,6 @@ parameters:
 			message: '#^Binary operation "\." between non\-falsy\-string and mixed results in an error\.$#'
 			identifier: binaryOp.invalid
 			count: 1
-			path: src/Services/ResourceImporterService.php
-
-		-
-			message: '#^OpenEMR\\Common\\Database\\QueryUtils\:\:commitTransaction\(\) is deprecated\. Use QueryUtils\:\:inTransaction\(\) wrapper instead\.$#'
-			identifier: openemr.deprecatedSqlFunction
-			count: 2
-			path: src/Services/ResourceImporterService.php
-
-		-
-			message: '#^OpenEMR\\Common\\Database\\QueryUtils\:\:rollbackTransaction\(\) is deprecated\. Use QueryUtils\:\:inTransaction\(\) wrapper instead\.$#'
-			identifier: openemr.deprecatedSqlFunction
-			count: 2
-			path: src/Services/ResourceImporterService.php
-
-		-
-			message: '#^OpenEMR\\Common\\Database\\QueryUtils\:\:startTransaction\(\) is deprecated\. Use QueryUtils\:\:inTransaction\(\) wrapper instead\.$#'
-			identifier: openemr.deprecatedSqlFunction
-			count: 2
 			path: src/Services/ResourceImporterService.php
 
 		-

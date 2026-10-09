@@ -131,33 +131,31 @@ class LibraryAssetResultBlobFHIRResourceService extends FhirServiceBase
         }
         // validation passed, so the record is a populated associative array.
         /** @var array<string, mixed> $openEmrRecord */
-        $transactionCommitted = false;
         try {
-            $assignmentRepo = $this->assignmentRepository;
-            QueryUtils::startTransaction();
-            $client = $this->validateCreateAccessAndReturnClient($openEmrRecord['clientId'], SessionWrapperFactory::getInstance()->getActiveSession()->get('authUserID'));
-            // use the id in the session... don't like it but its the only thing we have right now
-            $resultDTO = new LibraryAssetBlobResultDTO();
-            $resultDTO->fromDTO($openEmrRecord);
-            $assetDTO = new LibraryAssetBlobDTO();
-            if (isset($openEmrRecord['asset']) && $openEmrRecord['asset'] !== []) {
-                $assetDTO->fromDTO((array) $openEmrRecord['asset']);
-            }
+            $result = QueryUtils::inTransaction(function () use ($openEmrRecord) {
+                $client = $this->validateCreateAccessAndReturnClient($openEmrRecord['clientId'], SessionWrapperFactory::getInstance()->getActiveSession()->get('authUserID'));
+                // use the id in the session... don't like it but its the only thing we have right now
+                $resultDTO = new LibraryAssetBlobResultDTO();
+                $resultDTO->fromDTO($openEmrRecord);
+                $assetDTO = new LibraryAssetBlobDTO();
+                if (isset($openEmrRecord['asset']) && $openEmrRecord['asset'] !== []) {
+                    $assetDTO->fromDTO((array) $openEmrRecord['asset']);
+                }
 
-            $item = $assignmentRepo->getAssignmentItem($resultDTO->getAssignmentItemId(), $openEmrRecord['clientId']);
-            if ($item === null) {
-                throw new \InvalidArgumentException("Assignment item not found", ErrorCode::INVALID_REQUEST);
-            }
-            if (!($item instanceof AssignedLibraryAsset)) {
-                throw new \InvalidArgumentException("Assignment item was not a valid library asset.  This code should not have been reached", ErrorCode::INVALID_REQUEST);
-            }
-            $resultDTO = $this->repository->saveLibraryAssetResultBlob($resultDTO, $assetDTO, $client['uuid']);
-            $item->setResultId($resultDTO->getId());
-            $result = new ProcessingResult();
-            $result->addData($resultDTO->getId());
-            $this->completer->markAssignmentComplete($item, $client);
-            QueryUtils::commitTransaction();
-            $transactionCommitted = true;
+                $item = $this->assignmentRepository->getAssignmentItem($resultDTO->getAssignmentItemId(), $openEmrRecord['clientId']);
+                if ($item === null) {
+                    throw new \InvalidArgumentException("Assignment item not found", ErrorCode::INVALID_REQUEST);
+                }
+                if (!($item instanceof AssignedLibraryAsset)) {
+                    throw new \InvalidArgumentException("Assignment item was not a valid library asset.  This code should not have been reached", ErrorCode::INVALID_REQUEST);
+                }
+                $resultDTO = $this->repository->saveLibraryAssetResultBlob($resultDTO, $assetDTO, $client['uuid']);
+                $item->setResultId($resultDTO->getId());
+                $result = new ProcessingResult();
+                $result->addData($resultDTO->getId());
+                $this->completer->markAssignmentComplete($item, $client);
+                return $result;
+            });
         } catch (AccessDeniedException $exception) {
             $this->getLogger()?->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             $result = new ProcessingResult();
@@ -166,10 +164,6 @@ class LibraryAssetResultBlobFHIRResourceService extends FhirServiceBase
             $this->getLogger()?->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             $result = new ProcessingResult();
             $result->addInternalError(xlt("A system error occurred in processing your request"));
-        } finally {
-            if (!$transactionCommitted) {
-                QueryUtils::rollbackTransaction();
-            }
         }
         return $result;
     }

@@ -514,6 +514,14 @@ proceed on the 489 exercised-method errors; keep deprecated/dead baselined; the 
 integration-heavy remainder is a future batch (or fix conservatively/PHPDoc-only).
 
 ## Progress log
+- 2026-10-09: PHPStan refactor pass 10 (v0.12.19) — deprecatedSqlFunction bucket. All 19
+  start/commit/rollbackTransaction blocks -> QueryUtils::inTransaction(fn closure) across 12 files
+  (baseline 465 -> 394). Pattern: closure body + kept outer try/catch (inTransaction rethrows, so
+  the existing swallow/AccessDenied handling is preserved; redundant commit-flag + finally-rollback
+  removed). The -71 (vs 57) includes the nested catch(\Exception) in the old finally-rollbacks.
+  phpstan confirmed no undefined-var closure captures; suite 529 green (completion-chain + ACL
+  integration tests exercise these). This was the behavior-sensitive bucket flagged/deferred in
+  passes 2 & 5 — now done.
 - 2026-10-09: PHPStan refactor pass 9 (v0.12.18) — empty.notAllowed bucket, module-wide.
   Converted 174/190 empty() to strict comparisons across ~35 files (baseline 638 -> 465). Owner
   approved extending scope to ResourceImporterService/AssessmentAppointmentController/

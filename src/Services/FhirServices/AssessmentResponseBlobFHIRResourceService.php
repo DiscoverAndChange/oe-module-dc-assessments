@@ -145,38 +145,36 @@ class AssessmentResponseBlobFHIRResourceService extends FhirServiceBase
     {
         /** @var array{clientId: string, data: array{_assignmentItemId: string, ...}, ...} $openEmrRecord */
         $validator = new AssessmentResultBlobValidator();
-        $transactionCommitted = false;
         try {
-            $assignmentRepo = $this->assignmentRepository;
-            QueryUtils::startTransaction();
             $validation = $validator->validate($openEmrRecord, AssessmentResultBlobValidator::DATABASE_INSERT_CONTEXT);
             if (!$validation->isValid()) {
                 return $validation;
             }
 
-            /** @var int|null $authUserId */
-            $authUserId = SessionWrapperFactory::getInstance()->getActiveSession()->get('authUserID');
-            $client = $this->validateCreateAccessAndReturnClient($openEmrRecord['clientId'], $authUserId);
-            /** @var string $clientUuid */
-            $clientUuid = $client['uuid'];
-            $item = $assignmentRepo->getAssignmentItem($openEmrRecord['data']['_assignmentItemId'], $clientUuid);
-            if ($item === null) {
-                throw new \InvalidArgumentException("Assignment item not found", ErrorCode::INVALID_REQUEST);
-            } else if (!($item instanceof AssignedAssessment)) {
-                throw new \InvalidArgumentException("Assignment item is not an assessment", ErrorCode::INVALID_REQUEST);
-            }
-            $resultRepo = new AssessmentResultRepository();
-            $resultId = Uuid::uuid4()->toString();
-            $item->setResultId($resultId);
-            /** @var int $clientPid */
-            $clientPid = $client['pid'];
-            $savedResult = $resultRepo->createResult($resultId, (array) $openEmrRecord, $clientPid, $item->getAssessmentId());
+            $result = QueryUtils::inTransaction(function () use ($openEmrRecord) {
+                /** @var int|null $authUserId */
+                $authUserId = SessionWrapperFactory::getInstance()->getActiveSession()->get('authUserID');
+                $client = $this->validateCreateAccessAndReturnClient($openEmrRecord['clientId'], $authUserId);
+                /** @var string $clientUuid */
+                $clientUuid = $client['uuid'];
+                $item = $this->assignmentRepository->getAssignmentItem($openEmrRecord['data']['_assignmentItemId'], $clientUuid);
+                if ($item === null) {
+                    throw new \InvalidArgumentException("Assignment item not found", ErrorCode::INVALID_REQUEST);
+                } else if (!($item instanceof AssignedAssessment)) {
+                    throw new \InvalidArgumentException("Assignment item is not an assessment", ErrorCode::INVALID_REQUEST);
+                }
+                $resultRepo = new AssessmentResultRepository();
+                $resultId = Uuid::uuid4()->toString();
+                $item->setResultId($resultId);
+                /** @var int $clientPid */
+                $clientPid = $client['pid'];
+                $resultRepo->createResult($resultId, (array) $openEmrRecord, $clientPid, $item->getAssessmentId());
 
-            $result = new ProcessingResult();
-            $result->addData($resultId);
-            $this->completer->markAssignmentComplete($item, (array) $client);
-            QueryUtils::commitTransaction();
-            $transactionCommitted = true;
+                $result = new ProcessingResult();
+                $result->addData($resultId);
+                $this->completer->markAssignmentComplete($item, (array) $client);
+                return $result;
+            });
         } catch (AccessDeniedException $exception) {
             $this->getLogger()?->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             $result = new ProcessingResult();
@@ -185,10 +183,6 @@ class AssessmentResponseBlobFHIRResourceService extends FhirServiceBase
             $this->getLogger()?->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             $result = new ProcessingResult();
             $result->addInternalError(xlt("A system error occurred in processing your request"));
-        } finally {
-            if (!$transactionCommitted) {
-                QueryUtils::rollbackTransaction();
-            }
         }
         return $result;
     }

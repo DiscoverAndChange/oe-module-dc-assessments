@@ -1,3 +1,16 @@
+v0.12.19 PHPStan refactor pass 10: QueryUtils transactions -> inTransaction() (baseline 465 -> 394)
+
+  Converted all 19 start/commit/rollbackTransaction blocks (57 deprecatedSqlFunction errors) to
+  QueryUtils::inTransaction(fn) across 12 files. inTransaction() commits on success and rolls back
+  + rethrows on Throwable, so each transactional body became a closure and the method's existing
+  outer try/catch was kept to preserve behaviour -- REST controllers `return inTransaction(fn ...
+  return $resp)` (AccessDenied/Exception catches unchanged; redundant commit-flag + finally-rollback
+  removed), and the FHIR insert services + QuestionnaireAssignmentListener keep their swallow-and-
+  recover catches so a failed completion still returns a graceful ProcessingResult / lets the QR save
+  succeed. Validation/ACL/parse steps that preceded startTransaction stay outside the closure.
+  Net -71 (the extra beyond 57 is the nested catch(\Exception) inside the old finally-rollbacks).
+  529-test suite green (incl. completion-chain + ACL integration tests), phpstan clean, baseline adds 0.
+
 v0.12.18 PHPStan refactor pass 9: empty() -> strict comparisons (baseline 638 -> 465)
 
   Largest bucket. Converted 174 of the module's 190 empty() uses to strict comparisons across

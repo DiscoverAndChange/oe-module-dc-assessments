@@ -129,32 +129,22 @@ class ClientRestController implements IRestController
         $facilityRepo = new FacilityService();
         /** @var array{id?: int}|null $primaryBusiness */
         $primaryBusiness = $facilityRepo->getPrimaryBusinessEntity();
-        $transactionCommitted = false;
         try {
-            QueryUtils::startTransaction();
-            // TODO: @adunsulag is this the best permission for this?
-            if (!AclMain::aclCheckCore('patients', 'docs')) {
-                throw new AccessDeniedException('user missing admin/super ACL');
-            }
-            $repo = new ClientRepository($this->logger);
-            $id = $repo->removeAssignmentFromClient($id, $assignmentId, $request->getUserId(), $primaryBusiness['id'] ?? null);
-            QueryUtils::commitTransaction();
-            $transactionCommitted = true;
-            return RestUtils::returnSingleObjectResponse(['assignmentId' => $id]);
+            return QueryUtils::inTransaction(function () use ($request, $id, $assignmentId, $primaryBusiness) {
+                // TODO: @adunsulag is this the best permission for this?
+                if (!AclMain::aclCheckCore('patients', 'docs')) {
+                    throw new AccessDeniedException('user missing admin/super ACL');
+                }
+                $repo = new ClientRepository($this->logger);
+                $removedId = $repo->removeAssignmentFromClient($id, $assignmentId, $request->getUserId(), $primaryBusiness['id'] ?? null);
+                return RestUtils::returnSingleObjectResponse(['assignmentId' => $removedId]);
+            });
         } catch (AccessDeniedException $exception) {
             $this->logger->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             return RestUtils::returnAccessDeniedResponse($this->logger, $exception->getMessage());
         } catch (\Exception $exception) {
             // logger is handled in the utils.
             return RestUtils::getErrorResponse($this->logger, $exception);
-        } finally {
-            if (!$transactionCommitted) {
-                try {
-                    QueryUtils::rollbackTransaction();
-                } catch (\Exception $exception) {
-                    $this->logger->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
-                }
-            }
         }
     }
 
@@ -164,54 +154,43 @@ class ClientRestController implements IRestController
      */
     public function addAssignmentGroupToClient(ServerRestRequest $request, $id)
     {
-        $transactionCommitted = false;
         try {
-            // these actions from facility break the transaction
+            // these actions from facility break the transaction so they stay outside it
             // TODO: @adunsulag need to investigate why both of these function calls break the transaction.
             $facRepo = new FacilityService();
             /** @var array{id?: int}|null $facility */
             $facility = $facRepo->getPrimaryBusinessEntity();
 
-            QueryUtils::startTransaction();
-//            // TODO: @adunsulag do we want to add separate ACLs for this?
-            if (!AclMain::aclCheckCore('patients', 'demo')) {
-                throw new AccessDeniedException('patients', 'demo', 'user missing patients/demo ACL for this action');
-            }
+            return QueryUtils::inTransaction(function () use ($request, $id, $facility) {
+                // TODO: @adunsulag do we want to add separate ACLs for this?
+                if (!AclMain::aclCheckCore('patients', 'demo')) {
+                    throw new AccessDeniedException('patients', 'demo', 'user missing patients/demo ACL for this action');
+                }
 
-            $facilityId = isset($facility['id']) ? $facility['id'] : null;
+                $facilityId = isset($facility['id']) ? $facility['id'] : null;
 
-            /** @var array{id?: int, _id?: int, appointmentId?: string, profileId?: string} $group */
-            $group = $request->getBodyAsJson() ?? [];
-            $groupId = $group['id'] ?? $group['_id'] ?? null;
-            if ($groupId === null || $groupId === 0) {
-                throw new \InvalidArgumentException('group.id is required');
-            }
-            $appointmentId = isset($group['appointmentId']) ? $group['appointmentId'] : null;
-            $profileId = $group['profileId'] ?? null;
-            $repo = new ClientRepository($this->logger);
-            if ($profileId !== null && $profileId !== '') {
-                $createdAssignment = $repo->addTemplateProfileAssignmentToClient($id, $profileId, $request->getUserId(), $facilityId, $appointmentId);
-            } else {
-                $createdAssignment = $repo->addGroupAssignmentToClient($id, $groupId, $request->getUserId(), $facilityId, $appointmentId);
-            }
-            QueryUtils::commitTransaction();
-            $transactionCommitted = true;
-            return RestUtils::returnSingleObjectResponse(['assignment' => $createdAssignment]);
+                /** @var array{id?: int, _id?: int, appointmentId?: string, profileId?: string} $group */
+                $group = $request->getBodyAsJson() ?? [];
+                $groupId = $group['id'] ?? $group['_id'] ?? null;
+                if ($groupId === null || $groupId === 0) {
+                    throw new \InvalidArgumentException('group.id is required');
+                }
+                $appointmentId = isset($group['appointmentId']) ? $group['appointmentId'] : null;
+                $profileId = $group['profileId'] ?? null;
+                $repo = new ClientRepository($this->logger);
+                if ($profileId !== null && $profileId !== '') {
+                    $createdAssignment = $repo->addTemplateProfileAssignmentToClient($id, $profileId, $request->getUserId(), $facilityId, $appointmentId);
+                } else {
+                    $createdAssignment = $repo->addGroupAssignmentToClient($id, $groupId, $request->getUserId(), $facilityId, $appointmentId);
+                }
+                return RestUtils::returnSingleObjectResponse(['assignment' => $createdAssignment]);
+            });
         } catch (AccessDeniedException $exception) {
             $this->logger->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
             return RestUtils::returnAccessDeniedResponse($this->logger, $exception->getMessage());
         } catch (\Exception $exception) {
             // logger is handled in the utils.
             return RestUtils::getErrorResponse($this->logger, $exception);
-        } finally {
-            if (!$transactionCommitted) {
-                try {
-                    QueryUtils::rollbackTransaction();
-                } catch (\Exception $e) {
-                    // if we can't rollback this is really, really bad
-                    $this->logger->error($e->getMessage(), ['trace' => $e->getTraceAsString()]);
-                }
-            }
         }
     }
 
@@ -221,7 +200,6 @@ class ClientRestController implements IRestController
      */
     public function addAssignmentToClient(ServerRestRequest $request, $id)
     {
-        $transactionCommitted = false;
         try {
             // TODO: @adunsulag do we want to add separate ACLs for this?
             if (!AclMain::aclCheckCore('patients', 'demo')) {
@@ -231,26 +209,16 @@ class ClientRestController implements IRestController
             $assignmentJSON = $request->getBodyAsJson();
             $assignmentSerializer = new AssignmentSerializer();
             $assignment = $assignmentSerializer->deserialize($assignmentJSON);
-            QueryUtils::startTransaction();
-            $repo = new ClientRepository($this->logger);
-            $assignment = $repo->addAssignmentToClient($id, $assignment, (int)$request->getUserId());
-            QueryUtils::commitTransaction();
-            $transactionCommitted = true;
-            return RestUtils::returnSingleObjectResponse(['assignment' => $assignment]);
+            return QueryUtils::inTransaction(function () use ($request, $id, $assignment) {
+                $repo = new ClientRepository($this->logger);
+                $savedAssignment = $repo->addAssignmentToClient($id, $assignment, (int)$request->getUserId());
+                return RestUtils::returnSingleObjectResponse(['assignment' => $savedAssignment]);
+            });
         } catch (AccessDeniedException $exception) {
             return RestUtils::returnAccessDeniedResponse($this->logger, $exception->getMessage());
         } catch (\Exception $exception) {
             // logger is handled in the utils.
             return RestUtils::getErrorResponse($this->logger, $exception);
-        } finally {
-            if (!$transactionCommitted) {
-                try {
-                    QueryUtils::rollbackTransaction();
-                } catch (\Exception $e) {
-                    // if we can't rollback this is really, really bad
-                    $this->logger->error($e->getMessage(), ['trace' => $e->getTraceAsString()]);
-                }
-            }
         }
     }
 
@@ -260,7 +228,6 @@ class ClientRestController implements IRestController
      */
     public function sendMessageToClient(ServerRestRequest $request, $id)
     {
-        $transactionCommitted = false;
         $userRepo = new UserService();
         $patientService = new PatientService();
         try {
@@ -277,36 +244,26 @@ class ClientRestController implements IRestController
 //            if (empty($subject)) {
 //                throw new \InvalidArgumentException("subject is required", ErrorCode::VALIDATE_DATA_MISSING);
 //            }
-            QueryUtils::startTransaction();
-            $userId = $request->getUserId();
-            $user = $userRepo->getUser((int)$userId);
-            if ($user === false) {
-                throw new \InvalidArgumentException("User not found for request", ErrorCode::SYSTEM_ERROR);
-            }
-            $senderEmail = $user['email'] ?? null;
-            $patient = $patientService->getOne($id);
-            if (!$patient->hasData()) {
-                throw new \InvalidArgumentException("Patient not found for request", ErrorCode::INVALID_REQUEST);
-            }
-            /** @var list<array{pid: string, email: ?string}> $patientRecords */
-            $patientRecords = ProcessingResult::extractDataArray($patient);
-            $patient = $patientRecords[0];
-            $patientEmail = $patient['email'] ?? '';
-            $this->messageDispatcher->sendInvitationMessage((int) $patient['pid'], $subject, $message, $patientEmail, $senderEmail, $isTest);
-            QueryUtils::commitTransaction();
-            $transactionCommitted = true;
+            QueryUtils::inTransaction(function () use ($request, $id, $subject, $message, $isTest, $userRepo, $patientService) {
+                $userId = $request->getUserId();
+                $user = $userRepo->getUser((int)$userId);
+                if ($user === false) {
+                    throw new \InvalidArgumentException("User not found for request", ErrorCode::SYSTEM_ERROR);
+                }
+                $senderEmail = $user['email'] ?? null;
+                $patient = $patientService->getOne($id);
+                if (!$patient->hasData()) {
+                    throw new \InvalidArgumentException("Patient not found for request", ErrorCode::INVALID_REQUEST);
+                }
+                /** @var list<array{pid: string, email: ?string}> $patientRecords */
+                $patientRecords = ProcessingResult::extractDataArray($patient);
+                $patient = $patientRecords[0];
+                $patientEmail = $patient['email'] ?? '';
+                $this->messageDispatcher->sendInvitationMessage((int) $patient['pid'], $subject, $message, $patientEmail, $senderEmail, $isTest);
+            });
         } catch (\Exception $exception) {
             // logger is handled in the utils.
             return RestUtils::getErrorResponse($this->logger, $exception);
-        } finally {
-            if (!$transactionCommitted) {
-                try {
-                    QueryUtils::rollbackTransaction();
-                } catch (\Exception $e) {
-                    // if we can't rollback this is really, really bad
-                    $this->logger->error($e->getMessage(), ['trace' => $e->getTraceAsString()]);
-                }
-            }
         }
         return null;
     }
