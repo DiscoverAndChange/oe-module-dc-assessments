@@ -1,3 +1,21 @@
+v0.12.29 Server-side provider token broker for the confidential admin client
+
+  Adds the backend-for-frontend token broker that lets the browser admin app use the CONFIDENTIAL
+  provider client without ever holding its secret. SmartAppClientService::exchangeProviderAuthorizationCode()
+  completes the authorization_code exchange server-side (adds client_id + client_secret, POSTs to the
+  OpenEMR token endpoint over loopback via Guzzle); public/backend/provider-token.php exposes it to the
+  SPA (the SPA keeps the PKCE verifier, the server adds the secret). GlobalConfig gains
+  getOAuthTokenUrl()/getOAuthTokenUrlInternal(). FrontendDispatchController now injects the provider
+  client id (adminClientId) into the SPA page (frontend.html.twig data-admin-client-id + dacAppConfig).
+
+  Validated end to end on the live 8.4 stack: a provider PKCE authorize with the confidential provider
+  client yields a code, and the broker exchanges it for an access_token that INCLUDES user/clients.read
+  (the scope the public patient client dropped). phpstan clean (Guzzle, not raw curl; GuzzleException
+  catch), suite 543 green.
+
+  Next: the admin SPA uses this broker (authorize with the provider client -> finalize via broker ->
+  build the FHIR client), then the provider-review e2e.
+
 v0.12.28 Register a confidential provider SMART client (two-client OAuth) + fix getBody() tests
 
   Foundation for provider-side review. OpenEMR only grants user/* scopes to CONFIDENTIAL clients

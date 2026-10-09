@@ -127,4 +127,50 @@ class SmartAppClientService
         $client = $this->clientRepository->getClientEntity($clientId);
         return $client !== false && $client->isEnabled();
     }
+
+    /**
+     * Server-side provider token broker: complete the confidential provider client's authorization_code
+     * exchange. The browser SPA keeps the PKCE verifier; this adds the client_secret server-side (so the
+     * secret never ships to the browser) and POSTs to the OpenEMR token endpoint over the loopback.
+     *
+     * @return array<string, mixed> the decoded token response (access_token/…) or {error: …}
+     */
+    public function exchangeProviderAuthorizationCode(string $code, string $codeVerifier, string $redirectUri): array
+    {
+        $clientId = $this->globalConfig->getProviderClientId();
+        $secret = $this->globalConfig->getProviderClientSecret();
+        if (!is_string($clientId) || $clientId === '' || !is_string($secret) || $secret === '') {
+            return ['error' => 'provider_client_not_registered'];
+        }
+
+        try {
+            $http = new \GuzzleHttp\Client([
+                // server-to-self over loopback; the dev cert is self-signed
+                'verify' => false,
+                'timeout' => 20,
+                'http_errors' => false,
+            ]);
+            $response = $http->post($this->globalConfig->getOAuthTokenUrlInternal(), [
+                'form_params' => [
+                    'grant_type' => 'authorization_code',
+                    'code' => $code,
+                    'code_verifier' => $codeVerifier,
+                    'redirect_uri' => $redirectUri,
+                    'client_id' => $clientId,
+                    'client_secret' => $secret,
+                ],
+                'headers' => ['Accept' => 'application/json'],
+            ]);
+            $body = (string) $response->getBody();
+        } catch (\GuzzleHttp\Exception\GuzzleException $e) {
+            return ['error' => 'token_request_failed', 'detail' => $e->getMessage()];
+        }
+
+        if ($body === '') {
+            return ['error' => 'token_request_failed'];
+        }
+        /** @var array<string, mixed> $decoded */
+        $decoded = json_decode($body, true) ?: ['error' => 'invalid_token_response', 'raw' => $body];
+        return $decoded;
+    }
 }

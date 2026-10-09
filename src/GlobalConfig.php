@@ -442,6 +442,36 @@ class GlobalConfig
     }
 
     /**
+     * The OpenEMR OAuth2 token endpoint for this site, used by the server-side provider token broker.
+     * @return string
+     */
+    public function getOAuthTokenUrl()
+    {
+        /** @var string $siteAddr */
+        $siteAddr = OEGlobalsBag::getInstance()->get('site_addr_oath');
+        return rtrim($siteAddr, '/') . '/oauth2/' . $this->getSiteId() . '/token';
+    }
+
+    /** @return string */
+    private function getSiteId()
+    {
+        $siteId = OEGlobalsBag::getInstance()->get('site_id');
+        return is_string($siteId) && $siteId !== '' ? $siteId : 'default';
+    }
+
+    /**
+     * The token endpoint reachable from the SERVER itself (loopback) -- the external site_addr host:port
+     * is not necessarily routable from inside the app container, so the broker calls it over loopback.
+     * @return string
+     */
+    public function getOAuthTokenUrlInternal()
+    {
+        $webRoot = $this->getGlobalSetting('web_root');
+        $webRoot = is_string($webRoot) ? $webRoot : '';
+        return 'https://127.0.0.1' . $webRoot . '/oauth2/' . $this->getSiteId() . '/token';
+    }
+
+    /**
      * The confidential provider client's secret lives server-side only (never shipped to the browser);
      * the module brokers the provider token exchange with it.
      * @return void
