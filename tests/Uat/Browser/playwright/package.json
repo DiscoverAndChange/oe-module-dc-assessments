@@ -10,6 +10,7 @@
     "report": "playwright show-report"
   },
   "devDependencies": {
-    "@playwright/test": "^1.48.0"
-  }
+    "@playwright/test": "1.48.2"
+  },
+  "comment": "@playwright/test is pinned to 1.48.2 -- the last line that supports Node 18 (the host's node). Bump it once the environment is on Node 20+."
 }

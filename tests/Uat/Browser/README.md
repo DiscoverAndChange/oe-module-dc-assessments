@@ -36,16 +36,45 @@ npx playwright install chromium
 
 ## Running
 
-Bring the target OpenEMR stack up (the one serving the SPA, e.g. `https://localhost:9300`) and ensure
-the module is enabled in Modules admin, then:
+### 1. Bring up / provision the stack (one-time per fresh stack)
+
+Use the OpenEMR **8.4** dev stack (the module requires >= 8.4). From a worktree checkout:
 
 ```bash
-# from the deployed module root
+cd <openemr-8.4-worktree>/docker/development-easy && docker compose up -d mysql openemr
+# find the published ports (the worktree picks non-default ones to avoid collisions):
+docker compose port openemr 443   # -> e.g. 0.0.0.0:9302   (SPA base URL)
+docker compose port mysql  3306   # -> e.g. 0.0.0.0:8322   (UAT PDO port)
+```
+
+The `openemr/openemr:flex` first boot can leave `vendor/` incomplete (login 500s with a missing
+`Laminas\Db\...` class). If so: `docker exec <openemr-container> sh -c 'cd /var/www/localhost/htdocs/openemr && composer install --no-interaction --no-scripts'`.
+
+Provision the module + the stack prerequisites the SMART flow needs (enables the module, runs
+`table.sql`, turns on the REST/FHIR/portal APIs + oauth, disables `enforce_signin_email`, registers &
+enables the SMART client, and fixes the client `redirect_uri` / `site_addr_oath` to the public base
+URL) — run as the web user, passing the public base URL:
+
+```bash
+docker exec <openemr-container> sh -c \
+  "cd /var/www/localhost/htdocs/openemr && su -s /bin/sh apache -c \
+   'php interface/modules/custom_modules/oe-module-dc-assessments/tests/Uat/Browser/tools/provision-stack.php baseurl=https://localhost:9302'"
+```
+
+### 2. Run the UAT
+
+```bash
+# from the deployed module root, pointing at the stack's published ports
+DC_UAT_BASE_URL=https://localhost:9302 \
+DC_DB_HOST=127.0.0.1 DC_DB_PORT=8322 DC_DB_USER=root DC_DB_PASS=root DC_DB_NAME=openemr \
 composer uat:browser
 ```
 
 Without `DC_BROWSER_UAT=1` (which the composer script sets), or when the stack/DB/Playwright is not
 ready, every test **self-skips** with an actionable message — a bare `composer test` is unaffected.
+
+> Node note: `@playwright/test` is pinned to **1.48.2** (last line supporting Node 18). On Node 20+
+> you can bump it.
 
 ### Preflight order (each a specific skip reason)
 
@@ -79,8 +108,10 @@ produces), so the first SMART login works.
 
 ## Status / TODO
 
-- **Done:** harness + gating/preflight/teardown; patient-credential seeding; the `patient login`
-  spec (login → SPA dashboard renders) wired end-to-end through PHPUnit.
+- **Done & verified against a live OpenEMR 8.4 stack:** harness + gating/preflight/teardown;
+  patient-credential seeding; the `provision-stack.php` provisioner; the `patient login` spec
+  (SMART/OAuth2 login → SPA dashboard renders) passing end-to-end through PHPUnit
+  (seed → Playwright → assert → teardown).
 - **TODO (needs a running stack to author against real DOM):** `seedAssignment()` (inject a battery +
   assign it) on the PHP side, and the `test.fixme()` steps in `assessment-workflow.spec.ts` (open
   assignment → answer/submit → provider-side review). These complete the full 13-step scenario.

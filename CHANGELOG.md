@@ -1,3 +1,18 @@
+v0.12.24 Browser UAT: stack provisioner + patient-login spec verified end-to-end on a live 8.4 stack
+
+  Hardens the Playwright UAT tier (v0.12.23) into something reproducible and proven. Adds
+  tests/Uat/Browser/tools/provision-stack.php: a one-shot, idempotent provisioner (run as the web
+  user inside the OpenEMR container) that enables the module (type=0 custom, not Laminas), runs
+  table.sql via core SQLUpgradeService, ensures the stack prerequisites the SMART flow needs
+  (rest_api/rest_fhir_api/rest_portal_api/rest_system_scopes_api, oauth_password_grant,
+  portal_onsite_two_enable, enforce_signin_email=0, site_addr_oath), registers + enables the SMART
+  client, and -- given baseurl=<public URL> -- rewrites the client redirect_uri to the public origin
+  so OAuth2 authorize doesn't fail with invalid_client. The `patient login` spec now passes end to
+  end against a live OpenEMR 8.4 dev stack (PHPUnit seed via PDO -> Playwright SMART/OAuth2 login ->
+  SPA dashboard renders -> assert -> bounded teardown). @playwright/test pinned to 1.48.2 (last line
+  supporting Node 18). README documents the full bring-up + provision + run recipe. The deeper
+  assessment/review steps remain test.fixme()/TODO. Default `composer test` still unaffected.
+
 v0.12.23 Scaffold the browser (Playwright) UAT tier for the patient SMART-app workflow
 
   New end-to-end test tier under tests/Uat/Browser, mirroring oe-module-ihi's conventions (opt-in
