@@ -51,6 +51,14 @@
             }
         }
 
+        app-scale-results-table-summary > .table
+        ,app-scale-questions-list.d-report-print-page > .table
+        ,app-pcl-assessment-results app-scale-questions-list > .table {
+          margin-left: .5rem;
+          margin-right: .5rem;
+          width: calc(100% - 2rem);
+        }
+
         app-scales-summary-chart
         ,canvas {
             page-break-inside: avoid;

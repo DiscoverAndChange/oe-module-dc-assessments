@@ -77,21 +77,15 @@ test.describe('assessment workflow', () => {
     await page.locator('input[value="Submit"]').first().click();
     const resp = await submitPost;
 
-    // REMAINING SPA FIX (verified 2026-10-09 on OpenEMR 8.4): the compiled SPA POSTs the
-    // QuestionnaireResponse to the FHIR base (/apis/default/fhir/QuestionnaireResponse) via the SMART
-    // fhir client (assessment.service.ts saveAssessmentResult -> client.create). Core's
-    // AuthorizationListener categorically denies patient-role *writes* to FHIR resources -> 401
-    // "Patient user role is not allowed to write FHIR resources" (the token DOES carry
-    // patient/QuestionnaireResponse.write -- it's a role policy, not a scope gap).
-    // The module registers the same patient-write route under the PORTAL base
-    // (/apis/default/portal/QuestionnaireResponse); replaying this exact POST there returns 201 and
-    // saves the result (after the ServerRestRequest::getBody() stream fix in v0.12.26). So the one
-    // remaining change is the SPA posting to `${environment.apiURL}portal/QuestionnaireResponse`
-    // instead of the FHIR client. Until the SPA is rebuilt, assert the current (blocked) behaviour so
-    // this test documents the exact failure instead of hanging.
-    expect(resp.status(), 'compiled SPA still posts QR to the FHIR base, which core blocks for patients (see comment)').toBe(401);
+    // The SPA submits assessment results to the module's PORTAL route
+    // (/apis/default/portal/QuestionnaireResponse), NOT the FHIR base: OpenEMR core categorically
+    // denies patient-role writes to FHIR resources (AuthorizationListener -> 401), even though the
+    // token carries patient/QuestionnaireResponse.write. The portal route (which core allows) is wired
+    // via the SPA's HTTPService.generateUrl() patient branch + the module's getBody() stream fix.
+    expect(resp.url(), 'assessment results must submit to the portal base, not FHIR').toContain('/portal/');
+    expect(resp.status(), 'portal QuestionnaireResponse write should succeed').toBe(201);
 
-    // TODO once the SPA submits to the portal base: assert 201 + a completion confirmation and that
-    // the assignment shows as completed back on the dashboard.
+    // back on the dashboard with the completion confirmation
+    await expect(page.getByText(/all of your assignments are complete/i)).toBeVisible({ timeout: 20_000 });
   });
 });

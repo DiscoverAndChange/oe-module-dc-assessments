@@ -116,14 +116,28 @@ produces), so the first SMART login works.
   assessment (with a real question) + an assignment via the module's own services;
   `BrowserUatTestCase::seedAssignedAssessment()` invokes it over `docker exec`. The SPA specs verify
   the dashboard lists the assigned assessment and the patient can open it, answer, and submit.
-- **Submit — root-caused + server side fixed; one SPA change remains:** patient Submit posts
-  `QuestionnaireResponse` to the **FHIR** base, which core denies for patients
-  (`AuthorizationListener` → 401 "Patient user role is not allowed to write FHIR resources"; the token
-  *does* carry the write scope — it's a role policy). Replaying the same POST to the **portal** base
-  (`/apis/default/portal/QuestionnaireResponse`) returns **201** and saves the result, after the
-  `ServerRestRequest::getBody()` stream fix (v0.12.26). The one remaining change is the compiled SPA
-  posting to `${apiURL}portal/QuestionnaireResponse` (in `assessment.service.ts` `saveAssessmentResult`)
-  instead of the SMART FHIR client — needs an Angular rebuild. The submit spec asserts the current 401
-  until then.
-- **TODO:** rebuild the SPA to submit to the portal base (then flip the submit assertion to 201 +
-  completion); provider-side review step (log in as provider → assessment-management app → open result).
+- **Done & verified — full submit works:** the SPA submits assessment results to the module's PORTAL
+  route (`/apis/default/portal/QuestionnaireResponse`), which core allows, instead of the FHIR base
+  (core denies patient FHIR writes → 401). This required: (a) the `ServerRestRequest::getBody()` stream
+  fix (v0.12.26), and (b) the SPA change in `assessment.service.ts` `saveAssessmentResult` — use
+  `this._dac$http.post("QuestionnaireResponse", …)` (whose `generateUrl()` routes patients to the
+  portal base with the Bearer header) instead of the SMART FHIR client's `client.create()`. The spec
+  now asserts the submit POST hits `/portal/`, returns **201**, and the dashboard shows the
+  "all of your assignments are complete" confirmation.
+- **TODO:** provider-side review step (log in as provider → assessment-management app → open result).
+
+### Rebuilding the SPA
+
+The Angular source is the `DiscoverAndChange/assessments-angular` repo (`openemr-integration` branch).
+Build (Angular 10):
+
+```bash
+npm install --legacy-peer-deps
+NODE_OPTIONS=--openssl-legacy-provider npm run build     # Node 17+ needs the legacy OpenSSL provider
+rsync -a dist/ <module>/public/frontend/                 # no --delete: keep index.php
+```
+
+Gotchas: the branch references a dev-only `debug` module that isn't in the repo — remove the
+`DebugModule` import + array entry in `src/app/app.module.ts` and the unused `FhirClientComponent`
+import in `src/app/admin/client-appointment-assignment-edit/client-appointment-assignment-edit.component.ts`
+to compile. If the build can't be run, patch the (unminified) bundle directly.

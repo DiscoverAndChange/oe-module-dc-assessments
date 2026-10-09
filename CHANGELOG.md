@@ -1,3 +1,19 @@
+v0.12.27 Patient assessment submit works: SPA posts results to the portal route (rebuilt bundles)
+
+  Completes the patient workflow. Rebuilt the Angular SPA so assessment results submit to the module's
+  PORTAL route instead of the SMART FHIR client: assessment.service.ts saveAssessmentResult now calls
+  this._dac$http.post("QuestionnaireResponse", ...) (HTTPService.generateUrl() routes patient requests
+  to /apis/default/portal/ with the Bearer header) rather than client.create() on the FHIR base, which
+  core denies for the patient role. Source change is in the assessments-angular repo
+  (openemr-integration branch); the recompiled public/frontend bundles are updated here. Build notes
+  (Node 17+ needs NODE_OPTIONS=--openssl-legacy-provider; the branch's dev-only `debug` module must be
+  removed from app.module.ts to compile) are in tests/Uat/Browser/README.md.
+
+  Verified end to end on the live 8.4 stack: login -> scope-authorize -> dashboard lists the assigned
+  assessment -> Get started -> answer -> Submit -> POST /apis/default/portal/QuestionnaireResponse 201
+  -> dashboard shows the "all of your assignments are complete" confirmation. The UAT submit spec now
+  asserts the portal target + 201 + the confirmation. (Combined with v0.12.26's getBody() stream fix.)
+
 v0.12.26 Fix ServerRestRequest::getBody() to return a PSR-7 stream (unblocks patient portal QR submit)
 
   Root-caused the assessment-submit 401 via the browser UAT: the compiled SPA posts the
