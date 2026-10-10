@@ -25,6 +25,7 @@ use OpenEMR\Modules\DiscoverAndChange\Assessments\Services\FhirServices\LibraryA
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Services\FhirServices\QuestionnaireFormFHIRResourceService;
 use OpenEMR\Services\FHIR\FhirProvenanceService;
 use OpenEMR\Services\FHIR\FhirServiceBase;
+use OpenEMR\Services\FHIR\INonPatientCompartmentResourceService;
 use OpenEMR\Services\FHIR\IResourceReadableService;
 use OpenEMR\Services\FHIR\IResourceSearchableService;
 use OpenEMR\Services\FHIR\Traits\FhirServiceBaseEmptyTrait;
@@ -38,7 +39,7 @@ use OpenEMR\Services\Search\TokenSearchField;
 use OpenEMR\Services\Search\TokenSearchValue;
 use OpenEMR\Validators\ProcessingResult;
 
-class QuestionnaireFHIRResourceService extends FhirServiceBase implements IResourceReadableService, IResourceSearchableService
+class QuestionnaireFHIRResourceService extends FhirServiceBase implements IResourceReadableService, IResourceSearchableService, INonPatientCompartmentResourceService
 {
     /**
      * If you'd prefer to keep out the empty methods that are doing nothing uncomment the following helper trait
