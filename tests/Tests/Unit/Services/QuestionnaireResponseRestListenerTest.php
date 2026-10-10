@@ -150,13 +150,13 @@ class QuestionnaireResponseRestListenerTest extends TestCase
     /**
      * Stub each blob sub-service's declared search fields. array_intersect_key only looks at the
      * keys, so the values are irrelevant (the real return is FhirSearchParameterDefinition[]). Both
-     * blob services support only _id and title.
+     * blob services support _id, title and (for patient scoping) patient.
      *
      * @return array<string, true>
      */
     private function blobSupportedParams(): array
     {
-        return ['_id' => true, 'title' => true];
+        return ['_id' => true, 'title' => true, 'patient' => true];
     }
 
     public function testSearchAggregatesBothServicesWhenValid(): void
@@ -166,10 +166,10 @@ class QuestionnaireResponseRestListenerTest extends TestCase
         $this->assessmentService->method('getSearchParams')->willReturn($this->blobSupportedParams());
         $this->libraryService->method('getSearchParams')->willReturn($this->blobSupportedParams());
 
-        // _id is supported, so it is forwarded unchanged.
-        $this->assessmentService->expects($this->once())->method('getAll')->with($searchParams)
+        // _id is supported, so it is forwarded unchanged; no puuidBind on the event -> null.
+        $this->assessmentService->expects($this->once())->method('getAll')->with($searchParams, null)
             ->willReturn(new ProcessingResult());
-        $this->libraryService->expects($this->once())->method('getAll')->with($searchParams)
+        $this->libraryService->expects($this->once())->method('getAll')->with($searchParams, null)
             ->willReturn(new ProcessingResult());
 
         $event = new GenericEvent($searchParams);
@@ -182,25 +182,49 @@ class QuestionnaireResponseRestListenerTest extends TestCase
     }
 
     /**
-     * REGRESSION (v8_4_1 / core patient-compartment guard): the parent QuestionnaireResponse resource
-     * declares IPatientCompartmentResourceService, so core injects a `patient` search parameter (via
-     * getOne()/patient-context binding). The blob sub-services do NOT define `patient`; forwarding it
-     * made createOpenEMRSearchParameters() throw SearchFieldException and surfaced as a 400 on
-     * QuestionnaireResponse create. The listener must strip fields a sub-service does not support.
+     * The parent QuestionnaireResponse resource supports fields (e.g. `authored`) the blob sub-services
+     * do not; forwarding an unknown field makes createOpenEMRSearchParameters() throw SearchFieldException
+     * (which surfaced as a 400 on QuestionnaireResponse create). The listener strips fields a sub-service
+     * does not declare, while keeping the ones it does (here `_id` and `patient`).
      */
     public function testSearchDropsParametersTheBlobServicesDoNotSupport(): void
     {
         $this->assessmentService->method('getSearchParams')->willReturn($this->blobSupportedParams());
         $this->libraryService->method('getSearchParams')->willReturn($this->blobSupportedParams());
 
-        // `patient` (and any other unsupported field) must be filtered out; `_id` is kept.
-        $expected = ['_id' => 'abc'];
-        $this->assessmentService->expects($this->once())->method('getAll')->with($expected)
+        // `authored` is unsupported and dropped; `_id` and `patient` are kept.
+        $expected = ['_id' => 'abc', 'patient' => 'puuid-123'];
+        $this->assessmentService->expects($this->once())->method('getAll')->with($expected, null)
             ->willReturn(new ProcessingResult());
-        $this->libraryService->expects($this->once())->method('getAll')->with($expected)
+        $this->libraryService->expects($this->once())->method('getAll')->with($expected, null)
             ->willReturn(new ProcessingResult());
 
         $event = new GenericEvent(['_id' => 'abc', 'patient' => 'puuid-123', 'authored' => '2026-01-01']);
+        $this->listener->dispatchFHIRSearchEvent($event);
+
+        $result = $event->getArgument('result');
+        $this->assertInstanceOf(ProcessingResult::class, $result);
+        $this->assertTrue($result->isValid());
+    }
+
+    /**
+     * SECURITY: in a patient context the bound patient uuid must reach the blob sub-services so their
+     * results are scoped to that patient (both are IPatientCompartmentResourceService). The parent
+     * QuestionnaireResponse resource forwards its $puuidBind on the event; the listener must pass it
+     * through to each sub-service's getAll() as the second argument.
+     */
+    public function testSearchForwardsPuuidBindToSubServices(): void
+    {
+        $this->assessmentService->method('getSearchParams')->willReturn($this->blobSupportedParams());
+        $this->libraryService->method('getSearchParams')->willReturn($this->blobSupportedParams());
+
+        $puuid = 'patient-uuid-xyz';
+        $this->assessmentService->expects($this->once())->method('getAll')->with(['_id' => 'abc'], $puuid)
+            ->willReturn(new ProcessingResult());
+        $this->libraryService->expects($this->once())->method('getAll')->with(['_id' => 'abc'], $puuid)
+            ->willReturn(new ProcessingResult());
+
+        $event = new GenericEvent(['_id' => 'abc'], ['puuidBind' => $puuid]);
         $this->listener->dispatchFHIRSearchEvent($event);
 
         $result = $event->getArgument('result');

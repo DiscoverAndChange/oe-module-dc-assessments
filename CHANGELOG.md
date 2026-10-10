@@ -1,3 +1,25 @@
+v0.12.35 Scope assessment/library result blobs to the bound patient in patient-context searches
+
+  Security hardening + completion of the patient-compartment work. QuestionnaireResponseRestListener
+  merges AssessmentResponseBlob and LibraryAssetResultBlob results into QuestionnaireResponse searches;
+  previously those sub-searches were NOT scoped to the bound patient (the listener dropped the patient
+  bind), so in a patient context a patient's QuestionnaireResponse search could surface other patients'
+  result blobs. The compartment guard could not catch this because the bind never reached the sub-services.
+
+  Changes:
+    - Both blob services now declare IPatientCompartmentResourceService and define a `patient` search
+      field mapping to the patient_uuid column.
+    - AssessmentResultRepository::search now exposes patient_data.uuid AS patient_uuid (the library-asset
+      repo already did), so the patient filter has a real column to bind.
+    - QuestionnaireResponseFHIRResourceService::getAll forwards its $puuidBind on the
+      fhir.questionnaire_response.search event; the listener passes it through to each blob sub-service's
+      getAll(), so the compartment binding scopes results to that patient. Non-patient (provider/user)
+      context passes a null bind and still sees all results.
+
+  Verified against OpenEMR v8_4_1: a two-patient check confirms each patient-bound blob search returns
+  only that patient's results, while an unbound (provider) search returns both. Adds unit coverage: the
+  blob services' compartment stance + patient_uuid mapping, and the listener forwarding the puuid bind.
+
 v0.12.34 Declare patient-compartment stance on ALL patient-reachable FHIR services (newer OpenEMR core)
 
   Extends the v0.12.33 Task fix to the whole family of module FHIR services. Newer OpenEMR core
