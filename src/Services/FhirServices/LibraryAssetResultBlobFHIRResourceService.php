@@ -29,6 +29,7 @@ use OpenEMR\Modules\DiscoverAndChange\Assessments\Services\LibraryAssetResultBlo
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Validators\LibraryAssetResultBlobValidator;
 use OpenEMR\Services\FHIR\FhirProvenanceService;
 use OpenEMR\Services\FHIR\FhirServiceBase;
+use OpenEMR\Services\FHIR\IPatientCompartmentResourceService;
 use OpenEMR\Services\FHIR\Traits\FhirServiceBaseEmptyTrait;
 use OpenEMR\Services\FHIR\UtilsService;
 use OpenEMR\Services\PatientService;
@@ -38,7 +39,7 @@ use OpenEMR\Services\Search\ServiceField;
 use OpenEMR\Services\Search\TokenSearchField;
 use OpenEMR\Validators\ProcessingResult;
 
-class LibraryAssetResultBlobFHIRResourceService extends FhirServiceBase
+class LibraryAssetResultBlobFHIRResourceService extends FhirServiceBase implements IPatientCompartmentResourceService
 {
     use FhirServiceBaseEmptyTrait;
     use LoggerAwareTrait;
@@ -78,7 +79,18 @@ class LibraryAssetResultBlobFHIRResourceService extends FhirServiceBase
             // note what we store in the database is the Title of the questionnaire even thought its called 'name'.  The computable name is stored only in the json
             // TODO: @adunsulag look at adding a database field for the computable name and store it in the database
             ,'title' => new FhirSearchParameterDefinition('title', SearchFieldType::STRING, [new ServiceField('name', ServiceField::TYPE_STRING)])
+            ,'patient' => $this->getPatientContextSearchField()
         ];
+    }
+
+    /**
+     * @return FhirSearchParameterDefinition the patient-context search field: scopes library-asset result
+     * blobs to the bound patient via the patient's uuid (LibraryAssetResultBlobRepository::search exposes
+     * patient_data.uuid AS patient_uuid).
+     */
+    public function getPatientContextSearchField(): FhirSearchParameterDefinition
+    {
+        return new FhirSearchParameterDefinition('patient', SearchFieldType::REFERENCE, [new ServiceField('patient_uuid', ServiceField::TYPE_UUID)]);
     }
 
     /** @param array<mixed> $fhirSearchParameters */

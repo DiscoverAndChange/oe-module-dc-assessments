@@ -23,7 +23,7 @@ class AssessmentResultRepository
         $distinctIds = "SELECT DISTINCT arb.id ";
         $fromClause = " FROM " . self::TABLE_NAME . " arb "
             . " JOIN (SELECT data AS assessment_data, id AS assessment_id FROM " . AssessmentRepository::TABLE_NAME . ") ab ON (ab.assessment_id = arb.assessment_id) "
-            . " JOIN ( SELECT pid AS client_id FROM " . PatientService::TABLE_NAME . ") c ON (arb.client_id = c.client_id) "
+            . " JOIN ( SELECT pid AS client_id, uuid AS patient_uuid FROM " . PatientService::TABLE_NAME . ") c ON (arb.client_id = c.client_id) "
             . " LEFT JOIN (SELECT id AS assignmentitem_id, assessmentresultblob_id FROM " . AssignmentRepository::TABLE_NAME_ASSIGNMENT_ITEM . ") ai ON (assessmentresultblob_id = arb.id) ";
 
         $sql = " ORDER BY arb.date DESC ";

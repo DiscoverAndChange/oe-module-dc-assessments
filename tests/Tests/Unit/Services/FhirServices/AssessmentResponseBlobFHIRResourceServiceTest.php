@@ -50,6 +50,29 @@ class AssessmentResponseBlobFHIRResourceServiceTest extends TestCase
         $this->assertFalse($service->supportsCode('foo'));
     }
 
+    /**
+     * SECURITY: assessment result blobs are per-patient data, so when the listener forwards a bound
+     * patient uuid this service must scope to it. It therefore declares IPatientCompartmentResourceService
+     * and maps the patient search field to the patient_uuid column
+     * (AssessmentResultRepository::search exposes patient_data.uuid AS patient_uuid).
+     */
+    public function testIsPatientCompartmentScopedToPatientUuid(): void
+    {
+        $service = $this->service();
+        $this->assertInstanceOf(
+            \OpenEMR\Services\FHIR\IPatientCompartmentResourceService::class,
+            $service
+        );
+
+        $field = $service->getPatientContextSearchField();
+        $this->assertSame('patient', $field->getName());
+        $mapped = array_map(
+            static fn($serviceField) => $serviceField->getField(),
+            $field->getMappedFields()
+        );
+        $this->assertSame(['patient_uuid'], $mapped);
+    }
+
     public function testParseOpenEMRRecord(): void
     {
         $record = [
