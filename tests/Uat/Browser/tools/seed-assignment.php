@@ -114,11 +114,14 @@ try {
     $saved = (new AssignmentRepository())->saveAssignmentForClient($clientUuid, $assignment, 1);
     $assignmentItemId = $saved->getItems()[0]->getId();
 
+    $providerClientId = (new \OpenEMR\Modules\DiscoverAndChange\Assessments\GlobalConfig($GLOBALS))->getProviderClientId();
+
     echo json_encode([
         'pid' => $pid,
         'username' => $username,
         'password' => $password,
         'lastName' => 'dcuat-' . $suffix,
+        'providerClientId' => is_string($providerClientId) ? $providerClientId : '',
         'clientUuid' => $clientUuid,
         'assessmentId' => $assessmentId,
         'assessmentUid' => $assessmentUid,
