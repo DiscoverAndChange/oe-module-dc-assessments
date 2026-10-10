@@ -31,6 +31,7 @@ use OpenEMR\Modules\DiscoverAndChange\Assessments\Utils\RestUtils;
 use OpenEMR\Services\EncounterService;
 use OpenEMR\Services\FHIR\FhirProvenanceService;
 use OpenEMR\Services\FHIR\FhirServiceBase;
+use OpenEMR\Services\FHIR\IPatientCompartmentResourceService;
 use OpenEMR\Services\FHIR\IResourceCreatableService;
 use OpenEMR\Services\FHIR\IResourceReadableService;
 use OpenEMR\Services\FHIR\IResourceSearchableService;
@@ -48,7 +49,7 @@ use OpenEMR\Validators\ProcessingResult;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-class QuestionnaireResponseFormFHIRResourceService extends FhirServiceBase implements IResourceReadableService, IResourceSearchableService, IResourceCreatableService
+class QuestionnaireResponseFormFHIRResourceService extends FhirServiceBase implements IResourceReadableService, IResourceSearchableService, IResourceCreatableService, IPatientCompartmentResourceService
 {
     /**
      * If you'd prefer to keep out the empty methods that are doing nothing uncomment the following helper trait
