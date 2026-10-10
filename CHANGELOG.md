@@ -1,3 +1,40 @@
+v0.12.34 Declare patient-compartment stance on ALL patient-reachable FHIR services (newer OpenEMR core)
+
+  Extends the v0.12.33 Task fix to the whole family of module FHIR services. Newer OpenEMR core
+  (patient-compartment enforcement, core PR #13855) throws a SearchFieldException
+  ("Patient-scoped access to this resource is not permitted.") for ANY FHIR service reached with a
+  bound patient uuid that declares neither IPatientCompartmentResourceService nor
+  INonPatientCompartmentResourceService. Verified end-to-end against OpenEMR v8_4_1: without this the
+  patient could not open an assessment (AssessmentFHIRResourceService threw) and could not submit it.
+
+  Shared template/definition services now declare INonPatientCompartmentResourceService (patient
+  tokens legitimately read these; the bind is correctly dropped):
+    - AssessmentFHIRResourceService
+    - QuestionnaireFHIRResourceService (delegator)
+    - QuestionnaireFormFHIRResourceService
+    - LibraryAssetFHIRResourceService
+
+  Patient-specific data services now declare IPatientCompartmentResourceService (results scoped to the
+  bound patient; both already expose a working getPatientContextSearchField() -> puuid via PatientSearchTrait):
+    - QuestionnaireResponseFHIRResourceService
+    - QuestionnaireResponseFormFHIRResourceService
+
+  QuestionnaireResponseRestListener now forwards only the search fields each blob sub-service declares.
+  Because QuestionnaireResponse is now a patient compartment, core injects a `patient` parameter (via
+  getOne()/patient-context binding); the AssessmentResponseBlob / LibraryAssetResultBlob sub-services do
+  not define `patient`, so passing it through made createOpenEMRSearchParameters() throw and surfaced as
+  a 400 on QuestionnaireResponse create (insert -> representation getOne). The listener intersects the
+  parameters with each sub-service's declared search fields before delegating.
+
+  NOTE (follow-up, not addressed here): the blob result sub-services (AssessmentResponseBlob,
+  LibraryAssetResultBlob) are merged into patient-context QuestionnaireResponse searches without being
+  scoped to the bound patient (the listener drops the patient bind rather than translating it). This is
+  pre-existing behavior; properly scoping blob results to the patient requires AssessmentResultRepository
+  to expose a patient uuid column (it currently surfaces only the integer client_id/pid).
+
+  Unit coverage: adds a listener regression test asserting unsupported fields (e.g. `patient`) are
+  stripped before the blob sub-searches; existing listener search tests updated for the filtering.
+
 v0.12.33 Fix patient Task search returning 0 results on newer OpenEMR core
 
   AssignmentTaskFHIRResourceService now declares IPatientCompartmentResourceService (it already

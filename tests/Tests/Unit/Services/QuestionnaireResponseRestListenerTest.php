@@ -147,10 +147,26 @@ class QuestionnaireResponseRestListenerTest extends TestCase
 
     // --- dispatchFHIRSearchEvent ---------------------------------------------------
 
+    /**
+     * Stub each blob sub-service's declared search fields. array_intersect_key only looks at the
+     * keys, so the values are irrelevant (the real return is FhirSearchParameterDefinition[]). Both
+     * blob services support only _id and title.
+     *
+     * @return array<string, true>
+     */
+    private function blobSupportedParams(): array
+    {
+        return ['_id' => true, 'title' => true];
+    }
+
     public function testSearchAggregatesBothServicesWhenValid(): void
     {
         $searchParams = ['_id' => 'abc'];
 
+        $this->assessmentService->method('getSearchParams')->willReturn($this->blobSupportedParams());
+        $this->libraryService->method('getSearchParams')->willReturn($this->blobSupportedParams());
+
+        // _id is supported, so it is forwarded unchanged.
         $this->assessmentService->expects($this->once())->method('getAll')->with($searchParams)
             ->willReturn(new ProcessingResult());
         $this->libraryService->expects($this->once())->method('getAll')->with($searchParams)
@@ -165,9 +181,39 @@ class QuestionnaireResponseRestListenerTest extends TestCase
         $this->assertTrue($result->isValid());
     }
 
+    /**
+     * REGRESSION (v8_4_1 / core patient-compartment guard): the parent QuestionnaireResponse resource
+     * declares IPatientCompartmentResourceService, so core injects a `patient` search parameter (via
+     * getOne()/patient-context binding). The blob sub-services do NOT define `patient`; forwarding it
+     * made createOpenEMRSearchParameters() throw SearchFieldException and surfaced as a 400 on
+     * QuestionnaireResponse create. The listener must strip fields a sub-service does not support.
+     */
+    public function testSearchDropsParametersTheBlobServicesDoNotSupport(): void
+    {
+        $this->assessmentService->method('getSearchParams')->willReturn($this->blobSupportedParams());
+        $this->libraryService->method('getSearchParams')->willReturn($this->blobSupportedParams());
+
+        // `patient` (and any other unsupported field) must be filtered out; `_id` is kept.
+        $expected = ['_id' => 'abc'];
+        $this->assessmentService->expects($this->once())->method('getAll')->with($expected)
+            ->willReturn(new ProcessingResult());
+        $this->libraryService->expects($this->once())->method('getAll')->with($expected)
+            ->willReturn(new ProcessingResult());
+
+        $event = new GenericEvent(['_id' => 'abc', 'patient' => 'puuid-123', 'authored' => '2026-01-01']);
+        $this->listener->dispatchFHIRSearchEvent($event);
+
+        $result = $event->getArgument('result');
+        $this->assertInstanceOf(ProcessingResult::class, $result);
+        $this->assertTrue($result->isValid());
+    }
+
     public function testSearchMergesDataFromBothServicesIntoAggregateResult(): void
     {
         $searchParams = ['_id' => 'abc'];
+
+        $this->assessmentService->method('getSearchParams')->willReturn($this->blobSupportedParams());
+        $this->libraryService->method('getSearchParams')->willReturn($this->blobSupportedParams());
 
         $assessmentResult = new ProcessingResult();
         $assessmentResult->addData(['source' => 'assessment']);

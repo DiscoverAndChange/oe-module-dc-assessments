@@ -8,6 +8,7 @@ use OpenEMR\FHIR\R4\FHIRDomainResource\FHIRQuestionnaireResponse;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Logging\LoggerAwareTrait;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Services\FhirServices\AssessmentResponseBlobFHIRResourceService;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Services\FhirServices\LibraryAssetResultBlobFHIRResourceService;
+use OpenEMR\Services\FHIR\FhirServiceBase;
 use OpenEMR\Validators\ProcessingResult;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -86,13 +87,41 @@ class QuestionnaireResponseRestListener implements IStaticEventSubscriber
         // getAll() always returns a ProcessingResult (errors are carried inside it, never by a
         // null/falsy return), so the old "else" error branches were unreachable dead code;
         // addProcessingResult already merges any internal errors from the sub-result.
-        $result = $this->assessmentResponseBlobFHIRResourceService->getAll($fhirSearchParameters);
+        //
+        // Only forward the search fields each blob sub-service actually supports. The parent
+        // QuestionnaireResponse resource now declares IPatientCompartmentResourceService, so core
+        // injects a `patient` parameter (via getOne()/patient-context binding) that these blob
+        // services do not define -- passing it straight through made createOpenEMRSearchParameters()
+        // throw SearchFieldException("This search field does not exist or is not supported"), which
+        // surfaced as a 400 on QuestionnaireResponse create (insert -> representation getOne).
+        $result = $this->assessmentResponseBlobFHIRResourceService->getAll(
+            $this->filterToSupportedParams($this->assessmentResponseBlobFHIRResourceService, $fhirSearchParameters)
+        );
         $processingResult->addProcessingResult($result);
         if ($processingResult->isValid()) {
-            $result = $this->libraryAssetResultBlobFHIRResourceService->getAll($fhirSearchParameters);
+            $result = $this->libraryAssetResultBlobFHIRResourceService->getAll(
+                $this->filterToSupportedParams($this->libraryAssetResultBlobFHIRResourceService, $fhirSearchParameters)
+            );
             $processingResult->addProcessingResult($result);
         }
         $event->setArgument('result', $processingResult);
         return $event;
+    }
+
+    /**
+     * Restrict the FHIR search parameters to only those the given sub-service declares, so a field
+     * the parent resource supports (e.g. `patient`) is not passed to a sub-service that does not,
+     * which would raise a SearchFieldException.
+     *
+     * @param array<mixed> $fhirSearchParameters
+     * @return array<mixed>
+     */
+    private function filterToSupportedParams(FhirServiceBase $service, array $fhirSearchParameters): array
+    {
+        $supported = $service->getSearchParams();
+        if (!is_array($supported)) {
+            return [];
+        }
+        return array_intersect_key($fhirSearchParameters, $supported);
     }
 }
