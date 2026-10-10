@@ -41,20 +41,47 @@ class AssessmentWorkflowBrowserTest extends BrowserUatTestCase
     }
 
     /**
-     * The full 13-step scenario (enable module -> inject battery -> assign -> create patient +
-     * credentials -> patient login -> take assessment(s) -> submit -> provider review). The browser
-     * steps beyond login are authored as Playwright test.fixme() until they can be filled in against
-     * a running stack's live DOM; the matching PHP-side seeding (battery injection + assignment) is
-     * still TODO -- see seedPatientWithPortalCredentials() for the credential half that is done.
-     *
-     * Kept incomplete (not skipped-by-gating) so it shows up as a visible TODO in UAT runs.
+     * Assignment workflow: seed a patient + an assessment (with a real question) + an assignment via
+     * the module's own services (container seeder), then drive the SPA: the dashboard lists the
+     * assigned assessment, and the patient opens it, answers, and submits (QuestionnaireResponse POST
+     * to the portal route -> 201 -> completion confirmation).
      */
-    public function testFullAssessmentWorkflow(): void
+    public function testPatientWorkflow(): void
     {
-        $this->markTestIncomplete(
-            'Full enable->assign->take->submit->review workflow pending: assignment/battery seeding '
-            . '(BrowserUatTestCase::seedAssignment, TODO) + the test.fixme() browser steps in '
-            . 'assessment-workflow.spec.ts need the running stack to author real selectors.'
+        $seed = self::seedAssignedAssessment();
+
+        $result = self::runPlaywright(
+            [
+                'DC_E2E_PATIENT_USER'   => (string) $seed['username'],
+                'DC_E2E_PATIENT_PASS'   => (string) $seed['password'],
+                'DC_E2E_PATIENT_PID'    => (string) $seed['pid'],
+                'DC_E2E_ASSESSMENT_NAME' => (string) $seed['assessmentName'],
+            ],
+            'assessment workflow'
         );
+
+        $this->assertPlaywrightPassed($result);
+    }
+
+    /**
+     * Provider review: seed + have the patient complete the assessment, then the provider logs into the
+     * admin app (confidential provider client, server-side token broker) and sees the patient's
+     * completed assessment with a report to view -- the final step of the 13-step scenario.
+     */
+    public function testProviderReviewsResult(): void
+    {
+        $seed = self::seedAssignedAssessment();
+
+        $result = self::runPlaywright(
+            [
+                'DC_E2E_PATIENT_USER'     => (string) $seed['username'],
+                'DC_E2E_PATIENT_PASS'     => (string) $seed['password'],
+                'DC_E2E_PATIENT_LASTNAME' => (string) $seed['lastName'],
+                'DC_E2E_ASSESSMENT_NAME'  => (string) $seed['assessmentName'],
+            ],
+            'provider review'
+        );
+
+        $this->assertPlaywrightPassed($result);
     }
 }

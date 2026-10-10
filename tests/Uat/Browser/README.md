@@ -36,16 +36,45 @@ npx playwright install chromium
 
 ## Running
 
-Bring the target OpenEMR stack up (the one serving the SPA, e.g. `https://localhost:9300`) and ensure
-the module is enabled in Modules admin, then:
+### 1. Bring up / provision the stack (one-time per fresh stack)
+
+Use the OpenEMR **8.4** dev stack (the module requires >= 8.4). From a worktree checkout:
 
 ```bash
-# from the deployed module root
+cd <openemr-8.4-worktree>/docker/development-easy && docker compose up -d mysql openemr
+# find the published ports (the worktree picks non-default ones to avoid collisions):
+docker compose port openemr 443   # -> e.g. 0.0.0.0:9302   (SPA base URL)
+docker compose port mysql  3306   # -> e.g. 0.0.0.0:8322   (UAT PDO port)
+```
+
+The `openemr/openemr:flex` first boot can leave `vendor/` incomplete (login 500s with a missing
+`Laminas\Db\...` class). If so: `docker exec <openemr-container> sh -c 'cd /var/www/localhost/htdocs/openemr && composer install --no-interaction --no-scripts'`.
+
+Provision the module + the stack prerequisites the SMART flow needs (enables the module, runs
+`table.sql`, turns on the REST/FHIR/portal APIs + oauth, disables `enforce_signin_email`, registers &
+enables the SMART client, and fixes the client `redirect_uri` / `site_addr_oath` to the public base
+URL) — run as the web user, passing the public base URL:
+
+```bash
+docker exec <openemr-container> sh -c \
+  "cd /var/www/localhost/htdocs/openemr && su -s /bin/sh apache -c \
+   'php interface/modules/custom_modules/oe-module-dc-assessments/tests/Uat/Browser/tools/provision-stack.php baseurl=https://localhost:9302'"
+```
+
+### 2. Run the UAT
+
+```bash
+# from the deployed module root, pointing at the stack's published ports
+DC_UAT_BASE_URL=https://localhost:9302 \
+DC_DB_HOST=127.0.0.1 DC_DB_PORT=8322 DC_DB_USER=root DC_DB_PASS=root DC_DB_NAME=openemr \
 composer uat:browser
 ```
 
 Without `DC_BROWSER_UAT=1` (which the composer script sets), or when the stack/DB/Playwright is not
 ready, every test **self-skips** with an actionable message — a bare `composer test` is unaffected.
+
+> Node note: `@playwright/test` is pinned to **1.48.2** (last line supporting Node 18). On Node 20+
+> you can bump it.
 
 ### Preflight order (each a specific skip reason)
 
@@ -79,8 +108,43 @@ produces), so the first SMART login works.
 
 ## Status / TODO
 
-- **Done:** harness + gating/preflight/teardown; patient-credential seeding; the `patient login`
-  spec (login → SPA dashboard renders) wired end-to-end through PHPUnit.
-- **TODO (needs a running stack to author against real DOM):** `seedAssignment()` (inject a battery +
-  assign it) on the PHP side, and the `test.fixme()` steps in `assessment-workflow.spec.ts` (open
-  assignment → answer/submit → provider-side review). These complete the full 13-step scenario.
+- **Done & verified against a live OpenEMR 8.4 stack:** harness + gating/preflight/teardown;
+  patient-credential seeding; the `provision-stack.php` provisioner; the `patient login` spec
+  (SMART/OAuth2 login → SPA dashboard renders) passing end-to-end through PHPUnit
+  (seed → Playwright → assert → teardown).
+- **Done & verified (assignment workflow):** `tools/seed-assignment.php` seeds a patient + an
+  assessment (with a real question) + an assignment via the module's own services;
+  `BrowserUatTestCase::seedAssignedAssessment()` invokes it over `docker exec`. The SPA specs verify
+  the dashboard lists the assigned assessment and the patient can open it, answer, and submit.
+- **Done & verified — full submit works:** the SPA submits assessment results to the module's PORTAL
+  route (`/apis/default/portal/QuestionnaireResponse`), which core allows, instead of the FHIR base
+  (core denies patient FHIR writes → 401). This required: (a) the `ServerRestRequest::getBody()` stream
+  fix (v0.12.26), and (b) the SPA change in `assessment.service.ts` `saveAssessmentResult` — use
+  `this._dac$http.post("QuestionnaireResponse", …)` (whose `generateUrl()` routes patients to the
+  portal base with the Bearer header) instead of the SMART FHIR client's `client.create()`. The spec
+  now asserts the submit POST hits `/portal/`, returns **201**, and the dashboard shows the
+  "all of your assignments are complete" confirmation.
+- **Provider-review — done & verified (full 13-step scenario green):** the module registers a second,
+  **confidential provider** client (v0.12.28) alongside the public patient client (OpenEMR only grants
+  `user/*` scopes to confidential clients). The admin SPA runs the PKCE authorize with the provider
+  client and hands the code to the server-side **token broker** (`public/backend/provider-token.php`,
+  v0.12.29) which adds the secret; the SPA builds the FHIR client from the brokered token (v0.12.30).
+  The `provider review` spec logs the provider in, opens the patient's client record, and asserts the
+  patient-submitted assessment shows complete with a **View Report** action. All three UAT tests
+  (patient login, patient workflow, provider review) pass against the live 8.4 stack.
+
+### Rebuilding the SPA
+
+The Angular source is the `DiscoverAndChange/assessments-angular` repo (`openemr-integration` branch).
+Build (Angular 10):
+
+```bash
+npm install --legacy-peer-deps
+NODE_OPTIONS=--openssl-legacy-provider npm run build     # Node 17+ needs the legacy OpenSSL provider
+rsync -a dist/ <module>/public/frontend/                 # no --delete: keep index.php
+```
+
+Gotchas: the branch references a dev-only `debug` module that isn't in the repo — remove the
+`DebugModule` import + array entry in `src/app/app.module.ts` and the unused `FhirClientComponent`
+import in `src/app/admin/client-appointment-assignment-edit/client-appointment-assignment-edit.component.ts`
+to compile. If the build can't be run, patch the (unminified) bundle directly.

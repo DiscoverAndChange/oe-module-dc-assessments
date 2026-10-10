@@ -116,10 +116,15 @@ password, and the SMART flow has no UI for the standard first-login reset/verify
       reports; Playwright is the browser engine via proc_open + JSON report). Scaffolded in
       `tests/Uat/Browser/` (mirrors oe-module-ihi conventions). Run with `composer uat:browser`.
       - [x] Harness: gating (DC_BROWSER_UAT), 4-stage preflight, PDO seeding, bounded teardown, bridge.
-      - [x] `patient login` spec wired end to end (login → SPA dashboard renders).
-      - [ ] `seedAssignment()` (inject battery + assign) on the PHP side.
-      - [ ] `test.fixme()` browser steps: open assignment → answer/submit → provider-side review
-            (need a running stack to author real selectors). Completes the full 13-step scenario.
+      - [x] `patient login` spec VERIFIED end to end on a live OpenEMR 8.4 stack (SMART/OAuth2 login
+            → SPA dashboard renders). Reproducible via `tools/provision-stack.php baseurl=<url>`.
+      - [x] `seedAssignment()` on the PHP side — `tools/seed-assignment.php` (via `docker exec`) creates
+            a patient + an assessment (with a real question) + an assignment using the module services.
+      - [x] assignment workflow VERIFIED end to end: dashboard lists the assigned assessment → open
+            (Get started) → answer → submit → **201 on the portal route** → "assignments complete"
+            confirmation. Required the ServerRestRequest::getBody() stream fix (v0.12.26) + the SPA
+            submitting assessment results to the portal base instead of the FHIR client (v0.12.27).
+      - [x] provider-side review VERIFIED: provider login (confidential client + token broker) → open client → patient-completed assessment shows complete with View Report (v0.12.30).
 
 ## Findings / latent bugs surfaced by tests
 Candidates for the source-typing pass / follow-up fixes (tests characterize the

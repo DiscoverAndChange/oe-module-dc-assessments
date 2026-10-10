@@ -1,3 +1,126 @@
+v0.12.30 Provider-review works: admin SPA uses the confidential client via the token broker (full e2e green)
+
+  Completes the 13-step scenario. The admin SPA now authenticates with the confidential provider client:
+  the SPA runs the PKCE authorize with the provider client id (injected as adminClientId / adminScopes)
+  and hands the code to the server-side broker (v0.12.29) for the secret-bearing token exchange, then
+  builds the FHIR client from the brokered token (FhirService.authorizeUserAdmin/completeAdminAuth +
+  getFhirClient/fhirClientReady branch on a dc-admin-oauth flag). SPA source change lives in the
+  assessments-angular repo (openemr-integration); recompiled public/frontend bundles are updated here.
+
+  Verified end to end on the live 8.4 stack: provider logs into the admin app (OpenEMR Login ->
+  scope-authorize -> broker 200 -> reports/clients 200), opens the patient's client record, and sees the
+  patient-submitted assessment marked complete with a View Report action. The browser UAT now runs all
+  three: patient login, patient workflow (submit 201), and provider review -- 3 tests green with bounded
+  teardown. phpstan clean, unit suite 543 green.
+
+v0.12.29 Server-side provider token broker for the confidential admin client
+
+  Adds the backend-for-frontend token broker that lets the browser admin app use the CONFIDENTIAL
+  provider client without ever holding its secret. SmartAppClientService::exchangeProviderAuthorizationCode()
+  completes the authorization_code exchange server-side (adds client_id + client_secret, POSTs to the
+  OpenEMR token endpoint over loopback via Guzzle); public/backend/provider-token.php exposes it to the
+  SPA (the SPA keeps the PKCE verifier, the server adds the secret). GlobalConfig gains
+  getOAuthTokenUrl()/getOAuthTokenUrlInternal(). FrontendDispatchController now injects the provider
+  client id (adminClientId) into the SPA page (frontend.html.twig data-admin-client-id + dacAppConfig).
+
+  Validated end to end on the live 8.4 stack: a provider PKCE authorize with the confidential provider
+  client yields a code, and the broker exchanges it for an access_token that INCLUDES user/clients.read
+  (the scope the public patient client dropped). phpstan clean (Guzzle, not raw curl; GuzzleException
+  catch), suite 543 green.
+
+  Next: the admin SPA uses this broker (authorize with the provider client -> finalize via broker ->
+  build the FHIR client), then the provider-review e2e.
+
+v0.12.28 Register a confidential provider SMART client (two-client OAuth) + fix getBody() tests
+
+  Foundation for provider-side review. OpenEMR only grants user/* scopes to CONFIDENTIAL clients
+  (AuthorizationController: "system and user scopes are only allowed for confidential clients"), so a
+  single public patient client dropped the provider's user/clients.read -> /api/reports/clients 401.
+  SmartAppClientService now registers TWO clients: the existing PUBLIC patient client (standalone
+  patient launch, patient scopes) and a new CONFIDENTIAL provider client (client_role=user,
+  is_confidential=1, server-side secret, user/* scopes) for the in-EHR provider launch. GlobalConfig
+  gains provider client id/secret storage + getSmartAppProviderScopes()/getSmartAppPatientScopes()
+  (context-filtered). Bootstrap's EHR-launch menu now uses the provider client; the provisioner
+  registers both. Validated on the live 8.4 stack: a confidential user client is granted user/clients.read
+  and GET /api/reports/clients returns 200 (vs 401 for the public client).
+
+  Also fixes two unit tests that the v0.12.26 ServerRestRequest::getBody() stream-wrap change had
+  invalidated (they mocked getBody() as a PSR-7 stream; core actually returns the raw body STRING, so
+  they now mock a string and assert getBody() wraps it). phpstan clean, suite 543 green, patient e2e
+  still green.
+
+  REMAINING (not in this version): the admin SPA must USE the provider client via the EHR launch
+  (confidential auth-code exchange brokered server-side); until then the provider-review e2e stays
+  blocked. Tracked in tests/Uat/Browser/README.md.
+
+v0.12.27 Patient assessment submit works: SPA posts results to the portal route (rebuilt bundles)
+
+  Completes the patient workflow. Rebuilt the Angular SPA so assessment results submit to the module's
+  PORTAL route instead of the SMART FHIR client: assessment.service.ts saveAssessmentResult now calls
+  this._dac$http.post("QuestionnaireResponse", ...) (HTTPService.generateUrl() routes patient requests
+  to /apis/default/portal/ with the Bearer header) rather than client.create() on the FHIR base, which
+  core denies for the patient role. Source change is in the assessments-angular repo
+  (openemr-integration branch); the recompiled public/frontend bundles are updated here. Build notes
+  (Node 17+ needs NODE_OPTIONS=--openssl-legacy-provider; the branch's dev-only `debug` module must be
+  removed from app.module.ts to compile) are in tests/Uat/Browser/README.md.
+
+  Verified end to end on the live 8.4 stack: login -> scope-authorize -> dashboard lists the assigned
+  assessment -> Get started -> answer -> Submit -> POST /apis/default/portal/QuestionnaireResponse 201
+  -> dashboard shows the "all of your assignments are complete" confirmation. The UAT submit spec now
+  asserts the portal target + 201 + the confirmation. (Combined with v0.12.26's getBody() stream fix.)
+
+v0.12.26 Fix ServerRestRequest::getBody() to return a PSR-7 stream (unblocks patient portal QR submit)
+
+  Root-caused the assessment-submit 401 via the browser UAT: the compiled SPA posts the
+  QuestionnaireResponse to the FHIR base, which OpenEMR core categorically blocks for the patient role
+  (AuthorizationListener -> 401; the token carries patient/QuestionnaireResponse.write, so it is a role
+  policy, not a scope gap). The module already registers the same patient-write route under the PORTAL
+  base. Replaying the POST there surfaced a module bug: ServerRestRequest::getBody() declared
+  `: StreamInterface` but returned core HttpRestRequest::getBody(), which returns the raw body STRING
+  (Symfony getContent()) -> TypeError -> 500 on every module POST route that reads getBody() (the FHIR
+  path never hit it because it 401s first). Fixed getBody() to wrap the string in a PSR-7 stream via
+  ServiceContainer::getStreamFactory(). With the fix, replaying the patient QuestionnaireResponse to
+  /apis/default/portal/QuestionnaireResponse returns 201 and persists the result. The remaining change
+  to make the in-app Submit work is SPA-side (post to the portal base instead of the SMART FHIR client)
+  and needs an Angular rebuild; the UAT submit spec asserts the current 401 until then. phpstan clean,
+  529+ unit suite green.
+
+v0.12.25 Browser UAT: assignment workflow (seed -> dashboard -> open/answer/submit) verified on live 8.4
+
+  Extends the UAT tier to the assignment workflow. Adds tests/Uat/Browser/tools/seed-assignment.php:
+  a container-side seeder that creates a patient with active portal credentials, an assessment (reusing
+  the committed fixture blob so it has a real, answerable question), and an assignment of it to the
+  patient -- via the module's own AssessmentRepository / AssignmentRepository. BrowserUatTestCase gains
+  seedAssignedAssessment() (invokes the seeder over `docker exec`) and extends teardown to drop the
+  seeded dac_AssessmentBlob rows (dropping referencing dac_AssignmentItem rows first). The Playwright
+  spec now: logs in through the SMART/OAuth2 + scope-authorize consent flow, asserts the dashboard
+  lists the assigned assessment, opens it (Get started -> /take/<id>), answers the radio question, and
+  submits.
+
+  DISCOVERED BLOCKER (documented, test asserts it): patient Submit POSTs the QuestionnaireResponse to
+  the FHIR base (/apis/default/fhir/QuestionnaireResponse) and OpenEMR core's AuthorizationListener
+  categorically denies patient-role FHIR writes -> HTTP 401 "Patient user role is not allowed to write
+  FHIR resources" (the patient token DOES carry patient/QuestionnaireResponse.write -- it's a role
+  policy, not a scope gap). The module also registers the patient-write route on the PORTAL base
+  (/apis/default/portal/QuestionnaireResponse), which core allows, so the fix direction is submitting
+  there. The submit spec asserts the 401 for now so it documents the real failure instead of hanging.
+  Verified end to end on the live 8.4 stack with clean bounded teardown.
+
+v0.12.24 Browser UAT: stack provisioner + patient-login spec verified end-to-end on a live 8.4 stack
+
+  Hardens the Playwright UAT tier (v0.12.23) into something reproducible and proven. Adds
+  tests/Uat/Browser/tools/provision-stack.php: a one-shot, idempotent provisioner (run as the web
+  user inside the OpenEMR container) that enables the module (type=0 custom, not Laminas), runs
+  table.sql via core SQLUpgradeService, ensures the stack prerequisites the SMART flow needs
+  (rest_api/rest_fhir_api/rest_portal_api/rest_system_scopes_api, oauth_password_grant,
+  portal_onsite_two_enable, enforce_signin_email=0, site_addr_oath), registers + enables the SMART
+  client, and -- given baseurl=<public URL> -- rewrites the client redirect_uri to the public origin
+  so OAuth2 authorize doesn't fail with invalid_client. The `patient login` spec now passes end to
+  end against a live OpenEMR 8.4 dev stack (PHPUnit seed via PDO -> Playwright SMART/OAuth2 login ->
+  SPA dashboard renders -> assert -> bounded teardown). @playwright/test pinned to 1.48.2 (last line
+  supporting Node 18). README documents the full bring-up + provision + run recipe. The deeper
+  assessment/review steps remain test.fixme()/TODO. Default `composer test` still unaffected.
+
 v0.12.23 Scaffold the browser (Playwright) UAT tier for the patient SMART-app workflow
 
   New end-to-end test tier under tests/Uat/Browser, mirroring oe-module-ihi's conventions (opt-in

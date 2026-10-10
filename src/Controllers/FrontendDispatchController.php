@@ -42,9 +42,14 @@ class FrontendDispatchController
                 ->withBody(ServiceContainer::getStreamFactory()->createStream($body));
         }
         $smartJSON = $this->getSmartStylesJson();
+        // the admin/provider app authenticates with the CONFIDENTIAL provider client (user/* scopes),
+        // not the public patient client; the SPA uses it for admin routes + the token broker.
+        $adminClientId = $this->clientService->getRegisteredProviderClientId();
         $twig = $this->twig;
         $vars = [
             'clientId' => $clientId
+            ,'adminClientId' => $adminClientId
+            ,'adminScopes' => $this->config->getSmartAppProviderScopes()
             ,'fhirUrl' => $this->config->getFHIRUrl()
             ,'apiUrl' => $this->config->getAPIUrl() . "/"
             ,'baseHref' => $this->config->getPublicFrontendPathFQDN()

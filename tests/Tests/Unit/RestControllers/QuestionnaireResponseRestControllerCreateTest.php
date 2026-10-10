@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace OpenEMR\Modules\DiscoverAndChange\Assessments\Tests\RestControllers;
 
-use Nyholm\Psr7\Stream;
 use OpenEMR\Common\Http\HttpRestRequest;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Models\ServerRestRequest;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\RestControllers\QuestionnaireResponseRestController;
@@ -45,7 +44,9 @@ class QuestionnaireResponseRestControllerCreateTest extends TestCase
     {
         $inner = $this->createMock(HttpRestRequest::class);
         $inner->method('getHeader')->willReturn($prefer);
-        $inner->method('getBody')->willReturn(Stream::create($json));
+        // HttpRestRequest::getBody() returns the raw body STRING (Symfony getContent()); ServerRestRequest
+        // wraps it in a PSR-7 stream, which the controller reads via getBody()->rewind()->getContents().
+        $inner->method('getBody')->willReturn($json);
         $inner->method('getPatientUUIDString')->willReturn(null);
         return new ServerRestRequest($inner);
     }

@@ -539,7 +539,9 @@ class Bootstrap
         $menuItem->label = xlt("Patient Portal Assignments");
         /** @var SmartAppClientService $smartAppService */
         $smartAppService = $this->getServiceContainer()->get(SmartAppClientService::class);
-        $clientId = $smartAppService->getRegisteredClientId();
+        // the in-EHR provider launch uses the CONFIDENTIAL provider client (user/* scopes), not the
+        // public patient client -- OpenEMR only grants user scopes to confidential clients.
+        $clientId = $smartAppService->getRegisteredProviderClientId();
 
         // TODO: pull the install location into a constant into the codebase so if OpenEMR changes this location it
         // doesn't break any modules.

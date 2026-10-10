@@ -75,6 +75,8 @@
             window.dacAppConfig = {
                 authToken: {{ AuthToken|js_escape }}
                 ,clientId: {{ clientId|js_escape }}
+                ,adminClientId: {{ adminClientId|js_escape }}
+                ,adminScopes: {{ adminScopes|json_encode }}
                 ,fhirUrl: {{ fhirUrl|json_encode }}
                 ,apiUrl: {{ apiUrl|json_encode }}
                 ,logoSrc: {{ smartStyles.logo_primary|json_encode }}
@@ -85,7 +87,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 
-<body class="mat-typography" data-client-id="{{ clientId|attr }}" data-fhir-url="{{ fhirUrl|attr }}" data-api-url="{{ apiUrl|attr }}">
+<body class="mat-typography" data-client-id="{{ clientId|attr }}" data-admin-client-id="{{ adminClientId|attr }}" data-fhir-url="{{ fhirUrl|attr }}" data-api-url="{{ apiUrl|attr }}">
 <div class="browser-upgrade">
     <p>{{ "You are running an unsupported browser or browser version. Upgrade to the latest version of Microsoft Edge, Chrome, Safari,
         or Firefox (Internet Explorer 11 is not supported) to have the best results of using our system."|xlt }}
