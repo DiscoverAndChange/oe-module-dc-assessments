@@ -1,3 +1,15 @@
+v0.12.31 Two-client OAuth upgrade: trim the existing public client to patient-only scopes
+
+  Upgrade pathway for installs created before the two-client split (v0.12.28), which registered a single
+  PUBLIC patient client carrying a mixed patient+user scope set. The confidential provider client cannot
+  be created in table.sql (its secret is encrypted with site-specific keys via the module's PHP), so it
+  auto-registers on the first provider SPA/EHR access after upgrade (verified self-heal: deleting the
+  provider client + globals and loading any SPA page re-registers it). What table.sql CAN do, added here:
+  trim the existing public patient client down to patient-only scopes (idempotent; only touches a client
+  still carrying user/*). SmartAppClientService now also registers new public clients with
+  getSmartAppPatientScopes() (least privilege). Verified on the live 8.4 stack: existing public client
+  trimmed (user/* removed), patient + provider UAT still green (3 tests), phpstan clean, unit 543 green.
+
 v0.12.30 Provider-review works: admin SPA uses the confidential client via the token broker (full e2e green)
 
   Completes the 13-step scenario. The admin SPA now authenticates with the confidential provider client:
