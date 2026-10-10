@@ -2,23 +2,19 @@
 
 namespace OpenEMR\Modules\DiscoverAndChange\Assessments\Factory;
 
-use OpenEMR\Common\Twig\TwigContainer;
-use OpenEMR\Core\Kernel;
-use OpenEMR\Modules\DiscoverAndChange\Assessments\Services\SimplifiedOAuthTwigExtension;
+use OpenEMR\BC\ServiceContainer;
 use Twig\Environment;
 
 class TwigEnvironmentFactory
 {
-    public function __construct(private SimplifiedOAuthTwigExtension $oauthTwigExtension, private Kernel $kernel, private string $templatePath)
-    {
-    }
-
     public function __invoke(): Environment
     {
-        $twigContainer = new TwigContainer(null, $this->kernel);
-        // note that TwigContainer fires off the TwigEnvironmentEvent::EVENT_CREATED which will add in our extension
-        // and path template here
-        $twigEnv = $twigContainer->getTwig();
-        return $twigEnv;
+        // Use core's service accessor rather than instantiating TwigContainer directly
+        // (openemr.forbiddenInstantiation). ServiceContainer::getTwig() builds the Twig environment
+        // the same way (new TwigContainer(null, kernel))->getTwig()), which fires
+        // TwigEnvironmentEvent::EVENT_CREATED -- the module's Bootstrap::addTemplateOverrideLoader
+        // listener (registered at bootstrap) then adds the module's SimplifiedOAuthTwigExtension and
+        // prepends the module template path, exactly as before.
+        return ServiceContainer::getTwig();
     }
 }

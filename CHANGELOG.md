@@ -1,3 +1,16 @@
+v0.12.36 Build the module Twig environment via ServiceContainer::getTwig()
+
+  TwigEnvironmentFactory no longer instantiates OpenEMR\Common\Twig\TwigContainer directly (newer core
+  phpstan flags this as openemr.forbiddenInstantiation). It now delegates to core's
+  OpenEMR\BC\ServiceContainer::getTwig(), which builds the Twig environment the same way
+  ((new TwigContainer(null, kernel))->getTwig()) and fires TwigEnvironmentEvent::EVENT_CREATED -- so the
+  module's Bootstrap::addTemplateOverrideLoader listener still adds SimplifiedOAuthTwigExtension and
+  prepends the module template path. The factory now takes no constructor args (its previous deps were
+  either already unused or handled by that listener); the DI definition is updated to match.
+
+  No behavior change: verified against OpenEMR v8_4_1 that the branded OAuth2 pages and the SPA still
+  render (full browser UAT green), and `composer phpstan` is now clean with no findings.
+
 v0.12.35 Scope assessment/library result blobs to the bound patient in patient-context searches
 
   Security hardening + completion of the patient-compartment work. QuestionnaireResponseRestListener
