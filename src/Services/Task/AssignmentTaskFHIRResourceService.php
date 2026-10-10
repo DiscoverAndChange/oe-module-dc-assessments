@@ -15,6 +15,7 @@ use OpenEMR\Modules\DiscoverAndChange\Assessments\Services\QuestionnaireResponse
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Services\TaskOnsitePortalActivityAccessService;
 use OpenEMR\Services\QuestionnaireResponseService;
 use OpenEMR\Services\FHIR\FhirServiceBase;
+use OpenEMR\Services\FHIR\IPatientCompartmentResourceService;
 use OpenEMR\Services\FHIR\IResourceUpdateableService;
 use OpenEMR\Services\FHIR\Traits\FhirServiceBaseEmptyTrait;
 use OpenEMR\Services\FHIR\UtilsService;
@@ -27,7 +28,7 @@ use OpenEMR\Services\Search\TokenSearchField;
 use OpenEMR\Services\Search\TokenSearchValue;
 use OpenEMR\Validators\ProcessingResult;
 
-class AssignmentTaskFHIRResourceService extends FhirServiceBase implements IResourceUpdateableService
+class AssignmentTaskFHIRResourceService extends FhirServiceBase implements IResourceUpdateableService, IPatientCompartmentResourceService
 {
     use FhirServiceBaseEmptyTrait;
 

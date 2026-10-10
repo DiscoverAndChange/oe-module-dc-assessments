@@ -1,3 +1,20 @@
+v0.12.33 Fix patient Task search returning 0 results on newer OpenEMR core
+
+  AssignmentTaskFHIRResourceService now declares IPatientCompartmentResourceService (it already
+  defined getPatientContextSearchField()). It is the only sub-service mapped by TaskFHIRResourceService,
+  so it receives the bound patient uuid on every patient-context Task search. Newer OpenEMR core added
+  patient-compartment enforcement (core PR #13855): any FHIR service handed a patient bind that does NOT
+  declare IPatientCompartmentResourceService throws a SearchFieldException
+  ("Patient-scoped access to this resource is not permitted."), which TaskFHIRResourceService::getAll()
+  swallows -- so the patient saw an EMPTY Task bundle (0 assignments) while the provider (no bind) still
+  saw results. Older core silently skipped the bind, so the symptom only appeared once the deployment
+  moved past that core change; declaring the interface is a no-op on older core and the correct, scoped
+  behavior on newer core.
+
+  Adds a core-version-independent regression unit test asserting the service implements
+  IPatientCompartmentResourceService and that its patient context field maps to the client_uuid column,
+  so a future Task sub-service added without the interface fails a unit test rather than only in e2e.
+
 v0.12.32 Default the updated OAuth2 pages ON + fix/guard the provider EHR launch (no re-login)
 
   table.sql now defaults dac_assessments_oauth2_layout_override = '1' on fresh installs (via #IfNotRow,

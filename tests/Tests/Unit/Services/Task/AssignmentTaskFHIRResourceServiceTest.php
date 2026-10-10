@@ -9,6 +9,7 @@ use OpenEMR\FHIR\R4\FHIRDomainResource\FHIRTask;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Models\Assignment;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Services\AssignmentRepository;
 use OpenEMR\Modules\DiscoverAndChange\Assessments\Services\Task\AssignmentTaskFHIRResourceService;
+use OpenEMR\Services\FHIR\IPatientCompartmentResourceService;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -42,6 +43,32 @@ class AssignmentTaskFHIRResourceServiceTest extends TestCase
         return new AssignmentTaskFHIRResourceService(
             $repository ?? $this->createMock(AssignmentRepository::class)
         );
+    }
+
+    /**
+     * Regression guard for the patient-scoped Task search.
+     *
+     * As the only sub-service mapped by TaskFHIRResourceService, this service is reached
+     * with the bound patient uuid ($puuidBind) on every patient-context Task search. Newer
+     * OpenEMR core (patient-compartment enforcement, core PR #13855) throws a SearchFieldException
+     * ("Patient-scoped access to this resource is not permitted.") for any service that is
+     * handed a patient bind but does NOT declare IPatientCompartmentResourceService -- which
+     * TaskFHIRResourceService::getAll() then swallows, returning an EMPTY bundle to the patient
+     * while the provider (no bind) still sees results. So this service MUST declare the
+     * interface, and its patient context field must map to the client uuid column.
+     */
+    public function testIsPatientCompartmentServiceBoundToClientUuid(): void
+    {
+        $service = $this->newService();
+        $this->assertInstanceOf(IPatientCompartmentResourceService::class, $service);
+
+        $field = $service->getPatientContextSearchField();
+        $this->assertSame('patient', $field->getName());
+        $mapped = array_map(
+            static fn($serviceField) => $serviceField->getField(),
+            $field->getMappedFields()
+        );
+        $this->assertSame(['client_uuid'], $mapped);
     }
 
     public function testSupportsOwnCodeAndRejectsOthers(): void
