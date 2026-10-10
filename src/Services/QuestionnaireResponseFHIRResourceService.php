@@ -95,7 +95,14 @@ class QuestionnaireResponseFHIRResourceService extends FhirServiceBase implement
     public function getAll($fhirSearchParameters, $puuidBind = null): ProcessingResult
     {
         $result = new ProcessingResult();
-        $event = $this->dispatcher->dispatch(new GenericEvent($fhirSearchParameters), 'fhir.questionnaire_response.search');
+        // Forward the bound patient uuid so listeners (the blob result sub-services) can scope their
+        // own searches to the patient. Without this the merged blob results are unscoped in a patient
+        // context -- a cross-patient exposure the compartment guard cannot catch, because the bind is
+        // dropped before it reaches those sub-services.
+        $event = $this->dispatcher->dispatch(
+            new GenericEvent($fhirSearchParameters, ['puuidBind' => $puuidBind]),
+            'fhir.questionnaire_response.search'
+        );
         $eventResult = $event->getArgument('result');
         if ($eventResult instanceof ProcessingResult) {
             $result = $eventResult;

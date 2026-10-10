@@ -83,24 +83,30 @@ class QuestionnaireResponseRestListener implements IStaticEventSubscriber
         // for now we stick with the generic event
         /** @var array<mixed> $fhirSearchParameters */
         $fhirSearchParameters = $event->getSubject();
+        // The bound patient uuid, forwarded by QuestionnaireResponseFHIRResourceService::getAll(). In a
+        // patient context this MUST scope the blob sub-searches to that patient; both blob services are
+        // IPatientCompartmentResourceService, so passing the bind makes their getAll() filter on the
+        // patient uuid. It is null in a non-patient (provider/user) context, where results are unscoped.
+        $puuidBind = $event->hasArgument('puuidBind') ? $event->getArgument('puuidBind') : null;
+        $puuidBind = is_string($puuidBind) ? $puuidBind : null;
+
         $processingResult = new ProcessingResult();
         // getAll() always returns a ProcessingResult (errors are carried inside it, never by a
         // null/falsy return), so the old "else" error branches were unreachable dead code;
         // addProcessingResult already merges any internal errors from the sub-result.
         //
-        // Only forward the search fields each blob sub-service actually supports. The parent
-        // QuestionnaireResponse resource now declares IPatientCompartmentResourceService, so core
-        // injects a `patient` parameter (via getOne()/patient-context binding) that these blob
-        // services do not define -- passing it straight through made createOpenEMRSearchParameters()
-        // throw SearchFieldException("This search field does not exist or is not supported"), which
-        // surfaced as a 400 on QuestionnaireResponse create (insert -> representation getOne).
+        // Only forward the search fields each blob sub-service actually supports: the parent
+        // QuestionnaireResponse resource supports fields (e.g. `authored`) the blob services do not, and
+        // passing an unknown field makes createOpenEMRSearchParameters() throw SearchFieldException.
         $result = $this->assessmentResponseBlobFHIRResourceService->getAll(
-            $this->filterToSupportedParams($this->assessmentResponseBlobFHIRResourceService, $fhirSearchParameters)
+            $this->filterToSupportedParams($this->assessmentResponseBlobFHIRResourceService, $fhirSearchParameters),
+            $puuidBind
         );
         $processingResult->addProcessingResult($result);
         if ($processingResult->isValid()) {
             $result = $this->libraryAssetResultBlobFHIRResourceService->getAll(
-                $this->filterToSupportedParams($this->libraryAssetResultBlobFHIRResourceService, $fhirSearchParameters)
+                $this->filterToSupportedParams($this->libraryAssetResultBlobFHIRResourceService, $fhirSearchParameters),
+                $puuidBind
             );
             $processingResult->addProcessingResult($result);
         }
