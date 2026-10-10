@@ -84,4 +84,31 @@ class AssessmentWorkflowBrowserTest extends BrowserUatTestCase
 
         $this->assertPlaywrightPassed($result);
     }
+
+    /**
+     * Provider EHR launch: a provider already authenticated in OpenEMR launches the admin app in-EHR
+     * (ehr-launch-client.php). The SMART launch token must carry through the authorize so the app reuses
+     * the EHR session WITHOUT a second login -- this guards the regression where the SPA dropped the
+     * launch param and forced a re-login.
+     */
+    public function testProviderEhrLaunchReview(): void
+    {
+        $seed = self::seedAssignedAssessment();
+        if (($seed['providerClientId'] ?? '') === '') {
+            $this->markTestSkipped('provider client not registered yet; run tools/provision-stack.php.');
+        }
+
+        $result = self::runPlaywright(
+            [
+                'DC_E2E_PATIENT_USER'       => (string) $seed['username'],
+                'DC_E2E_PATIENT_PASS'       => (string) $seed['password'],
+                'DC_E2E_PATIENT_LASTNAME'   => (string) $seed['lastName'],
+                'DC_E2E_ASSESSMENT_NAME'    => (string) $seed['assessmentName'],
+                'DC_E2E_PROVIDER_CLIENT_ID' => (string) $seed['providerClientId'],
+            ],
+            'provider ehr launch'
+        );
+
+        $this->assertPlaywrightPassed($result);
+    }
 }

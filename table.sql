@@ -637,6 +637,16 @@ REPLACE INTO `globals` (`gl_name`, `gl_index`, `gl_value`) VALUES ('portal_force
 COMMIT;
 #EndIf
 
+-- Default the module's updated OAuth2 pages ON so a fresh install serves the branded SMART login /
+-- scope-authorize / patient-select screens (Bootstrap::oauth2TemplatePageOverrides gates on this
+-- global = '1'). #IfNotRow (not #IfNotRow2D) so this only sets the default when the global has NO row
+-- yet -- it will not override an admin who has explicitly turned it off.
+#IfNotRow globals gl_name dac_assessments_oauth2_layout_override
+START TRANSACTION;
+INSERT INTO `globals` (`gl_name`, `gl_index`, `gl_value`) VALUES ('dac_assessments_oauth2_layout_override', 0, '1');
+COMMIT;
+#EndIf
+
 #IfMissingColumn dac_AssessmentBlob uuid
 ALTER TABLE dac_AssessmentBlob ADD `uuid` binary(16) NULL DEFAULT NULL;
 #EndIf

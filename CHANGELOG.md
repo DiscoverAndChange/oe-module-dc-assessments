@@ -1,3 +1,20 @@
+v0.12.32 Default the updated OAuth2 pages ON + fix/guard the provider EHR launch (no re-login)
+
+  table.sql now defaults dac_assessments_oauth2_layout_override = '1' on fresh installs (via #IfNotRow,
+  so it only sets the default when the global has no row -- it won't override an admin who turned it off),
+  so new installs serve the branded SMART login / scope-authorize / patient-select pages.
+
+  Fixes the in-EHR provider launch re-login bug: the SPA's admin authorize dropped the SMART `launch`
+  parameter, so an in-EHR launch forced a second login. The SPA fix lives in assessments-angular
+  (forward launch + iss); the recompiled public/frontend bundles are updated here.
+
+  UAT: adds a 'provider ehr launch' test that logs the provider into OpenEMR, launches
+  ehr-launch-client.php, and asserts NO second login + the admin app opens and shows the completed
+  assessment. Also updates the provider-login spec helper for the (now default-on) tabbed login page --
+  the provider "OpenEMR Login" button lives in a hidden #provider pane, so the test activates the
+  "Provider Login" tab first. seed-assignment.php returns the provider client id. All 4 browser UAT
+  tests green on the live 8.4 stack with the updated OAuth2 pages active.
+
 v0.12.31 Two-client OAuth upgrade: trim the existing public client to patient-only scopes
 
   Upgrade pathway for installs created before the two-client split (v0.12.28), which registered a single

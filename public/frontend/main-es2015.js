@@ -23857,6 +23857,7 @@ class FhirService {
         this.ADMIN_STATE_KEY = 'dc-admin-state';
         this.ADMIN_REDIRECT_KEY = 'dc-admin-redirect';
         this.ADMIN_TOKEN_KEY = 'dc-admin-token';
+        this.ADMIN_ISS_KEY = 'dc-admin-iss';
     }
     isAuthorized() {
         // if there is no authorization header then we are not logged in for sure
@@ -23888,7 +23889,7 @@ class FhirService {
             if (this.isAdminOAuth()) {
                 let stored = sessionStorage.getItem(this.ADMIN_TOKEN_KEY);
                 if (stored) {
-                    this.fhirClient = Object(fhirclient__WEBPACK_IMPORTED_MODULE_3__["client"])({ serverUrl: _environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].smartConfig.fhirUrl, tokenResponse: JSON.parse(stored) });
+                    this.fhirClient = Object(fhirclient__WEBPACK_IMPORTED_MODULE_3__["client"])({ serverUrl: this.adminServerUrl(), tokenResponse: JSON.parse(stored) });
                     return Promise.resolve(this.fhirClient);
                 }
             }
@@ -23936,13 +23937,21 @@ class FhirService {
             "redirect_uri": url
         });
     }
+    adminServerUrl() {
+        return sessionStorage.getItem(this.ADMIN_ISS_KEY) || _environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].smartConfig.fhirUrl;
+    }
     authorizeUserAdmin(redirectUrlPath) {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
             let clientId = this.getAdminClientId();
             let scopes = _environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].smartConfig.adminScopes || _environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].smartConfig.scopes;
-            let fhirUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].smartConfig.fhirUrl;
+            let currentParams = (new URL(window.document.location.href)).searchParams;
+            // SMART EHR launch: ehr-launch-client.php sends us here with ?launch=<token>&iss=<fhir>. The launch
+            // token ties the authorize to the provider's existing EHR session (no re-login); iss is the FHIR
+            // server to authorize against. Honour both -- dropping launch forces an unwanted second login.
+            let launch = currentParams.get('launch');
+            let iss = currentParams.get('iss') || _environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].smartConfig.fhirUrl;
             let redirectUri = this.buildRedirectUrl(redirectUrlPath);
-            let returnParam = (new URL(window.document.location.href)).searchParams.get('return') || '';
+            let returnParam = currentParams.get('return') || '';
             if (returnParam) {
                 sessionStorage.setItem("dc-return-url", returnParam);
             }
@@ -23953,13 +23962,15 @@ class FhirService {
             sessionStorage.setItem(this.ADMIN_VERIFIER_KEY, verifier);
             sessionStorage.setItem(this.ADMIN_STATE_KEY, state);
             sessionStorage.setItem(this.ADMIN_REDIRECT_KEY, redirectUri);
-            let authorizeUrl = this.deriveOAuthBase(fhirUrl) + '/authorize'
+            sessionStorage.setItem(this.ADMIN_ISS_KEY, iss);
+            let authorizeUrl = this.deriveOAuthBase(iss) + '/authorize'
                 + '?response_type=code'
                 + '&client_id=' + encodeURIComponent(clientId)
                 + '&scope=' + encodeURIComponent(scopes)
                 + '&redirect_uri=' + encodeURIComponent(redirectUri)
                 + '&state=' + encodeURIComponent(state)
-                + '&aud=' + encodeURIComponent(fhirUrl)
+                + '&aud=' + encodeURIComponent(iss)
+                + (launch ? '&launch=' + encodeURIComponent(launch) : '')
                 + '&code_challenge=' + encodeURIComponent(challenge)
                 + '&code_challenge_method=S256';
             window.location.href = authorizeUrl;
@@ -23988,7 +23999,7 @@ class FhirService {
             }
             sessionStorage.setItem(this.ADMIN_TOKEN_KEY, JSON.stringify(token));
             sessionStorage.removeItem(this.ADMIN_VERIFIER_KEY);
-            this.fhirClient = Object(fhirclient__WEBPACK_IMPORTED_MODULE_3__["client"])({ serverUrl: _environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].smartConfig.fhirUrl, tokenResponse: token });
+            this.fhirClient = Object(fhirclient__WEBPACK_IMPORTED_MODULE_3__["client"])({ serverUrl: this.adminServerUrl(), tokenResponse: token });
             return this.fhirClient;
         });
     }
