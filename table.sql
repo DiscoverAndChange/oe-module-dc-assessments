@@ -644,3 +644,20 @@ ALTER TABLE dac_AssessmentBlob ADD `uuid` binary(16) NULL DEFAULT NULL;
 #IfMissingColumn dac_LibraryAssetBlob uuid
 ALTER TABLE dac_LibraryAssetBlob ADD `uuid` binary(16) NULL DEFAULT NULL;
 #EndIf
+
+-- =============================================================================================
+-- Two-client OAuth upgrade (v0.12.31)
+-- =============================================================================================
+-- Before v0.12.28 the module registered a single PUBLIC patient client carrying a mixed patient+user
+-- scope set. The provider/admin app now uses a separate CONFIDENTIAL client for user/* scopes (OpenEMR
+-- only grants user scopes to confidential clients). That confidential client cannot be created here --
+-- its secret is encrypted with site-specific keys by the module's PHP (ClientRepository), so it is
+-- registered automatically by the module on the first provider SPA/EHR access after upgrade.
+--
+-- What this migration CAN do: trim an existing install's public patient client down to patient-only
+-- scopes (least privilege; the user/* it was registered with are never granted to a patient login and
+-- are now owned by the confidential client). Idempotent -- only touches a client still carrying user/*.
+UPDATE `oauth_clients`
+  SET `scope` = 'fhirUser api:port api:oemr openid launch patient/Patient.read patient/Task.read patient/Task.write patient/Questionnaire.read patient/QuestionnaireResponse.read patient/QuestionnaireResponse.write patient/patient.read patient/clients.read patient/assessment-groups.read patient/assessment-results.write patient/tags.read patient/library-assets.read patient/library-asset-results.write patient/assessments.read patient/assessments.write'
+  WHERE `client_id` = (SELECT `gl_value` FROM `globals` WHERE `gl_name` = 'dac_assessments_smart_client_id')
+    AND `scope` LIKE '%user/%';

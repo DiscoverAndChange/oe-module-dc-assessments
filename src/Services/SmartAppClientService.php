@@ -30,7 +30,9 @@ class SmartAppClientService
             $clientId = $this->registerClient(
                 'patient',
                 false,
-                $this->globalConfig->getSmartAppScopes(),
+                // patient-only scopes: the provider/admin app uses the separate confidential client for
+                // user/* scopes, so the public patient client should not carry them (least privilege).
+                $this->globalConfig->getSmartAppPatientScopes(),
                 [
                     $this->globalConfig->getSmartAppClientPublicPathRedirectUri(),
                     $this->globalConfig->getSmartAppAdminPublicPathRedirectUri(),
