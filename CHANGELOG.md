@@ -1,3 +1,21 @@
+v0.12.37 Inject the SMART style URL into the patient SPA so it themes from this instance
+
+  Fixes the patient portal logo (and other SMART-style theming) rendering blank. The Angular SPA
+  fetches its SMART style JSON (colors, fonts, logo_primary) from dacConfig.smartConfigStyleUrl at
+  startup and assigns applicationLogoUrl = jsonStyles.logo_primary. That URL was never supplied by
+  the server, so the SPA fell back to the origin hard-coded into its bundle
+  (https://localhost:9300/oauth2/default/smart/smart-style), which only matched the original dev
+  host. On any other host (e.g. the :9302 UAT stack or production) the cross-origin fetch failed or
+  returned no logo_primary, and the unconditional assignment wiped the bundled default logo, leaving
+  <img src="">.
+
+  FrontendDispatchController now injects window.dacAppConfig.smartStyleUrl (via the new
+  GlobalConfig::getSmartStyleUrl(), built from ServerConfig::getOauthAuthorizationUrl()), which the
+  SPA bootstrap already honors to override environment.smartConfig.smartStyleUrl. The SPA now fetches
+  smart styles from this instance's own endpoint. No SPA rebuild required; fhirUrl/apiUrl are injected
+  the same way. The smart-style endpoint already returns a correct logo_primary (served by the
+  companion theme module's bundled-logo override).
+
 v0.12.35 Scope assessment/library result blobs to the bound patient in patient-context searches
 
   Security hardening + completion of the patient-compartment work. QuestionnaireResponseRestListener
