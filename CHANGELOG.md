@@ -1,3 +1,24 @@
+v0.12.38 Rebuild patient SPA: harden smart-style handling (no blank logo, parse double-encoded JSON)
+
+  Rebuilt the Angular SPA bundle in public/frontend/ from assessments-angular
+  (ai/harden-smart-style-logo) to fix the patient portal logo rendering as <img src="">. Two
+  robustness fixes in FhirSmartStyleService.loadSmartStyles():
+
+    - The logo is only overridden when the SMART style response actually carries a truthy
+      logo_primary; a missing/empty value no longer wipes the host/environment default logo.
+    - OpenEMR core's smart-style endpoint double-encodes its payload (the rendered JSON template is
+      wrapped again in a JsonResponse), so fetch().json() returns a JSON *string* rather than an
+      object and logo_primary was always undefined. The SPA now detects a string result and
+      JSON.parses it before use, which also restores all SMART-style theming (colors/fonts). This
+      re-parse is a workaround for the core bug and is tracked for removal in issue #39.
+
+  Pairs with v0.12.37 (which injects window.dacAppConfig.smartStyleUrl so the SPA fetches styles
+  from this instance instead of the origin baked into the bundle). The bundle file set is unchanged
+  (runtime/polyfills/vendor/main/styles, es2015 + es5), so frontend.html.twig is untouched. Built
+  with `npm run build` (dev config) under Node 14. Verified live on the :9302 stack end-to-end: the
+  SPA fetches smart-style same-origin, re-parses the double-encoded string, and resolves logo_primary
+  to the bundled logo (HTTP 200).
+
 v0.12.37 Inject the SMART style URL into the patient SPA so it themes from this instance
 
   Fixes the patient portal logo (and other SMART-style theming) rendering blank. The Angular SPA

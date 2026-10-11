@@ -511,7 +511,7 @@ class DisplayCondition {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /tmp/claude-1000/-home-snielson-ai-projects-manning-openemr/da40eea3-85b6-452a-8d78-1e0e3ec006c7/scratchpad/assessments-angular/src/main.ts */"zUnb");
+module.exports = __webpack_require__(/*! /app/src/main.ts */"zUnb");
 
 
 /***/ }),
@@ -5570,9 +5570,28 @@ class FhirSmartStyleService {
                 try {
                     let response = yield fetch(this.dacConfig.smartConfigStyleUrl);
                     let jsonStyles = yield response.json();
+                    // TODO: Remove this re-parse once OpenEMR core stops double-encoding the smart-style
+                    // response. Core's SMARTAuthorizationController::renderTwigJson() wraps the already-rendered
+                    // JSON template output in a JsonResponse, which json_encodes it a second time, so
+                    // response.json() yields a JSON string rather than an object. Until core is fixed we detect
+                    // a string result and parse it again. Tracked in oe-module-dc-assessments issue #39.
+                    if (typeof jsonStyles === 'string') {
+                        try {
+                            jsonStyles = JSON.parse(jsonStyles);
+                        }
+                        catch (parseError) {
+                            console.error('Unable to parse SMART style response', parseError);
+                            jsonStyles = null;
+                        }
+                    }
                     if (jsonStyles) {
                         this.smartStyles = jsonStyles;
-                        this.dacConfig.applicationLogoUrl = jsonStyles.logo_primary;
+                        // Only override the logo when the SMART style actually provides one. A missing or empty
+                        // logo_primary must not blank out the host/environment default logo (which would render
+                        // <img src="">). This happens when the style endpoint is unreachable or returns no logo.
+                        if (jsonStyles.logo_primary) {
+                            this.dacConfig.applicationLogoUrl = jsonStyles.logo_primary;
+                        }
                         this.dacConfig.smartStyles = jsonStyles;
                     }
                 }
