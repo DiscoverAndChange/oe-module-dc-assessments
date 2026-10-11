@@ -232,10 +232,10 @@ class Bootstrap
         $publicServices = [];
         $publicServices['crypto'] = new Definition(CryptoGen::class, []);
         $publicServices['sanitizer'] = new Definition(HTMLSanitizer::class, []);
-        $publicServices[TwigEnvironmentFactory::class] = new Definition(
-            TwigEnvironmentFactory::class,
-            [new Reference(SimplifiedOAuthTwigExtension::class), new Reference('kernel'), $this->getTemplatePath()]
-        );
+        // TwigEnvironmentFactory takes no constructor args: it delegates to core's
+        // ServiceContainer::getTwig(), and the module's TwigEnvironmentEvent::EVENT_CREATED listener
+        // (addTemplateOverrideLoader) adds the SimplifiedOAuthTwigExtension + module template path.
+        $publicServices[TwigEnvironmentFactory::class] = new Definition(TwigEnvironmentFactory::class, []);
 
         // setup our twig factory
         $publicServices[Environment::class] = new Definition(Environment::class, []);
