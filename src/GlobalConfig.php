@@ -298,6 +298,18 @@ class GlobalConfig
     }
 
     /**
+     * Fully-qualified URL of this instance's SMART style endpoint. The patient SPA fetches this at
+     * startup to theme itself (colors, fonts, logo). Without it the SPA falls back to a hard-coded
+     * default origin baked into its bundle, which only matches the original dev host.
+     *
+     * @return string
+     */
+    public function getSmartStyleUrl()
+    {
+        return (new ServerConfig())->getOauthAuthorizationUrl() . "/smart/smart-style";
+    }
+
+    /**
      * @return mixed
      */
     public function getFHIRPatientClientId()

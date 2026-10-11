@@ -52,6 +52,7 @@ class FrontendDispatchController
             ,'adminScopes' => $this->config->getSmartAppProviderScopes()
             ,'fhirUrl' => $this->config->getFHIRUrl()
             ,'apiUrl' => $this->config->getAPIUrl() . "/"
+            ,'smartStyleUrl' => $this->config->getSmartStyleUrl()
             ,'baseHref' => $this->config->getPublicFrontendPathFQDN()
             ,'AuthToken' => '' // leave empty for now
             ,'smartStyles' => $smartJSON
