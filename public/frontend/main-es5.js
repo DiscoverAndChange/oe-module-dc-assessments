@@ -971,7 +971,7 @@
     /***/
     function _(module, exports, __webpack_require__) {
       module.exports = __webpack_require__(
-      /*! /tmp/claude-1000/-home-snielson-ai-projects-manning-openemr/da40eea3-85b6-452a-8d78-1e0e3ec006c7/scratchpad/assessments-angular/src/main.ts */
+      /*! /app/src/main.ts */
       "zUnb");
       /***/
     },
@@ -9931,7 +9931,7 @@
                   switch (_context15.prev = _context15.next) {
                     case 0:
                       if (!this.dacConfig.smartConfigStyleUrl) {
-                        _context15.next = 14;
+                        _context15.next = 15;
                         break;
                       }
 
@@ -9947,26 +9947,46 @@
                     case 7:
                       jsonStyles = _context15.sent;
 
+                      // TODO: Remove this re-parse once OpenEMR core stops double-encoding the smart-style
+                      // response. Core's SMARTAuthorizationController::renderTwigJson() wraps the already-rendered
+                      // JSON template output in a JsonResponse, which json_encodes it a second time, so
+                      // response.json() yields a JSON string rather than an object. Until core is fixed we detect
+                      // a string result and parse it again. Tracked in oe-module-dc-assessments issue #39.
+                      if (typeof jsonStyles === 'string') {
+                        try {
+                          jsonStyles = JSON.parse(jsonStyles);
+                        } catch (parseError) {
+                          console.error('Unable to parse SMART style response', parseError);
+                          jsonStyles = null;
+                        }
+                      }
+
                       if (jsonStyles) {
-                        this.smartStyles = jsonStyles;
-                        this.dacConfig.applicationLogoUrl = jsonStyles.logo_primary;
+                        this.smartStyles = jsonStyles; // Only override the logo when the SMART style actually provides one. A missing or empty
+                        // logo_primary must not blank out the host/environment default logo (which would render
+                        // <img src="">). This happens when the style endpoint is unreachable or returns no logo.
+
+                        if (jsonStyles.logo_primary) {
+                          this.dacConfig.applicationLogoUrl = jsonStyles.logo_primary;
+                        }
+
                         this.dacConfig.smartStyles = jsonStyles;
                       }
 
-                      _context15.next = 14;
+                      _context15.next = 15;
                       break;
 
-                    case 11:
-                      _context15.prev = 11;
+                    case 12:
+                      _context15.prev = 12;
                       _context15.t0 = _context15["catch"](1);
                       console.error(_context15.t0);
 
-                    case 14:
+                    case 15:
                     case "end":
                       return _context15.stop();
                   }
                 }
-              }, _callee15, this, [[1, 11]]);
+              }, _callee15, this, [[1, 12]]);
             }));
           }
         }]);

@@ -7,8 +7,8 @@
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /tmp/claude-1000/-home-snielson-ai-projects-manning-openemr/da40eea3-85b6-452a-8d78-1e0e3ec006c7/scratchpad/assessments-angular/node_modules/font-awesome/scss/font-awesome.scss */"hRJ5");
-module.exports = __webpack_require__(/*! /tmp/claude-1000/-home-snielson-ai-projects-manning-openemr/da40eea3-85b6-452a-8d78-1e0e3ec006c7/scratchpad/assessments-angular/src/assets/styles/styles.scss */"Vp6x");
+__webpack_require__(/*! /app/node_modules/font-awesome/scss/font-awesome.scss */"hRJ5");
+module.exports = __webpack_require__(/*! /app/src/assets/styles/styles.scss */"Vp6x");
 
 
 /***/ }),

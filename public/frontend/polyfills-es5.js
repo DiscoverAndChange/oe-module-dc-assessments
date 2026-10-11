@@ -634,7 +634,7 @@
     /***/
     function _(module, exports, __webpack_require__) {
       __webpack_require__(
-      /*! /tmp/claude-1000/-home-snielson-ai-projects-manning-openemr/da40eea3-85b6-452a-8d78-1e0e3ec006c7/scratchpad/assessments-angular/node_modules/@angular-devkit/build-angular/src/angular-cli-files/models/es5-polyfills.js */
+      /*! /app/node_modules/@angular-devkit/build-angular/src/angular-cli-files/models/es5-polyfills.js */
       "mRIq");
 
       __webpack_require__(
@@ -642,7 +642,7 @@
       "R0gw");
 
       module.exports = __webpack_require__(
-      /*! /tmp/claude-1000/-home-snielson-ai-projects-manning-openemr/da40eea3-85b6-452a-8d78-1e0e3ec006c7/scratchpad/assessments-angular/src/polyfills.ts */
+      /*! /app/src/polyfills.ts */
       "hN/g");
       /***/
     },
