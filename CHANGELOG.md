@@ -1,3 +1,25 @@
+v0.13.0 Rebuild patient SPA: native-SVG assessment report charts (Option B)
+
+  Rebuilt the Angular SPA bundle in public/frontend/ from assessments-angular
+  (ai/svg-charts-prototype) to replace the Chart.js canvas report charts with pure inline-SVG
+  components. This removes the canvas-to-image rasterization layer that caused report charts to
+  print blank, distorted, or missing (notably the Section 1 Summary and Breakdown charts on the
+  PAB-RI 'sexual-betrayal-relationship' report). SVG prints natively and crisply with no <canvas>,
+  no toDataURL, no animation-complete timing dependency, and no rasterization race with
+  window.print().
+
+    - New SvgSummaryScalesChartComponent (app-svg-summary-scales-chart) and SvgScaleChartComponent
+      (app-svg-scale-chart) mirror the original @Input/@Output APIs; all report templates were
+      swapped to the app-svg-* selectors. The old Chart.js components remain in the source but are
+      unreferenced (reversible).
+    - This is a UAT/prototype deploy for visual comparison; the SVG geometry replicates the Chart.js
+      layout but label spacing (long range names, single-bar summary) should be eyeballed.
+
+  Carries forward the merged smart-style/logo and portal-submit/EHR-launch fixes (built from
+  origin/openemr-integration, which includes PRs #1-4). Bundle file set unchanged
+  (runtime/polyfills/vendor/main/styles, es2015 + es5), so frontend.html.twig is untouched. Built
+  with `npm run build` (dev config) under Node 14.
+
 v0.12.38 Rebuild patient SPA: harden smart-style handling (no blank logo, parse double-encoded JSON)
 
   Rebuilt the Angular SPA bundle in public/frontend/ from assessments-angular

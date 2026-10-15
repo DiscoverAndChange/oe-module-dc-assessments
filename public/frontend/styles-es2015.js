@@ -7,8 +7,8 @@
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /app/node_modules/font-awesome/scss/font-awesome.scss */"hRJ5");
-module.exports = __webpack_require__(/*! /app/src/assets/styles/styles.scss */"Vp6x");
+__webpack_require__(/*! /work/node_modules/font-awesome/scss/font-awesome.scss */"hRJ5");
+module.exports = __webpack_require__(/*! /work/src/assets/styles/styles.scss */"Vp6x");
 
 
 /***/ }),
