@@ -634,7 +634,7 @@
     /***/
     function _(module, exports, __webpack_require__) {
       __webpack_require__(
-      /*! /work/node_modules/@angular-devkit/build-angular/src/angular-cli-files/models/es5-polyfills.js */
+      /*! /app/node_modules/@angular-devkit/build-angular/src/angular-cli-files/models/es5-polyfills.js */
       "mRIq");
 
       __webpack_require__(
@@ -642,7 +642,7 @@
       "R0gw");
 
       module.exports = __webpack_require__(
-      /*! /work/src/polyfills.ts */
+      /*! /app/src/polyfills.ts */
       "hN/g");
       /***/
     },

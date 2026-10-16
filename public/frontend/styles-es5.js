@@ -11,11 +11,11 @@
     /***/
     function _(module, exports, __webpack_require__) {
       __webpack_require__(
-      /*! /work/node_modules/font-awesome/scss/font-awesome.scss */
+      /*! /app/node_modules/font-awesome/scss/font-awesome.scss */
       "hRJ5");
 
       module.exports = __webpack_require__(
-      /*! /work/src/assets/styles/styles.scss */
+      /*! /app/src/assets/styles/styles.scss */
       "Vp6x");
       /***/
     },

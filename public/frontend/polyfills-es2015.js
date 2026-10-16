@@ -108,7 +108,7 @@ $export($export.S + $export.F * !__webpack_require__(/*! ./_fails */ "eeVq")(fun
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /work/src/polyfills.ts */"hN/g");
+module.exports = __webpack_require__(/*! /app/src/polyfills.ts */"hN/g");
 
 
 /***/ }),

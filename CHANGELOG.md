@@ -1,3 +1,22 @@
+v0.13.1 Rebuild patient SPA: always-on score bubbles on SVG summary charts
+
+  Rebuilt the Angular SPA bundle in public/frontend/ from assessments-angular
+  (ai/svg-charts-prototype) to restore the per-bar score readout that the old Chart.js hover
+  tooltip provided. The native-SVG SummaryScalesChart (app-svg-summary-scales-chart), which drives
+  both the single-bar Section 1 Summary and the multi-bar Breakdown charts, now draws a rounded
+  score bubble over every bar.
+
+    - The bubble floats just above its bar with a small downward pointer; when a bar reaches the top
+      of the plot it drops just inside the bar top and the pointer is omitted.
+    - Bubble width grows with the score text so 1-3 digit (and decimal) scores all fit, and it is
+      clamped horizontally so edge bars never overflow the viewBox.
+    - The score-axis SvgScaleChartComponent already renders its score label, so it is unchanged.
+
+  Carries forward everything in v0.13.0 (native-SVG charts, Option B) and the merged
+  smart-style/logo and portal-submit/EHR-launch fixes (built from origin/openemr-integration).
+  Bundle file set unchanged, so frontend.html.twig is untouched. Built with `npm run build`
+  (dev config) under Node 14.
+
 v0.13.0 Rebuild patient SPA: native-SVG assessment report charts (Option B)
 
   Rebuilt the Angular SPA bundle in public/frontend/ from assessments-angular
