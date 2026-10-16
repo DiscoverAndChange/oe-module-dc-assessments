@@ -123,9 +123,21 @@ class GlobalConfig
     {
         $settings = [
             self::DC_ASSESSMENTS_CONFIG_CLIENT_ID => [
-                'title' => 'DAC Assessments Smart App Client ID'
+                'title' => 'DAC Assessments Smart App Patient Client ID'
                 ,'description' => 'Registered Smart App Client (Remove if you wish to re-register)'
                 ,'type' => GlobalSetting::DATA_TYPE_TEXT
+                ,'default' => ''
+            ],
+            self::DC_ASSESSMENTS_CONFIG_PROVIDER_CLIENT_ID => [
+                'title' => 'DAC Assessments Smart App Provider Client ID'
+                ,'description' => 'Registered Smart App Client (Remove if you wish to re-register)'
+                ,'type' => GlobalSetting::DATA_TYPE_TEXT
+                ,'default' => ''
+            ],
+            self::DC_ASSESSMENTS_CONFIG_PROVIDER_CLIENT_SECRET => [
+                'title' => 'DAC Assessments Smart App Provider Client Secret'
+                ,'description' => 'Registered Smart App Client Secrete (Remove if you wish to re-register)'
+                ,'type' => GlobalSetting::DATA_TYPE_ENCRYPTED
                 ,'default' => ''
             ]
             ,self::DC_ASSESSMENTS_CONFIG_COMPLETION_SEND_NOTICES_FLAG => [
@@ -450,7 +462,8 @@ class GlobalConfig
     /** @return mixed */
     public function getProviderClientSecret()
     {
-        return $this->getGlobalSetting(self::DC_ASSESSMENTS_CONFIG_PROVIDER_CLIENT_SECRET);
+        $secret = $this->getGlobalSetting(self::DC_ASSESSMENTS_CONFIG_PROVIDER_CLIENT_SECRET);
+        return $this->cryptoGen->decryptFromDatabase(is_string($secret) ? $secret : null);
     }
 
     /**

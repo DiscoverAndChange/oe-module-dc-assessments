@@ -32,7 +32,7 @@ class FrontendDispatchController
     public function dispatch(array $queryVars)
     {
         /** @var string|null $clientId */
-        $clientId = $this->config->getSmartAppClientId();
+        $clientId = $this->clientService->getRegisteredClientId();
         if (($clientId === null || $clientId === '') || !$this->isClientEnabled($clientId)) {
             // if the client is not enabled we need to present a message to the user.
             // return the error response (HTTP 500) so the caller can emit it -- previously this die()d,

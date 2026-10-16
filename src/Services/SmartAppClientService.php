@@ -95,7 +95,7 @@ class SmartAppClientService
             'client_role' => $clientRole,
             'redirect_uris' => $redirectUris,
             'post_logout_redirect_uris' => null,
-            'client_name' => $this->globalConfig->getSmartAppName(),
+            'client_name' => $this->globalConfig->getSmartAppName() . ucname($clientRole),
             // our in-ehr launch is to the admin url
             'initiate_login_uri' => $this->globalConfig->getSmartAppAdminLoginPublicPath(),
             'token_endpoint_auth_method' => 'client_secret_post',
