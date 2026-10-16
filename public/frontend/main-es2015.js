@@ -2324,6 +2324,354 @@ class ToastRef {
 
 /***/ }),
 
+/***/ "5CX4":
+/*!**************************************************************************************************!*\
+  !*** ./src/app/assessment-charts/svg-summary-scales-chart/svg-summary-scales-chart.component.ts ***!
+  \**************************************************************************************************/
+/*! exports provided: SvgSummaryScalesChartComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SvgSummaryScalesChartComponent", function() { return SvgSummaryScalesChartComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var app_assessment_charts_services_scale_result_color_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! app/assessment-charts/services/scale-result-color.service */ "s1ev");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common */ "ofXK");
+/*
+ *   Copyright (c) 2026 Discover and Change @author Stephen Nielson <snielson@discoverandchange.com>
+ *   All rights reserved.
+ *   For License information see LICENSE.md in the root folder of this project.
+ */
+
+
+
+
+
+function SvgSummaryScalesChartComponent_div_0__svg_rect_2_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnamespaceSVG"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "rect", 8);
+} if (rf & 2) {
+    const b_r6 = ctx.$implicit;
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵattribute"]("x", b_r6.x)("y", b_r6.y)("width", b_r6.width)("height", b_r6.height)("fill", b_r6.color);
+} }
+function SvgSummaryScalesChartComponent_div_0__svg_text_3_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnamespaceSVG"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "text", 9);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+} if (rf & 2) {
+    const l_r7 = ctx.$implicit;
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵattribute"]("x", l_r7.x)("y", l_r7.y);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](l_r7.text);
+} }
+function SvgSummaryScalesChartComponent_div_0__svg_rect_4_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnamespaceSVG"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "rect", 10);
+} if (rf & 2) {
+    const bar_r8 = ctx.$implicit;
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵattribute"]("x", bar_r8.x)("y", bar_r8.y)("width", bar_r8.width)("height", bar_r8.height);
+} }
+function SvgSummaryScalesChartComponent_div_0__svg_g_5__svg_polygon_1_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnamespaceSVG"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "polygon", 13);
+} if (rf & 2) {
+    const bub_r9 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]().$implicit;
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵattribute"]("points", bub_r9.pointer);
+} }
+function SvgSummaryScalesChartComponent_div_0__svg_g_5_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnamespaceSVG"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "g", 11);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](1, SvgSummaryScalesChartComponent_div_0__svg_g_5__svg_polygon_1_Template, 1, 1, "polygon", 12);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](2, "rect", 13);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](3, "text", 14);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](4);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+} if (rf & 2) {
+    const bub_r9 = ctx.$implicit;
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", bub_r9.pointer);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵattribute"]("x", bub_r9.rectX)("y", bub_r9.rectY)("width", bub_r9.width)("height", bub_r9.height)("rx", bub_r9.rx)("ry", bub_r9.rx);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵattribute"]("x", bub_r9.textX)("y", bub_r9.textY);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](bub_r9.text);
+} }
+function SvgSummaryScalesChartComponent_div_0__svg_text_6_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnamespaceSVG"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "text", 15);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+} if (rf & 2) {
+    const l_r12 = ctx.$implicit;
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵattribute"]("x", l_r12.x)("y", l_r12.y);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](l_r12.text);
+} }
+function SvgSummaryScalesChartComponent_div_0_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnamespaceSVG"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "svg", 2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](2, SvgSummaryScalesChartComponent_div_0__svg_rect_2_Template, 1, 5, "rect", 3);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](3, SvgSummaryScalesChartComponent_div_0__svg_text_3_Template, 2, 3, "text", 4);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](4, SvgSummaryScalesChartComponent_div_0__svg_rect_4_Template, 1, 4, "rect", 5);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](5, SvgSummaryScalesChartComponent_div_0__svg_g_5_Template, 5, 10, "g", 6);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](6, SvgSummaryScalesChartComponent_div_0__svg_text_6_Template, 2, 3, "text", 7);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+} if (rf & 2) {
+    const ctx_r0 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵattribute"]("viewBox", ctx_r0.viewBox);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngForOf", ctx_r0.bands);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngForOf", ctx_r0.yLabels);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngForOf", ctx_r0.bars);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngForOf", ctx_r0.bubbles);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngForOf", ctx_r0.xLabels);
+} }
+/**
+ * Pure-SVG re-implementation of SummaryScalesChartComponent (Option B).
+ *
+ * Renders the same visual as the Chart.js version -- horizontal colored
+ * severity bands with one blue bar per scale result rising from the bottom --
+ * but as inline SVG. SVG prints natively and crisply at any scale, so there is
+ * no <canvas>-to-image rasterization step and none of its timing/blank-image
+ * failure modes. The component exposes the same @Input API as the original so
+ * it is a drop-in replacement at the template level.
+ */
+class SvgSummaryScalesChartComponent {
+    constructor(element, colorService) {
+        this.element = element;
+        this.colorService = colorService;
+        this.reverseDirection = false;
+        this.viewBox = `0 0 ${SvgSummaryScalesChartComponent.W} ${SvgSummaryScalesChartComponent.H}`;
+        this.bands = [];
+        this.yLabels = [];
+        this.bars = [];
+        this.xLabels = [];
+        this.bubbles = [];
+    }
+    ngOnChanges(changes) {
+        this.recompute();
+    }
+    get hasResults() {
+        return this.scaleResults != null && this.scaleResults.length > 0
+            && this.scaleResults[0].scale && this.scaleResults[0].scale.ranges
+            && this.scaleResults[0].scale.ranges.length > 0;
+    }
+    recompute() {
+        this.bands = [];
+        this.yLabels = [];
+        this.bars = [];
+        this.xLabels = [];
+        this.bubbles = [];
+        if (!this.hasResults) {
+            return;
+        }
+        const C = SvgSummaryScalesChartComponent;
+        const ranges = this.scaleResults[0].scale.ranges;
+        const n = ranges.length;
+        const marginBottom = this.showNames === true ? C.MARGIN_BOTTOM_WITH_NAMES : C.MARGIN_BOTTOM;
+        const x0 = C.MARGIN_LEFT;
+        const y0 = C.MARGIN_TOP;
+        const plotW = C.W - C.MARGIN_LEFT - C.MARGIN_RIGHT;
+        const plotH = C.H - C.MARGIN_TOP - marginBottom;
+        const bandH = plotH / n;
+        // Colored severity bands (band 0 at the bottom). Colors only are reversed
+        // for reverseDirection, matching the original behavior.
+        let colors = this.colorService.getBackgroundColors(n).map(c => c.color);
+        if (this.reverseDirection) {
+            colors = colors.slice().reverse();
+        }
+        const rangeNames = this.getChartRangeNames();
+        for (let i = 0; i < n; i++) {
+            const topY = y0 + (n - 1 - i) * bandH;
+            if (colors[i]) {
+                this.bands.push({ x: x0, y: topY, width: plotW, height: bandH, color: colors[i] });
+            }
+            // y-axis label sits just inside the top edge of its band.
+            this.yLabels.push({ x: x0 - 6, y: topY + 14, text: rangeNames[i] || "" });
+        }
+        // One blue bar per scale result, height = (rangeIndex + scorePercent) / n.
+        const m = this.scaleResults.length;
+        const slot = plotW / m;
+        const barW = Math.min(C.MAX_BAR_WIDTH, slot * 0.5);
+        const names = this.getLabelsForScales();
+        this.scaleResults.forEach((sr, j) => {
+            const rangeIndex = sr.scale.ranges.indexOf(sr.range);
+            let scorePercent = this.safeRangePercent(sr) / 100;
+            if (scorePercent <= 0) {
+                scorePercent += 0.10;
+            }
+            const value = Math.max(0, rangeIndex) + scorePercent;
+            const frac = Math.min(1, value / n);
+            const barH = frac * plotH;
+            const centerX = x0 + slot * j + slot / 2;
+            const barTop = y0 + plotH - barH;
+            this.bars.push({ x: centerX - barW / 2, y: barTop, width: barW, height: barH });
+            this.bubbles.push(this.buildScoreBubble(sr, centerX, barTop, y0));
+            if (this.showNames === true) {
+                this.xLabels.push({ x: centerX, y: y0 + plotH + 18, text: names[j] || "" });
+            }
+        });
+    }
+    /**
+     * Builds an always-on score "bubble" for a bar. The bubble normally floats
+     * just above the bar with a small pointer; if the bar reaches the top of the
+     * plot there is no room above, so the bubble drops just inside the bar top and
+     * the pointer is omitted. Bubble width grows with the score text so 1-3 digit
+     * (and decimal) scores all fit, and it is clamped horizontally so edge bars
+     * never overflow the SVG viewBox.
+     */
+    buildScoreBubble(sr, centerX, barTop, y0) {
+        const C = SvgSummaryScalesChartComponent;
+        const text = this.safeScoreText(sr);
+        const width = Math.max(C.BUBBLE_MIN_WIDTH, text.length * C.BUBBLE_CHAR_WIDTH + C.BUBBLE_PAD_X);
+        const height = C.BUBBLE_HEIGHT;
+        const desiredTop = barTop - C.BUBBLE_POINTER_H - height;
+        const above = desiredTop >= y0;
+        const rectY = above ? desiredTop : barTop + 3;
+        // Keep the bubble inside the drawing area horizontally.
+        const minX = 2;
+        const maxX = C.W - width - 2;
+        const rectX = Math.max(minX, Math.min(maxX, centerX - width / 2));
+        const pointer = above
+            ? `${centerX - 5},${rectY + height} ${centerX + 5},${rectY + height} ${centerX},${rectY + height + C.BUBBLE_POINTER_H}`
+            : null;
+        return {
+            rectX, rectY, width, height, rx: 5,
+            textX: rectX + width / 2,
+            textY: rectY + height * 0.68,
+            text,
+            pointer
+        };
+    }
+    safeScoreText(sr) {
+        try {
+            return sr.getScoreForDisplay();
+        }
+        catch (e) {
+            return String(sr.score != null ? sr.score : "");
+        }
+    }
+    safeRangePercent(sr) {
+        try {
+            return sr.range.getPercentageForRange(sr.score);
+        }
+        catch (e) {
+            // Score out of its range bounds; clamp instead of throwing.
+            return sr.score <= sr.range.rangeStart ? 0 : 100;
+        }
+    }
+    getLabelsForScales() {
+        let labels = this.scaleResults.map(sr => sr.scale.name.substring(0, Math.min(sr.scale.name.length, SvgSummaryScalesChartComponent.MAX_SCALE_NAME_LENGTH)));
+        if (this.chartScaleNames) {
+            if (this.chartScaleNames.length == this.scaleResults.length) {
+                labels = this.chartScaleNames;
+            }
+            else {
+                console.error("chart scale names", this.chartScaleNames, " do not match number of scales ", this.scaleResults);
+            }
+        }
+        return labels;
+    }
+    getChartRangeNames() {
+        const ranges = this.scaleResults[0].scale.ranges;
+        let names = this.chartRangeNames;
+        if (!names || names.length == 0) {
+            return ranges.map(r => {
+                let name = r.displayName || "";
+                if (this.showRangeScore !== false) {
+                    name += " (" + r.rangeEnd + ")";
+                }
+                return name;
+            });
+        }
+        if (names.length != ranges.length) {
+            console.error("Scale range names does not match count of scale ranges");
+            return names;
+        }
+        return names.map((v, i) => v + " (" + ranges[i].rangeEnd + ")");
+    }
+    /**
+     * Parity with the Chart.js component: hands back a printable image of the
+     * chart. Serializes the rendered SVG into a data-URL <img> so existing print
+     * paths (e.g. therapist-scale-results.getPrintContent()) keep working.
+     */
+    getChartAsHtmlImageElement() {
+        const img = new Image();
+        const svg = this.element.nativeElement.querySelector('svg');
+        if (svg) {
+            try {
+                const serialized = new XMLSerializer().serializeToString(svg);
+                img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(serialized)));
+            }
+            catch (e) {
+                console.error("Failed to serialize SVG chart to image", e);
+            }
+        }
+        return img;
+    }
+}
+SvgSummaryScalesChartComponent.MAX_SCALE_NAME_LENGTH = 75;
+// Fixed SVG user-space canvas; the viewBox makes it scale to any container.
+SvgSummaryScalesChartComponent.W = 700;
+SvgSummaryScalesChartComponent.H = 420;
+SvgSummaryScalesChartComponent.MARGIN_LEFT = 150;
+SvgSummaryScalesChartComponent.MARGIN_RIGHT = 12;
+SvgSummaryScalesChartComponent.MARGIN_TOP = 12;
+SvgSummaryScalesChartComponent.MARGIN_BOTTOM_WITH_NAMES = 46;
+SvgSummaryScalesChartComponent.MARGIN_BOTTOM = 12;
+SvgSummaryScalesChartComponent.MAX_BAR_WIDTH = 50;
+// Score bubble geometry (SVG user-space units).
+SvgSummaryScalesChartComponent.BUBBLE_HEIGHT = 20;
+SvgSummaryScalesChartComponent.BUBBLE_POINTER_H = 5;
+SvgSummaryScalesChartComponent.BUBBLE_MIN_WIDTH = 22;
+SvgSummaryScalesChartComponent.BUBBLE_CHAR_WIDTH = 8;
+SvgSummaryScalesChartComponent.BUBBLE_PAD_X = 14;
+SvgSummaryScalesChartComponent.ɵfac = function SvgSummaryScalesChartComponent_Factory(t) { return new (t || SvgSummaryScalesChartComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](app_assessment_charts_services_scale_result_color_service__WEBPACK_IMPORTED_MODULE_1__["ScaleResultColorService"])); };
+SvgSummaryScalesChartComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: SvgSummaryScalesChartComponent, selectors: [["app-svg-summary-scales-chart"]], inputs: { scaleResults: "scaleResults", showNames: "showNames", showRangeScore: "showRangeScore", chartScaleNames: "chartScaleNames", chartRangeNames: "chartRangeNames", reverseDirection: "reverseDirection" }, features: [_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵNgOnChangesFeature"]], decls: 1, vars: 1, consts: [["class", "scale-chart-container svg-chart-container", 4, "ngIf"], [1, "scale-chart-container", "svg-chart-container"], ["preserveAspectRatio", "xMidYMid meet", "xmlns", "http://www.w3.org/2000/svg", 1, "dac-svg-chart"], ["shape-rendering", "crispEdges", 4, "ngFor", "ngForOf"], ["text-anchor", "end", "class", "dac-svg-ylabel", 4, "ngFor", "ngForOf"], ["class", "dac-svg-bar", 4, "ngFor", "ngForOf"], ["class", "dac-svg-bubble", 4, "ngFor", "ngForOf"], ["text-anchor", "middle", "class", "dac-svg-xlabel", 4, "ngFor", "ngForOf"], ["shape-rendering", "crispEdges"], ["text-anchor", "end", 1, "dac-svg-ylabel"], [1, "dac-svg-bar"], [1, "dac-svg-bubble"], ["class", "dac-svg-bubble-box", 4, "ngIf"], [1, "dac-svg-bubble-box"], ["text-anchor", "middle", 1, "dac-svg-bubble-text"], ["text-anchor", "middle", 1, "dac-svg-xlabel"]], template: function SvgSummaryScalesChartComponent_Template(rf, ctx) { if (rf & 1) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](0, SvgSummaryScalesChartComponent_div_0_Template, 7, 6, "div", 0);
+    } if (rf & 2) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx.hasResults);
+    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_2__["NgIf"], _angular_common__WEBPACK_IMPORTED_MODULE_2__["NgForOf"]], styles: ["[_nghost-%COMP%] {\n  display: block;\n  text-align: center;\n}\n\n.svg-chart-container[_ngcontent-%COMP%] {\n  width: 100%;\n}\n\n.dac-svg-chart[_ngcontent-%COMP%] {\n  width: 100%;\n  height: auto;\n  display: block;\n}\n\n.dac-svg-bar[_ngcontent-%COMP%] {\n  fill: #007FFF;\n  stroke: rgba(0, 0, 0, 1);\n  stroke-width: 1;\n}\n\n.dac-svg-bubble-box[_ngcontent-%COMP%] {\n  fill: rgba(33, 37, 41, 0.9);\n  stroke: #ffffff;\n  stroke-width: 1;\n}\n\n.dac-svg-bubble-text[_ngcontent-%COMP%] {\n  font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;\n  font-size: 13px;\n  font-weight: 700;\n  fill: #ffffff;\n}\n\n.dac-svg-ylabel[_ngcontent-%COMP%] {\n  font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;\n  font-size: 13px;\n  fill: #666;\n}\n\n.dac-svg-xlabel[_ngcontent-%COMP%] {\n  font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;\n  font-size: 13px;\n  fill: #666;\n}\n\n\n\n@media print {\n  .dac-svg-chart[_ngcontent-%COMP%] {\n    page-break-inside: avoid;\n  }\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvYXNzZXNzbWVudC1jaGFydHMvc3ZnLXN1bW1hcnktc2NhbGVzLWNoYXJ0L3N2Zy1zdW1tYXJ5LXNjYWxlcy1jaGFydC5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0UsY0FBYztFQUNkLGtCQUFrQjtBQUNwQjs7QUFFQTtFQUNFLFdBQVc7QUFDYjs7QUFFQTtFQUNFLFdBQVc7RUFDWCxZQUFZO0VBQ1osY0FBYztBQUNoQjs7QUFFQTtFQUNFLGFBQWE7RUFDYix3QkFBd0I7RUFDeEIsZUFBZTtBQUNqQjs7QUFFQTtFQUNFLDJCQUEyQjtFQUMzQixlQUFlO0VBQ2YsZUFBZTtBQUNqQjs7QUFFQTtFQUNFLCtEQUErRDtFQUMvRCxlQUFlO0VBQ2YsZ0JBQWdCO0VBQ2hCLGFBQWE7QUFDZjs7QUFFQTtFQUNFLCtEQUErRDtFQUMvRCxlQUFlO0VBQ2YsVUFBVTtBQUNaOztBQUVBO0VBQ0UsK0RBQStEO0VBQy9ELGVBQWU7RUFDZixVQUFVO0FBQ1o7O0FBRUEseUVBQXlFOztBQUN6RTtFQUNFO0lBQ0Usd0JBQXdCO0VBQzFCO0FBQ0YiLCJmaWxlIjoic3JjL2FwcC9hc3Nlc3NtZW50LWNoYXJ0cy9zdmctc3VtbWFyeS1zY2FsZXMtY2hhcnQvc3ZnLXN1bW1hcnktc2NhbGVzLWNoYXJ0LmNvbXBvbmVudC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyI6aG9zdCB7XG4gIGRpc3BsYXk6IGJsb2NrO1xuICB0ZXh0LWFsaWduOiBjZW50ZXI7XG59XG5cbi5zdmctY2hhcnQtY29udGFpbmVyIHtcbiAgd2lkdGg6IDEwMCU7XG59XG5cbi5kYWMtc3ZnLWNoYXJ0IHtcbiAgd2lkdGg6IDEwMCU7XG4gIGhlaWdodDogYXV0bztcbiAgZGlzcGxheTogYmxvY2s7XG59XG5cbi5kYWMtc3ZnLWJhciB7XG4gIGZpbGw6ICMwMDdGRkY7XG4gIHN0cm9rZTogcmdiYSgwLCAwLCAwLCAxKTtcbiAgc3Ryb2tlLXdpZHRoOiAxO1xufVxuXG4uZGFjLXN2Zy1idWJibGUtYm94IHtcbiAgZmlsbDogcmdiYSgzMywgMzcsIDQxLCAwLjkpO1xuICBzdHJva2U6ICNmZmZmZmY7XG4gIHN0cm9rZS13aWR0aDogMTtcbn1cblxuLmRhYy1zdmctYnViYmxlLXRleHQge1xuICBmb250LWZhbWlseTogJ0hlbHZldGljYSBOZXVlJywgJ0hlbHZldGljYScsICdBcmlhbCcsIHNhbnMtc2VyaWY7XG4gIGZvbnQtc2l6ZTogMTNweDtcbiAgZm9udC13ZWlnaHQ6IDcwMDtcbiAgZmlsbDogI2ZmZmZmZjtcbn1cblxuLmRhYy1zdmcteWxhYmVsIHtcbiAgZm9udC1mYW1pbHk6ICdIZWx2ZXRpY2EgTmV1ZScsICdIZWx2ZXRpY2EnLCAnQXJpYWwnLCBzYW5zLXNlcmlmO1xuICBmb250LXNpemU6IDEzcHg7XG4gIGZpbGw6ICM2NjY7XG59XG5cbi5kYWMtc3ZnLXhsYWJlbCB7XG4gIGZvbnQtZmFtaWx5OiAnSGVsdmV0aWNhIE5ldWUnLCAnSGVsdmV0aWNhJywgJ0FyaWFsJywgc2Fucy1zZXJpZjtcbiAgZm9udC1zaXplOiAxM3B4O1xuICBmaWxsOiAjNjY2O1xufVxuXG4vKiBTVkcgcHJpbnRzIG5hdGl2ZWx5OyBtYWtlIHN1cmUgaXQgaXNuJ3QgY2xpcHBlZCBhY3Jvc3MgYSBwYWdlIGJyZWFrLiAqL1xuQG1lZGlhIHByaW50IHtcbiAgLmRhYy1zdmctY2hhcnQge1xuICAgIHBhZ2UtYnJlYWstaW5zaWRlOiBhdm9pZDtcbiAgfVxufVxuIl19 */"] });
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](SvgSummaryScalesChartComponent, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
+        args: [{
+                selector: 'app-svg-summary-scales-chart',
+                templateUrl: './svg-summary-scales-chart.component.html',
+                styleUrls: ['./svg-summary-scales-chart.component.css']
+            }]
+    }], function () { return [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"] }, { type: app_assessment_charts_services_scale_result_color_service__WEBPACK_IMPORTED_MODULE_1__["ScaleResultColorService"] }]; }, { scaleResults: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"],
+            args: ["scaleResults"]
+        }], showNames: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"],
+            args: ["showNames"]
+        }], showRangeScore: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"],
+            args: ["showRangeScore"]
+        }], chartScaleNames: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"],
+            args: ["chartScaleNames"]
+        }], chartRangeNames: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"],
+            args: ["chartRangeNames"]
+        }], reverseDirection: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"],
+            args: ["reverseDirection"]
+        }] }); })();
+
+
+/***/ }),
+
 /***/ "5IhB":
 /*!**************************************************************!*\
   !*** ./src/app/reports/services/report-navigator.service.ts ***!
@@ -2491,25 +2839,18 @@ function AssetResultViewComponent_div_2_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 } }
-function AssetResultViewComponent_div_6_input_1_Template(rf, ctx) { if (rf & 1) {
-    const _r9 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "input", 16);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function AssetResultViewComponent_div_6_input_1_Template_input_click_0_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r9); const ctx_r8 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](2); return ctx_r8.browserPrint(); });
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-} }
 function AssetResultViewComponent_div_6_Template(rf, ctx) { if (rf & 1) {
+    const _r8 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 14);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](1, AssetResultViewComponent_div_6_input_1_Template, 1, 0, "input", 15);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "input", 15);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function AssetResultViewComponent_div_6_Template_input_click_1_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r8); const ctx_r7 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r7.browserPrint(); });
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-} if (rf & 2) {
-    const ctx_r1 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx_r1.allowPrinting);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 } }
 function AssetResultViewComponent_div_11_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 17);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "div", 18);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](2, "p", 19);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 16);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "div", 17);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](2, "p", 18);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](3, "app-spin-icon");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](4, " Loading Report data... ");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
@@ -2517,13 +2858,13 @@ function AssetResultViewComponent_div_11_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 } }
 function AssetResultViewComponent_dac_exercise_15_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "dac-exercise", 20);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "dac-exercise", 19);
 } if (rf & 2) {
     const ctx_r3 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("exercise", ctx_r3.result.asset)("result", ctx_r3.result)("hideHeaders", ctx_r3.disableAsset)("disabled", ctx_r3.disableAsset);
 } }
 function AssetResultViewComponent_dac_article_16_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "dac-article", 21);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "dac-article", 20);
 } if (rf & 2) {
     const ctx_r4 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("article", ctx_r4.result.asset)("result", ctx_r4.result)("hideHeaders", ctx_r4.disableAsset)("disabled", ctx_r4.disableAsset);
@@ -2591,7 +2932,7 @@ class AssetResultViewComponent {
     }
 }
 AssetResultViewComponent.ɵfac = function AssetResultViewComponent_Factory(t) { return new (t || AssetResultViewComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](app_library_assets_services_asset_service__WEBPACK_IMPORTED_MODULE_2__["AssetService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](app_shared_services_alert_service__WEBPACK_IMPORTED_MODULE_3__["AlertService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](app_shared_services_dac_config_service__WEBPACK_IMPORTED_MODULE_4__["DacConfig"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_common__WEBPACK_IMPORTED_MODULE_5__["Location"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](app_shared_services_modal_service__WEBPACK_IMPORTED_MODULE_7__["ModalService"])); };
-AssetResultViewComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: AssetResultViewComponent, selectors: [["dac-asset-result-view"]], decls: 17, vars: 12, consts: [[1, "col", "itemsContainer", "d-print-block-visible"], [1, "row", "report-controls"], ["class", "col-2", 4, "ngIf"], [3, "ngClass"], [1, "h1-responsive", "report-name", "text-center"], ["class", "col-2 ml-auto", 4, "ngIf"], [1, "row", "d-none", "d-print-block-visible"], [1, "col-12", "text-center"], ["class", "row", 4, "ngIf"], [1, "text-center", "offset-2", "col-8"], ["class", "card card-body", 3, "exercise", "result", "hideHeaders", "disabled", 4, "ngIf"], ["class", "card card-body", 3, "article", "result", "hideHeaders", "disabled", 4, "ngIf"], [1, "col-2"], ["type", "button", "value", "Back", 1, "btn", "btn-primary", 3, "click"], [1, "col-2", "ml-auto"], ["class", "btn btn-secondary", "type", "button", "value", "Download PDF", 3, "click", 4, "ngIf"], ["type", "button", "value", "Download PDF", 1, "btn", "btn-secondary", 3, "click"], [1, "row"], [1, "col"], [1, "alert", "alert-warning"], [1, "card", "card-body", 3, "exercise", "result", "hideHeaders", "disabled"], [1, "card", "card-body", 3, "article", "result", "hideHeaders", "disabled"]], template: function AssetResultViewComponent_Template(rf, ctx) { if (rf & 1) {
+AssetResultViewComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: AssetResultViewComponent, selectors: [["dac-asset-result-view"]], decls: 17, vars: 12, consts: [[1, "col", "itemsContainer", "d-print-block-visible"], [1, "row", "report-controls"], ["class", "col-2", 4, "ngIf"], [3, "ngClass"], [1, "h1-responsive", "report-name", "text-center"], ["class", "col-2 ml-auto", 4, "ngIf"], [1, "row", "d-none", "d-print-block-visible"], [1, "col-12", "text-center"], ["class", "row", 4, "ngIf"], [1, "text-center", "offset-2", "col-8"], ["class", "card card-body", 3, "exercise", "result", "hideHeaders", "disabled", 4, "ngIf"], ["class", "card card-body", 3, "article", "result", "hideHeaders", "disabled", 4, "ngIf"], [1, "col-2"], ["type", "button", "value", "Back", 1, "btn", "btn-primary", 3, "click"], [1, "col-2", "ml-auto"], ["type", "button", "value", "Print", 1, "btn", "btn-secondary", "d-print-none", 3, "click"], [1, "row"], [1, "col"], [1, "alert", "alert-warning"], [1, "card", "card-body", 3, "exercise", "result", "hideHeaders", "disabled"], [1, "card", "card-body", 3, "article", "result", "hideHeaders", "disabled"]], template: function AssetResultViewComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "div", 1);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](2, AssetResultViewComponent_div_2_Template, 2, 0, "div", 2);
@@ -2600,7 +2941,7 @@ AssetResultViewComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵ�
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](5);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](6, AssetResultViewComponent_div_6_Template, 2, 1, "div", 5);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](6, AssetResultViewComponent_div_6_Template, 2, 0, "div", 5);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](7, "div", 6);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](8, "div", 7);
@@ -4901,7 +5242,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var app_reports_report_items_therapist_scale_results_therapist_scale_results_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! app/reports/report-items/therapist-scale-results/therapist-scale-results.component */ "YEXO");
 /* harmony import */ var app_reports_services_report_navigator_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! app/reports/services/report-navigator.service */ "5IhB");
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/common */ "ofXK");
-/* harmony import */ var _assessment_charts_summary_scales_chart_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../assessment-charts/summary-scales-chart/summary-scales-chart.component */ "7gIF");
+/* harmony import */ var _assessment_charts_svg_summary_scales_chart_svg_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../assessment-charts/svg-summary-scales-chart/svg-summary-scales-chart.component */ "5CX4");
 /* harmony import */ var _scale_questions_list_scale_questions_list_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../scale-questions-list/scale-questions-list.component */ "d8w3");
 /* harmony import */ var _scale_sub_list_scale_sub_list_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../scale-sub-list/scale-sub-list.component */ "E8QE");
 /*
@@ -4933,7 +5274,7 @@ const _c0 = function (a0) { return [a0]; };
 function ClientScaleResultsComponent_div_5_div_8_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 13);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "div", 14);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](2, "app-summary-scales-chart", 16);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](2, "app-svg-summary-scales-chart", 16);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 } if (rf & 2) {
@@ -5069,7 +5410,7 @@ ClientScaleResultsComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](ctx.getTitle());
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngForOf", ctx.ScaleResults);
-    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_3__["NgForOf"], _angular_common__WEBPACK_IMPORTED_MODULE_3__["NgClass"], _angular_common__WEBPACK_IMPORTED_MODULE_3__["NgIf"], _assessment_charts_summary_scales_chart_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_4__["SummaryScalesChartComponent"], _scale_questions_list_scale_questions_list_component__WEBPACK_IMPORTED_MODULE_5__["ScaleQuestionsListComponent"], _scale_sub_list_scale_sub_list_component__WEBPACK_IMPORTED_MODULE_6__["ScaleSubListComponent"]], styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvcmVwb3J0cy9yZXBvcnQtaXRlbXMvY2xpZW50LXNjYWxlLXJlc3VsdHMvY2xpZW50LXNjYWxlLXJlc3VsdHMuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7Ozs7RUFBQSIsImZpbGUiOiJzcmMvYXBwL3JlcG9ydHMvcmVwb3J0LWl0ZW1zL2NsaWVudC1zY2FsZS1yZXN1bHRzL2NsaWVudC1zY2FsZS1yZXN1bHRzLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLypcbiAqICAgQ29weXJpZ2h0IChjKSAyMDIyIERpc2NvdmVyIGFuZCBDaGFuZ2UgQGF1dGhvciBTdGVwaGVuIE5pZWxzb24gPHNuaWVsc29uQGRpc2NvdmVyYW5kY2hhbmdlLmNvbT5cbiAqICAgQWxsIHJpZ2h0cyByZXNlcnZlZC5cbiAqICAgRm9yIExpY2Vuc2UgaW5mb3JtYXRpb24gc2VlIExJQ0VOU0UubWQgaW4gdGhlIHJvb3QgZm9sZGVyIG9mIHRoaXMgcHJvamVjdC5cbiAqL1xuIl19 */"] });
+    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_3__["NgForOf"], _angular_common__WEBPACK_IMPORTED_MODULE_3__["NgClass"], _angular_common__WEBPACK_IMPORTED_MODULE_3__["NgIf"], _assessment_charts_svg_summary_scales_chart_svg_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_4__["SvgSummaryScalesChartComponent"], _scale_questions_list_scale_questions_list_component__WEBPACK_IMPORTED_MODULE_5__["ScaleQuestionsListComponent"], _scale_sub_list_scale_sub_list_component__WEBPACK_IMPORTED_MODULE_6__["ScaleSubListComponent"]], styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvcmVwb3J0cy9yZXBvcnQtaXRlbXMvY2xpZW50LXNjYWxlLXJlc3VsdHMvY2xpZW50LXNjYWxlLXJlc3VsdHMuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7Ozs7RUFBQSIsImZpbGUiOiJzcmMvYXBwL3JlcG9ydHMvcmVwb3J0LWl0ZW1zL2NsaWVudC1zY2FsZS1yZXN1bHRzL2NsaWVudC1zY2FsZS1yZXN1bHRzLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLypcbiAqICAgQ29weXJpZ2h0IChjKSAyMDIyIERpc2NvdmVyIGFuZCBDaGFuZ2UgQGF1dGhvciBTdGVwaGVuIE5pZWxzb24gPHNuaWVsc29uQGRpc2NvdmVyYW5kY2hhbmdlLmNvbT5cbiAqICAgQWxsIHJpZ2h0cyByZXNlcnZlZC5cbiAqICAgRm9yIExpY2Vuc2UgaW5mb3JtYXRpb24gc2VlIExJQ0VOU0UubWQgaW4gdGhlIHJvb3QgZm9sZGVyIG9mIHRoaXMgcHJvamVjdC5cbiAqL1xuIl19 */"] });
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](ClientScaleResultsComponent, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
         args: [{
@@ -5097,7 +5438,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var app_shared_models_scale_result__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! app/shared/models/scale-result */ "+u/X");
 /* harmony import */ var app_shared_models_assessment_result__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! app/shared/models/assessment-result */ "TNk8");
 /* harmony import */ var app_reports_services_pcl_grader_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! app/reports/services/pcl-grader.service */ "R9Rc");
-/* harmony import */ var _assessment_charts_summary_scales_chart_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../assessment-charts/summary-scales-chart/summary-scales-chart.component */ "7gIF");
+/* harmony import */ var _assessment_charts_svg_summary_scales_chart_svg_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../assessment-charts/svg-summary-scales-chart/svg-summary-scales-chart.component */ "5CX4");
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/common */ "ofXK");
 /* harmony import */ var _pcl_criteria_icon_pcl_criteria_icon_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../pcl-criteria-icon/pcl-criteria-icon.component */ "rl58");
 /*
@@ -5176,7 +5517,7 @@ class PclSummaryComponent {
 PclSummaryComponent.ɵfac = function PclSummaryComponent_Factory(t) { return new (t || PclSummaryComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_services_report_navigator_service__WEBPACK_IMPORTED_MODULE_0__["ReportNavigatorService"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](app_reports_services_pcl_grader_service__WEBPACK_IMPORTED_MODULE_4__["PclGraderService"])); };
 PclSummaryComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineComponent"]({ type: PclSummaryComponent, selectors: [["app-pcl-summary"]], inputs: { summaryScaleResult: "summaryScaleResult", assessmentResult: "assessmentResult" }, decls: 4, vars: 5, consts: [[1, "row"], [1, "col", 3, "showNames", "scaleResults"], ["class", "col text-center criteriaContainer mt-1", 3, "ngClass", "click", 4, "ngFor", "ngForOf"], [1, "col", "text-center", "criteriaContainer", "mt-1", 3, "ngClass", "click"], [3, "criteria", "checked"], [1, "text-center"], [1, "h4-responsive", "mb-0", 3, "ngClass"], ["class", "fa fa-check-circle", 4, "ngIf"], ["class", "fa fa-remove", 4, "ngIf"], [1, "fa", "fa-check-circle"], [1, "fa", "fa-remove"]], template: function PclSummaryComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](0, "div", 0);
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelement"](1, "app-summary-scales-chart", 1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelement"](1, "app-svg-summary-scales-chart", 1);
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](2, "div", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtemplate"](3, PclSummaryComponent_div_3_Template, 7, 15, "div", 2);
@@ -5186,7 +5527,7 @@ PclSummaryComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefi
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("showNames", false)("scaleResults", _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵpureFunction1"](3, _c2, ctx.summaryScaleResult));
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](2);
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("ngForOf", ctx.Criteria);
-    } }, directives: [_assessment_charts_summary_scales_chart_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_5__["SummaryScalesChartComponent"], _angular_common__WEBPACK_IMPORTED_MODULE_6__["NgForOf"], _angular_common__WEBPACK_IMPORTED_MODULE_6__["NgClass"], _pcl_criteria_icon_pcl_criteria_icon_component__WEBPACK_IMPORTED_MODULE_7__["PclCriteriaIconComponent"], _angular_common__WEBPACK_IMPORTED_MODULE_6__["NgIf"]], encapsulation: 2 });
+    } }, directives: [_assessment_charts_svg_summary_scales_chart_svg_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_5__["SvgSummaryScalesChartComponent"], _angular_common__WEBPACK_IMPORTED_MODULE_6__["NgForOf"], _angular_common__WEBPACK_IMPORTED_MODULE_6__["NgClass"], _pcl_criteria_icon_pcl_criteria_icon_component__WEBPACK_IMPORTED_MODULE_7__["PclCriteriaIconComponent"], _angular_common__WEBPACK_IMPORTED_MODULE_6__["NgIf"]], encapsulation: 2 });
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵsetClassMetadata"](PclSummaryComponent, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"],
         args: [{
@@ -10164,34 +10505,29 @@ function AssessmentResultViewComponent_div_2_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 } }
-function AssessmentResultViewComponent_div_6_input_1_Template(rf, ctx) { if (rf & 1) {
-    const _r9 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "input", 13);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function AssessmentResultViewComponent_div_6_input_1_Template_input_click_0_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r9); const ctx_r8 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](2); return ctx_r8.browserPrint(); });
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-} }
 function AssessmentResultViewComponent_div_6_input_2_Template(rf, ctx) { if (rf & 1) {
-    const _r11 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "input", 14);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function AssessmentResultViewComponent_div_6_input_2_Template_input_click_0_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r11); const ctx_r10 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](2); return ctx_r10.saveRescoredResult(); });
+    const _r8 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "input", 13);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function AssessmentResultViewComponent_div_6_input_2_Template_input_click_0_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r8); const ctx_r7 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](2); return ctx_r7.saveRescoredResult(); });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 } }
 function AssessmentResultViewComponent_div_6_Template(rf, ctx) { if (rf & 1) {
+    const _r10 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 10);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](1, AssessmentResultViewComponent_div_6_input_1_Template, 1, 0, "input", 11);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "input", 11);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function AssessmentResultViewComponent_div_6_Template_input_click_1_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r10); const ctx_r9 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r9.browserPrint(); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](2, AssessmentResultViewComponent_div_6_input_2_Template, 1, 0, "input", 12);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 } if (rf & 2) {
     const ctx_r1 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ctx_r1.allowPrinting);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ctx_r1.allowRescoreResults);
 } }
 function AssessmentResultViewComponent_div_7_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 15);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "div", 16);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](2, "p", 17);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 14);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "div", 15);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](2, "p", 16);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](3, "app-spin-icon");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](4, " Loading Report data...");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
@@ -10199,24 +10535,24 @@ function AssessmentResultViewComponent_div_7_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 } }
 function AssessmentResultViewComponent_div_8_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 18);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](2, "div", 20);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](3, "div", 21);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](4, "div", 22);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](5, "h3", 23);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 17);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "div", 18);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](2, "div", 19);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](3, "div", 20);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](4, "div", 21);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](5, "h3", 22);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](6, "Summary");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](7, "div", 24);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](8, "div", 15);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](9, "app-scale-results-table-summary", 25, 26);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](7, "div", 23);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](8, "div", 14);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](9, "app-scale-results-table-summary", 24, 25);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](11, "div", 15);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](12, "app-therapist-scale-results", 27, 28);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](11, "div", 14);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](12, "app-therapist-scale-results", 26, 27);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
@@ -10356,7 +10692,7 @@ AssessmentResultViewComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_2__
         var _t;
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵqueryRefresh"](_t = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵloadQuery"]()) && (ctx.scaleResultsTableSummaryComponent = _t.first);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵqueryRefresh"](_t = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵloadQuery"]()) && (ctx.scaleResultsComponent = _t.first);
-    } }, decls: 9, vars: 12, consts: [[1, "col", "itemsContainer", "d-print-block-visible", 3, "ngClass"], [1, "row", "report-controls"], ["class", "col-2", 4, "ngIf"], [3, "ngClass"], [1, "h1-responsive", "report-name", "text-center"], ["class", "col-2 ml-auto", 4, "ngIf"], ["class", "row", 4, "ngIf"], ["class", "row d-print-block-visible", 4, "ngIf"], [1, "col-2"], ["type", "button", "value", "Back", 1, "btn", "btn-primary", 3, "click"], [1, "col-2", "ml-auto"], ["class", "btn btn-secondary", "type", "button", "value", "Download PDF", 3, "click", 4, "ngIf"], ["class", "btn btn-secondary", "type", "button", "value", "Save Result", 3, "click", 4, "ngIf"], ["type", "button", "value", "Download PDF", 1, "btn", "btn-secondary", 3, "click"], ["type", "button", "value", "Save Result", 1, "btn", "btn-secondary", 3, "click"], [1, "row"], [1, "col"], [1, "alert", "alert-warning"], [1, "row", "d-print-block-visible"], [1, "col", "d-print-block-visible"], [1, "row", "mb-3"], [1, "card", "card-cascade", "wider", "col"], [1, "view", "gradient-card-header", "primary-gradient", "text-light"], [1, "h3-responsive", "text-center"], [1, "card-body"], [1, "col", 3, "scaleResults"], ["tableSummary", ""], [1, "col", 3, "resultTitle", "assessmentResult", "scaleResults"], ["therapistScaleResults", ""]], template: function AssessmentResultViewComponent_Template(rf, ctx) { if (rf & 1) {
+    } }, decls: 9, vars: 12, consts: [[1, "col", "itemsContainer", "d-print-block-visible", 3, "ngClass"], [1, "row", "report-controls"], ["class", "col-2", 4, "ngIf"], [3, "ngClass"], [1, "h1-responsive", "report-name", "text-center"], ["class", "col-2 ml-auto", 4, "ngIf"], ["class", "row", 4, "ngIf"], ["class", "row d-print-block-visible", 4, "ngIf"], [1, "col-2"], ["type", "button", "value", "Back", 1, "btn", "btn-primary", 3, "click"], [1, "col-2", "ml-auto"], ["type", "button", "value", "Print", 1, "btn", "btn-secondary", "d-print-none", 3, "click"], ["class", "btn btn-secondary", "type", "button", "value", "Save Result", 3, "click", 4, "ngIf"], ["type", "button", "value", "Save Result", 1, "btn", "btn-secondary", 3, "click"], [1, "row"], [1, "col"], [1, "alert", "alert-warning"], [1, "row", "d-print-block-visible"], [1, "col", "d-print-block-visible"], [1, "row", "mb-3"], [1, "card", "card-cascade", "wider", "col"], [1, "view", "gradient-card-header", "primary-gradient", "text-light"], [1, "h3-responsive", "text-center"], [1, "card-body"], [1, "col", 3, "scaleResults"], ["tableSummary", ""], [1, "col", 3, "resultTitle", "assessmentResult", "scaleResults"], ["therapistScaleResults", ""]], template: function AssessmentResultViewComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "div", 1);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](2, AssessmentResultViewComponent_div_2_Template, 2, 0, "div", 2);
@@ -10365,7 +10701,7 @@ AssessmentResultViewComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_2__
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](5);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](6, AssessmentResultViewComponent_div_6_Template, 3, 2, "div", 5);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](6, AssessmentResultViewComponent_div_6_Template, 3, 1, "div", 5);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](7, AssessmentResultViewComponent_div_7_Template, 5, 0, "div", 6);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](8, AssessmentResultViewComponent_div_8_Template, 14, 4, "div", 7);
@@ -11723,7 +12059,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common */ "ofXK");
 /* harmony import */ var _summary_section_graph_item_summary_section_graph_item_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../summary-section-graph-item/summary-section-graph-item.component */ "tV5d");
 /* harmony import */ var _scale_results_table_summary_scale_results_table_summary_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../scale-results-table-summary/scale-results-table-summary.component */ "Ue/t");
-/* harmony import */ var _assessment_charts_summary_scales_chart_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../assessment-charts/summary-scales-chart/summary-scales-chart.component */ "7gIF");
+/* harmony import */ var _assessment_charts_svg_summary_scales_chart_svg_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../assessment-charts/svg-summary-scales-chart/svg-summary-scales-chart.component */ "5CX4");
 /*
  *   Copyright (c) 2022 Discover and Change @author Stephen Nielson <snielson@discoverandchange.com>
  *   All rights reserved.
@@ -11784,8 +12120,8 @@ function ScaleResultsSummaryComponent_div_7_div_3_Template(rf, ctx) { if (rf & 1
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](3);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngForOf", section_r2.components);
 } }
-function ScaleResultsSummaryComponent_div_7_div_4_app_summary_scales_chart_10_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "app-summary-scales-chart", 29);
+function ScaleResultsSummaryComponent_div_7_div_4_app_svg_summary_scales_chart_10_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "app-svg-summary-scales-chart", 29);
 } if (rf & 2) {
     const item_r16 = ctx.$implicit;
     const ctx_r15 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](3);
@@ -11804,7 +12140,7 @@ function ScaleResultsSummaryComponent_div_7_div_4_Template(rf, ctx) { if (rf & 1
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](8, "div", 25);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](9, "div", 26);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](10, ScaleResultsSummaryComponent_div_7_div_4_app_summary_scales_chart_10_Template, 1, 7, "app-summary-scales-chart", 27);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](10, ScaleResultsSummaryComponent_div_7_div_4_app_svg_summary_scales_chart_10_Template, 1, 7, "app-svg-summary-scales-chart", 27);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
@@ -11836,7 +12172,7 @@ function ScaleResultsSummaryComponent_div_7_div_5_div_3_Template(rf, ctx) { if (
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](5, "div", 25);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](6, "div", 4);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](7, "app-summary-scales-chart", 35);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](7, "app-svg-summary-scales-chart", 35);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
@@ -12058,7 +12394,7 @@ ScaleResultsSummaryComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__[
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx.description);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngForOf", ctx.sections);
-    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_2__["NgIf"], _angular_common__WEBPACK_IMPORTED_MODULE_2__["NgForOf"], _angular_common__WEBPACK_IMPORTED_MODULE_2__["NgClass"], _summary_section_graph_item_summary_section_graph_item_component__WEBPACK_IMPORTED_MODULE_3__["SummarySectionGraphItemComponent"], _scale_results_table_summary_scale_results_table_summary_component__WEBPACK_IMPORTED_MODULE_4__["ScaleResultsTableSummaryComponent"], _assessment_charts_summary_scales_chart_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_5__["SummaryScalesChartComponent"]], encapsulation: 2 });
+    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_2__["NgIf"], _angular_common__WEBPACK_IMPORTED_MODULE_2__["NgForOf"], _angular_common__WEBPACK_IMPORTED_MODULE_2__["NgClass"], _summary_section_graph_item_summary_section_graph_item_component__WEBPACK_IMPORTED_MODULE_3__["SummarySectionGraphItemComponent"], _scale_results_table_summary_scale_results_table_summary_component__WEBPACK_IMPORTED_MODULE_4__["ScaleResultsTableSummaryComponent"], _assessment_charts_svg_summary_scales_chart_svg_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_5__["SvgSummaryScalesChartComponent"]], encapsulation: 2 });
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](ScaleResultsSummaryComponent, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
         args: [{
@@ -12592,7 +12928,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _shared_models_scale_result__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../shared/models/scale-result */ "+u/X");
 /* harmony import */ var _shared_services_assessment_hydrator_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../shared/services/assessment-hydrator.service */ "RKwW");
 /* harmony import */ var app_reports_models_base_report_item_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! app/reports/models/base-report-item-component */ "D8FE");
-/* harmony import */ var _assessment_charts_scale_chart_scale_chart_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../assessment-charts/scale-chart/scale-chart.component */ "GzvG");
+/* harmony import */ var _assessment_charts_svg_scale_chart_svg_scale_chart_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../assessment-charts/svg-scale-chart/svg-scale-chart.component */ "izrt");
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/common */ "ofXK");
 /*
  *   Copyright (c) 2022 Discover and Change @author Stephen Nielson <snielson@discoverandchange.com>
@@ -12672,7 +13008,7 @@ ComputedScaleComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵd
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](12);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](13, "div", 4);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](14, "app-scale-chart", 5);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](14, "app-svg-scale-chart", 5);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](15, ComputedScaleComponent_div_15_Template, 1, 1, "div", 6);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
@@ -12690,7 +13026,7 @@ ComputedScaleComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵd
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("scale-result", ctx.scaleResult);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx.scaleResult == null ? null : ctx.scaleResult.range == null ? null : ctx.scaleResult.range.clientContent);
-    } }, directives: [_assessment_charts_scale_chart_scale_chart_component__WEBPACK_IMPORTED_MODULE_4__["ScaleChartComponent"], _angular_common__WEBPACK_IMPORTED_MODULE_5__["NgIf"]], encapsulation: 2 });
+    } }, directives: [_assessment_charts_svg_scale_chart_svg_scale_chart_component__WEBPACK_IMPORTED_MODULE_4__["SvgScaleChartComponent"], _angular_common__WEBPACK_IMPORTED_MODULE_5__["NgIf"]], encapsulation: 2 });
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](ComputedScaleComponent, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
         args: [{
@@ -13021,11 +13357,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _scale_chart_legend_scale_chart_legend_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./scale-chart-legend/scale-chart-legend.component */ "x9rJ");
 /* harmony import */ var _legend_color_icon_legend_color_icon_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./legend-color-icon/legend-color-icon.component */ "8T2e");
 /* harmony import */ var _summary_scales_chart_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./summary-scales-chart/summary-scales-chart.component */ "7gIF");
+/* harmony import */ var _svg_summary_scales_chart_svg_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./svg-summary-scales-chart/svg-summary-scales-chart.component */ "5CX4");
+/* harmony import */ var _svg_scale_chart_svg_scale_chart_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./svg-scale-chart/svg-scale-chart.component */ "izrt");
 /*
  *   Copyright (c) 2022 Discover and Change @author Stephen Nielson <snielson@discoverandchange.com>
  *   All rights reserved.
  *   For License information see LICENSE.md in the root folder of this project.
  */
+
+
 
 
 
@@ -13041,9 +13381,11 @@ AssessmentChartsModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵd
             _angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"]
             // ,ChartsModule
         ]] });
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](AssessmentChartsModule, { declarations: [_scale_chart_scale_chart_component__WEBPACK_IMPORTED_MODULE_2__["ScaleChartComponent"], _scale_chart_legend_scale_chart_legend_component__WEBPACK_IMPORTED_MODULE_4__["ScaleChartLegendComponent"], _legend_color_icon_legend_color_icon_component__WEBPACK_IMPORTED_MODULE_5__["LegendColorIconComponent"], _summary_scales_chart_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_6__["SummaryScalesChartComponent"]], imports: [_angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"]
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](AssessmentChartsModule, { declarations: [_scale_chart_scale_chart_component__WEBPACK_IMPORTED_MODULE_2__["ScaleChartComponent"], _scale_chart_legend_scale_chart_legend_component__WEBPACK_IMPORTED_MODULE_4__["ScaleChartLegendComponent"], _legend_color_icon_legend_color_icon_component__WEBPACK_IMPORTED_MODULE_5__["LegendColorIconComponent"], _summary_scales_chart_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_6__["SummaryScalesChartComponent"],
+        _svg_summary_scales_chart_svg_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_7__["SvgSummaryScalesChartComponent"], _svg_scale_chart_svg_scale_chart_component__WEBPACK_IMPORTED_MODULE_8__["SvgScaleChartComponent"]], imports: [_angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"]
         // ,ChartsModule
-    ], exports: [_scale_chart_scale_chart_component__WEBPACK_IMPORTED_MODULE_2__["ScaleChartComponent"], _scale_chart_legend_scale_chart_legend_component__WEBPACK_IMPORTED_MODULE_4__["ScaleChartLegendComponent"], _summary_scales_chart_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_6__["SummaryScalesChartComponent"]] }); })();
+    ], exports: [_scale_chart_scale_chart_component__WEBPACK_IMPORTED_MODULE_2__["ScaleChartComponent"], _scale_chart_legend_scale_chart_legend_component__WEBPACK_IMPORTED_MODULE_4__["ScaleChartLegendComponent"], _summary_scales_chart_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_6__["SummaryScalesChartComponent"],
+        _svg_summary_scales_chart_svg_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_7__["SvgSummaryScalesChartComponent"], _svg_scale_chart_svg_scale_chart_component__WEBPACK_IMPORTED_MODULE_8__["SvgScaleChartComponent"]] }); })();
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](AssessmentChartsModule, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"],
         args: [{
@@ -13052,8 +13394,10 @@ AssessmentChartsModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵd
                     // ,ChartsModule
                 ],
                 providers: [_services_scale_result_color_service__WEBPACK_IMPORTED_MODULE_3__["ScaleResultColorService"]],
-                declarations: [_scale_chart_scale_chart_component__WEBPACK_IMPORTED_MODULE_2__["ScaleChartComponent"], _scale_chart_legend_scale_chart_legend_component__WEBPACK_IMPORTED_MODULE_4__["ScaleChartLegendComponent"], _legend_color_icon_legend_color_icon_component__WEBPACK_IMPORTED_MODULE_5__["LegendColorIconComponent"], _summary_scales_chart_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_6__["SummaryScalesChartComponent"]],
-                exports: [_scale_chart_scale_chart_component__WEBPACK_IMPORTED_MODULE_2__["ScaleChartComponent"], _scale_chart_legend_scale_chart_legend_component__WEBPACK_IMPORTED_MODULE_4__["ScaleChartLegendComponent"], _summary_scales_chart_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_6__["SummaryScalesChartComponent"]]
+                declarations: [_scale_chart_scale_chart_component__WEBPACK_IMPORTED_MODULE_2__["ScaleChartComponent"], _scale_chart_legend_scale_chart_legend_component__WEBPACK_IMPORTED_MODULE_4__["ScaleChartLegendComponent"], _legend_color_icon_legend_color_icon_component__WEBPACK_IMPORTED_MODULE_5__["LegendColorIconComponent"], _summary_scales_chart_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_6__["SummaryScalesChartComponent"],
+                    _svg_summary_scales_chart_svg_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_7__["SvgSummaryScalesChartComponent"], _svg_scale_chart_svg_scale_chart_component__WEBPACK_IMPORTED_MODULE_8__["SvgScaleChartComponent"]],
+                exports: [_scale_chart_scale_chart_component__WEBPACK_IMPORTED_MODULE_2__["ScaleChartComponent"], _scale_chart_legend_scale_chart_legend_component__WEBPACK_IMPORTED_MODULE_4__["ScaleChartLegendComponent"], _summary_scales_chart_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_6__["SummaryScalesChartComponent"],
+                    _svg_summary_scales_chart_svg_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_7__["SvgSummaryScalesChartComponent"], _svg_scale_chart_svg_scale_chart_component__WEBPACK_IMPORTED_MODULE_8__["SvgScaleChartComponent"]]
             }]
     }], null, null); })();
 
@@ -14148,9 +14492,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var app_reports_services_report_navigator_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! app/reports/services/report-navigator.service */ "5IhB");
 /* harmony import */ var app_assessment_charts_summary_scales_chart_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! app/assessment-charts/summary-scales-chart/summary-scales-chart.component */ "7gIF");
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/common */ "ofXK");
-/* harmony import */ var _scale_range_content_scale_range_content_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../scale-range-content/scale-range-content.component */ "xuKX");
-/* harmony import */ var _scale_questions_list_scale_questions_list_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../scale-questions-list/scale-questions-list.component */ "d8w3");
-/* harmony import */ var _scale_sub_list_scale_sub_list_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../scale-sub-list/scale-sub-list.component */ "E8QE");
+/* harmony import */ var _assessment_charts_svg_summary_scales_chart_svg_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../assessment-charts/svg-summary-scales-chart/svg-summary-scales-chart.component */ "5CX4");
+/* harmony import */ var _scale_range_content_scale_range_content_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../scale-range-content/scale-range-content.component */ "xuKX");
+/* harmony import */ var _scale_questions_list_scale_questions_list_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../scale-questions-list/scale-questions-list.component */ "d8w3");
+/* harmony import */ var _scale_sub_list_scale_sub_list_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../scale-sub-list/scale-sub-list.component */ "E8QE");
 
 
 
@@ -14168,7 +14513,7 @@ const _c1 = function (a0) { return [a0]; };
 function TherapistScaleResultsComponent_div_5_div_7_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](0, "div", 13);
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](1, "div", 14);
-    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelement"](2, "app-summary-scales-chart", 15, 16);
+    _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelement"](2, "app-svg-summary-scales-chart", 15, 16);
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
 } if (rf & 2) {
@@ -14483,7 +14828,7 @@ TherapistScaleResultsComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1_
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtextInterpolate"](ctx.getTitle());
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](2);
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("ngForOf", ctx.ScaleResults);
-    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_5__["NgForOf"], _angular_common__WEBPACK_IMPORTED_MODULE_5__["NgClass"], _angular_common__WEBPACK_IMPORTED_MODULE_5__["NgIf"], app_assessment_charts_summary_scales_chart_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_4__["SummaryScalesChartComponent"], _scale_range_content_scale_range_content_component__WEBPACK_IMPORTED_MODULE_6__["ScaleRangeContentComponent"], _scale_questions_list_scale_questions_list_component__WEBPACK_IMPORTED_MODULE_7__["ScaleQuestionsListComponent"], _scale_sub_list_scale_sub_list_component__WEBPACK_IMPORTED_MODULE_8__["ScaleSubListComponent"]], encapsulation: 2 });
+    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_5__["NgForOf"], _angular_common__WEBPACK_IMPORTED_MODULE_5__["NgClass"], _angular_common__WEBPACK_IMPORTED_MODULE_5__["NgIf"], _assessment_charts_svg_summary_scales_chart_svg_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_6__["SvgSummaryScalesChartComponent"], _scale_range_content_scale_range_content_component__WEBPACK_IMPORTED_MODULE_7__["ScaleRangeContentComponent"], _scale_questions_list_scale_questions_list_component__WEBPACK_IMPORTED_MODULE_8__["ScaleQuestionsListComponent"], _scale_sub_list_scale_sub_list_component__WEBPACK_IMPORTED_MODULE_9__["ScaleSubListComponent"]], encapsulation: 2 });
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵsetClassMetadata"](TherapistScaleResultsComponent, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"],
         args: [{
@@ -15044,7 +15389,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
 /* harmony import */ var app_shared_models_scale_result__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! app/shared/models/scale-result */ "+u/X");
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common */ "ofXK");
-/* harmony import */ var _assessment_charts_scale_chart_scale_chart_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../assessment-charts/scale-chart/scale-chart.component */ "GzvG");
+/* harmony import */ var _assessment_charts_svg_scale_chart_svg_scale_chart_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../assessment-charts/svg-scale-chart/svg-scale-chart.component */ "izrt");
 /*
  *   Copyright (c) 2022 Discover and Change @author Stephen Nielson <snielson@discoverandchange.com>
  *   All rights reserved.
@@ -15060,8 +15405,8 @@ function ScaleSummaryComponent_p_2_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](1, "No scale result found\"");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 } }
-function ScaleSummaryComponent_app_scale_chart_3_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "app-scale-chart", 6);
+function ScaleSummaryComponent_app_svg_scale_chart_3_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "app-svg-scale-chart", 6);
 } if (rf & 2) {
     const ctx_r1 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("show-ranges", false)("scale-result", ctx_r1.scaleResult)("show-scale-name", false);
@@ -15076,7 +15421,7 @@ ScaleSummaryComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵde
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "div", 1);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](2, ScaleSummaryComponent_p_2_Template, 2, 0, "p", 2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](3, ScaleSummaryComponent_app_scale_chart_3_Template, 1, 3, "app-scale-chart", 3);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](3, ScaleSummaryComponent_app_svg_scale_chart_3_Template, 1, 3, "app-svg-scale-chart", 3);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](4, "div", 1);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](5, "h4", 4);
@@ -15096,7 +15441,7 @@ ScaleSummaryComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵde
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](ctx.scaleResult == null ? null : ctx.scaleResult.scale == null ? null : ctx.scaleResult.scale.name);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](ctx.scaleResult == null ? null : ctx.scaleResult.range == null ? null : ctx.scaleResult.range.displayName);
-    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_2__["NgIf"], _assessment_charts_scale_chart_scale_chart_component__WEBPACK_IMPORTED_MODULE_3__["ScaleChartComponent"]], encapsulation: 2 });
+    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_2__["NgIf"], _assessment_charts_svg_scale_chart_svg_scale_chart_component__WEBPACK_IMPORTED_MODULE_3__["SvgScaleChartComponent"]], encapsulation: 2 });
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](ScaleSummaryComponent, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
         args: [{
@@ -15444,7 +15789,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
 /* harmony import */ var app_reports_models_scale_list_data_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! app/reports/models/scale-list-data-component */ "Rj0n");
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common */ "ofXK");
-/* harmony import */ var _assessment_charts_scale_chart_scale_chart_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../assessment-charts/scale-chart/scale-chart.component */ "GzvG");
+/* harmony import */ var _assessment_charts_svg_scale_chart_svg_scale_chart_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../assessment-charts/svg-scale-chart/svg-scale-chart.component */ "izrt");
 /* harmony import */ var _scale_questions_list_scale_questions_list_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../scale-questions-list/scale-questions-list.component */ "d8w3");
 
 
@@ -15503,7 +15848,7 @@ function ScaleResultsSectionsListComponent_div_6_Template(rf, ctx) { if (rf & 1)
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](12);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](13, "div", 8);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](14, "app-scale-chart", 9);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](14, "app-svg-scale-chart", 9);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](15, ScaleResultsSectionsListComponent_div_6_div_15_Template, 1, 1, "div", 10);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](16, ScaleResultsSectionsListComponent_div_6_app_scale_questions_list_16_Template, 1, 1, "app-scale-questions-list", 11);
@@ -15561,7 +15906,7 @@ ScaleResultsSectionsListComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("innerHTML", ctx.AssessmentResult == null ? null : ctx.AssessmentResult.assessment.description, _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsanitizeHtml"]);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngForOf", ctx.ScaleResults);
-    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_2__["NgIf"], _angular_common__WEBPACK_IMPORTED_MODULE_2__["NgForOf"], _assessment_charts_scale_chart_scale_chart_component__WEBPACK_IMPORTED_MODULE_3__["ScaleChartComponent"], _scale_questions_list_scale_questions_list_component__WEBPACK_IMPORTED_MODULE_4__["ScaleQuestionsListComponent"]], encapsulation: 2 });
+    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_2__["NgIf"], _angular_common__WEBPACK_IMPORTED_MODULE_2__["NgForOf"], _assessment_charts_svg_scale_chart_svg_scale_chart_component__WEBPACK_IMPORTED_MODULE_3__["SvgScaleChartComponent"], _scale_questions_list_scale_questions_list_component__WEBPACK_IMPORTED_MODULE_4__["ScaleQuestionsListComponent"]], encapsulation: 2 });
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](ScaleResultsSectionsListComponent, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
         args: [{
@@ -18823,6 +19168,271 @@ class ChartColor {
 
 /***/ }),
 
+/***/ "izrt":
+/*!********************************************************************************!*\
+  !*** ./src/app/assessment-charts/svg-scale-chart/svg-scale-chart.component.ts ***!
+  \********************************************************************************/
+/*! exports provided: SvgScaleChartComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SvgScaleChartComponent", function() { return SvgScaleChartComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var app_shared_models_scale_result__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! app/shared/models/scale-result */ "+u/X");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common */ "ofXK");
+/*
+ *   Copyright (c) 2026 Discover and Change @author Stephen Nielson <snielson@discoverandchange.com>
+ *   All rights reserved.
+ *   For License information see LICENSE.md in the root folder of this project.
+ */
+
+
+
+
+function SvgScaleChartComponent_div_0__svg_rect_2_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnamespaceSVG"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "rect", 8);
+} if (rf & 2) {
+    const b_r6 = ctx.$implicit;
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵattribute"]("x", b_r6.x)("y", b_r6.y)("width", b_r6.width)("height", b_r6.height);
+} }
+function SvgScaleChartComponent_div_0__svg_text_3_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnamespaceSVG"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "text", 9);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+} if (rf & 2) {
+    const l_r7 = ctx.$implicit;
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵattribute"]("x", l_r7.x)("y", l_r7.y);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](l_r7.text);
+} }
+function SvgScaleChartComponent_div_0__svg_rect_4_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnamespaceSVG"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "rect", 10);
+} if (rf & 2) {
+    const ctx_r3 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵattribute"]("x", ctx_r3.bar.x)("y", ctx_r3.bar.y)("width", ctx_r3.bar.width)("height", ctx_r3.bar.height);
+} }
+function SvgScaleChartComponent_div_0__svg_g_5__svg_polygon_1_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnamespaceSVG"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "polygon", 13);
+} if (rf & 2) {
+    const ctx_r8 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](3);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵattribute"]("points", ctx_r8.scoreBubble.pointer);
+} }
+function SvgScaleChartComponent_div_0__svg_g_5_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnamespaceSVG"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "g", 11);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](1, SvgScaleChartComponent_div_0__svg_g_5__svg_polygon_1_Template, 1, 1, "polygon", 12);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](2, "rect", 13);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](3, "text", 14);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](4);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+} if (rf & 2) {
+    const ctx_r4 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx_r4.scoreBubble.pointer);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵattribute"]("x", ctx_r4.scoreBubble.rectX)("y", ctx_r4.scoreBubble.rectY)("width", ctx_r4.scoreBubble.width)("height", ctx_r4.scoreBubble.height)("rx", ctx_r4.scoreBubble.rx)("ry", ctx_r4.scoreBubble.rx);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵattribute"]("x", ctx_r4.scoreBubble.textX)("y", ctx_r4.scoreBubble.textY);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](ctx_r4.scoreBubble.text);
+} }
+function SvgScaleChartComponent_div_0__svg_text_6_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnamespaceSVG"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "text", 15);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+} if (rf & 2) {
+    const ctx_r5 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵattribute"]("x", 350)("y", 410);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](ctx_r5.scaleNameLabel);
+} }
+function SvgScaleChartComponent_div_0_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnamespaceSVG"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "svg", 2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](2, SvgScaleChartComponent_div_0__svg_rect_2_Template, 1, 4, "rect", 3);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](3, SvgScaleChartComponent_div_0__svg_text_3_Template, 2, 3, "text", 4);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](4, SvgScaleChartComponent_div_0__svg_rect_4_Template, 1, 4, "rect", 5);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](5, SvgScaleChartComponent_div_0__svg_g_5_Template, 5, 10, "g", 6);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](6, SvgScaleChartComponent_div_0__svg_text_6_Template, 2, 3, "text", 7);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+} if (rf & 2) {
+    const ctx_r0 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵattribute"]("viewBox", ctx_r0.viewBox);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngForOf", ctx_r0.bands);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngForOf", ctx_r0.rangeLabels);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx_r0.bar);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx_r0.scoreBubble);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx_r0.scaleNameLabel);
+} }
+/**
+ * Pure-SVG re-implementation of ScaleChartComponent (Option B).
+ *
+ * A single score bar drawn against the scale's score axis, with the scale
+ * ranges shown as faint alternating bands and their names labeled at each
+ * range midpoint. Inline SVG prints natively/crisply, so there is no
+ * canvas-to-image rasterization and none of its timing/blank-image issues.
+ * Mirrors the original @Input/@Output API for drop-in template replacement.
+ */
+class SvgScaleChartComponent {
+    constructor(element) {
+        this.element = element;
+        this.showRanges = true;
+        this.complete = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.viewBox = `0 0 ${SvgScaleChartComponent.W} ${SvgScaleChartComponent.H}`;
+        this.bands = [];
+        this.rangeLabels = [];
+        this.bar = null;
+        this.scoreBubble = null;
+        this.scaleNameLabel = "";
+    }
+    ngOnChanges(changes) {
+        this.recompute();
+        // Preserve the original component's "complete" signal for any listeners.
+        this.complete.emit(null);
+    }
+    get hasResult() {
+        return this.scaleResult != null && this.scaleResult.scale != null
+            && this.scaleResult.scale.getMaxRange() != null;
+    }
+    recompute() {
+        this.bands = [];
+        this.rangeLabels = [];
+        this.bar = null;
+        this.scoreBubble = null;
+        this.scaleNameLabel = "";
+        if (!this.hasResult) {
+            return;
+        }
+        const C = SvgScaleChartComponent;
+        const scale = this.scaleResult.scale;
+        const maxScore = scale.getMaxRange().rangeEnd || 1;
+        const marginBottom = this.showScaleName === true ? C.MARGIN_BOTTOM_WITH_NAME : C.MARGIN_BOTTOM;
+        const x0 = C.MARGIN_LEFT;
+        const y0 = C.MARGIN_TOP;
+        const plotW = C.W - C.MARGIN_LEFT - C.MARGIN_RIGHT;
+        const plotH = C.H - C.MARGIN_TOP - marginBottom;
+        // Map a score value to a y pixel (0 at the bottom of the plot).
+        const yFor = (score) => y0 + plotH - (Math.max(0, Math.min(score, maxScore)) / maxScore) * plotH;
+        if (this.showRanges !== false) {
+            scale.ranges.forEach((r, i) => {
+                const topY = yFor(r.rangeEnd);
+                const bottomY = yFor(r.rangeStart);
+                // Faint alternating band, matching the original's even-range shading.
+                if (i % 2 === 1) {
+                    this.bands.push({ x: x0, y: topY, width: plotW, height: Math.max(0, bottomY - topY) });
+                }
+                // Range name label at the range midpoint.
+                this.rangeLabels.push({ x: x0 - 6, y: yFor(r.midPoint) + 4, text: r.displayName || "" });
+            });
+        }
+        // Single score bar.
+        const score = this.scaleResult.score || 0;
+        const barW = Math.min(C.MAX_BAR_WIDTH, plotW * 0.25);
+        const centerX = x0 + plotW / 2;
+        const barTop = yFor(score);
+        this.bar = { x: centerX - barW / 2, y: barTop, width: barW, height: (y0 + plotH) - barTop };
+        // Score bubble above the bar (matching the summary scales chart).
+        this.scoreBubble = this.buildScoreBubble(centerX, barTop, y0);
+        if (this.showScaleName === true) {
+            this.scaleNameLabel = scale.name || "";
+        }
+    }
+    /**
+     * Builds the rounded score bubble shown over the bar. It floats above the bar
+     * with a small downward pointer, or drops just inside the bar top when the bar
+     * reaches the plot ceiling. Width grows with the score text (1-3 digits and
+     * decimals fit) and is clamped horizontally so it never overflows the viewBox.
+     * Mirrors SvgSummaryScalesChartComponent.buildScoreBubble for a consistent look.
+     */
+    buildScoreBubble(centerX, barTop, y0) {
+        const C = SvgScaleChartComponent;
+        const text = this.safeScoreText();
+        const width = Math.max(C.BUBBLE_MIN_WIDTH, text.length * C.BUBBLE_CHAR_WIDTH + C.BUBBLE_PAD_X);
+        const height = C.BUBBLE_HEIGHT;
+        const desiredTop = barTop - C.BUBBLE_POINTER_H - height;
+        const above = desiredTop >= y0;
+        const rectY = above ? desiredTop : barTop + 3;
+        const minX = 2;
+        const maxX = C.W - width - 2;
+        const rectX = Math.max(minX, Math.min(maxX, centerX - width / 2));
+        const pointer = above
+            ? `${centerX - 5},${rectY + height} ${centerX + 5},${rectY + height} ${centerX},${rectY + height + C.BUBBLE_POINTER_H}`
+            : null;
+        return {
+            rectX, rectY, width, height, rx: 5,
+            textX: rectX + width / 2,
+            textY: rectY + height * 0.68,
+            text,
+            pointer
+        };
+    }
+    safeScoreText() {
+        try {
+            return this.scaleResult.getScoreForDisplay();
+        }
+        catch (e) {
+            return String(this.scaleResult.score != null ? this.scaleResult.score : "");
+        }
+    }
+}
+SvgScaleChartComponent.W = 700;
+SvgScaleChartComponent.H = 420;
+SvgScaleChartComponent.MARGIN_LEFT = 160;
+SvgScaleChartComponent.MARGIN_RIGHT = 12;
+SvgScaleChartComponent.MARGIN_TOP = 24;
+SvgScaleChartComponent.MARGIN_BOTTOM_WITH_NAME = 40;
+SvgScaleChartComponent.MARGIN_BOTTOM = 14;
+SvgScaleChartComponent.MAX_BAR_WIDTH = 60;
+// Score bubble geometry (shared look with the summary scales chart).
+SvgScaleChartComponent.BUBBLE_HEIGHT = 20;
+SvgScaleChartComponent.BUBBLE_POINTER_H = 5;
+SvgScaleChartComponent.BUBBLE_MIN_WIDTH = 22;
+SvgScaleChartComponent.BUBBLE_CHAR_WIDTH = 8;
+SvgScaleChartComponent.BUBBLE_PAD_X = 14;
+SvgScaleChartComponent.ɵfac = function SvgScaleChartComponent_Factory(t) { return new (t || SvgScaleChartComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"])); };
+SvgScaleChartComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: SvgScaleChartComponent, selectors: [["app-svg-scale-chart"]], inputs: { scaleResult: ["scale-result", "scaleResult"], showScaleName: ["show-scale-name", "showScaleName"], showRanges: ["show-ranges", "showRanges"] }, outputs: { complete: "complete" }, features: [_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵNgOnChangesFeature"]], decls: 1, vars: 1, consts: [["class", "scale-chart-container svg-chart-container", 4, "ngIf"], [1, "scale-chart-container", "svg-chart-container"], ["preserveAspectRatio", "xMidYMid meet", "xmlns", "http://www.w3.org/2000/svg", 1, "dac-svg-chart"], ["class", "dac-svg-range-band", "shape-rendering", "crispEdges", 4, "ngFor", "ngForOf"], ["text-anchor", "end", "class", "dac-svg-rangelabel", 4, "ngFor", "ngForOf"], ["class", "dac-svg-bar", 4, "ngIf"], ["class", "dac-svg-bubble", 4, "ngIf"], ["text-anchor", "middle", "class", "dac-svg-scalename", 4, "ngIf"], ["shape-rendering", "crispEdges", 1, "dac-svg-range-band"], ["text-anchor", "end", 1, "dac-svg-rangelabel"], [1, "dac-svg-bar"], [1, "dac-svg-bubble"], ["class", "dac-svg-bubble-box", 4, "ngIf"], [1, "dac-svg-bubble-box"], ["text-anchor", "middle", 1, "dac-svg-bubble-text"], ["text-anchor", "middle", 1, "dac-svg-scalename"]], template: function SvgScaleChartComponent_Template(rf, ctx) { if (rf & 1) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](0, SvgScaleChartComponent_div_0_Template, 7, 6, "div", 0);
+    } if (rf & 2) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx.hasResult);
+    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_2__["NgIf"], _angular_common__WEBPACK_IMPORTED_MODULE_2__["NgForOf"]], styles: ["[_nghost-%COMP%] {\n  display: block;\n  text-align: center;\n}\n\n.svg-chart-container[_ngcontent-%COMP%] {\n  width: 100%;\n}\n\n.dac-svg-chart[_ngcontent-%COMP%] {\n  width: 100%;\n  height: auto;\n  display: block;\n}\n\n.dac-svg-range-band[_ngcontent-%COMP%] {\n  fill: rgba(68, 170, 213, 0.1);\n}\n\n.dac-svg-bar[_ngcontent-%COMP%] {\n  fill: rgba(92, 141, 181, 0.75);\n  stroke: rgba(0, 0, 0, 0.35);\n  stroke-width: 1;\n}\n\n.dac-svg-rangelabel[_ngcontent-%COMP%] {\n  font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;\n  font-size: 13px;\n  fill: #000;\n}\n\n.dac-svg-bubble-box[_ngcontent-%COMP%] {\n  fill: rgba(33, 37, 41, 0.9);\n  stroke: #ffffff;\n  stroke-width: 1;\n}\n\n.dac-svg-bubble-text[_ngcontent-%COMP%] {\n  font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;\n  font-size: 13px;\n  font-weight: 700;\n  fill: #ffffff;\n}\n\n.dac-svg-scalename[_ngcontent-%COMP%] {\n  font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;\n  font-size: 13px;\n  fill: #666;\n}\n\n@media print {\n  .dac-svg-chart[_ngcontent-%COMP%] {\n    page-break-inside: avoid;\n  }\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvYXNzZXNzbWVudC1jaGFydHMvc3ZnLXNjYWxlLWNoYXJ0L3N2Zy1zY2FsZS1jaGFydC5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0UsY0FBYztFQUNkLGtCQUFrQjtBQUNwQjs7QUFFQTtFQUNFLFdBQVc7QUFDYjs7QUFFQTtFQUNFLFdBQVc7RUFDWCxZQUFZO0VBQ1osY0FBYztBQUNoQjs7QUFFQTtFQUNFLDZCQUE2QjtBQUMvQjs7QUFFQTtFQUNFLDhCQUE4QjtFQUM5QiwyQkFBMkI7RUFDM0IsZUFBZTtBQUNqQjs7QUFFQTtFQUNFLCtEQUErRDtFQUMvRCxlQUFlO0VBQ2YsVUFBVTtBQUNaOztBQUVBO0VBQ0UsMkJBQTJCO0VBQzNCLGVBQWU7RUFDZixlQUFlO0FBQ2pCOztBQUVBO0VBQ0UsK0RBQStEO0VBQy9ELGVBQWU7RUFDZixnQkFBZ0I7RUFDaEIsYUFBYTtBQUNmOztBQUVBO0VBQ0UsK0RBQStEO0VBQy9ELGVBQWU7RUFDZixVQUFVO0FBQ1o7O0FBRUE7RUFDRTtJQUNFLHdCQUF3QjtFQUMxQjtBQUNGIiwiZmlsZSI6InNyYy9hcHAvYXNzZXNzbWVudC1jaGFydHMvc3ZnLXNjYWxlLWNoYXJ0L3N2Zy1zY2FsZS1jaGFydC5jb21wb25lbnQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiOmhvc3Qge1xuICBkaXNwbGF5OiBibG9jaztcbiAgdGV4dC1hbGlnbjogY2VudGVyO1xufVxuXG4uc3ZnLWNoYXJ0LWNvbnRhaW5lciB7XG4gIHdpZHRoOiAxMDAlO1xufVxuXG4uZGFjLXN2Zy1jaGFydCB7XG4gIHdpZHRoOiAxMDAlO1xuICBoZWlnaHQ6IGF1dG87XG4gIGRpc3BsYXk6IGJsb2NrO1xufVxuXG4uZGFjLXN2Zy1yYW5nZS1iYW5kIHtcbiAgZmlsbDogcmdiYSg2OCwgMTcwLCAyMTMsIDAuMSk7XG59XG5cbi5kYWMtc3ZnLWJhciB7XG4gIGZpbGw6IHJnYmEoOTIsIDE0MSwgMTgxLCAwLjc1KTtcbiAgc3Ryb2tlOiByZ2JhKDAsIDAsIDAsIDAuMzUpO1xuICBzdHJva2Utd2lkdGg6IDE7XG59XG5cbi5kYWMtc3ZnLXJhbmdlbGFiZWwge1xuICBmb250LWZhbWlseTogJ0hlbHZldGljYSBOZXVlJywgJ0hlbHZldGljYScsICdBcmlhbCcsIHNhbnMtc2VyaWY7XG4gIGZvbnQtc2l6ZTogMTNweDtcbiAgZmlsbDogIzAwMDtcbn1cblxuLmRhYy1zdmctYnViYmxlLWJveCB7XG4gIGZpbGw6IHJnYmEoMzMsIDM3LCA0MSwgMC45KTtcbiAgc3Ryb2tlOiAjZmZmZmZmO1xuICBzdHJva2Utd2lkdGg6IDE7XG59XG5cbi5kYWMtc3ZnLWJ1YmJsZS10ZXh0IHtcbiAgZm9udC1mYW1pbHk6ICdIZWx2ZXRpY2EgTmV1ZScsICdIZWx2ZXRpY2EnLCAnQXJpYWwnLCBzYW5zLXNlcmlmO1xuICBmb250LXNpemU6IDEzcHg7XG4gIGZvbnQtd2VpZ2h0OiA3MDA7XG4gIGZpbGw6ICNmZmZmZmY7XG59XG5cbi5kYWMtc3ZnLXNjYWxlbmFtZSB7XG4gIGZvbnQtZmFtaWx5OiAnSGVsdmV0aWNhIE5ldWUnLCAnSGVsdmV0aWNhJywgJ0FyaWFsJywgc2Fucy1zZXJpZjtcbiAgZm9udC1zaXplOiAxM3B4O1xuICBmaWxsOiAjNjY2O1xufVxuXG5AbWVkaWEgcHJpbnQge1xuICAuZGFjLXN2Zy1jaGFydCB7XG4gICAgcGFnZS1icmVhay1pbnNpZGU6IGF2b2lkO1xuICB9XG59XG4iXX0= */"] });
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](SvgScaleChartComponent, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
+        args: [{
+                selector: 'app-svg-scale-chart',
+                templateUrl: './svg-scale-chart.component.html',
+                styleUrls: ['./svg-scale-chart.component.css']
+            }]
+    }], function () { return [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"] }]; }, { scaleResult: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"],
+            args: ["scale-result"]
+        }], showScaleName: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"],
+            args: ["show-scale-name"]
+        }], showRanges: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"],
+            args: ["show-ranges"]
+        }], complete: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"]
+        }] }); })();
+
+
+/***/ }),
+
 /***/ "j8yT":
 /*!*****************************************************!*\
   !*** ./src/app/shared/models/checklist-question.ts ***!
@@ -21607,7 +22217,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
 /* harmony import */ var _shared_models_assessment_result__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../shared/models/assessment-result */ "TNk8");
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common */ "ofXK");
-/* harmony import */ var _assessment_charts_summary_scales_chart_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../assessment-charts/summary-scales-chart/summary-scales-chart.component */ "7gIF");
+/* harmony import */ var _assessment_charts_svg_summary_scales_chart_svg_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../assessment-charts/svg-summary-scales-chart/svg-summary-scales-chart.component */ "5CX4");
 /* harmony import */ var _pcl_summary_pcl_summary_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../pcl-summary/pcl-summary.component */ "AU1M");
 /*
  *   Copyright (c) 2022 Discover and Change @author Stephen Nielson <snielson@discoverandchange.com>
@@ -21620,8 +22230,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-function SummarySectionGraphItemComponent_app_summary_scales_chart_6_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "app-summary-scales-chart", 9);
+function SummarySectionGraphItemComponent_app_svg_summary_scales_chart_6_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "app-svg-summary-scales-chart", 9);
 } if (rf & 2) {
     const ctx_r0 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngClass", ctx_r0.getClasses(ctx_r0.item))("showNames", ctx_r0.item.data.showNames)("chartScaleNames", ctx_r0.item.data.chartScaleNames)("chartRangeNames", ctx_r0.item.data.chartRangeNames)("showRangeScore", ctx_r0.item.data.showRangeScore)("scaleResults", ctx_r0.scaleResults)("reverseDirection", ctx_r0.item.data.reverseDirection);
@@ -21686,7 +22296,7 @@ SummarySectionGraphItemComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](4, "div", 3);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](5, "div", 4);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](6, SummarySectionGraphItemComponent_app_summary_scales_chart_6_Template, 1, 7, "app-summary-scales-chart", 5);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](6, SummarySectionGraphItemComponent_app_svg_summary_scales_chart_6_Template, 1, 7, "app-svg-summary-scales-chart", 5);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](7, SummarySectionGraphItemComponent_app_pcl_summary_7_Template, 1, 2, "app-pcl-summary", 6);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](8, SummarySectionGraphItemComponent_hr_8_Template, 1, 0, "hr", 7);
@@ -21704,7 +22314,7 @@ SummarySectionGraphItemComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx.item.data.showRangeLabel);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx.item.data.showRangeLabel);
-    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_2__["NgIf"], _assessment_charts_summary_scales_chart_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_3__["SummaryScalesChartComponent"], _angular_common__WEBPACK_IMPORTED_MODULE_2__["NgClass"], _pcl_summary_pcl_summary_component__WEBPACK_IMPORTED_MODULE_4__["PclSummaryComponent"]], styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvcmVwb3J0cy9yZXBvcnQtaXRlbXMvc3VtbWFyeS1zZWN0aW9uLWdyYXBoLWl0ZW0vc3VtbWFyeS1zZWN0aW9uLWdyYXBoLWl0ZW0uY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7Ozs7RUFBQSIsImZpbGUiOiJzcmMvYXBwL3JlcG9ydHMvcmVwb3J0LWl0ZW1zL3N1bW1hcnktc2VjdGlvbi1ncmFwaC1pdGVtL3N1bW1hcnktc2VjdGlvbi1ncmFwaC1pdGVtLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLypcbiAqICAgQ29weXJpZ2h0IChjKSAyMDIyIERpc2NvdmVyIGFuZCBDaGFuZ2UgQGF1dGhvciBTdGVwaGVuIE5pZWxzb24gPHNuaWVsc29uQGRpc2NvdmVyYW5kY2hhbmdlLmNvbT5cbiAqICAgQWxsIHJpZ2h0cyByZXNlcnZlZC5cbiAqICAgRm9yIExpY2Vuc2UgaW5mb3JtYXRpb24gc2VlIExJQ0VOU0UubWQgaW4gdGhlIHJvb3QgZm9sZGVyIG9mIHRoaXMgcHJvamVjdC5cbiAqL1xuIl19 */"] });
+    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_2__["NgIf"], _assessment_charts_svg_summary_scales_chart_svg_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_3__["SvgSummaryScalesChartComponent"], _angular_common__WEBPACK_IMPORTED_MODULE_2__["NgClass"], _pcl_summary_pcl_summary_component__WEBPACK_IMPORTED_MODULE_4__["PclSummaryComponent"]], styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvcmVwb3J0cy9yZXBvcnQtaXRlbXMvc3VtbWFyeS1zZWN0aW9uLWdyYXBoLWl0ZW0vc3VtbWFyeS1zZWN0aW9uLWdyYXBoLWl0ZW0uY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7Ozs7RUFBQSIsImZpbGUiOiJzcmMvYXBwL3JlcG9ydHMvcmVwb3J0LWl0ZW1zL3N1bW1hcnktc2VjdGlvbi1ncmFwaC1pdGVtL3N1bW1hcnktc2VjdGlvbi1ncmFwaC1pdGVtLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLypcbiAqICAgQ29weXJpZ2h0IChjKSAyMDIyIERpc2NvdmVyIGFuZCBDaGFuZ2UgQGF1dGhvciBTdGVwaGVuIE5pZWxzb24gPHNuaWVsc29uQGRpc2NvdmVyYW5kY2hhbmdlLmNvbT5cbiAqICAgQWxsIHJpZ2h0cyByZXNlcnZlZC5cbiAqICAgRm9yIExpY2Vuc2UgaW5mb3JtYXRpb24gc2VlIExJQ0VOU0UubWQgaW4gdGhlIHJvb3QgZm9sZGVyIG9mIHRoaXMgcHJvamVjdC5cbiAqL1xuIl19 */"] });
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](SummarySectionGraphItemComponent, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
         args: [{
@@ -23049,7 +23659,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
 /* harmony import */ var _scale_results_sections_list_scale_results_sections_list_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../scale-results-sections-list/scale-results-sections-list.component */ "bm9c");
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common */ "ofXK");
-/* harmony import */ var _assessment_charts_scale_chart_scale_chart_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../assessment-charts/scale-chart/scale-chart.component */ "GzvG");
+/* harmony import */ var _assessment_charts_svg_scale_chart_svg_scale_chart_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../assessment-charts/svg-scale-chart/svg-scale-chart.component */ "izrt");
 /* harmony import */ var _scale_questions_list_scale_questions_list_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../scale-questions-list/scale-questions-list.component */ "d8w3");
 
 
@@ -23077,7 +23687,7 @@ function AddoScaleResultsComponent_h6_7_Template(rf, ctx) { if (rf & 1) {
 } }
 function AddoScaleResultsComponent_div_9_div_10_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 13);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](1, "app-scale-chart", 18);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](1, "app-svg-scale-chart", 18);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 } if (rf & 2) {
     const ctx_r4 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](2);
@@ -23148,7 +23758,7 @@ function AddoScaleResultsComponent_div_10_div_5_div_8_Template(rf, ctx) { if (rf
 } }
 function AddoScaleResultsComponent_div_10_div_5_div_16_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](1, "app-scale-chart", 34);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](1, "app-svg-scale-chart", 34);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 } if (rf & 2) {
     const scaleResult_r9 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]().$implicit;
@@ -23352,7 +23962,7 @@ AddoScaleResultsComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵ
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx.IsSingleScaleResult);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", !ctx.IsSingleScaleResult);
-    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_2__["NgIf"], _assessment_charts_scale_chart_scale_chart_component__WEBPACK_IMPORTED_MODULE_3__["ScaleChartComponent"], _scale_questions_list_scale_questions_list_component__WEBPACK_IMPORTED_MODULE_4__["ScaleQuestionsListComponent"], _angular_common__WEBPACK_IMPORTED_MODULE_2__["NgForOf"], _angular_common__WEBPACK_IMPORTED_MODULE_2__["NgClass"]], encapsulation: 2 });
+    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_2__["NgIf"], _assessment_charts_svg_scale_chart_svg_scale_chart_component__WEBPACK_IMPORTED_MODULE_3__["SvgScaleChartComponent"], _scale_questions_list_scale_questions_list_component__WEBPACK_IMPORTED_MODULE_4__["ScaleQuestionsListComponent"], _angular_common__WEBPACK_IMPORTED_MODULE_2__["NgForOf"], _angular_common__WEBPACK_IMPORTED_MODULE_2__["NgClass"]], encapsulation: 2 });
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](AddoScaleResultsComponent, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
         args: [{

@@ -4314,6 +4314,582 @@
     },
 
     /***/
+    "5CX4":
+    /*!**************************************************************************************************!*\
+      !*** ./src/app/assessment-charts/svg-summary-scales-chart/svg-summary-scales-chart.component.ts ***!
+      \**************************************************************************************************/
+
+    /*! exports provided: SvgSummaryScalesChartComponent */
+
+    /***/
+    function CX4(module, __webpack_exports__, __webpack_require__) {
+      "use strict";
+
+      __webpack_require__.r(__webpack_exports__);
+      /* harmony export (binding) */
+
+
+      __webpack_require__.d(__webpack_exports__, "SvgSummaryScalesChartComponent", function () {
+        return SvgSummaryScalesChartComponent;
+      });
+      /* harmony import */
+
+
+      var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
+      /*! @angular/core */
+      "fXoL");
+      /* harmony import */
+
+
+      var app_assessment_charts_services_scale_result_color_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
+      /*! app/assessment-charts/services/scale-result-color.service */
+      "s1ev");
+      /* harmony import */
+
+
+      var _angular_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
+      /*! @angular/common */
+      "ofXK");
+      /*
+       *   Copyright (c) 2026 Discover and Change @author Stephen Nielson <snielson@discoverandchange.com>
+       *   All rights reserved.
+       *   For License information see LICENSE.md in the root folder of this project.
+       */
+
+
+      function SvgSummaryScalesChartComponent_div_0__svg_rect_2_Template(rf, ctx) {
+        if (rf & 1) {
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnamespaceSVG"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "rect", 8);
+        }
+
+        if (rf & 2) {
+          var b_r6 = ctx.$implicit;
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵattribute"]("x", b_r6.x)("y", b_r6.y)("width", b_r6.width)("height", b_r6.height)("fill", b_r6.color);
+        }
+      }
+
+      function SvgSummaryScalesChartComponent_div_0__svg_text_3_Template(rf, ctx) {
+        if (rf & 1) {
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnamespaceSVG"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "text", 9);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](1);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        }
+
+        if (rf & 2) {
+          var l_r7 = ctx.$implicit;
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵattribute"]("x", l_r7.x)("y", l_r7.y);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](l_r7.text);
+        }
+      }
+
+      function SvgSummaryScalesChartComponent_div_0__svg_rect_4_Template(rf, ctx) {
+        if (rf & 1) {
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnamespaceSVG"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "rect", 10);
+        }
+
+        if (rf & 2) {
+          var bar_r8 = ctx.$implicit;
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵattribute"]("x", bar_r8.x)("y", bar_r8.y)("width", bar_r8.width)("height", bar_r8.height);
+        }
+      }
+
+      function SvgSummaryScalesChartComponent_div_0__svg_g_5__svg_polygon_1_Template(rf, ctx) {
+        if (rf & 1) {
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnamespaceSVG"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "polygon", 13);
+        }
+
+        if (rf & 2) {
+          var bub_r9 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]().$implicit;
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵattribute"]("points", bub_r9.pointer);
+        }
+      }
+
+      function SvgSummaryScalesChartComponent_div_0__svg_g_5_Template(rf, ctx) {
+        if (rf & 1) {
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnamespaceSVG"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "g", 11);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](1, SvgSummaryScalesChartComponent_div_0__svg_g_5__svg_polygon_1_Template, 1, 1, "polygon", 12);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](2, "rect", 13);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](3, "text", 14);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](4);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        }
+
+        if (rf & 2) {
+          var bub_r9 = ctx.$implicit;
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", bub_r9.pointer);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵattribute"]("x", bub_r9.rectX)("y", bub_r9.rectY)("width", bub_r9.width)("height", bub_r9.height)("rx", bub_r9.rx)("ry", bub_r9.rx);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵattribute"]("x", bub_r9.textX)("y", bub_r9.textY);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](bub_r9.text);
+        }
+      }
+
+      function SvgSummaryScalesChartComponent_div_0__svg_text_6_Template(rf, ctx) {
+        if (rf & 1) {
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnamespaceSVG"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "text", 15);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](1);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        }
+
+        if (rf & 2) {
+          var l_r12 = ctx.$implicit;
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵattribute"]("x", l_r12.x)("y", l_r12.y);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](l_r12.text);
+        }
+      }
+
+      function SvgSummaryScalesChartComponent_div_0_Template(rf, ctx) {
+        if (rf & 1) {
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 1);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnamespaceSVG"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "svg", 2);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](2, SvgSummaryScalesChartComponent_div_0__svg_rect_2_Template, 1, 5, "rect", 3);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](3, SvgSummaryScalesChartComponent_div_0__svg_text_3_Template, 2, 3, "text", 4);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](4, SvgSummaryScalesChartComponent_div_0__svg_rect_4_Template, 1, 4, "rect", 5);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](5, SvgSummaryScalesChartComponent_div_0__svg_g_5_Template, 5, 10, "g", 6);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](6, SvgSummaryScalesChartComponent_div_0__svg_text_6_Template, 2, 3, "text", 7);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        }
+
+        if (rf & 2) {
+          var ctx_r0 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵattribute"]("viewBox", ctx_r0.viewBox);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngForOf", ctx_r0.bands);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngForOf", ctx_r0.yLabels);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngForOf", ctx_r0.bars);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngForOf", ctx_r0.bubbles);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngForOf", ctx_r0.xLabels);
+        }
+      }
+      /**
+       * Pure-SVG re-implementation of SummaryScalesChartComponent (Option B).
+       *
+       * Renders the same visual as the Chart.js version -- horizontal colored
+       * severity bands with one blue bar per scale result rising from the bottom --
+       * but as inline SVG. SVG prints natively and crisply at any scale, so there is
+       * no <canvas>-to-image rasterization step and none of its timing/blank-image
+       * failure modes. The component exposes the same @Input API as the original so
+       * it is a drop-in replacement at the template level.
+       */
+
+
+      var SvgSummaryScalesChartComponent = /*#__PURE__*/function () {
+        function SvgSummaryScalesChartComponent(element, colorService) {
+          _classCallCheck(this, SvgSummaryScalesChartComponent);
+
+          this.element = element;
+          this.colorService = colorService;
+          this.reverseDirection = false;
+          this.viewBox = "0 0 ".concat(SvgSummaryScalesChartComponent.W, " ").concat(SvgSummaryScalesChartComponent.H);
+          this.bands = [];
+          this.yLabels = [];
+          this.bars = [];
+          this.xLabels = [];
+          this.bubbles = [];
+        }
+
+        _createClass(SvgSummaryScalesChartComponent, [{
+          key: "ngOnChanges",
+          value: function ngOnChanges(changes) {
+            this.recompute();
+          }
+        }, {
+          key: "recompute",
+          value: function recompute() {
+            var _this17 = this;
+
+            this.bands = [];
+            this.yLabels = [];
+            this.bars = [];
+            this.xLabels = [];
+            this.bubbles = [];
+
+            if (!this.hasResults) {
+              return;
+            }
+
+            var C = SvgSummaryScalesChartComponent;
+            var ranges = this.scaleResults[0].scale.ranges;
+            var n = ranges.length;
+            var marginBottom = this.showNames === true ? C.MARGIN_BOTTOM_WITH_NAMES : C.MARGIN_BOTTOM;
+            var x0 = C.MARGIN_LEFT;
+            var y0 = C.MARGIN_TOP;
+            var plotW = C.W - C.MARGIN_LEFT - C.MARGIN_RIGHT;
+            var plotH = C.H - C.MARGIN_TOP - marginBottom;
+            var bandH = plotH / n; // Colored severity bands (band 0 at the bottom). Colors only are reversed
+            // for reverseDirection, matching the original behavior.
+
+            var colors = this.colorService.getBackgroundColors(n).map(function (c) {
+              return c.color;
+            });
+
+            if (this.reverseDirection) {
+              colors = colors.slice().reverse();
+            }
+
+            var rangeNames = this.getChartRangeNames();
+
+            for (var i = 0; i < n; i++) {
+              var topY = y0 + (n - 1 - i) * bandH;
+
+              if (colors[i]) {
+                this.bands.push({
+                  x: x0,
+                  y: topY,
+                  width: plotW,
+                  height: bandH,
+                  color: colors[i]
+                });
+              } // y-axis label sits just inside the top edge of its band.
+
+
+              this.yLabels.push({
+                x: x0 - 6,
+                y: topY + 14,
+                text: rangeNames[i] || ""
+              });
+            } // One blue bar per scale result, height = (rangeIndex + scorePercent) / n.
+
+
+            var m = this.scaleResults.length;
+            var slot = plotW / m;
+            var barW = Math.min(C.MAX_BAR_WIDTH, slot * 0.5);
+            var names = this.getLabelsForScales();
+            this.scaleResults.forEach(function (sr, j) {
+              var rangeIndex = sr.scale.ranges.indexOf(sr.range);
+              var scorePercent = _this17.safeRangePercent(sr) / 100;
+
+              if (scorePercent <= 0) {
+                scorePercent += 0.10;
+              }
+
+              var value = Math.max(0, rangeIndex) + scorePercent;
+              var frac = Math.min(1, value / n);
+              var barH = frac * plotH;
+              var centerX = x0 + slot * j + slot / 2;
+              var barTop = y0 + plotH - barH;
+
+              _this17.bars.push({
+                x: centerX - barW / 2,
+                y: barTop,
+                width: barW,
+                height: barH
+              });
+
+              _this17.bubbles.push(_this17.buildScoreBubble(sr, centerX, barTop, y0));
+
+              if (_this17.showNames === true) {
+                _this17.xLabels.push({
+                  x: centerX,
+                  y: y0 + plotH + 18,
+                  text: names[j] || ""
+                });
+              }
+            });
+          }
+          /**
+           * Builds an always-on score "bubble" for a bar. The bubble normally floats
+           * just above the bar with a small pointer; if the bar reaches the top of the
+           * plot there is no room above, so the bubble drops just inside the bar top and
+           * the pointer is omitted. Bubble width grows with the score text so 1-3 digit
+           * (and decimal) scores all fit, and it is clamped horizontally so edge bars
+           * never overflow the SVG viewBox.
+           */
+
+        }, {
+          key: "buildScoreBubble",
+          value: function buildScoreBubble(sr, centerX, barTop, y0) {
+            var C = SvgSummaryScalesChartComponent;
+            var text = this.safeScoreText(sr);
+            var width = Math.max(C.BUBBLE_MIN_WIDTH, text.length * C.BUBBLE_CHAR_WIDTH + C.BUBBLE_PAD_X);
+            var height = C.BUBBLE_HEIGHT;
+            var desiredTop = barTop - C.BUBBLE_POINTER_H - height;
+            var above = desiredTop >= y0;
+            var rectY = above ? desiredTop : barTop + 3; // Keep the bubble inside the drawing area horizontally.
+
+            var minX = 2;
+            var maxX = C.W - width - 2;
+            var rectX = Math.max(minX, Math.min(maxX, centerX - width / 2));
+            var pointer = above ? "".concat(centerX - 5, ",").concat(rectY + height, " ").concat(centerX + 5, ",").concat(rectY + height, " ").concat(centerX, ",").concat(rectY + height + C.BUBBLE_POINTER_H) : null;
+            return {
+              rectX: rectX,
+              rectY: rectY,
+              width: width,
+              height: height,
+              rx: 5,
+              textX: rectX + width / 2,
+              textY: rectY + height * 0.68,
+              text: text,
+              pointer: pointer
+            };
+          }
+        }, {
+          key: "safeScoreText",
+          value: function safeScoreText(sr) {
+            try {
+              return sr.getScoreForDisplay();
+            } catch (e) {
+              return String(sr.score != null ? sr.score : "");
+            }
+          }
+        }, {
+          key: "safeRangePercent",
+          value: function safeRangePercent(sr) {
+            try {
+              return sr.range.getPercentageForRange(sr.score);
+            } catch (e) {
+              // Score out of its range bounds; clamp instead of throwing.
+              return sr.score <= sr.range.rangeStart ? 0 : 100;
+            }
+          }
+        }, {
+          key: "getLabelsForScales",
+          value: function getLabelsForScales() {
+            var labels = this.scaleResults.map(function (sr) {
+              return sr.scale.name.substring(0, Math.min(sr.scale.name.length, SvgSummaryScalesChartComponent.MAX_SCALE_NAME_LENGTH));
+            });
+
+            if (this.chartScaleNames) {
+              if (this.chartScaleNames.length == this.scaleResults.length) {
+                labels = this.chartScaleNames;
+              } else {
+                console.error("chart scale names", this.chartScaleNames, " do not match number of scales ", this.scaleResults);
+              }
+            }
+
+            return labels;
+          }
+        }, {
+          key: "getChartRangeNames",
+          value: function getChartRangeNames() {
+            var _this18 = this;
+
+            var ranges = this.scaleResults[0].scale.ranges;
+            var names = this.chartRangeNames;
+
+            if (!names || names.length == 0) {
+              return ranges.map(function (r) {
+                var name = r.displayName || "";
+
+                if (_this18.showRangeScore !== false) {
+                  name += " (" + r.rangeEnd + ")";
+                }
+
+                return name;
+              });
+            }
+
+            if (names.length != ranges.length) {
+              console.error("Scale range names does not match count of scale ranges");
+              return names;
+            }
+
+            return names.map(function (v, i) {
+              return v + " (" + ranges[i].rangeEnd + ")";
+            });
+          }
+          /**
+           * Parity with the Chart.js component: hands back a printable image of the
+           * chart. Serializes the rendered SVG into a data-URL <img> so existing print
+           * paths (e.g. therapist-scale-results.getPrintContent()) keep working.
+           */
+
+        }, {
+          key: "getChartAsHtmlImageElement",
+          value: function getChartAsHtmlImageElement() {
+            var img = new Image();
+            var svg = this.element.nativeElement.querySelector('svg');
+
+            if (svg) {
+              try {
+                var serialized = new XMLSerializer().serializeToString(svg);
+                img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(serialized)));
+              } catch (e) {
+                console.error("Failed to serialize SVG chart to image", e);
+              }
+            }
+
+            return img;
+          }
+        }, {
+          key: "hasResults",
+          get: function get() {
+            return this.scaleResults != null && this.scaleResults.length > 0 && this.scaleResults[0].scale && this.scaleResults[0].scale.ranges && this.scaleResults[0].scale.ranges.length > 0;
+          }
+        }]);
+
+        return SvgSummaryScalesChartComponent;
+      }();
+
+      SvgSummaryScalesChartComponent.MAX_SCALE_NAME_LENGTH = 75; // Fixed SVG user-space canvas; the viewBox makes it scale to any container.
+
+      SvgSummaryScalesChartComponent.W = 700;
+      SvgSummaryScalesChartComponent.H = 420;
+      SvgSummaryScalesChartComponent.MARGIN_LEFT = 150;
+      SvgSummaryScalesChartComponent.MARGIN_RIGHT = 12;
+      SvgSummaryScalesChartComponent.MARGIN_TOP = 12;
+      SvgSummaryScalesChartComponent.MARGIN_BOTTOM_WITH_NAMES = 46;
+      SvgSummaryScalesChartComponent.MARGIN_BOTTOM = 12;
+      SvgSummaryScalesChartComponent.MAX_BAR_WIDTH = 50; // Score bubble geometry (SVG user-space units).
+
+      SvgSummaryScalesChartComponent.BUBBLE_HEIGHT = 20;
+      SvgSummaryScalesChartComponent.BUBBLE_POINTER_H = 5;
+      SvgSummaryScalesChartComponent.BUBBLE_MIN_WIDTH = 22;
+      SvgSummaryScalesChartComponent.BUBBLE_CHAR_WIDTH = 8;
+      SvgSummaryScalesChartComponent.BUBBLE_PAD_X = 14;
+
+      SvgSummaryScalesChartComponent.ɵfac = function SvgSummaryScalesChartComponent_Factory(t) {
+        return new (t || SvgSummaryScalesChartComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](app_assessment_charts_services_scale_result_color_service__WEBPACK_IMPORTED_MODULE_1__["ScaleResultColorService"]));
+      };
+
+      SvgSummaryScalesChartComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({
+        type: SvgSummaryScalesChartComponent,
+        selectors: [["app-svg-summary-scales-chart"]],
+        inputs: {
+          scaleResults: "scaleResults",
+          showNames: "showNames",
+          showRangeScore: "showRangeScore",
+          chartScaleNames: "chartScaleNames",
+          chartRangeNames: "chartRangeNames",
+          reverseDirection: "reverseDirection"
+        },
+        features: [_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵNgOnChangesFeature"]],
+        decls: 1,
+        vars: 1,
+        consts: [["class", "scale-chart-container svg-chart-container", 4, "ngIf"], [1, "scale-chart-container", "svg-chart-container"], ["preserveAspectRatio", "xMidYMid meet", "xmlns", "http://www.w3.org/2000/svg", 1, "dac-svg-chart"], ["shape-rendering", "crispEdges", 4, "ngFor", "ngForOf"], ["text-anchor", "end", "class", "dac-svg-ylabel", 4, "ngFor", "ngForOf"], ["class", "dac-svg-bar", 4, "ngFor", "ngForOf"], ["class", "dac-svg-bubble", 4, "ngFor", "ngForOf"], ["text-anchor", "middle", "class", "dac-svg-xlabel", 4, "ngFor", "ngForOf"], ["shape-rendering", "crispEdges"], ["text-anchor", "end", 1, "dac-svg-ylabel"], [1, "dac-svg-bar"], [1, "dac-svg-bubble"], ["class", "dac-svg-bubble-box", 4, "ngIf"], [1, "dac-svg-bubble-box"], ["text-anchor", "middle", 1, "dac-svg-bubble-text"], ["text-anchor", "middle", 1, "dac-svg-xlabel"]],
+        template: function SvgSummaryScalesChartComponent_Template(rf, ctx) {
+          if (rf & 1) {
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](0, SvgSummaryScalesChartComponent_div_0_Template, 7, 6, "div", 0);
+          }
+
+          if (rf & 2) {
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx.hasResults);
+          }
+        },
+        directives: [_angular_common__WEBPACK_IMPORTED_MODULE_2__["NgIf"], _angular_common__WEBPACK_IMPORTED_MODULE_2__["NgForOf"]],
+        styles: ["[_nghost-%COMP%] {\n  display: block;\n  text-align: center;\n}\n\n.svg-chart-container[_ngcontent-%COMP%] {\n  width: 100%;\n}\n\n.dac-svg-chart[_ngcontent-%COMP%] {\n  width: 100%;\n  height: auto;\n  display: block;\n}\n\n.dac-svg-bar[_ngcontent-%COMP%] {\n  fill: #007FFF;\n  stroke: rgba(0, 0, 0, 1);\n  stroke-width: 1;\n}\n\n.dac-svg-bubble-box[_ngcontent-%COMP%] {\n  fill: rgba(33, 37, 41, 0.9);\n  stroke: #ffffff;\n  stroke-width: 1;\n}\n\n.dac-svg-bubble-text[_ngcontent-%COMP%] {\n  font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;\n  font-size: 13px;\n  font-weight: 700;\n  fill: #ffffff;\n}\n\n.dac-svg-ylabel[_ngcontent-%COMP%] {\n  font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;\n  font-size: 13px;\n  fill: #666;\n}\n\n.dac-svg-xlabel[_ngcontent-%COMP%] {\n  font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;\n  font-size: 13px;\n  fill: #666;\n}\n\n\n\n@media print {\n  .dac-svg-chart[_ngcontent-%COMP%] {\n    page-break-inside: avoid;\n  }\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvYXNzZXNzbWVudC1jaGFydHMvc3ZnLXN1bW1hcnktc2NhbGVzLWNoYXJ0L3N2Zy1zdW1tYXJ5LXNjYWxlcy1jaGFydC5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0UsY0FBYztFQUNkLGtCQUFrQjtBQUNwQjs7QUFFQTtFQUNFLFdBQVc7QUFDYjs7QUFFQTtFQUNFLFdBQVc7RUFDWCxZQUFZO0VBQ1osY0FBYztBQUNoQjs7QUFFQTtFQUNFLGFBQWE7RUFDYix3QkFBd0I7RUFDeEIsZUFBZTtBQUNqQjs7QUFFQTtFQUNFLDJCQUEyQjtFQUMzQixlQUFlO0VBQ2YsZUFBZTtBQUNqQjs7QUFFQTtFQUNFLCtEQUErRDtFQUMvRCxlQUFlO0VBQ2YsZ0JBQWdCO0VBQ2hCLGFBQWE7QUFDZjs7QUFFQTtFQUNFLCtEQUErRDtFQUMvRCxlQUFlO0VBQ2YsVUFBVTtBQUNaOztBQUVBO0VBQ0UsK0RBQStEO0VBQy9ELGVBQWU7RUFDZixVQUFVO0FBQ1o7O0FBRUEseUVBQXlFOztBQUN6RTtFQUNFO0lBQ0Usd0JBQXdCO0VBQzFCO0FBQ0YiLCJmaWxlIjoic3JjL2FwcC9hc3Nlc3NtZW50LWNoYXJ0cy9zdmctc3VtbWFyeS1zY2FsZXMtY2hhcnQvc3ZnLXN1bW1hcnktc2NhbGVzLWNoYXJ0LmNvbXBvbmVudC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyI6aG9zdCB7XG4gIGRpc3BsYXk6IGJsb2NrO1xuICB0ZXh0LWFsaWduOiBjZW50ZXI7XG59XG5cbi5zdmctY2hhcnQtY29udGFpbmVyIHtcbiAgd2lkdGg6IDEwMCU7XG59XG5cbi5kYWMtc3ZnLWNoYXJ0IHtcbiAgd2lkdGg6IDEwMCU7XG4gIGhlaWdodDogYXV0bztcbiAgZGlzcGxheTogYmxvY2s7XG59XG5cbi5kYWMtc3ZnLWJhciB7XG4gIGZpbGw6ICMwMDdGRkY7XG4gIHN0cm9rZTogcmdiYSgwLCAwLCAwLCAxKTtcbiAgc3Ryb2tlLXdpZHRoOiAxO1xufVxuXG4uZGFjLXN2Zy1idWJibGUtYm94IHtcbiAgZmlsbDogcmdiYSgzMywgMzcsIDQxLCAwLjkpO1xuICBzdHJva2U6ICNmZmZmZmY7XG4gIHN0cm9rZS13aWR0aDogMTtcbn1cblxuLmRhYy1zdmctYnViYmxlLXRleHQge1xuICBmb250LWZhbWlseTogJ0hlbHZldGljYSBOZXVlJywgJ0hlbHZldGljYScsICdBcmlhbCcsIHNhbnMtc2VyaWY7XG4gIGZvbnQtc2l6ZTogMTNweDtcbiAgZm9udC13ZWlnaHQ6IDcwMDtcbiAgZmlsbDogI2ZmZmZmZjtcbn1cblxuLmRhYy1zdmcteWxhYmVsIHtcbiAgZm9udC1mYW1pbHk6ICdIZWx2ZXRpY2EgTmV1ZScsICdIZWx2ZXRpY2EnLCAnQXJpYWwnLCBzYW5zLXNlcmlmO1xuICBmb250LXNpemU6IDEzcHg7XG4gIGZpbGw6ICM2NjY7XG59XG5cbi5kYWMtc3ZnLXhsYWJlbCB7XG4gIGZvbnQtZmFtaWx5OiAnSGVsdmV0aWNhIE5ldWUnLCAnSGVsdmV0aWNhJywgJ0FyaWFsJywgc2Fucy1zZXJpZjtcbiAgZm9udC1zaXplOiAxM3B4O1xuICBmaWxsOiAjNjY2O1xufVxuXG4vKiBTVkcgcHJpbnRzIG5hdGl2ZWx5OyBtYWtlIHN1cmUgaXQgaXNuJ3QgY2xpcHBlZCBhY3Jvc3MgYSBwYWdlIGJyZWFrLiAqL1xuQG1lZGlhIHByaW50IHtcbiAgLmRhYy1zdmctY2hhcnQge1xuICAgIHBhZ2UtYnJlYWstaW5zaWRlOiBhdm9pZDtcbiAgfVxufVxuIl19 */"]
+      });
+      /*@__PURE__*/
+
+      (function () {
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](SvgSummaryScalesChartComponent, [{
+          type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
+          args: [{
+            selector: 'app-svg-summary-scales-chart',
+            templateUrl: './svg-summary-scales-chart.component.html',
+            styleUrls: ['./svg-summary-scales-chart.component.css']
+          }]
+        }], function () {
+          return [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"]
+          }, {
+            type: app_assessment_charts_services_scale_result_color_service__WEBPACK_IMPORTED_MODULE_1__["ScaleResultColorService"]
+          }];
+        }, {
+          scaleResults: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"],
+            args: ["scaleResults"]
+          }],
+          showNames: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"],
+            args: ["showNames"]
+          }],
+          showRangeScore: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"],
+            args: ["showRangeScore"]
+          }],
+          chartScaleNames: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"],
+            args: ["chartScaleNames"]
+          }],
+          chartRangeNames: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"],
+            args: ["chartRangeNames"]
+          }],
+          reverseDirection: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"],
+            args: ["reverseDirection"]
+          }]
+        });
+      })();
+      /***/
+
+    },
+
+    /***/
     "5IhB":
     /*!**************************************************************!*\
       !*** ./src/app/reports/services/report-navigator.service.ts ***!
@@ -4648,49 +5224,35 @@
         }
       }
 
-      function AssetResultViewComponent_div_6_input_1_Template(rf, ctx) {
+      function AssetResultViewComponent_div_6_Template(rf, ctx) {
         if (rf & 1) {
-          var _r9 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
+          var _r8 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "input", 16);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 14);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function AssetResultViewComponent_div_6_input_1_Template_input_click_0_listener() {
-            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r9);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "input", 15);
 
-            var ctx_r8 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](2);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function AssetResultViewComponent_div_6_Template_input_click_1_listener() {
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r8);
 
-            return ctx_r8.browserPrint();
+            var ctx_r7 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
+
+            return ctx_r7.browserPrint();
           });
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        }
-      }
-
-      function AssetResultViewComponent_div_6_Template(rf, ctx) {
-        if (rf & 1) {
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 14);
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](1, AssetResultViewComponent_div_6_input_1_Template, 1, 0, "input", 15);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        }
-
-        if (rf & 2) {
-          var ctx_r1 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx_r1.allowPrinting);
         }
       }
 
       function AssetResultViewComponent_div_11_Template(rf, ctx) {
         if (rf & 1) {
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 17);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 16);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "div", 18);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "div", 17);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](2, "p", 19);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](2, "p", 18);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](3, "app-spin-icon");
 
@@ -4706,7 +5268,7 @@
 
       function AssetResultViewComponent_dac_exercise_15_Template(rf, ctx) {
         if (rf & 1) {
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "dac-exercise", 20);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "dac-exercise", 19);
         }
 
         if (rf & 2) {
@@ -4718,7 +5280,7 @@
 
       function AssetResultViewComponent_dac_article_16_Template(rf, ctx) {
         if (rf & 1) {
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "dac-article", 21);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "dac-article", 20);
         }
 
         if (rf & 2) {
@@ -4753,22 +5315,22 @@
         _createClass(AssetResultViewComponent, [{
           key: "ngOnInit",
           value: function ngOnInit() {
-            var _this17 = this;
+            var _this19 = this;
 
             this.route.params.subscribe(function (params) {
               var resultId = params['resultId'];
-              _this17.hasLoadedResults = false;
+              _this19.hasLoadedResults = false;
 
-              _this17.assetService.getAssetResult(resultId).then(function (result) {
-                _this17.hasLoadedResults = true;
-                _this17.result = result;
+              _this19.assetService.getAssetResult(resultId).then(function (result) {
+                _this19.hasLoadedResults = true;
+                _this19.result = result;
               })["catch"](function (error) {
                 console.error(error);
 
                 if (error && error.status === 404 || error.status === 400) {
-                  _this17.alertService.error("404 This item could not be found");
+                  _this19.alertService.error("404 This item could not be found");
                 } else {
-                  _this17.alertService.error("There was a server error in loading this item.  Check your internet connection or contact support");
+                  _this19.alertService.error("There was a server error in loading this item.  Check your internet connection or contact support");
                 }
               });
             });
@@ -4834,7 +5396,7 @@
         selectors: [["dac-asset-result-view"]],
         decls: 17,
         vars: 12,
-        consts: [[1, "col", "itemsContainer", "d-print-block-visible"], [1, "row", "report-controls"], ["class", "col-2", 4, "ngIf"], [3, "ngClass"], [1, "h1-responsive", "report-name", "text-center"], ["class", "col-2 ml-auto", 4, "ngIf"], [1, "row", "d-none", "d-print-block-visible"], [1, "col-12", "text-center"], ["class", "row", 4, "ngIf"], [1, "text-center", "offset-2", "col-8"], ["class", "card card-body", 3, "exercise", "result", "hideHeaders", "disabled", 4, "ngIf"], ["class", "card card-body", 3, "article", "result", "hideHeaders", "disabled", 4, "ngIf"], [1, "col-2"], ["type", "button", "value", "Back", 1, "btn", "btn-primary", 3, "click"], [1, "col-2", "ml-auto"], ["class", "btn btn-secondary", "type", "button", "value", "Download PDF", 3, "click", 4, "ngIf"], ["type", "button", "value", "Download PDF", 1, "btn", "btn-secondary", 3, "click"], [1, "row"], [1, "col"], [1, "alert", "alert-warning"], [1, "card", "card-body", 3, "exercise", "result", "hideHeaders", "disabled"], [1, "card", "card-body", 3, "article", "result", "hideHeaders", "disabled"]],
+        consts: [[1, "col", "itemsContainer", "d-print-block-visible"], [1, "row", "report-controls"], ["class", "col-2", 4, "ngIf"], [3, "ngClass"], [1, "h1-responsive", "report-name", "text-center"], ["class", "col-2 ml-auto", 4, "ngIf"], [1, "row", "d-none", "d-print-block-visible"], [1, "col-12", "text-center"], ["class", "row", 4, "ngIf"], [1, "text-center", "offset-2", "col-8"], ["class", "card card-body", 3, "exercise", "result", "hideHeaders", "disabled", 4, "ngIf"], ["class", "card card-body", 3, "article", "result", "hideHeaders", "disabled", 4, "ngIf"], [1, "col-2"], ["type", "button", "value", "Back", 1, "btn", "btn-primary", 3, "click"], [1, "col-2", "ml-auto"], ["type", "button", "value", "Print", 1, "btn", "btn-secondary", "d-print-none", 3, "click"], [1, "row"], [1, "col"], [1, "alert", "alert-warning"], [1, "card", "card-body", 3, "exercise", "result", "hideHeaders", "disabled"], [1, "card", "card-body", 3, "article", "result", "hideHeaders", "disabled"]],
         template: function AssetResultViewComponent_Template(rf, ctx) {
           if (rf & 1) {
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 0);
@@ -4853,7 +5415,7 @@
 
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
-            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](6, AssetResultViewComponent_div_6_Template, 2, 1, "div", 5);
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](6, AssetResultViewComponent_div_6_Template, 2, 0, "div", 5);
 
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
@@ -5400,34 +5962,34 @@
         }, {
           key: "authenticateClient",
           value: function authenticateClient(clientApiId) {
-            var _this18 = this;
+            var _this20 = this;
 
             // sessionStorage.clear();
             var data = {
               clientID: clientApiId
             };
             return this._dac$http.post("/login/client", data).then(function (resp) {
-              _this18.metrics.trackEvent(_this18.METRIC_CATEGORY, 'authenticateClient', 'Authentication succeded');
+              _this20.metrics.trackEvent(_this20.METRIC_CATEGORY, 'authenticateClient', 'Authentication succeded');
 
-              _this18._clientId = clientApiId;
-              _this18._isLoggedIn = true; // now populate the user here.
+              _this20._clientId = clientApiId;
+              _this20._isLoggedIn = true; // now populate the user here.
 
-              _this18._user = _this18.getClientUser(clientApiId);
+              _this20._user = _this20.getClientUser(clientApiId);
 
-              _this18.updateSessionStorageWithUser(_this18._user);
+              _this20.updateSessionStorageWithUser(_this20._user);
 
-              _this18._loginStateSubject.next(_this18.getCurrentLoginState());
+              _this20._loginStateSubject.next(_this20.getCurrentLoginState());
 
               return clientApiId;
             })["catch"](function (error) {
               console.error(error);
 
               if (error.status === 404) {
-                _this18.metrics.trackEvent(_this18.METRIC_CATEGORY, 'authenticateClient', 'Invalid client token');
+                _this20.metrics.trackEvent(_this20.METRIC_CATEGORY, 'authenticateClient', 'Invalid client token');
 
                 throw new Error("Invalid Token: " + clientApiId);
               } else {
-                _this18.metrics.trackEvent(_this18.METRIC_CATEGORY, 'authenticateClient', 'Server error authenticating client');
+                _this20.metrics.trackEvent(_this20.METRIC_CATEGORY, 'authenticateClient', 'Server error authenticating client');
 
                 throw new Error("An error occurred communicating with the server.  Please try again.");
               }
@@ -5436,20 +5998,20 @@
         }, {
           key: "authenticateSSO",
           value: function authenticateSSO(ssoRelayState) {
-            var _this19 = this;
+            var _this21 = this;
 
             return this._dac$http.securePost("sso", {
               ssoToken: ssoRelayState
             }, ssoRelayState).then(function (data) {
               if (data.role == app_shared_models_role__WEBPACK_IMPORTED_MODULE_7__["Role"].Client) {
-                _this19.metrics.trackEvent(_this19.METRIC_CATEGORY, 'sso', 'authenticated single sign on for client');
+                _this21.metrics.trackEvent(_this21.METRIC_CATEGORY, 'sso', 'authenticated single sign on for client');
 
-                _this19._clientId = data.id;
+                _this21._clientId = data.id;
               } else {
-                _this19.metrics.trackEvent(_this19.METRIC_CATEGORY, 'sso', 'authenticated single sign on for user');
+                _this21.metrics.trackEvent(_this21.METRIC_CATEGORY, 'sso', 'authenticated single sign on for user');
               }
 
-              _this19.processUserAuthenticationFromResp(data);
+              _this21.processUserAuthenticationFromResp(data);
 
               return data;
             })["catch"](function (error) {
@@ -5461,10 +6023,10 @@
               };
 
               if (innerError.redirectUrl) {
-                _this19.metrics.trackEvent(_this19.METRIC_CATEGORY, 'sso', 'single sign on failed, redirecting to url'); // window.location.href = error.redirectUrl;
+                _this21.metrics.trackEvent(_this21.METRIC_CATEGORY, 'sso', 'single sign on failed, redirecting to url'); // window.location.href = error.redirectUrl;
 
               } else {
-                _this19.metrics.trackEvent(_this19.METRIC_CATEGORY, 'sso', 'single sign on failed no redirect url set'); // TODO: stephen need to navigate to an SSO error page if we have no redirect url.
+                _this21.metrics.trackEvent(_this21.METRIC_CATEGORY, 'sso', 'single sign on failed no redirect url set'); // TODO: stephen need to navigate to an SSO error page if we have no redirect url.
 
               }
 
@@ -5474,7 +6036,7 @@
         }, {
           key: "authenticateCognito",
           value: function authenticateCognito(user) {
-            var _this20 = this;
+            var _this22 = this;
 
             // send the amazon cognito user to the server to verify the user actually is valid
             // then we can setup the client session for the user...
@@ -5486,9 +6048,9 @@
             return this._dac$http.post("/login", {
               authToken: authToken
             }).then(function (resp) {
-              return _this20.processUserAuthenticationFromResp(resp);
+              return _this22.processUserAuthenticationFromResp(resp);
             }).then(function (user) {
-              _this20.metrics.trackEvent(_this20.METRIC_CATEGORY, 'authenticateCognito', 'User authenticated with cognito JWT');
+              _this22.metrics.trackEvent(_this22.METRIC_CATEGORY, 'authenticateCognito', 'User authenticated with cognito JWT');
 
               return user;
             })["catch"](function (error) {
@@ -5866,7 +6428,7 @@
         }, {
           key: "configureUserAuthPool",
           value: function configureUserAuthPool(dacConfig) {
-            var _this21 = this;
+            var _this23 = this;
 
             var configData = {
               // REQUIRED only for Federated Authentication - Amazon Cognito Identity Pool ID
@@ -5886,9 +6448,9 @@
 
             this._dac$http.currentStatus().subscribe(function (status) {
               // if we need to authenticate..
-              if (status == 401 && _this21._isLoggedIn && !_this21._inAuthentication) {
+              if (status == 401 && _this23._isLoggedIn && !_this23._inAuthentication) {
                 // server has terminated the session... so we need to log ourselves out as well.
-                return _this21.amplifyService.signOut({
+                return _this23.amplifyService.signOut({
                   global: true
                 });
               }
@@ -6086,13 +6648,13 @@
         _createClass(StripePaymentProcessor, [{
           key: "createToken",
           value: function createToken(amount, description) {
-            var _this22 = this;
+            var _this24 = this;
 
             var receivedToken = false;
             return new Promise(function (resolve, reject) {
               var handler = window.StripeCheckout.configure({
-                key: _this22.dacConfig.stripe_public_key,
-                locale: _this22.CARD_LOCALE,
+                key: _this24.dacConfig.stripe_public_key,
+                locale: _this24.CARD_LOCALE,
                 token: function token(_token2) {
                   // You can access the token ID with `token.id`.
                   // Get the token ID to your server-side code for use.
@@ -6110,7 +6672,7 @@
                 }
               });
               handler.open({
-                name: _this22.dacConfig.stripe_charge_name,
+                name: _this24.dacConfig.stripe_charge_name,
                 description: description,
                 amount: amount
               });
@@ -6119,13 +6681,13 @@
         }, {
           key: "createUpdateCardToken",
           value: function createUpdateCardToken(description, existingEmail) {
-            var _this23 = this;
+            var _this25 = this;
 
             var receivedToken = false;
             return new Promise(function (resolve, reject) {
               var handler = window.StripeCheckout.configure({
-                key: _this23.dacConfig.stripe_public_key,
-                locale: _this23.CARD_LOCALE,
+                key: _this25.dacConfig.stripe_public_key,
+                locale: _this25.CARD_LOCALE,
                 token: function token(_token3) {
                   // You can access the token ID with `token.id`.
                   // Get the token ID to your server-side code for use.
@@ -6143,7 +6705,7 @@
                 }
               });
               var options = {
-                name: _this23.dacConfig.stripe_charge_name,
+                name: _this25.dacConfig.stripe_charge_name,
                 description: description,
                 panelLabel: "Save Payment Card",
                 allowRememberMe: false
@@ -6284,19 +6846,19 @@
         _createClass(LoginFinalizeComponent, [{
           key: "ngOnInit",
           value: function ngOnInit() {
-            var _this24 = this;
+            var _this26 = this;
 
             this.fhirService.fhirClientReady().then(function (client) {
               // if for some reason someone logged in as a patient... we are sending them on to the patient routes
               // TODO: we need a way of sending a user back to the page they were trying to access before the permission request hit them...
-              _this24.router.navigateByUrl("/"); // go back and let the route guard send to the admin page or the regular page now that we are ready
+              _this26.router.navigateByUrl("/"); // go back and let the route guard send to the admin page or the regular page now that we are ready
 
             })["catch"](function (error) {
               if (error.needsAuthentication) {
                 // somehow they cancelled the navigation or need to go back.. relaunch the nnavigation window
-                _this24.router.navigate(["login"]);
+                _this26.router.navigate(["login"]);
               } else {
-                _this24._errorMessage = error.message;
+                _this26._errorMessage = error.message;
               }
             });
           }
@@ -6796,7 +7358,7 @@
 
       var AssessmentGroupListComponent = /*#__PURE__*/function () {
         function AssessmentGroupListComponent(assessmentGroupService, assessmentTokenService, authService) {
-          var _this25 = this;
+          var _this27 = this;
 
           _classCallCheck(this, AssessmentGroupListComponent);
 
@@ -6811,9 +7373,9 @@
           this.canShop = false;
           this._userSubscription = this.authService.getLoginState().subscribe(function (loginState) {
             if (loginState.user) {
-              _this25.canShop = loginState.user.hasCapability(app_shared_models_capability__WEBPACK_IMPORTED_MODULE_5__["Capability"].CAN_SHOP);
+              _this27.canShop = loginState.user.hasCapability(app_shared_models_capability__WEBPACK_IMPORTED_MODULE_5__["Capability"].CAN_SHOP);
             } else {
-              _this25.canShop = false;
+              _this27.canShop = false;
             }
           });
         }
@@ -6821,11 +7383,11 @@
         _createClass(AssessmentGroupListComponent, [{
           key: "ngOnInit",
           value: function ngOnInit() {
-            var _this26 = this;
+            var _this28 = this;
 
             this.assessmentGroupService.getAssessmentGroups().then(function (groups) {
               // add a display property so we can expand/contract it.
-              _this26.groups = groups.map(function (g) {
+              _this28.groups = groups.map(function (g) {
                 var displayGroup = new _shared_models_assessment_group_display__WEBPACK_IMPORTED_MODULE_2__["AssessmentGroupDisplay"]();
                 Object.assign(displayGroup, g);
                 displayGroup.Show = false;
@@ -6833,9 +7395,9 @@
               });
               return groups;
             }).then(function (groups) {
-              return _this26.assessmentTokenService.loadAssessmentTokens().then(function () {
-                _this26.hasLoadedTokens = true;
-                _this26._hasLoadedData = true;
+              return _this28.assessmentTokenService.loadAssessmentTokens().then(function () {
+                _this28.hasLoadedTokens = true;
+                _this28._hasLoadedData = true;
               });
             });
           }
@@ -6911,21 +7473,21 @@
         }, {
           key: "addGroup",
           value: function addGroup() {
-            var _this27 = this;
+            var _this29 = this;
 
             this.assessmentGroupService.createNewGroup(this.NewGroupName).then(function (group) {
               var display = new _shared_models_assessment_group_display__WEBPACK_IMPORTED_MODULE_2__["AssessmentGroupDisplay"]();
               Object.assign(display, group); // hide all the others, and show the one we just added.
 
-              _this27.groups.forEach(function (g) {
+              _this29.groups.forEach(function (g) {
                 return g.Show = false;
               });
 
               display.Show = true;
               display.ShowAdd = true;
-              _this27.NewGroupName = "";
+              _this29.NewGroupName = "";
 
-              _this27.groups.push(display);
+              _this29.groups.push(display);
             });
           }
         }, {
@@ -7090,17 +7652,17 @@
         var _super2 = _createSuper(SummaryScalesChartComponent);
 
         function SummaryScalesChartComponent(element, chartService, scaleResultColorService) {
-          var _this28;
+          var _this30;
 
           _classCallCheck(this, SummaryScalesChartComponent);
 
-          _this28 = _super2.call(this, element, chartService);
-          _this28.element = element;
-          _this28.chartService = chartService;
-          _this28.scaleResultColorService = scaleResultColorService;
-          _this28.MAX_SCALE_NAME_LENGTH = 75;
-          _this28.reverseDirection = false;
-          return _this28;
+          _this30 = _super2.call(this, element, chartService);
+          _this30.element = element;
+          _this30.chartService = chartService;
+          _this30.scaleResultColorService = scaleResultColorService;
+          _this30.MAX_SCALE_NAME_LENGTH = 75;
+          _this30.reverseDirection = false;
+          return _this30;
         }
 
         _createClass(SummaryScalesChartComponent, [{
@@ -7143,7 +7705,7 @@
         }, {
           key: "setupChartConfiguration",
           value: function setupChartConfiguration() {
-            var _this29 = this;
+            var _this31 = this;
 
             var fontSize = this.getFontSizeForCurrentViewport();
 
@@ -7191,7 +7753,7 @@
             yAxes.ticks = {
               stepSize: 1,
               callback: function callback(value, index, values) {
-                var scaleRangeNames = _this29.getChartRangeNames(); // if (value == 0 || !scaleRangeNames.hasOwnProperty(value-1)) {
+                var scaleRangeNames = _this31.getChartRangeNames(); // if (value == 0 || !scaleRangeNames.hasOwnProperty(value-1)) {
                 //   return " ";
                 // }
                 // else {
@@ -7243,10 +7805,10 @@
         }, {
           key: "getLabelsForScales",
           value: function getLabelsForScales(results) {
-            var _this30 = this;
+            var _this32 = this;
 
             var labels = this.scaleResults.map(function (sr) {
-              return sr.scale.name.substring(0, Math.min(sr.scale.name.length, _this30.MAX_SCALE_NAME_LENGTH));
+              return sr.scale.name.substring(0, Math.min(sr.scale.name.length, _this32.MAX_SCALE_NAME_LENGTH));
             }); // let labels =  this.scaleResults.map(sr => sr.scale.name);
 
             if (this.chartScaleNames) {
@@ -7267,7 +7829,7 @@
         }, {
           key: "getChartRangeNames",
           value: function getChartRangeNames() {
-            var _this31 = this;
+            var _this33 = this;
 
             var scaleRangeNames = this.chartRangeNames;
 
@@ -7275,10 +7837,10 @@
               scaleRangeNames = this.scaleResults[0].scale.ranges.map(function (r) {
                 var name = r.displayName || "";
 
-                if (_this31.showRangeScore !== false) {
+                if (_this33.showRangeScore !== false) {
                   name += " (" + r.rangeEnd + ")";
                 } else {
-                  console.log("showRangeScore was false for ", _this31.scaleResults[0]);
+                  console.log("showRangeScore was false for ", _this33.scaleResults[0]);
                 }
 
                 return name;
@@ -7287,7 +7849,7 @@
               console.error("Scale range names does not match count of scale ranges");
             } else {
               scaleRangeNames = scaleRangeNames.map(function (v, i) {
-                var range = _this31.scaleResults[0].scale.ranges[i];
+                var range = _this33.scaleResults[0].scale.ranges[i];
                 return v + " (" + range.rangeEnd + ")";
               });
             }
@@ -7297,7 +7859,7 @@
         }, {
           key: "setupChartData",
           value: function setupChartData() {
-            var _this32 = this;
+            var _this34 = this;
 
             var barColor = "#007FFF";
             var hoverBackgroundColor = "rgba(92,141,181, .75)";
@@ -7353,7 +7915,7 @@
               colors.forEach(function (colorChart, index) {
                 dataSets.push({
                   label: scaleRangeNames[index],
-                  data: Array(_this32.scaleResults.length + 1).fill(index + 1),
+                  data: Array(_this34.scaleResults.length + 1).fill(index + 1),
                   backgroundColor: colorChart.color,
                   borderColor: colorChart.color // ,borderWidth: 0
                   ,
@@ -7594,14 +8156,14 @@
         }, {
           key: "hasClientTakenAssessment",
           value: function hasClientTakenAssessment() {
-            var _this33 = this;
+            var _this35 = this;
 
             return new Promise(function (resolve, reject) {
-              if (_this33.forceTestRetake) {
+              if (_this35.forceTestRetake) {
                 resolve([]);
               }
 
-              _this33.getLatestClientAssessmentResult(_this33.clientId, _this33._assessmentUid).then(function (result) {
+              _this35.getLatestClientAssessmentResult(_this35.clientId, _this35._assessmentUid).then(function (result) {
                 resolve(result.id);
               }, function (error) {
                 if (error && error.status === 404) {
@@ -7617,7 +8179,7 @@
           key: "getAssessmentForAssignment",
           value: function getAssessmentForAssignment(assignment) {
             return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee12() {
-              var _this34 = this;
+              var _this36 = this;
 
               var requestData, client;
               return regeneratorRuntime.wrap(function _callee12$(_context12) {
@@ -7653,16 +8215,16 @@
 
                         if (item.extension && Array.isArray(item.extension) && item.extension.length) {
                           var extension = item.extension.find(function (e) {
-                            return e.url == "https://www.discoverandchange.com/fhir/" + _this34.EXTENSION_NAME;
+                            return e.url == "https://www.discoverandchange.com/fhir/" + _this36.EXTENSION_NAME;
                           });
 
                           if (extension && extension.valueString) {
-                            var assessment = _this34.createAssessmentFromJSON(JSON.parse(extension.valueString));
+                            var assessment = _this36.createAssessmentFromJSON(JSON.parse(extension.valueString));
 
                             assessment.id = item.id;
                             assessment.version = item.meta && item.meta.versionId ? item.meta.versionId : 1;
-                            _this34._assessments[assignment.Uid] = assessment;
-                            return _this34.getAssessmentCopy(assessment);
+                            _this36._assessments[assignment.Uid] = assessment;
+                            return _this36.getAssessmentCopy(assessment);
                           }
                         }
 
@@ -7688,14 +8250,14 @@
         }, {
           key: "getAssessmentVersion",
           value: function getAssessmentVersion(uid, version) {
-            var _this35 = this;
+            var _this37 = this;
 
             var requestData = {
               clientID: this.clientId,
               version: version
             };
             return this._dac$http.get("assessments/" + uid, requestData).then(function (json) {
-              var assessment = _this35.createAssessmentFromJSON(json);
+              var assessment = _this37.createAssessmentFromJSON(json);
 
               return assessment;
             }, function (error) {
@@ -7706,7 +8268,7 @@
         }, {
           key: "getAssessment",
           value: function getAssessment(uid) {
-            var _this36 = this;
+            var _this38 = this;
 
             var that = this;
 
@@ -7719,7 +8281,7 @@
             };
             return this._dac$http.get("assessments/" + uid, requestData).then(function (json) {
               var assessment = that.createAssessmentFromJSON(json);
-              _this36._assessments[uid] = assessment;
+              _this38._assessments[uid] = assessment;
               return assessment;
             }, function (error) {
               console.error(error);
@@ -7729,14 +8291,14 @@
         }, {
           key: "getAssessmentList",
           value: function getAssessmentList() {
-            var _this37 = this;
+            var _this39 = this;
 
             return this._dac$http.get("assessments").then(function (data) {
               if (data) {
                 var assessments = data.map(function (i) {
-                  return _this37.createAssessmentFromJSON(i);
+                  return _this39.createAssessmentFromJSON(i);
                 }).filter(function (a) {
-                  return _this37.dacConfig.isAssessmentEnabled(a.uid);
+                  return _this39.dacConfig.isAssessmentEnabled(a.uid);
                 });
                 return assessments;
               }
@@ -7772,7 +8334,7 @@
           key: "saveAssessmentResult",
           value: function saveAssessmentResult(result) {
             return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee13() {
-              var _this38 = this;
+              var _this40 = this;
 
               var that, resultToSave, currentUser, saveData, answers, questionnaireResponse;
               return regeneratorRuntime.wrap(function _callee13$(_context13) {
@@ -7840,8 +8402,8 @@
 
                       return _context13.abrupt("return", this._dac$http.post("QuestionnaireResponse", questionnaireResponse).then(function (createdResource) {
                         result.id = createdResource.id;
-                        _this38._results[result.id] = result;
-                        _this38.forceTestRetake = false;
+                        _this40._results[result.id] = result;
+                        _this40.forceTestRetake = false;
                         return result;
                       })["catch"](function (error) {
                         console.error("save failed", error);
@@ -7925,7 +8487,7 @@
         }, {
           key: "getLatestClientAssessmentResult",
           value: function getLatestClientAssessmentResult(clientId, assessmentUID) {
-            var _this39 = this;
+            var _this41 = this;
 
             var requestData = {
               clientID: clientId,
@@ -7933,10 +8495,10 @@
               resultID: null
             };
             return new Promise(function (resolve, reject) {
-              _this39._dac$http.get("assessment-results", requestData).then(function (data) {
-                var result = _this39.createAssessmentResultFromJSON(data);
+              _this41._dac$http.get("assessment-results", requestData).then(function (data) {
+                var result = _this41.createAssessmentResultFromJSON(data);
 
-                _this39._results[result.id] = result;
+                _this41._results[result.id] = result;
                 resolve(result);
                 return result;
               }, function (error) {
@@ -7996,7 +8558,7 @@
         }, {
           key: "getAssessmentResultList",
           value: function getAssessmentResultList(clientId, resultIds) {
-            var _this40 = this;
+            var _this42 = this;
 
             var requestData = {
               clientID: clientId,
@@ -8008,7 +8570,7 @@
 
               if (data && data.length) {
                 results = data.map(function (r) {
-                  return _this40.createAssessmentResultFromJSON(r);
+                  return _this42.createAssessmentResultFromJSON(r);
                 });
               }
 
@@ -8018,7 +8580,7 @@
         }, {
           key: "getAssessmentResult",
           value: function getAssessmentResult(clientId, resultID) {
-            var _this41 = this;
+            var _this43 = this;
 
             var requestData = {
               clientID: clientId
@@ -8032,7 +8594,7 @@
 
             console.log("attempting to grab results");
             return this._dac$http.get("assessment-results", requestData).then(function (data) {
-              var result = _this41.createAssessmentResultFromJSON(data);
+              var result = _this43.createAssessmentResultFromJSON(data);
 
               return result;
             }); // 	let promise = new Promise((resolve, reject) => {
@@ -8753,9 +9315,9 @@
       /* harmony import */
 
 
-      var _assessment_charts_summary_scales_chart_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
-      /*! ../../../assessment-charts/summary-scales-chart/summary-scales-chart.component */
-      "7gIF");
+      var _assessment_charts_svg_summary_scales_chart_svg_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
+      /*! ../../../assessment-charts/svg-summary-scales-chart/svg-summary-scales-chart.component */
+      "5CX4");
       /* harmony import */
 
 
@@ -8807,7 +9369,7 @@
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "div", 14);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](2, "app-summary-scales-chart", 16);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](2, "app-svg-summary-scales-chart", 16);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
@@ -9083,7 +9645,7 @@
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngForOf", ctx.ScaleResults);
           }
         },
-        directives: [_angular_common__WEBPACK_IMPORTED_MODULE_3__["NgForOf"], _angular_common__WEBPACK_IMPORTED_MODULE_3__["NgClass"], _angular_common__WEBPACK_IMPORTED_MODULE_3__["NgIf"], _assessment_charts_summary_scales_chart_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_4__["SummaryScalesChartComponent"], _scale_questions_list_scale_questions_list_component__WEBPACK_IMPORTED_MODULE_5__["ScaleQuestionsListComponent"], _scale_sub_list_scale_sub_list_component__WEBPACK_IMPORTED_MODULE_6__["ScaleSubListComponent"]],
+        directives: [_angular_common__WEBPACK_IMPORTED_MODULE_3__["NgForOf"], _angular_common__WEBPACK_IMPORTED_MODULE_3__["NgClass"], _angular_common__WEBPACK_IMPORTED_MODULE_3__["NgIf"], _assessment_charts_svg_summary_scales_chart_svg_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_4__["SvgSummaryScalesChartComponent"], _scale_questions_list_scale_questions_list_component__WEBPACK_IMPORTED_MODULE_5__["ScaleQuestionsListComponent"], _scale_sub_list_scale_sub_list_component__WEBPACK_IMPORTED_MODULE_6__["ScaleSubListComponent"]],
         styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvcmVwb3J0cy9yZXBvcnQtaXRlbXMvY2xpZW50LXNjYWxlLXJlc3VsdHMvY2xpZW50LXNjYWxlLXJlc3VsdHMuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7Ozs7RUFBQSIsImZpbGUiOiJzcmMvYXBwL3JlcG9ydHMvcmVwb3J0LWl0ZW1zL2NsaWVudC1zY2FsZS1yZXN1bHRzL2NsaWVudC1zY2FsZS1yZXN1bHRzLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLypcbiAqICAgQ29weXJpZ2h0IChjKSAyMDIyIERpc2NvdmVyIGFuZCBDaGFuZ2UgQGF1dGhvciBTdGVwaGVuIE5pZWxzb24gPHNuaWVsc29uQGRpc2NvdmVyYW5kY2hhbmdlLmNvbT5cbiAqICAgQWxsIHJpZ2h0cyByZXNlcnZlZC5cbiAqICAgRm9yIExpY2Vuc2UgaW5mb3JtYXRpb24gc2VlIExJQ0VOU0UubWQgaW4gdGhlIHJvb3QgZm9sZGVyIG9mIHRoaXMgcHJvamVjdC5cbiAqL1xuIl19 */"]
       });
       /*@__PURE__*/
@@ -9160,9 +9722,9 @@
       /* harmony import */
 
 
-      var _assessment_charts_summary_scales_chart_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
-      /*! ../../assessment-charts/summary-scales-chart/summary-scales-chart.component */
-      "7gIF");
+      var _assessment_charts_svg_summary_scales_chart_svg_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
+      /*! ../../assessment-charts/svg-summary-scales-chart/svg-summary-scales-chart.component */
+      "5CX4");
       /* harmony import */
 
 
@@ -9326,7 +9888,7 @@
           if (rf & 1) {
             _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](0, "div", 0);
 
-            _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelement"](1, "app-summary-scales-chart", 1);
+            _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelement"](1, "app-svg-summary-scales-chart", 1);
 
             _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
 
@@ -9347,7 +9909,7 @@
             _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("ngForOf", ctx.Criteria);
           }
         },
-        directives: [_assessment_charts_summary_scales_chart_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_5__["SummaryScalesChartComponent"], _angular_common__WEBPACK_IMPORTED_MODULE_6__["NgForOf"], _angular_common__WEBPACK_IMPORTED_MODULE_6__["NgClass"], _pcl_criteria_icon_pcl_criteria_icon_component__WEBPACK_IMPORTED_MODULE_7__["PclCriteriaIconComponent"], _angular_common__WEBPACK_IMPORTED_MODULE_6__["NgIf"]],
+        directives: [_assessment_charts_svg_summary_scales_chart_svg_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_5__["SvgSummaryScalesChartComponent"], _angular_common__WEBPACK_IMPORTED_MODULE_6__["NgForOf"], _angular_common__WEBPACK_IMPORTED_MODULE_6__["NgClass"], _pcl_criteria_icon_pcl_criteria_icon_component__WEBPACK_IMPORTED_MODULE_7__["PclCriteriaIconComponent"], _angular_common__WEBPACK_IMPORTED_MODULE_6__["NgIf"]],
         encapsulation: 2
       });
       /*@__PURE__*/
@@ -10549,13 +11111,13 @@
         }, {
           key: "closeAllToasts",
           value: function closeAllToasts() {
-            var _this42 = this;
+            var _this44 = this;
 
             this.toasts.forEach(function (t, index) {
               if (t) {
-                _this42.toasts[index].close();
+                _this44.toasts[index].close();
 
-                _this42.toasts[index] = null; // clear up the toasts memory
+                _this44.toasts[index] = null; // clear up the toasts memory
               }
             });
             this.toasts = [];
@@ -10590,11 +11152,11 @@
         }, {
           key: "clearToasts",
           value: function clearToasts() {
-            var _this43 = this;
+            var _this45 = this;
 
             this.toasts.forEach(function (t, index) {
               if (t && !t.isVisible) {
-                _this43.toasts[index] = null; // clear up the toasts memory
+                _this45.toasts[index] = null; // clear up the toasts memory
               }
             });
           }
@@ -10712,7 +11274,7 @@
           key: "getAsset",
           value: function getAsset(assetUuid) {
             return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee25() {
-              var _this44 = this;
+              var _this46 = this;
 
               var client;
               return regeneratorRuntime.wrap(function _callee25$(_context25) {
@@ -10728,7 +11290,7 @@
                         flat: true
                       }).then(function (json) {
                         var item = Array.isArray(json) && json.length ? json[0] : {};
-                        return _this44.hydrateLibraryAssetFromQuestionnaireItem(item);
+                        return _this46.hydrateLibraryAssetFromQuestionnaireItem(item);
                       }));
 
                     case 4:
@@ -10742,11 +11304,11 @@
         }, {
           key: "hydrateLibraryAssetFromQuestionnaireItem",
           value: function hydrateLibraryAssetFromQuestionnaireItem(item) {
-            var _this45 = this;
+            var _this47 = this;
 
             if (item.extension && Array.isArray(item.extension) && item.extension.length) {
               var extension = item.extension.find(function (e) {
-                return e.url == "https://www.discoverandchange.com/fhir/" + _this45.EXTENSION_NAME;
+                return e.url == "https://www.discoverandchange.com/fhir/" + _this47.EXTENSION_NAME;
               });
 
               if (extension && extension.valueString) {
@@ -10848,7 +11410,7 @@
           key: "getAssets",
           value: function getAssets() {
             return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee27() {
-              var _this46 = this;
+              var _this48 = this;
 
               var client;
               return regeneratorRuntime.wrap(function _callee27$(_context27) {
@@ -10873,7 +11435,7 @@
                       }).then(function (result) {
                         var items = Array.isArray(result) && result.length ? result : [];
                         return items.map(function (i) {
-                          return _this46.hydrateLibraryAssetFromQuestionnaireItem(i);
+                          return _this48.hydrateLibraryAssetFromQuestionnaireItem(i);
                         });
                       }));
 
@@ -10915,14 +11477,14 @@
         }, {
           key: "getTags",
           value: function getTags() {
-            var _this47 = this;
+            var _this49 = this;
 
             if (this._tags) {
               return Promise.resolve(this._tags);
             }
 
             return this._dac$http.get("tags").then(function (results) {
-              _this47._tags = results;
+              _this49._tags = results;
               return results;
             });
           }
@@ -11147,7 +11709,7 @@
           key: "getQuestionnaires",
           value: function getQuestionnaires() {
             return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee28() {
-              var _this48 = this;
+              var _this50 = this;
 
               var client, url;
               return regeneratorRuntime.wrap(function _callee28$(_context28) {
@@ -11169,7 +11731,7 @@
                         flat: true
                       }).then(function (qs) {
                         qs.map(function (q) {
-                          return _this48.questionnairesByUrl[q.url] = q;
+                          return _this50.questionnairesByUrl[q.url] = q;
                         });
                         return qs;
                       }));
@@ -11303,7 +11865,7 @@
           key: "getQuestionnairesByTitle",
           value: function getQuestionnairesByTitle(titles) {
             return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee32() {
-              var _this49 = this;
+              var _this51 = this;
 
               var questionnaireTitles, questionnairesToFetch, client, url;
               return regeneratorRuntime.wrap(function _callee32$(_context32) {
@@ -11338,7 +11900,7 @@
                         flat: true
                       }).then(function (qs) {
                         qs.map(function (q) {
-                          return _this49.questionnairesByUrl[q.url] = q;
+                          return _this51.questionnairesByUrl[q.url] = q;
                         });
                         return qs;
                       }));
@@ -11356,7 +11918,7 @@
           value: function getPreviousQuestionnaireResponsesAsAssessmentResults(patientId, questionnaireIds, maxDate) {
             var limit = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
             return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee33() {
-              var _this50 = this;
+              var _this52 = this;
 
               var client, url, responses;
               return regeneratorRuntime.wrap(function _callee33$(_context33) {
@@ -11397,7 +11959,7 @@
 
                       _context33.next = 13;
                       return Promise.all(responses.map(function (r) {
-                        return _this50.convertResponseToAssessmentResult(r);
+                        return _this52.convertResponseToAssessmentResult(r);
                       }));
 
                     case 13:
@@ -11491,7 +12053,7 @@
         }, {
           key: "convertQuestionnaireToBasicAssessment",
           value: function convertQuestionnaireToBasicAssessment(questionnaire) {
-            var _this51 = this;
+            var _this53 = this;
 
             var assessment = new _models_assessment__WEBPACK_IMPORTED_MODULE_4__["Assessment"]();
             assessment.id = questionnaire.id;
@@ -11503,7 +12065,7 @@
             if (questionnaire.item) {
               if (questionnaire.item && Array.isArray(questionnaire.item)) {
                 questionnaire.item.map(function (i) {
-                  return _this51.hydrateQuestions(assessment, rootGroup, i);
+                  return _this53.hydrateQuestions(assessment, rootGroup, i);
                 });
               }
             } // either everything is in a sub-group or there are no questions so skip it.
@@ -11519,7 +12081,7 @@
           key: "hydrateQuestions",
           value: function hydrateQuestions(assessment, currentGroup, questionItem) {
             return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee36() {
-              var _this52 = this;
+              var _this54 = this;
 
               var newGroup, question;
               return regeneratorRuntime.wrap(function _callee36$(_context36) {
@@ -11532,7 +12094,7 @@
 
                         if (questionItem.item && Array.isArray(questionItem.item)) {
                           questionItem.item.map(function (i) {
-                            return _this52.hydrateQuestions(assessment, newGroup, i);
+                            return _this54.hydrateQuestions(assessment, newGroup, i);
                           });
                         }
 
@@ -11590,7 +12152,7 @@
           key: "getQuestionnaireResponsesAsAssessmentResults",
           value: function getQuestionnaireResponsesAsAssessmentResults(qrItems) {
             return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee38() {
-              var _this53 = this;
+              var _this55 = this;
 
               var client, url, map, qrIds, responses;
               return regeneratorRuntime.wrap(function _callee38$(_context38) {
@@ -11635,7 +12197,7 @@
                       return _context38.abrupt("return", responses.filter(function (r) {
                         return map[r.id] && map[r.id].QuestionnaireId;
                       }).map(function (r) {
-                        return _this53.convertResponseToAssessmentResultForQuestionnaire(r, map[r.id]);
+                        return _this55.convertResponseToAssessmentResultForQuestionnaire(r, map[r.id]);
                       }));
 
                     case 15:
@@ -11661,7 +12223,7 @@
         }, {
           key: "addAnswersToArray",
           value: function addAnswersToArray(items, answers, depthCount) {
-            var _this54 = this;
+            var _this56 = this;
 
             if (depthCount > 50) {
               throw new Error("Maximum recursion depth reached.  Likely inifinite loop");
@@ -11698,7 +12260,7 @@
 
                 if (i.item) {
                   // this is plural even though the naming suggests a single.
-                  _this54.addAnswersToArray(i.item, answers, depthCount + 1);
+                  _this56.addAnswersToArray(i.item, answers, depthCount + 1);
                 }
               });
             }
@@ -12619,7 +13181,7 @@
         _createClass(AssetPickerComponent, [{
           key: "ngOnInit",
           value: function ngOnInit() {
-            var _this55 = this;
+            var _this57 = this;
 
             this.hasLoaded = false;
             this.loadFailed = false;
@@ -12636,17 +13198,17 @@
                   assets = _results[0],
                   tags = _results[1];
 
-              _this55.hasLoaded = true;
-              _this55._assets = assets;
+              _this57.hasLoaded = true;
+              _this57._assets = assets;
               tags.forEach(function (t) {
-                return _this55.tags.push({
+                return _this57.tags.push({
                   label: t,
                   value: t
                 });
               });
             })["catch"](function (error) {
-              _this55.loadFailed = true;
-              _this55.hasLoaded = true;
+              _this57.loadFailed = true;
+              _this57.hasLoaded = true;
               console.error(error);
             });
           }
@@ -12659,7 +13221,7 @@
         }, {
           key: "searchTag",
           value: function searchTag(tag) {
-            var _this56 = this;
+            var _this58 = this;
 
             if (!tag) {
               this.selectedTag = null;
@@ -12669,30 +13231,30 @@
 
 
             setTimeout(function () {
-              _this56.runSearch();
+              _this58.runSearch();
             }, 100);
           }
         }, {
           key: "searchType",
           value: function searchType(type) {
-            var _this57 = this;
+            var _this59 = this;
 
             this.assetType = type; // we seem to be having a timing issue here on select boxes.
 
             setTimeout(function () {
-              _this57.runSearch();
+              _this59.runSearch();
             }, 100); // there is a major timing i
             // this.runSearch();
           }
         }, {
           key: "runSearch",
           value: function runSearch() {
-            var _this58 = this;
+            var _this60 = this;
 
             this.assetService.searchAssets(this.assetSearch, this.selectedTag, this.assetType).then(function (assets) {
-              _this58._assets = [];
+              _this60._assets = [];
               assets.forEach(function (a) {
-                _this58._assets.push(a);
+                _this60._assets.push(a);
               }); // this._assets = assets;
             });
           }
@@ -13425,19 +13987,19 @@
         _createClass(AssessmentPickerComponent, [{
           key: "ngOnInit",
           value: function ngOnInit() {
-            var _this59 = this;
+            var _this61 = this;
 
             this.authService.getCurrentUser().then(function (currentUser) {
-              _this59._canBuy = currentUser.hasCapability(_models_capability__WEBPACK_IMPORTED_MODULE_5__["Capability"].CAN_SHOP);
+              _this61._canBuy = currentUser.hasCapability(_models_capability__WEBPACK_IMPORTED_MODULE_5__["Capability"].CAN_SHOP);
               var queries = []; // queries.push(this.assessmentService.getAssessmentList());
 
-              queries.push(_this59.questionnaireService.getQuestionnaires());
-              queries.push(_this59.assessmentTokenService.loadAssessmentTokens());
+              queries.push(_this61.questionnaireService.getQuestionnaires());
+              queries.push(_this61.assessmentTokenService.loadAssessmentTokens());
               Promise.all(queries).then(function (result) {
                 if (result[0] && result[0].length) {
                   var data = result[0];
-                  _this59._assessments = [];
-                  _this59._questionnaires = [];
+                  _this61._assessments = [];
+                  _this61._questionnaires = [];
                   data.forEach(function (q) {
                     if (!(q.code || Array.isArray(q.code))) {
                       return;
@@ -13448,16 +14010,16 @@
                       assessment.uid = q.name;
                       assessment.name = q.title;
 
-                      _this59._assessments.push(assessment);
+                      _this61._assessments.push(assessment);
                     } else if (q.code.indexOf('openemr-dac-library') < 0) {
-                      _this59._questionnaires.push(q);
+                      _this61._questionnaires.push(q);
                     }
                   });
                 } // this._assessments = result[0];
 
 
-                _this59._hasLoadedAssessments = true;
-                _this59._loadedTokens = true; // this._questionnaires = result[1];
+                _this61._hasLoadedAssessments = true;
+                _this61._loadedTokens = true; // this._questionnaires = result[1];
               });
             })["catch"](function (error) {
               // TODO: stephen do we need to do something with the current user here?
@@ -13713,7 +14275,7 @@
         _createClass(ShoppingService, [{
           key: "hydrateItem",
           value: function hydrateItem(i) {
-            var _this60 = this;
+            var _this62 = this;
 
             if (!i) {
               return new _admin_models_item__WEBPACK_IMPORTED_MODULE_1__["Item"]();
@@ -13723,9 +14285,9 @@
 
             if (i.subItems) {
               subItems = i.subItems.map(function (subItem) {
-                return _this60.hydrateItem(subItem);
+                return _this62.hydrateItem(subItem);
               }).filter(function (i) {
-                return !i.assessment_uid || _this60.dacConfig.isAssessmentEnabled(i.assessment_uid);
+                return !i.assessment_uid || _this62.dacConfig.isAssessmentEnabled(i.assessment_uid);
               });
             }
 
@@ -13781,25 +14343,25 @@
         }, {
           key: "getAvailableItems",
           value: function getAvailableItems() {
-            var _this61 = this;
+            var _this63 = this;
 
             return this.http.get("/items/").then(function (responseItems) {
               console.log(responseItems);
               return responseItems.map(function (i) {
-                return _this61.hydrateItem(i);
+                return _this63.hydrateItem(i);
               }).filter(function (i) {
-                return !i.assessment_uid || _this61.dacConfig.isAssessmentEnabled(i.assessment_uid);
+                return !i.assessment_uid || _this63.dacConfig.isAssessmentEnabled(i.assessment_uid);
               });
             });
           }
         }, {
           key: "addItemToCart",
           value: function addItemToCart(item) {
-            var _this62 = this;
+            var _this64 = this;
 
             // even though this is synchronous it could become async so we are going to promisify it.
             return new Promise(function (resolve, reject) {
-              var existingItem = _this62._cartItems.find(function (i) {
+              var existingItem = _this64._cartItems.find(function (i) {
                 return i.id === item.id;
               });
 
@@ -13807,7 +14369,7 @@
                 existingItem.quantity += item.quantity;
               } else {
                 // push a copy.
-                _this62._cartItems.push(Object.assign(new _admin_models_item__WEBPACK_IMPORTED_MODULE_1__["Item"](), item));
+                _this64._cartItems.push(Object.assign(new _admin_models_item__WEBPACK_IMPORTED_MODULE_1__["Item"](), item));
               }
 
               resolve();
@@ -13816,10 +14378,10 @@
         }, {
           key: "removeItemFromCart",
           value: function removeItemFromCart(item) {
-            var _this63 = this;
+            var _this65 = this;
 
             return new Promise(function (resolve, reject) {
-              _this63._cartItems = _this63._cartItems.filter(function (i) {
+              _this65._cartItems = _this65._cartItems.filter(function (i) {
                 return i.id !== item.id;
               });
               resolve();
@@ -13833,7 +14395,7 @@
         }, {
           key: "checkout",
           value: function checkout(useSavedCard) {
-            var _this64 = this;
+            var _this66 = this;
 
             var items = this._cartItems.map(function (i) {
               return {
@@ -13851,9 +14413,9 @@
               console.log("order created", order); // return order;
 
               if (order.total <= 0) {
-                return _this64.handleFreeOrder(order);
+                return _this66.handleFreeOrder(order);
               } else {
-                return _this64.handlePaidOrder(order, useSavedCard);
+                return _this66.handlePaidOrder(order, useSavedCard);
               }
             });
           }
@@ -13870,7 +14432,7 @@
         }, {
           key: "handlePaidOrder",
           value: function handlePaidOrder(order, useSavedCard) {
-            var _this65 = this;
+            var _this67 = this;
 
             var amount = order.total * 100;
 
@@ -13896,9 +14458,9 @@
             }
 
             return stripeCharge.then(function (chargeData) {
-              _this65._checkoutStatus.next("ORDER_FINALIZE");
+              _this67._checkoutStatus.next("ORDER_FINALIZE");
 
-              return _this65.purchaseTokens(chargeData);
+              return _this67.purchaseTokens(chargeData);
             });
           }
         }, {
@@ -13909,14 +14471,14 @@
         }, {
           key: "purchaseTokens",
           value: function purchaseTokens(data) {
-            var _this66 = this;
+            var _this68 = this;
 
             return this.http.post("tokens/purchase", data).then(function (purchaseResult) {
-              _this66._checkoutStatus.next("ORDER_COMPLETE");
+              _this68._checkoutStatus.next("ORDER_COMPLETE");
 
-              _this66.orderService.storeLastOrder(purchaseResult.order);
+              _this68.orderService.storeLastOrder(purchaseResult.order);
 
-              _this66.emptyCart();
+              _this68.emptyCart();
 
               console.log("purchase complete navigate to order page");
               return purchaseResult.order;
@@ -14062,16 +14624,16 @@
         var _super4 = _createSuper(ScaleChartComponent);
 
         function ScaleChartComponent(el, chartService, scaleResultColorService) {
-          var _this67;
+          var _this69;
 
           _classCallCheck(this, ScaleChartComponent);
 
-          _this67 = _super4.call(this, el, chartService);
-          _this67.el = el;
-          _this67.chartService = chartService;
-          _this67.scaleResultColorService = scaleResultColorService;
-          _this67.complete = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
-          return _this67;
+          _this69 = _super4.call(this, el, chartService);
+          _this69.el = el;
+          _this69.chartService = chartService;
+          _this69.scaleResultColorService = scaleResultColorService;
+          _this69.complete = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+          return _this69;
         }
 
         _createClass(ScaleChartComponent, [{
@@ -14395,13 +14957,13 @@
         _createClass(AuthGuardLogin, [{
           key: "canActivate",
           value: function canActivate(route, state) {
-            var _this68 = this;
+            var _this70 = this;
 
             return this.authService.getCurrentUser().then(function (user) {
               if (user && user.role == app_shared_models_role__WEBPACK_IMPORTED_MODULE_3__["Role"].Client) {
                 return true; // not authenticated or no user... so let's pop open our process here.
               } else {
-                _this68.router.navigate(['/login'], {
+                _this70.router.navigate(['/login'], {
                   queryParams: {
                     "return": state.url,
                     loginType: 2 // client
@@ -14432,7 +14994,7 @@
             })["catch"](function (error) {
               // default login is to probably go to the admin login page
               // TODO: @adunsulag do we want the default to be the patient login page?
-              _this68.router.navigate(['/login'], {
+              _this70.router.navigate(['/login'], {
                 queryParams: {
                   "return": state.url,
                   loginType: 2 // client
@@ -14642,19 +15204,19 @@
         _createClass(AssignmentHydratorService, [{
           key: "hydrateAssignment",
           value: function hydrateAssignment(record) {
-            var _this69 = this;
+            var _this71 = this;
 
             var assignment;
 
             if (record.type == "AssessmentGroup") {
               assignment = Object.assign(new _models_AssignedAssessmentGroup__WEBPACK_IMPORTED_MODULE_0__["AssignedAssessmentGroup"](), record);
               assignment.Items = record.items.map(function (i) {
-                return _this69.hydrateAssignmentItem(i);
+                return _this71.hydrateAssignmentItem(i);
               });
             } else if (record.type == 'TemplateProfile') {
               assignment = Object.assign(new _models_AssignedTemplateProfile__WEBPACK_IMPORTED_MODULE_6__["AssignedTemplateProfile"](), record);
               assignment.Items = record.items.map(function (i) {
-                return _this69.hydrateAssignmentItem(i);
+                return _this71.hydrateAssignmentItem(i);
               });
             } else {
               assignment = Object.assign(new _models_AssignmentSingle__WEBPACK_IMPORTED_MODULE_4__["AssignmentSingle"](), record);
@@ -14779,16 +15341,16 @@
         _createClass(CompanyService, [{
           key: "getCompany",
           value: function getCompany(id) {
-            var _this70 = this;
+            var _this72 = this;
 
             return this.http.get("/admin/companies/" + id + ".json").then(function (data) {
-              return _this70.hydrateCompanyFromData(data);
+              return _this72.hydrateCompanyFromData(data);
             });
           }
         }, {
           key: "getCompanies",
           value: function getCompanies() {
-            var _this71 = this;
+            var _this73 = this;
 
             return this.http.get("/admin/companies", {
               limit: 1000
@@ -14798,7 +15360,7 @@
               }
 
               return data.results.map(function (r) {
-                return _this71.hydrateCompanyFromData(r);
+                return _this73.hydrateCompanyFromData(r);
               });
             });
           }
@@ -14819,42 +15381,42 @@
         }, {
           key: "createCompany",
           value: function createCompany(company) {
-            var _this72 = this;
+            var _this74 = this;
 
             // TODO: stephen need to handle the new user password
             return this.http.post("/admin/companies", company).then(function (data) {
-              return _this72.hydrateCompanyFromData(data);
+              return _this74.hydrateCompanyFromData(data);
             });
           }
         }, {
           key: "registerNewCompany",
           value: function registerNewCompany(company, authToken) {
-            var _this73 = this;
+            var _this75 = this;
 
             // TODO: stephen need to handle the new user password
             return this.http.post("/companies", {
               company: company,
               authToken: authToken
             }).then(function (data) {
-              return _this73.hydrateCompanyFromData(data);
+              return _this75.hydrateCompanyFromData(data);
             });
           }
         }, {
           key: "saveAccountOwnerCompany",
           value: function saveAccountOwnerCompany(company) {
-            var _this74 = this;
+            var _this76 = this;
 
             return this.http.post("/companies/" + company.id + ".json", company).then(function (data) {
-              return _this74.hydrateCompanyFromData(data);
+              return _this76.hydrateCompanyFromData(data);
             });
           }
         }, {
           key: "getAccountOwnerCompany",
           value: function getAccountOwnerCompany(id) {
-            var _this75 = this;
+            var _this77 = this;
 
             return this.http.get("/companies/" + id + ".json").then(function (data) {
-              return _this75.hydrateCompanyFromData(data);
+              return _this77.hydrateCompanyFromData(data);
             });
           }
         }, {
@@ -15148,14 +15710,14 @@
         _createClass(AssignmentService, [{
           key: "createClientGroupAssignment",
           value: function createClientGroupAssignment(client, group, appointmentId) {
-            var _this76 = this;
+            var _this78 = this;
 
             return this._dac$http.post("clients/" + client.id + "/assignment-groups", {
               id: group.Id,
               appointmentId: appointmentId,
               profileId: group.ProfileId
             }).then(function (response) {
-              var serverAssignment = _this76.assignmentHydrator.hydrateAssignment(response.assignment);
+              var serverAssignment = _this78.assignmentHydrator.hydrateAssignment(response.assignment);
 
               return serverAssignment;
             });
@@ -15172,13 +15734,13 @@
         }, {
           key: "removeClientAssignment",
           value: function removeClientAssignment(client, assignment) {
-            var _this77 = this;
+            var _this79 = this;
 
             return this._dac$http["delete"]("clients/" + client.id + "/assignments/" + assignment.Id).then(function (response) {
               if (assignment.Type == 'Assessment') {
                 var item = assignment.Items[0];
 
-                _this77.tokenService.freeToken(item.Uid);
+                _this79.tokenService.freeToken(item.Uid);
               }
 
               return assignment;
@@ -15187,10 +15749,10 @@
         }, {
           key: "createClientAssignment",
           value: function createClientAssignment(client, assignment) {
-            var _this78 = this;
+            var _this80 = this;
 
             return this._dac$http.post("clients/" + client.id + "/assignments", assignment).then(function (response) {
-              var serverAssignment = _this78.assignmentHydrator.hydrateAssignment(response.assignment);
+              var serverAssignment = _this80.assignmentHydrator.hydrateAssignment(response.assignment);
 
               return serverAssignment;
             }); // TODO: stephen need to handle errors here.
@@ -15320,18 +15882,18 @@
         }, {
           key: "checkUsername",
           value: function checkUsername(newUsername) {
-            var _this79 = this;
+            var _this81 = this;
 
             this.user.username = newUsername; // TODO: stephen need to add some debounce stuff in here...
 
             this.userService.isDuplicateUsername(this.user.username).then(function (isDuplicate) {
-              _this79.usernameDuplicate = false;
-              _this79.usernameValid = false;
+              _this81.usernameDuplicate = false;
+              _this81.usernameValid = false;
 
               if (isDuplicate) {
-                _this79.usernameDuplicate = true;
+                _this81.usernameDuplicate = true;
               } else {
-                _this79.usernameValid = true;
+                _this81.usernameValid = true;
               }
             });
           }
@@ -15461,13 +16023,13 @@
         var _super5 = _createSuper(ListQuestion);
 
         function ListQuestion() {
-          var _this80;
+          var _this82;
 
           _classCallCheck(this, ListQuestion);
 
-          _this80 = _super5.call(this);
-          _this80._customLabels = [];
-          return _this80;
+          _this82 = _super5.call(this);
+          _this82._customLabels = [];
+          return _this82;
         }
 
         _createClass(ListQuestion, [{
@@ -15902,7 +16464,7 @@
 
       var AdminLoginComponent = /*#__PURE__*/function () {
         function AdminLoginComponent(router, route, authService, fhirService) {
-          var _this81 = this;
+          var _this83 = this;
 
           _classCallCheck(this, AdminLoginComponent);
 
@@ -15914,14 +16476,14 @@
           this.returnUrl = '';
           this._authSubscription = this.authService.authStateChange$().subscribe(function (authState) {
             console.log("Auth state is ", authState);
-            _this81._authState = authState.state;
+            _this83._authState = authState.state;
 
-            if (_this81._authState === _models_AuthState__WEBPACK_IMPORTED_MODULE_3__["AuthState"].SIGNED_IN) {
+            if (_this83._authState === _models_AuthState__WEBPACK_IMPORTED_MODULE_3__["AuthState"].SIGNED_IN) {
               // either going back to the original requested url or going to the dashboard.
-              _this81.router.navigateByUrl(_this81.returnUrl);
+              _this83.router.navigateByUrl(_this83.returnUrl);
             }
 
-            _this81._user = authState.user;
+            _this83._user = authState.user;
           });
         }
 
@@ -16209,13 +16771,13 @@
         var _super6 = _createSuper(FlaggedQuestionsListComponent);
 
         function FlaggedQuestionsListComponent() {
-          var _this82;
+          var _this84;
 
           _classCallCheck(this, FlaggedQuestionsListComponent);
 
-          _this82 = _super6.call(this);
-          _this82._questionsByAssessments = new Map();
-          return _this82;
+          _this84 = _super6.call(this);
+          _this84._questionsByAssessments = new Map();
+          return _this84;
         }
 
         _createClass(FlaggedQuestionsListComponent, [{
@@ -16240,7 +16802,7 @@
         }, {
           key: "setReportData",
           value: function setReportData(data, results, variables) {
-            var _this83 = this;
+            var _this85 = this;
 
             if (!data || !results) {
               return;
@@ -16263,9 +16825,9 @@
                 var questions = result.assessment.getFlaggedQuestions();
 
                 if (questions.length) {
-                  _this83._questionsByAssessments.set(result.assessment, questions);
+                  _this85._questionsByAssessments.set(result.assessment, questions);
 
-                  _this83._assessments.push(result.assessment);
+                  _this85._assessments.push(result.assessment);
                 }
               });
             }
@@ -16507,24 +17069,24 @@
         _createClass(AssetNewComponent, [{
           key: "ngOnInit",
           value: function ngOnInit() {
-            var _this84 = this;
+            var _this86 = this;
 
             this.route.params.subscribe(function (params) {
-              var type = params.type || _this84.assetTypes[0];
+              var type = params.type || _this86.assetTypes[0];
 
               if (type == 'exercises') {
-                type = _this84.assetTypes[0];
+                type = _this86.assetTypes[0];
               } else {
-                type = _this84.assetTypes[1];
+                type = _this86.assetTypes[1];
               }
 
-              _this84.assetType = type;
+              _this86.assetType = type;
             });
           }
         }, {
           key: "save",
           value: function save() {
-            var _this85 = this;
+            var _this87 = this;
 
             this.isSaving = true;
             var values = this.assetForm.value;
@@ -16544,7 +17106,7 @@
               // we don't support IE11 anymore so this is safe.
               answers.forEach(function (el) {
                 if (!el.hasAttribute('id')) {
-                  el.id = saveData.getAnswerIdPrefix() + _this85.uuidService.generate();
+                  el.id = saveData.getAnswerIdPrefix() + _this87.uuidService.generate();
                 }
               }); // now grab the updated content and lets store it off
               // server will sanitize this in case there's any junk here.
@@ -16556,14 +17118,14 @@
             saveData.type = this.assetType;
             this.alertService.info("Saving " + saveData.title);
             this.assetService.saveAsset(saveData).then(function (result) {
-              _this85.isSaving = false;
+              _this87.isSaving = false;
 
-              _this85.alertService.success(saveData.title + " has saved");
+              _this87.alertService.success(saveData.title + " has saved");
             })["catch"](function (error) {
-              _this85.alertService.error(saveData.title + " failed to save");
+              _this87.alertService.error(saveData.title + " failed to save");
 
               console.error(error);
-              _this85.isSaving = false;
+              _this87.isSaving = false;
             });
           }
         }]);
@@ -17528,10 +18090,10 @@
         _createClass(OrderService, [{
           key: "getOrder",
           value: function getOrder(orderId) {
-            var _this86 = this;
+            var _this88 = this;
 
             return this.http.get("/orders/" + orderId).then(function (orderData) {
-              return _this86.populateOrder(orderData);
+              return _this88.populateOrder(orderData);
             });
           }
         }, {
@@ -17542,7 +18104,7 @@
         }, {
           key: "getLastOrder",
           value: function getLastOrder() {
-            var _this87 = this;
+            var _this89 = this;
 
             if (this._lastOrder) {
               return Promise.resolve(this._lastOrder);
@@ -17551,23 +18113,23 @@
             return this.getPaginatedOrderHistory().then(function (data) {
               if (data.results.length) {
                 // return the first order since they are in reverse order.
-                _this87._lastOrder = data.results[0];
+                _this89._lastOrder = data.results[0];
               } else {
-                _this87._lastOrder = null;
+                _this89._lastOrder = null;
               }
 
-              return _this87._lastOrder;
+              return _this89._lastOrder;
             });
           }
         }, {
           key: "getOrderHistory",
           value: function getOrderHistory() {
-            var _this88 = this;
+            var _this90 = this;
 
             var queryFunction = this.getPaginatedOrderHistory.bind(this);
             this._resultsLoader = this._paginationFactory.getResultsLoader(queryFunction);
             return this._resultsLoader.getResults().then(function (orders) {
-              _this88._orders = orders;
+              _this90._orders = orders;
               return orders;
             });
           }
@@ -17579,19 +18141,19 @@
         }, {
           key: "loadMore",
           value: function loadMore() {
-            var _this89 = this;
+            var _this91 = this;
 
             // load more results
             return this._resultsLoader.loadMore().then(function (results) {
               console.log(results);
-              _this89._orders = results;
+              _this91._orders = results;
               return results;
             });
           }
         }, {
           key: "getPaginatedOrderHistory",
           value: function getPaginatedOrderHistory(offset) {
-            var _this90 = this;
+            var _this92 = this;
 
             var data = {
               _offset: offset || null,
@@ -17600,7 +18162,7 @@
             return this.http.get("/orders/", data).then(function (data) {
               if (data && data.results.length) {
                 data.results.map(function (o) {
-                  return _this90.populateOrder(o);
+                  return _this92.populateOrder(o);
                 });
               }
 
@@ -17891,7 +18453,7 @@
         }, {
           key: "gradeScales",
           value: function gradeScales(assessment) {
-            var _this91 = this;
+            var _this93 = this;
 
             var scaleResults = assessment.scales.map(function (s) {
               var scaleResult = new _models_scale_result__WEBPACK_IMPORTED_MODULE_3__["ScaleResult"]();
@@ -17919,10 +18481,10 @@
             var questionSets = assessment.getQuestionSetsForDisplay();
             questionSets.forEach(function (qs) {
               qs.questions.forEach(function (q) {
-                if (_this91.shouldGradeQuestion(q)) {
+                if (_this93.shouldGradeQuestion(q)) {
                   var resultNode = resultsByScale[q.assessment_scale.id];
 
-                  _this91.gradeQuestion(q, qs, resultNode);
+                  _this93.gradeQuestion(q, qs, resultNode);
                 }
               });
             }); // now that the scales are graded we go through and do depth first calculation
@@ -17938,7 +18500,7 @@
         }, {
           key: "calculateScoreWithSubScores",
           value: function calculateScoreWithSubScores(resultsByScale, result, limit) {
-            var _this92 = this;
+            var _this94 = this;
 
             if (!result.scale.hasSubScales()) {
               return result.score;
@@ -17953,7 +18515,7 @@
             var score = result.score;
             var scales = result.scale.getSubScaleIds().forEach(function (scaleId) {
               var subScaleResult = resultsByScale[scaleId];
-              score += _this92.calculateScoreWithSubScores(resultsByScale, subScaleResult, limit + 1);
+              score += _this94.calculateScoreWithSubScores(resultsByScale, subScaleResult, limit + 1);
             });
             return score;
           }
@@ -18501,36 +19063,18 @@
         }
       }
 
-      function AssessmentResultViewComponent_div_6_input_1_Template(rf, ctx) {
+      function AssessmentResultViewComponent_div_6_input_2_Template(rf, ctx) {
         if (rf & 1) {
-          var _r9 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
+          var _r8 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
 
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "input", 13);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function AssessmentResultViewComponent_div_6_input_1_Template_input_click_0_listener() {
-            _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r9);
-
-            var ctx_r8 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](2);
-
-            return ctx_r8.browserPrint();
-          });
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        }
-      }
-
-      function AssessmentResultViewComponent_div_6_input_2_Template(rf, ctx) {
-        if (rf & 1) {
-          var _r11 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "input", 14);
-
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function AssessmentResultViewComponent_div_6_input_2_Template_input_click_0_listener() {
-            _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r11);
+            _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r8);
 
-            var ctx_r10 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](2);
+            var ctx_r7 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](2);
 
-            return ctx_r10.saveRescoredResult();
+            return ctx_r7.saveRescoredResult();
           });
 
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
@@ -18539,9 +19083,21 @@
 
       function AssessmentResultViewComponent_div_6_Template(rf, ctx) {
         if (rf & 1) {
+          var _r10 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
+
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 10);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](1, AssessmentResultViewComponent_div_6_input_1_Template, 1, 0, "input", 11);
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "input", 11);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function AssessmentResultViewComponent_div_6_Template_input_click_1_listener() {
+            _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r10);
+
+            var ctx_r9 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"]();
+
+            return ctx_r9.browserPrint();
+          });
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](2, AssessmentResultViewComponent_div_6_input_2_Template, 1, 0, "input", 12);
 
@@ -18551,11 +19107,7 @@
         if (rf & 2) {
           var ctx_r1 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"]();
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ctx_r1.allowPrinting);
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ctx_r1.allowRescoreResults);
         }
@@ -18563,11 +19115,11 @@
 
       function AssessmentResultViewComponent_div_7_Template(rf, ctx) {
         if (rf & 1) {
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 15);
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 14);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "div", 16);
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "div", 15);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](2, "p", 17);
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](2, "p", 16);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](3, "app-spin-icon");
 
@@ -18583,17 +19135,17 @@
 
       function AssessmentResultViewComponent_div_8_Template(rf, ctx) {
         if (rf & 1) {
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 18);
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 17);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "div", 19);
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "div", 18);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](2, "div", 20);
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](2, "div", 19);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](3, "div", 21);
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](3, "div", 20);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](4, "div", 22);
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](4, "div", 21);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](5, "h3", 23);
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](5, "h3", 22);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](6, "Summary");
 
@@ -18601,13 +19153,11 @@
 
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](7, "div", 24);
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](7, "div", 23);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](8, "div", 15);
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](8, "div", 14);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](9, "app-scale-results-table-summary", 25, 26);
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](9, "app-scale-results-table-summary", 24, 25);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 
@@ -18615,9 +19165,11 @@
 
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](11, "div", 15);
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](12, "app-therapist-scale-results", 27, 28);
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](11, "div", 14);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](12, "app-therapist-scale-results", 26, 27);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 
@@ -18677,24 +19229,24 @@
         }, {
           key: "ngOnInit",
           value: function ngOnInit() {
-            var _this93 = this;
+            var _this95 = this;
 
             this.queryParamsSubscription = this.route.queryParams.subscribe(function (params) {
               if (params['notes'] && params['notes'] == '1') {
-                _this93.displayTherapistNotes = true;
+                _this95.displayTherapistNotes = true;
               } else {
-                _this93.displayTherapistNotes = false;
+                _this95.displayTherapistNotes = false;
               }
 
               if (params['rescore'] && params['rescore'] == '1') {
-                _this93.rescoreResults = true;
+                _this95.rescoreResults = true;
               } else {
-                _this93.rescoreResults = false;
+                _this95.rescoreResults = false;
               }
             }); // TODO: stephen do we need the rx switchTo piece?
 
             this.route.params.subscribe(function (params) {
-              return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(_this93, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee40() {
+              return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(_this95, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee40() {
                 var resultId, result, latestResult;
                 return regeneratorRuntime.wrap(function _callee40$(_context40) {
                   while (1) {
@@ -18866,7 +19418,7 @@
         },
         decls: 9,
         vars: 12,
-        consts: [[1, "col", "itemsContainer", "d-print-block-visible", 3, "ngClass"], [1, "row", "report-controls"], ["class", "col-2", 4, "ngIf"], [3, "ngClass"], [1, "h1-responsive", "report-name", "text-center"], ["class", "col-2 ml-auto", 4, "ngIf"], ["class", "row", 4, "ngIf"], ["class", "row d-print-block-visible", 4, "ngIf"], [1, "col-2"], ["type", "button", "value", "Back", 1, "btn", "btn-primary", 3, "click"], [1, "col-2", "ml-auto"], ["class", "btn btn-secondary", "type", "button", "value", "Download PDF", 3, "click", 4, "ngIf"], ["class", "btn btn-secondary", "type", "button", "value", "Save Result", 3, "click", 4, "ngIf"], ["type", "button", "value", "Download PDF", 1, "btn", "btn-secondary", 3, "click"], ["type", "button", "value", "Save Result", 1, "btn", "btn-secondary", 3, "click"], [1, "row"], [1, "col"], [1, "alert", "alert-warning"], [1, "row", "d-print-block-visible"], [1, "col", "d-print-block-visible"], [1, "row", "mb-3"], [1, "card", "card-cascade", "wider", "col"], [1, "view", "gradient-card-header", "primary-gradient", "text-light"], [1, "h3-responsive", "text-center"], [1, "card-body"], [1, "col", 3, "scaleResults"], ["tableSummary", ""], [1, "col", 3, "resultTitle", "assessmentResult", "scaleResults"], ["therapistScaleResults", ""]],
+        consts: [[1, "col", "itemsContainer", "d-print-block-visible", 3, "ngClass"], [1, "row", "report-controls"], ["class", "col-2", 4, "ngIf"], [3, "ngClass"], [1, "h1-responsive", "report-name", "text-center"], ["class", "col-2 ml-auto", 4, "ngIf"], ["class", "row", 4, "ngIf"], ["class", "row d-print-block-visible", 4, "ngIf"], [1, "col-2"], ["type", "button", "value", "Back", 1, "btn", "btn-primary", 3, "click"], [1, "col-2", "ml-auto"], ["type", "button", "value", "Print", 1, "btn", "btn-secondary", "d-print-none", 3, "click"], ["class", "btn btn-secondary", "type", "button", "value", "Save Result", 3, "click", 4, "ngIf"], ["type", "button", "value", "Save Result", 1, "btn", "btn-secondary", 3, "click"], [1, "row"], [1, "col"], [1, "alert", "alert-warning"], [1, "row", "d-print-block-visible"], [1, "col", "d-print-block-visible"], [1, "row", "mb-3"], [1, "card", "card-cascade", "wider", "col"], [1, "view", "gradient-card-header", "primary-gradient", "text-light"], [1, "h3-responsive", "text-center"], [1, "card-body"], [1, "col", 3, "scaleResults"], ["tableSummary", ""], [1, "col", 3, "resultTitle", "assessmentResult", "scaleResults"], ["therapistScaleResults", ""]],
         template: function AssessmentResultViewComponent_Template(rf, ctx) {
           if (rf & 1) {
             _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 0);
@@ -18885,7 +19437,7 @@
 
             _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 
-            _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](6, AssessmentResultViewComponent_div_6_Template, 3, 2, "div", 5);
+            _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](6, AssessmentResultViewComponent_div_6_Template, 3, 1, "div", 5);
 
             _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 
@@ -19016,13 +19568,13 @@
         var _super7 = _createSuper(MultipleChoiceQuestion);
 
         function MultipleChoiceQuestion() {
-          var _this94;
+          var _this96;
 
           _classCallCheck(this, MultipleChoiceQuestion);
 
-          _this94 = _super7.call(this);
-          _this94.type = app_shared_models_question_type__WEBPACK_IMPORTED_MODULE_1__["QuestionType"].MultipleChoice;
-          return _this94;
+          _this96 = _super7.call(this);
+          _this96.type = app_shared_models_question_type__WEBPACK_IMPORTED_MODULE_1__["QuestionType"].MultipleChoice;
+          return _this96;
         }
 
         _createClass(MultipleChoiceQuestion, [{
@@ -19659,13 +20211,13 @@
         var _super8 = _createSuper(AssignedQuestionnaire);
 
         function AssignedQuestionnaire() {
-          var _this95;
+          var _this97;
 
           _classCallCheck(this, AssignedQuestionnaire);
 
-          _this95 = _super8.call(this);
-          _this95.Type = "Questionnaire";
-          return _this95;
+          _this97 = _super8.call(this);
+          _this97.Type = "Questionnaire";
+          return _this97;
         }
 
         _createClass(AssignedQuestionnaire, [{
@@ -19738,13 +20290,13 @@
         var _super9 = _createSuper(AssignedAssessmentGroup);
 
         function AssignedAssessmentGroup() {
-          var _this96;
+          var _this98;
 
           _classCallCheck(this, AssignedAssessmentGroup);
 
-          _this96 = _super9.call(this);
-          _this96.Type = "AssessmentGroup";
-          return _this96;
+          _this98 = _super9.call(this);
+          _this98.Type = "AssessmentGroup";
+          return _this98;
         }
 
         _createClass(AssignedAssessmentGroup, [{
@@ -19822,7 +20374,7 @@
         _createClass(PclGraderService, [{
           key: "getPCLCriteriaFromAssessmentResult",
           value: function getPCLCriteriaFromAssessmentResult(assessmentResult) {
-            var _this97 = this;
+            var _this99 = this;
 
             var questionSetsByQuestion = new Map();
             assessmentResult.assessment.question_sets.forEach(function (qs) {
@@ -19833,10 +20385,10 @@
             return assessmentResult.scaleResults.map(function (sr) {
               var questions = assessmentResult.assessment.getQuestionsForScale(sr.scale);
 
-              var hasPTSD = _this97.checkScaleForPTSD(sr, questions, questionSetsByQuestion);
+              var hasPTSD = _this99.checkScaleForPTSD(sr, questions, questionSetsByQuestion);
 
               return {
-                name: _this97.getShortName(sr.scale.name),
+                name: _this99.getShortName(sr.scale.name),
                 hasPTSD: hasPTSD,
                 scaleResult: sr
               };
@@ -20016,7 +20568,7 @@
         _createClass(AssessmentHydrator, [{
           key: "hydrate",
           value: function hydrate(data) {
-            var _this98 = this;
+            var _this100 = this;
 
             var assessment = new _models_assessment__WEBPACK_IMPORTED_MODULE_4__["Assessment"]();
             Object(lodash__WEBPACK_IMPORTED_MODULE_9__["extend"])(assessment, data);
@@ -20027,19 +20579,19 @@
               // we need to hydrate the scale, then populate the map, finally hydrate the sub scales as they may refer to each other
               // since we likely won't have more than 20-50 items this should be fine for runtime.
               assessment.scales = scales.map(function (s) {
-                return _this98.hydrateScale(s);
+                return _this100.hydrateScale(s);
               });
               assessment.scales.forEach(function (s) {
-                return _this98.scales[s.id] = s;
+                return _this100.scales[s.id] = s;
               });
               assessment.scales.forEach(function (s) {
-                return _this98.populateSubScaleProxies(s);
+                return _this100.populateSubScaleProxies(s);
               });
             }
 
             if (qs) {
               assessment.question_sets = qs.map(function (s) {
-                return _this98.hydrateQuestionSet(s);
+                return _this100.hydrateQuestionSet(s);
               });
               this.hydrateDisplayConditions(assessment);
             }
@@ -20108,7 +20660,7 @@
         }, {
           key: "hydrateQuestionSet",
           value: function hydrateQuestionSet(data) {
-            var _this99 = this;
+            var _this101 = this;
 
             var item = Object(lodash__WEBPACK_IMPORTED_MODULE_9__["extend"])(new _models_question_set__WEBPACK_IMPORTED_MODULE_5__["QuestionSet"](), data);
             var labels = data._labels || data.labels;
@@ -20117,14 +20669,14 @@
 
             if (labels) {
               var newLabels = labels.map(function (i) {
-                return _this99.hydrateQuestionSetLabel(i);
+                return _this101.hydrateQuestionSetLabel(i);
               });
               item.labels = newLabels;
             }
 
             if (questions) {
               var newQuestions = questions.map(function (i) {
-                return _this99.hydrateQuestion(i, item);
+                return _this101.hydrateQuestion(i, item);
               });
               item.questions = newQuestions;
             }
@@ -20148,14 +20700,14 @@
         }, {
           key: "hydrateScale",
           value: function hydrateScale(data) {
-            var _this100 = this;
+            var _this102 = this;
 
             var scale = Object(lodash__WEBPACK_IMPORTED_MODULE_9__["extend"])(new _models_scale__WEBPACK_IMPORTED_MODULE_2__["Scale"](), data);
             var ranges = data._ranges || data.ranges;
 
             if (ranges) {
               scale.ranges = ranges.map(function (r) {
-                return _this100.hydrateScaleRange(r);
+                return _this102.hydrateScaleRange(r);
               });
             }
 
@@ -20320,19 +20872,19 @@
         var _super10 = _createSuper(ScaleDataSectionComponent);
 
         function ScaleDataSectionComponent() {
-          var _this101;
+          var _this103;
 
           _classCallCheck(this, ScaleDataSectionComponent);
 
-          _this101 = _super10.call(this);
-          _this101._scaleResults = [];
-          return _this101;
+          _this103 = _super10.call(this);
+          _this103._scaleResults = [];
+          return _this103;
         }
 
         _createClass(ScaleDataSectionComponent, [{
           key: "setReportData",
           value: function setReportData(data, results, variables) {
-            var _this102 = this;
+            var _this104 = this;
 
             if (!data || !results) {
               return;
@@ -20359,7 +20911,7 @@
               }
 
               this._assessmentResult.scaleResults.forEach(function (s) {
-                return console.log(_this102._assessmentResult.assessment.name, "=>", s.scale.name, "(", s.scale.id, ")");
+                return console.log(_this104._assessmentResult.assessment.name, "=>", s.scale.name, "(", s.scale.id, ")");
               });
             }
           }
@@ -20982,7 +21534,7 @@
         }, {
           key: "ngOnInit",
           value: function ngOnInit() {
-            var _this103 = this;
+            var _this105 = this;
 
             this.fhirStyleService.loadSmartStyles(); // if (this.authToken) {
             //   this.authenticator.AuthenticationToken = this.authToken;
@@ -20992,25 +21544,25 @@
             this.route.queryParams.subscribe(function (params) {
               // console.log("Query params are subscribed inside ngAfterViewInit()", params);
               if (params.seamless) {
-                _this103.dacConfig.setupSeamlessModeForSession(params.skin);
+                _this105.dacConfig.setupSeamlessModeForSession(params.skin);
               } else if (params.skin && params.skin.length) {
-                _this103.dacConfig.replaceSkinClasses([params.skin]);
+                _this105.dacConfig.replaceSkinClasses([params.skin]);
               } // console.log("Config file skin classes are now ", this.dacConfig.skinClasses);
 
 
               var body = document.querySelector("body");
 
-              var className = _this103.dacConfig.skinClasses.join(" ");
+              var className = _this105.dacConfig.skinClasses.join(" ");
 
               body.className = className;
 
-              if (_this103.siteContainer) {
-                _this103.siteContainer.showSideNav = _this103.dacConfig.seamlessMode !== true;
+              if (_this105.siteContainer) {
+                _this105.siteContainer.showSideNav = _this105.dacConfig.seamlessMode !== true;
               }
             });
             this._httpSubscription = this.httpService.currentStatus().subscribe(function (statusCode) {
-              if (_this103.shouldOpenLoginDialog(statusCode, _this103.route.snapshot)) {
-                _this103.openLoginDialog();
+              if (_this105.shouldOpenLoginDialog(statusCode, _this105.route.snapshot)) {
+                _this105.openLoginDialog();
               }
             });
           }
@@ -21192,9 +21744,9 @@
       /* harmony import */
 
 
-      var _assessment_charts_summary_scales_chart_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
-      /*! ../../../assessment-charts/summary-scales-chart/summary-scales-chart.component */
-      "7gIF");
+      var _assessment_charts_svg_summary_scales_chart_svg_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
+      /*! ../../../assessment-charts/svg-summary-scales-chart/svg-summary-scales-chart.component */
+      "5CX4");
       /*
        *   Copyright (c) 2022 Discover and Change @author Stephen Nielson <snielson@discoverandchange.com>
        *   All rights reserved.
@@ -21302,9 +21854,9 @@
         }
       }
 
-      function ScaleResultsSummaryComponent_div_7_div_4_app_summary_scales_chart_10_Template(rf, ctx) {
+      function ScaleResultsSummaryComponent_div_7_div_4_app_svg_summary_scales_chart_10_Template(rf, ctx) {
         if (rf & 1) {
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "app-summary-scales-chart", 29);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "app-svg-summary-scales-chart", 29);
         }
 
         if (rf & 2) {
@@ -21342,7 +21894,7 @@
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](9, "div", 26);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](10, ScaleResultsSummaryComponent_div_7_div_4_app_summary_scales_chart_10_Template, 1, 7, "app-summary-scales-chart", 27);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](10, ScaleResultsSummaryComponent_div_7_div_4_app_svg_summary_scales_chart_10_Template, 1, 7, "app-svg-summary-scales-chart", 27);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
@@ -21406,7 +21958,7 @@
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](6, "div", 4);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](7, "app-summary-scales-chart", 35);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](7, "app-svg-summary-scales-chart", 35);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
@@ -21594,15 +22146,15 @@
         var _super12 = _createSuper(ScaleResultsSummaryComponent);
 
         function ScaleResultsSummaryComponent() {
-          var _this104;
+          var _this106;
 
           _classCallCheck(this, ScaleResultsSummaryComponent);
 
-          _this104 = _super12.call(this);
-          _this104.charts = [];
-          _this104._resultByUid = new Map();
-          _this104._sections = [];
-          return _this104;
+          _this106 = _super12.call(this);
+          _this106.charts = [];
+          _this106._resultByUid = new Map();
+          _this106._sections = [];
+          return _this106;
         }
 
         _createClass(ScaleResultsSummaryComponent, [{
@@ -21645,14 +22197,14 @@
         }, {
           key: "getScaleResultItems",
           value: function getScaleResultItems(scaleResults) {
-            var _this105 = this;
+            var _this107 = this;
 
             if (!(scaleResults && scaleResults.length)) {
               return [];
             }
 
             return scaleResults.map(function (sr) {
-              return _this105.getScaleResult(sr.assessmentUid, sr.scaleId);
+              return _this107.getScaleResult(sr.assessmentUid, sr.scaleId);
             });
           }
         }, {
@@ -21694,7 +22246,7 @@
         }, {
           key: "setReportData",
           value: function setReportData(data, results, variables) {
-            var _this106 = this;
+            var _this108 = this;
 
             if (!data || !results) {
               return;
@@ -21704,7 +22256,7 @@
             this._description = data.description; // if there are multiples... this uses the last instance they took...
 
             results.forEach(function (rs) {
-              _this106._resultByUid.set(rs.assessment.uid, rs);
+              _this108._resultByUid.set(rs.assessment.uid, rs);
             });
 
             if (data.sections) {
@@ -21812,7 +22364,7 @@
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngForOf", ctx.sections);
           }
         },
-        directives: [_angular_common__WEBPACK_IMPORTED_MODULE_2__["NgIf"], _angular_common__WEBPACK_IMPORTED_MODULE_2__["NgForOf"], _angular_common__WEBPACK_IMPORTED_MODULE_2__["NgClass"], _summary_section_graph_item_summary_section_graph_item_component__WEBPACK_IMPORTED_MODULE_3__["SummarySectionGraphItemComponent"], _scale_results_table_summary_scale_results_table_summary_component__WEBPACK_IMPORTED_MODULE_4__["ScaleResultsTableSummaryComponent"], _assessment_charts_summary_scales_chart_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_5__["SummaryScalesChartComponent"]],
+        directives: [_angular_common__WEBPACK_IMPORTED_MODULE_2__["NgIf"], _angular_common__WEBPACK_IMPORTED_MODULE_2__["NgForOf"], _angular_common__WEBPACK_IMPORTED_MODULE_2__["NgClass"], _summary_section_graph_item_summary_section_graph_item_component__WEBPACK_IMPORTED_MODULE_3__["SummarySectionGraphItemComponent"], _scale_results_table_summary_scale_results_table_summary_component__WEBPACK_IMPORTED_MODULE_4__["ScaleResultsTableSummaryComponent"], _assessment_charts_svg_summary_scales_chart_svg_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_5__["SvgSummaryScalesChartComponent"]],
         encapsulation: 2
       });
       /*@__PURE__*/
@@ -21966,14 +22518,14 @@
             return this._answers;
           },
           set: function set(v) {
-            var _this107 = this;
+            var _this109 = this;
 
             this._answers = v;
 
             this._answersByQuestionId.clear();
 
             this._answers.forEach(function (a) {
-              return _this107._answersByQuestionId.set(a.question_id, a);
+              return _this109._answersByQuestionId.set(a.question_id, a);
             });
           }
         }]);
@@ -22247,7 +22799,7 @@
           key: "rawGetRequest",
           value: function rawGetRequest(path, data) {
             return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee42() {
-              var _this108 = this;
+              var _this110 = this;
 
               var url, searchParams, headers;
               return regeneratorRuntime.wrap(function _callee42$(_context42) {
@@ -22276,13 +22828,13 @@
                         headers: headers
                       }).toPromise().then(function (val) {
                         if (val && val.status) {
-                          _this108._httpStatusSubject.next(val.status);
+                          _this110._httpStatusSubject.next(val.status);
                         }
 
                         return val.body;
                       })["catch"](function (error) {
                         if (error && error.status) {
-                          _this108._httpStatusSubject.next(error.status);
+                          _this110._httpStatusSubject.next(error.status);
                         }
 
                         throw error;
@@ -22347,7 +22899,7 @@
           key: "get",
           value: function get(url, data) {
             return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee44() {
-              var _this109 = this;
+              var _this111 = this;
 
               var client, searchParams, headers, apiUrl;
               return regeneratorRuntime.wrap(function _callee44$(_context44) {
@@ -22400,13 +22952,13 @@
                         headers: headers
                       }).toPromise().then(function (val) {
                         if (val && val.status) {
-                          _this109._httpStatusSubject.next(val.status);
+                          _this111._httpStatusSubject.next(val.status);
                         }
 
                         return val.body;
                       })["catch"](function (error) {
                         if (error && error.status) {
-                          _this109._httpStatusSubject.next(error.status);
+                          _this111._httpStatusSubject.next(error.status);
                         }
 
                         throw error;
@@ -22484,7 +23036,7 @@
           key: "postWithOptions",
           value: function postWithOptions(url, data, options) {
             return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee47() {
-              var _this110 = this;
+              var _this112 = this;
 
               var apiUrl;
               return regeneratorRuntime.wrap(function _callee47$(_context47) {
@@ -22503,13 +23055,13 @@
                         headers: options.headers || {}
                       }).toPromise().then(function (val) {
                         if (val && val.status) {
-                          _this110._httpStatusSubject.next(val.status);
+                          _this112._httpStatusSubject.next(val.status);
                         }
 
                         return val.body;
                       })["catch"](function (error) {
                         if (error && error.status) {
-                          _this110._httpStatusSubject.next(error.status);
+                          _this112._httpStatusSubject.next(error.status);
                         }
 
                         throw error;
@@ -22527,7 +23079,7 @@
           key: "delete",
           value: function _delete(url, data) {
             return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee48() {
-              var _this111 = this;
+              var _this113 = this;
 
               var headers, apiUrl;
               return regeneratorRuntime.wrap(function _callee48$(_context48) {
@@ -22554,13 +23106,13 @@
                         headers: headers
                       }).toPromise().then(function (val) {
                         if (val && val.status) {
-                          _this111._httpStatusSubject.next(val.status);
+                          _this113._httpStatusSubject.next(val.status);
                         }
 
                         return val.body;
                       })["catch"](function (error) {
                         if (error && error.status) {
-                          _this111._httpStatusSubject.next(error.status);
+                          _this113._httpStatusSubject.next(error.status);
                         }
 
                         throw error;
@@ -22579,7 +23131,7 @@
           value: function compressedPost(url, data) {
             var responseType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'json';
             return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee49() {
-              var _this112 = this;
+              var _this114 = this;
 
               var header, binaryData, clientState, postUrl;
               return regeneratorRuntime.wrap(function _callee49$(_context49) {
@@ -22608,7 +23160,7 @@
                         http.withCredentials = false; // make sure to send http cookies.
 
                         http.onload = function () {
-                          _this112._httpStatusSubject.next(http.status);
+                          _this114._httpStatusSubject.next(http.status);
 
                           if (http.status >= 200 && http.status < 300) {
                             resolve(http.response);
@@ -22622,7 +23174,7 @@
                         };
 
                         http.onerror = function () {
-                          _this112._httpStatusSubject.next(http.status);
+                          _this114._httpStatusSubject.next(http.status);
 
                           reject({
                             status: http.status,
@@ -22815,9 +23367,9 @@
       /* harmony import */
 
 
-      var _assessment_charts_scale_chart_scale_chart_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
-      /*! ../../../assessment-charts/scale-chart/scale-chart.component */
-      "GzvG");
+      var _assessment_charts_svg_scale_chart_svg_scale_chart_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
+      /*! ../../../assessment-charts/svg-scale-chart/svg-scale-chart.component */
+      "izrt");
       /* harmony import */
 
 
@@ -22849,19 +23401,19 @@
         var _super14 = _createSuper(ComputedScaleComponent);
 
         function ComputedScaleComponent(hydrator) {
-          var _this113;
+          var _this115;
 
           _classCallCheck(this, ComputedScaleComponent);
 
-          _this113 = _super14.call(this);
-          _this113.hydrator = hydrator;
-          return _this113;
+          _this115 = _super14.call(this);
+          _this115.hydrator = hydrator;
+          return _this115;
         }
 
         _createClass(ComputedScaleComponent, [{
           key: "setReportData",
           value: function setReportData(data, results, variables) {
-            var _this114 = this;
+            var _this116 = this;
 
             this._scaleResult = new _shared_models_scale_result__WEBPACK_IMPORTED_MODULE_1__["ScaleResult"]();
 
@@ -22875,7 +23427,7 @@
 
               if (data.items) {
                 data.items.forEach(function (i) {
-                  return _this114.addCalculation(i);
+                  return _this116.addCalculation(i);
                 });
                 this._scaleResult.range = this._scaleResult.scale.getRangeForScore(this._scaleResult.score);
               }
@@ -22974,7 +23526,7 @@
 
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](13, "div", 4);
 
-            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](14, "app-scale-chart", 5);
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](14, "app-svg-scale-chart", 5);
 
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
@@ -23011,7 +23563,7 @@
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx.scaleResult == null ? null : ctx.scaleResult.range == null ? null : ctx.scaleResult.range.clientContent);
           }
         },
-        directives: [_assessment_charts_scale_chart_scale_chart_component__WEBPACK_IMPORTED_MODULE_4__["ScaleChartComponent"], _angular_common__WEBPACK_IMPORTED_MODULE_5__["NgIf"]],
+        directives: [_assessment_charts_svg_scale_chart_svg_scale_chart_component__WEBPACK_IMPORTED_MODULE_4__["SvgScaleChartComponent"], _angular_common__WEBPACK_IMPORTED_MODULE_5__["NgIf"]],
         encapsulation: 2
       });
       /*@__PURE__*/
@@ -23179,14 +23731,14 @@
         var _super15 = _createSuper(TextboxQuestion);
 
         function TextboxQuestion() {
-          var _this115;
+          var _this117;
 
           _classCallCheck(this, TextboxQuestion);
 
-          _this115 = _super15.call(this);
-          _this115.type = _question_type__WEBPACK_IMPORTED_MODULE_1__["QuestionType"].Textbox;
-          _this115.skip_scoring = true;
-          return _this115;
+          _this117 = _super15.call(this);
+          _this117.type = _question_type__WEBPACK_IMPORTED_MODULE_1__["QuestionType"].Textbox;
+          _this117.skip_scoring = true;
+          return _this117;
         }
 
         _createClass(TextboxQuestion, [{
@@ -23404,7 +23956,7 @@
         }, {
           key: "copyTable",
           value: function copyTable() {
-            var _this116 = this;
+            var _this118 = this;
 
             var copyTable = [];
             copyTable.push(["Scale", "Description", "Raw Score / Total", "Severity"]);
@@ -23415,7 +23967,7 @@
                 row.push(sr.scale.name ? '"' + sr.scale.name + '"' : '');
                 row.push(sr.scale.descriptionTherapist ? '"' + sr.scale.descriptionTherapist + '"' : '');
                 row.push('"' + sr.score + " / " + sr.scale.getMaxScore() + '"');
-                row.push('"' + _this116.getLabelNameForRange(sr) + '"');
+                row.push('"' + _this118.getLabelNameForRange(sr) + '"');
                 copyTable.push(row);
               });
             }
@@ -23654,6 +24206,18 @@
       var _summary_scales_chart_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(
       /*! ./summary-scales-chart/summary-scales-chart.component */
       "7gIF");
+      /* harmony import */
+
+
+      var _svg_summary_scales_chart_svg_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(
+      /*! ./svg-summary-scales-chart/svg-summary-scales-chart.component */
+      "5CX4");
+      /* harmony import */
+
+
+      var _svg_scale_chart_svg_scale_chart_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(
+      /*! ./svg-scale-chart/svg-scale-chart.component */
+      "izrt");
       /*
        *   Copyright (c) 2022 Discover and Change @author Stephen Nielson <snielson@discoverandchange.com>
        *   All rights reserved.
@@ -23679,10 +24243,10 @@
 
       (function () {
         (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](AssessmentChartsModule, {
-          declarations: [_scale_chart_scale_chart_component__WEBPACK_IMPORTED_MODULE_2__["ScaleChartComponent"], _scale_chart_legend_scale_chart_legend_component__WEBPACK_IMPORTED_MODULE_4__["ScaleChartLegendComponent"], _legend_color_icon_legend_color_icon_component__WEBPACK_IMPORTED_MODULE_5__["LegendColorIconComponent"], _summary_scales_chart_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_6__["SummaryScalesChartComponent"]],
+          declarations: [_scale_chart_scale_chart_component__WEBPACK_IMPORTED_MODULE_2__["ScaleChartComponent"], _scale_chart_legend_scale_chart_legend_component__WEBPACK_IMPORTED_MODULE_4__["ScaleChartLegendComponent"], _legend_color_icon_legend_color_icon_component__WEBPACK_IMPORTED_MODULE_5__["LegendColorIconComponent"], _summary_scales_chart_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_6__["SummaryScalesChartComponent"], _svg_summary_scales_chart_svg_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_7__["SvgSummaryScalesChartComponent"], _svg_scale_chart_svg_scale_chart_component__WEBPACK_IMPORTED_MODULE_8__["SvgScaleChartComponent"]],
           imports: [_angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"] // ,ChartsModule
           ],
-          exports: [_scale_chart_scale_chart_component__WEBPACK_IMPORTED_MODULE_2__["ScaleChartComponent"], _scale_chart_legend_scale_chart_legend_component__WEBPACK_IMPORTED_MODULE_4__["ScaleChartLegendComponent"], _summary_scales_chart_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_6__["SummaryScalesChartComponent"]]
+          exports: [_scale_chart_scale_chart_component__WEBPACK_IMPORTED_MODULE_2__["ScaleChartComponent"], _scale_chart_legend_scale_chart_legend_component__WEBPACK_IMPORTED_MODULE_4__["ScaleChartLegendComponent"], _summary_scales_chart_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_6__["SummaryScalesChartComponent"], _svg_summary_scales_chart_svg_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_7__["SvgSummaryScalesChartComponent"], _svg_scale_chart_svg_scale_chart_component__WEBPACK_IMPORTED_MODULE_8__["SvgScaleChartComponent"]]
         });
       })();
       /*@__PURE__*/
@@ -23695,8 +24259,8 @@
             imports: [_angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"] // ,ChartsModule
             ],
             providers: [_services_scale_result_color_service__WEBPACK_IMPORTED_MODULE_3__["ScaleResultColorService"]],
-            declarations: [_scale_chart_scale_chart_component__WEBPACK_IMPORTED_MODULE_2__["ScaleChartComponent"], _scale_chart_legend_scale_chart_legend_component__WEBPACK_IMPORTED_MODULE_4__["ScaleChartLegendComponent"], _legend_color_icon_legend_color_icon_component__WEBPACK_IMPORTED_MODULE_5__["LegendColorIconComponent"], _summary_scales_chart_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_6__["SummaryScalesChartComponent"]],
-            exports: [_scale_chart_scale_chart_component__WEBPACK_IMPORTED_MODULE_2__["ScaleChartComponent"], _scale_chart_legend_scale_chart_legend_component__WEBPACK_IMPORTED_MODULE_4__["ScaleChartLegendComponent"], _summary_scales_chart_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_6__["SummaryScalesChartComponent"]]
+            declarations: [_scale_chart_scale_chart_component__WEBPACK_IMPORTED_MODULE_2__["ScaleChartComponent"], _scale_chart_legend_scale_chart_legend_component__WEBPACK_IMPORTED_MODULE_4__["ScaleChartLegendComponent"], _legend_color_icon_legend_color_icon_component__WEBPACK_IMPORTED_MODULE_5__["LegendColorIconComponent"], _summary_scales_chart_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_6__["SummaryScalesChartComponent"], _svg_summary_scales_chart_svg_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_7__["SvgSummaryScalesChartComponent"], _svg_scale_chart_svg_scale_chart_component__WEBPACK_IMPORTED_MODULE_8__["SvgScaleChartComponent"]],
+            exports: [_scale_chart_scale_chart_component__WEBPACK_IMPORTED_MODULE_2__["ScaleChartComponent"], _scale_chart_legend_scale_chart_legend_component__WEBPACK_IMPORTED_MODULE_4__["ScaleChartLegendComponent"], _summary_scales_chart_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_6__["SummaryScalesChartComponent"], _svg_summary_scales_chart_svg_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_7__["SvgSummaryScalesChartComponent"], _svg_scale_chart_svg_scale_chart_component__WEBPACK_IMPORTED_MODULE_8__["SvgScaleChartComponent"]]
           }]
         }], null, null);
       })();
@@ -23849,13 +24413,13 @@
         var _super16 = _createSuper(ManagedClient);
 
         function ManagedClient() {
-          var _this117;
+          var _this119;
 
           _classCallCheck(this, ManagedClient);
 
-          _this117 = _super16.call(this);
-          _this117.assignments = [];
-          return _this117;
+          _this119 = _super16.call(this);
+          _this119.assignments = [];
+          return _this119;
         }
 
         _createClass(ManagedClient, [{
@@ -24280,16 +24844,16 @@
         }, {
           key: "getQuestionSetsForDisplay",
           value: function getQuestionSetsForDisplay() {
-            var _this118 = this;
+            var _this120 = this;
 
             return this._question_sets.filter(function (qs) {
-              return _this118.shouldDisplayQuestionSet(qs);
+              return _this120.shouldDisplayQuestionSet(qs);
             });
           }
         }, {
           key: "shouldDisplayQuestionSet",
           value: function shouldDisplayQuestionSet(qs) {
-            var _this119 = this;
+            var _this121 = this;
 
             var displayConditions = qs.getDisplayConditions();
 
@@ -24298,7 +24862,7 @@
             }
 
             var showRatings = displayConditions.map(function (dc) {
-              return dc.getDisplay(_this119);
+              return dc.getDisplay(_this121);
             }); // TODO: stephen when we can have multiple conditions we need to have some kind of point ranking
             // or other system for this
 
@@ -24649,13 +25213,13 @@
         _createClass(UserSelectorComponent, [{
           key: "ngOnInit",
           value: function ngOnInit() {
-            var _this120 = this;
+            var _this122 = this;
 
             this.authService.getCurrentUser().then(function (currentUser) {
               var getUsers = Promise.resolve([currentUser]);
 
               if (currentUser.role <= _models_role__WEBPACK_IMPORTED_MODULE_0__["Role"].Admin) {
-                getUsers = _this120.userService.getUsers();
+                getUsers = _this122.userService.getUsers();
               }
 
               getUsers.then(function (users) {
@@ -24663,13 +25227,13 @@
                   return u.enabled;
                 }); // only display activated users.
 
-                if (_this120.filter) {
-                  _this120.users = activeUsers.filter(_this120.filter);
+                if (_this122.filter) {
+                  _this122.users = activeUsers.filter(_this122.filter);
                 } else {
-                  _this120.users = activeUsers;
+                  _this122.users = activeUsers;
                 }
 
-                _this120.setupSelectedUser();
+                _this122.setupSelectedUser();
               });
             });
           }
@@ -24684,13 +25248,13 @@
         }, {
           key: "setupSelectedUser",
           value: function setupSelectedUser() {
-            var _this121 = this;
+            var _this123 = this;
 
             if (!this.user) {
               this.selectedUser = null;
             } else {
               this.selectedUser = this.users.find(function (u) {
-                return u.id == _this121.user.id;
+                return u.id == _this123.user.id;
               });
             }
           }
@@ -25130,11 +25694,11 @@
         _createClass(ToastComponent, [{
           key: "ngOnInit",
           value: function ngOnInit() {
-            var _this122 = this;
+            var _this124 = this;
 
             var delay = this.data.timeToDisplay || this.toastConfig.timeToDisplay || 5000;
             this.intervalId = setTimeout(function () {
-              _this122.close();
+              _this124.close();
             }, delay);
           }
         }, {
@@ -25595,19 +26159,25 @@
       /* harmony import */
 
 
-      var _scale_range_content_scale_range_content_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(
+      var _assessment_charts_svg_summary_scales_chart_svg_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(
+      /*! ../../../assessment-charts/svg-summary-scales-chart/svg-summary-scales-chart.component */
+      "5CX4");
+      /* harmony import */
+
+
+      var _scale_range_content_scale_range_content_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(
       /*! ../../scale-range-content/scale-range-content.component */
       "xuKX");
       /* harmony import */
 
 
-      var _scale_questions_list_scale_questions_list_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(
+      var _scale_questions_list_scale_questions_list_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(
       /*! ../../scale-questions-list/scale-questions-list.component */
       "d8w3");
       /* harmony import */
 
 
-      var _scale_sub_list_scale_sub_list_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(
+      var _scale_sub_list_scale_sub_list_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(
       /*! ../../scale-sub-list/scale-sub-list.component */
       "E8QE");
 
@@ -25623,7 +26193,7 @@
 
           _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](1, "div", 14);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelement"](2, "app-summary-scales-chart", 15, 16);
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelement"](2, "app-svg-summary-scales-chart", 15, 16);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
 
@@ -25780,19 +26350,19 @@
         var _super19 = _createSuper(TherapistScaleResultsComponent);
 
         function TherapistScaleResultsComponent(navigator, el) {
-          var _this123;
+          var _this125;
 
           _classCallCheck(this, TherapistScaleResultsComponent);
 
-          _this123 = _super19.call(this);
-          _this123.navigator = navigator;
-          _this123.el = el;
-          _this123._skipContent = false;
-          _this123._skipGraph = false;
-          _this123._skipTable = false;
-          _this123._showRangeScore = true;
-          _this123._rollUpQuestions = false;
-          return _this123;
+          _this125 = _super19.call(this);
+          _this125.navigator = navigator;
+          _this125.el = el;
+          _this125._skipContent = false;
+          _this125._skipGraph = false;
+          _this125._skipTable = false;
+          _this125._showRangeScore = true;
+          _this125._rollUpQuestions = false;
+          return _this125;
         }
 
         _createClass(TherapistScaleResultsComponent, [{
@@ -25962,7 +26532,7 @@
         }, {
           key: "getQuestionsForScaleResult",
           value: function getQuestionsForScaleResult(scaleResult) {
-            var _this124 = this;
+            var _this126 = this;
 
             var depth = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
             var questionList = [];
@@ -25975,7 +26545,7 @@
             if (this.hasSubScales(scaleResult)) {
               var subScaleResults = this.getSubScales(scaleResult);
               questionList = subScaleResults.map(function (sr) {
-                return _this124.getQuestionsForScaleResult(sr, depth + 1);
+                return _this126.getQuestionsForScaleResult(sr, depth + 1);
               }).reduce(function (prev, curr) {
                 return prev.concat(curr);
               }, []);
@@ -25994,14 +26564,14 @@
         }, {
           key: "populateNavigator",
           value: function populateNavigator(scaleResults) {
-            var _this125 = this;
+            var _this127 = this;
 
             scaleResults.forEach(function (sr) {
-              var rootElement = _this125.el.nativeElement;
-              var element = rootElement.querySelector("#" + _this125.getScaleResultNavigatorId(sr));
+              var rootElement = _this127.el.nativeElement;
+              var element = rootElement.querySelector("#" + _this127.getScaleResultNavigatorId(sr));
 
               if (element) {
-                _this125.navigator.registerItem(sr.scale.id, element);
+                _this127.navigator.registerItem(sr.scale.id, element);
               }
             });
           }
@@ -26013,10 +26583,10 @@
         }, {
           key: "cleanupNavigator",
           value: function cleanupNavigator() {
-            var _this126 = this;
+            var _this128 = this;
 
             this.ScaleResults.forEach(function (sr) {
-              _this126.navigator.unregisterItem(sr.scale.id);
+              _this128.navigator.unregisterItem(sr.scale.id);
             });
           }
         }, {
@@ -26038,11 +26608,11 @@
         }, {
           key: "getSubScales",
           value: function getSubScales(scaleResult) {
-            var _this127 = this;
+            var _this129 = this;
 
             if (scaleResult.scale.hasSubScales()) {
               return scaleResult.scale.getSubScaleIds().map(function (si) {
-                return _this127.AssessmentResult.getScaleResultByScaleId(si);
+                return _this129.AssessmentResult.getScaleResultByScaleId(si);
               });
             }
 
@@ -26154,7 +26724,7 @@
             _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("ngForOf", ctx.ScaleResults);
           }
         },
-        directives: [_angular_common__WEBPACK_IMPORTED_MODULE_5__["NgForOf"], _angular_common__WEBPACK_IMPORTED_MODULE_5__["NgClass"], _angular_common__WEBPACK_IMPORTED_MODULE_5__["NgIf"], app_assessment_charts_summary_scales_chart_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_4__["SummaryScalesChartComponent"], _scale_range_content_scale_range_content_component__WEBPACK_IMPORTED_MODULE_6__["ScaleRangeContentComponent"], _scale_questions_list_scale_questions_list_component__WEBPACK_IMPORTED_MODULE_7__["ScaleQuestionsListComponent"], _scale_sub_list_scale_sub_list_component__WEBPACK_IMPORTED_MODULE_8__["ScaleSubListComponent"]],
+        directives: [_angular_common__WEBPACK_IMPORTED_MODULE_5__["NgForOf"], _angular_common__WEBPACK_IMPORTED_MODULE_5__["NgClass"], _angular_common__WEBPACK_IMPORTED_MODULE_5__["NgIf"], _assessment_charts_svg_summary_scales_chart_svg_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_6__["SvgSummaryScalesChartComponent"], _scale_range_content_scale_range_content_component__WEBPACK_IMPORTED_MODULE_7__["ScaleRangeContentComponent"], _scale_questions_list_scale_questions_list_component__WEBPACK_IMPORTED_MODULE_8__["ScaleQuestionsListComponent"], _scale_sub_list_scale_sub_list_component__WEBPACK_IMPORTED_MODULE_9__["ScaleSubListComponent"]],
         encapsulation: 2
       });
       /*@__PURE__*/
@@ -26945,7 +27515,7 @@
 
       var TabsComponent = /*#__PURE__*/function () {
         function TabsComponent(_router, route) {
-          var _this128 = this;
+          var _this130 = this;
 
           _classCallCheck(this, TabsComponent);
 
@@ -26969,15 +27539,15 @@
           this._router.events.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["filter"])(function (event) {
             return event instanceof _angular_router__WEBPACK_IMPORTED_MODULE_1__["NavigationEnd"];
           }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])(function (endEvent) {
-            var child = _this128.route.firstChild;
+            var child = _this130.route.firstChild;
 
             if (child && child.snapshot && child.snapshot.url && child.snapshot.url.length) {
               return child.snapshot.url[0].path;
             }
           })).subscribe(function (activeRoute) {
-            _this128.activeRoute = activeRoute;
+            _this130.activeRoute = activeRoute;
 
-            _this128.setupActiveTabFromRoute(_this128.activeRoute);
+            _this130.setupActiveTabFromRoute(_this130.activeRoute);
           });
         }
 
@@ -27178,9 +27748,9 @@
       /* harmony import */
 
 
-      var _assessment_charts_scale_chart_scale_chart_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
-      /*! ../../assessment-charts/scale-chart/scale-chart.component */
-      "GzvG");
+      var _assessment_charts_svg_scale_chart_svg_scale_chart_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
+      /*! ../../assessment-charts/svg-scale-chart/svg-scale-chart.component */
+      "izrt");
       /*
        *   Copyright (c) 2022 Discover and Change @author Stephen Nielson <snielson@discoverandchange.com>
        *   All rights reserved.
@@ -27198,9 +27768,9 @@
         }
       }
 
-      function ScaleSummaryComponent_app_scale_chart_3_Template(rf, ctx) {
+      function ScaleSummaryComponent_app_svg_scale_chart_3_Template(rf, ctx) {
         if (rf & 1) {
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "app-scale-chart", 6);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "app-svg-scale-chart", 6);
         }
 
         if (rf & 2) {
@@ -27244,7 +27814,7 @@
 
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](2, ScaleSummaryComponent_p_2_Template, 2, 0, "p", 2);
 
-            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](3, ScaleSummaryComponent_app_scale_chart_3_Template, 1, 3, "app-scale-chart", 3);
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](3, ScaleSummaryComponent_app_svg_scale_chart_3_Template, 1, 3, "app-svg-scale-chart", 3);
 
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
@@ -27285,7 +27855,7 @@
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](ctx.scaleResult == null ? null : ctx.scaleResult.range == null ? null : ctx.scaleResult.range.displayName);
           }
         },
-        directives: [_angular_common__WEBPACK_IMPORTED_MODULE_2__["NgIf"], _assessment_charts_scale_chart_scale_chart_component__WEBPACK_IMPORTED_MODULE_3__["ScaleChartComponent"]],
+        directives: [_angular_common__WEBPACK_IMPORTED_MODULE_2__["NgIf"], _assessment_charts_svg_scale_chart_svg_scale_chart_component__WEBPACK_IMPORTED_MODULE_3__["SvgScaleChartComponent"]],
         encapsulation: 2
       });
       /*@__PURE__*/
@@ -27860,9 +28430,9 @@
       /* harmony import */
 
 
-      var _assessment_charts_scale_chart_scale_chart_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
-      /*! ../../../assessment-charts/scale-chart/scale-chart.component */
-      "GzvG");
+      var _assessment_charts_svg_scale_chart_svg_scale_chart_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
+      /*! ../../../assessment-charts/svg-scale-chart/svg-scale-chart.component */
+      "izrt");
       /* harmony import */
 
 
@@ -27972,7 +28542,7 @@
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](13, "div", 8);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](14, "app-scale-chart", 9);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](14, "app-svg-scale-chart", 9);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
@@ -28101,7 +28671,7 @@
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngForOf", ctx.ScaleResults);
           }
         },
-        directives: [_angular_common__WEBPACK_IMPORTED_MODULE_2__["NgIf"], _angular_common__WEBPACK_IMPORTED_MODULE_2__["NgForOf"], _assessment_charts_scale_chart_scale_chart_component__WEBPACK_IMPORTED_MODULE_3__["ScaleChartComponent"], _scale_questions_list_scale_questions_list_component__WEBPACK_IMPORTED_MODULE_4__["ScaleQuestionsListComponent"]],
+        directives: [_angular_common__WEBPACK_IMPORTED_MODULE_2__["NgIf"], _angular_common__WEBPACK_IMPORTED_MODULE_2__["NgForOf"], _assessment_charts_svg_scale_chart_svg_scale_chart_component__WEBPACK_IMPORTED_MODULE_3__["SvgScaleChartComponent"], _scale_questions_list_scale_questions_list_component__WEBPACK_IMPORTED_MODULE_4__["ScaleQuestionsListComponent"]],
         encapsulation: 2
       });
       /*@__PURE__*/
@@ -28180,7 +28750,7 @@
       var AssessmentTokenService = /*#__PURE__*/function () {
         function AssessmentTokenService( // TODO: stephen replace $http here with our dac$http
         _dac$http, authService, dacConfig) {
-          var _this129 = this;
+          var _this131 = this;
 
           _classCallCheck(this, AssessmentTokenService);
 
@@ -28188,14 +28758,14 @@
           this.authService = authService;
           this.dacConfig = dacConfig;
           this.authService.getLoginState().subscribe(function (state) {
-            _this129.tokensEnabled = false;
+            _this131.tokensEnabled = false;
 
-            if (!_this129.dacConfig.isFeatureEnabled("assessments.tokens.enabled")) {
+            if (!_this131.dacConfig.isFeatureEnabled("assessments.tokens.enabled")) {
               return;
             }
 
             if (state.isLoggedIn && state.user) {
-              _this129.tokensEnabled = state.user.hasCapability(_models_capability__WEBPACK_IMPORTED_MODULE_4__["Capability"].CAN_BUY_TOKENS);
+              _this131.tokensEnabled = state.user.hasCapability(_models_capability__WEBPACK_IMPORTED_MODULE_4__["Capability"].CAN_BUY_TOKENS);
             }
           }); // TODO: stephen if we remove tokens all together we want to remove this feature.
 
@@ -28203,7 +28773,7 @@
             this.tokensEnabled = true;
             this.authService.getCurrentUser().then(function (user) {
               if (!user.hasCapability(_models_capability__WEBPACK_IMPORTED_MODULE_4__["Capability"].CAN_BUY_TOKENS)) {
-                _this129.tokensEnabled = false;
+                _this131.tokensEnabled = false;
               }
             });
           } else {
@@ -28221,7 +28791,7 @@
         }, {
           key: "getGroupRemainingTokens",
           value: function getGroupRemainingTokens(group) {
-            var _this130 = this;
+            var _this132 = this;
 
             var numTests = group.Assessments ? group.Assessments.length : 0;
 
@@ -28234,7 +28804,7 @@
             // can be used.
 
             group.Assessments.forEach(function (a) {
-              var testCount = _this130.getRemainingTokens(a);
+              var testCount = _this132.getRemainingTokens(a);
 
               tokensRemaining = Math.min(testCount, tokensRemaining);
             });
@@ -28291,10 +28861,10 @@
         }, {
           key: "addTokensForGroup",
           value: function addTokensForGroup(group, tokens) {
-            var _this131 = this;
+            var _this133 = this;
 
             group.Assessments.map(function (a) {
-              return _this131.addTokens(a, tokens);
+              return _this133.addTokens(a, tokens);
             });
           }
         }, {
@@ -28311,7 +28881,7 @@
         }, {
           key: "loadAssessmentTokens",
           value: function loadAssessmentTokens() {
-            var _this132 = this;
+            var _this134 = this;
 
             // nothing to do here if the tokens are not enabled.
             if (!this.tokensEnabled) {
@@ -28320,7 +28890,7 @@
 
             return this._dac$http.get("tokens").then(function (data) {
               data.forEach(function (item) {
-                _this132.assessmentQuotas[item.assessment_uid] = item;
+                _this134.assessmentQuotas[item.assessment_uid] = item;
               });
             });
           }
@@ -28723,7 +29293,7 @@
         _createClass(ScaleQuestionsListComponent, [{
           key: "ngOnInit",
           value: function ngOnInit() {
-            var _this133 = this;
+            var _this135 = this;
 
             var actionsByQuestionId = (this.QuestionActions || []).reduce(function (prev, curr) {
               prev[curr.question.id] = curr;
@@ -28751,7 +29321,7 @@
                 display.actionLabel = display.action.label;
               }
 
-              display.isFlaggedForReview = _this133.flagQuestion(q);
+              display.isFlaggedForReview = _this135.flagQuestion(q);
               display.computedScore = q.getComputedScore();
               return display;
             });
@@ -28760,7 +29330,7 @@
         }, {
           key: "copyTable",
           value: function copyTable() {
-            var _this134 = this;
+            var _this136 = this;
 
             /**
              * <div class="cell-data col-8 col-md-9" *ngIf="!HasThirdColumn">Question</div>
@@ -28783,7 +29353,7 @@
                 row.push('"' + qd.prompt + '"');
                 row.push('"' + qd.answerDisplayText + '"');
 
-                if (_this134.hasThirdColumn && _this134.displayScale) {
+                if (_this136.hasThirdColumn && _this136.displayScale) {
                   row.push('"' + qd.scale + '"');
                 }
 
@@ -29201,20 +29771,20 @@
         _createClass(QuestionnaireResultViewComponent, [{
           key: "ngOnInit",
           value: function ngOnInit() {
-            var _this135 = this;
+            var _this137 = this;
 
             this.route.params.subscribe(function (params) {
               var resultId = params['resultId'];
-              _this135.hasLoadedResults = false;
+              _this137.hasLoadedResults = false;
 
-              _this135.questionnaireService.getQuestionnaireResponseAsAssessmentResult(resultId).then(function (response) {
-                _this135.hasLoadedResults = true;
-                _this135._questions = response.assessment.getQuestionsList();
+              _this137.questionnaireService.getQuestionnaireResponseAsAssessmentResult(resultId).then(function (response) {
+                _this137.hasLoadedResults = true;
+                _this137._questions = response.assessment.getQuestionsList();
 
-                _this135.changeDetection.detectChanges(); // make sure we update before saying the report loaded.
+                _this137.changeDetection.detectChanges(); // make sure we update before saying the report loaded.
 
 
-                _this135.result = response; // we need to let outside listeners like the server pdf generator know we have finished loading so we can generate the report
+                _this137.result = response; // we need to let outside listeners like the server pdf generator know we have finished loading so we can generate the report
 
                 console.log("adding dac-report-loaded class");
                 document.body.classList.add("dac-report-loaded");
@@ -29222,9 +29792,9 @@
                 console.error(error);
 
                 if (error && error.status === 404 || error.status === 400) {
-                  _this135.alertService.error("404 This item could not be found");
+                  _this137.alertService.error("404 This item could not be found");
                 } else {
-                  _this135.alertService.error("There was a server error in loading this item.  Check your internet connection or contact support");
+                  _this137.alertService.error("There was a server error in loading this item.  Check your internet connection or contact support");
                 }
               });
             });
@@ -30275,16 +30845,16 @@
         var _super21 = _createSuper(QuestionActionListComponent);
 
         function QuestionActionListComponent(questionActionService, questionFinder) {
-          var _this136;
+          var _this138;
 
           _classCallCheck(this, QuestionActionListComponent);
 
-          _this136 = _super21.call(this);
-          _this136.questionActionService = questionActionService;
-          _this136.questionFinder = questionFinder;
-          _this136._questionsByScale = {};
-          _this136._questionActions = {};
-          return _this136;
+          _this138 = _super21.call(this);
+          _this138.questionActionService = questionActionService;
+          _this138.questionFinder = questionFinder;
+          _this138._questionsByScale = {};
+          _this138._questionActions = {};
+          return _this138;
         }
 
         _createClass(QuestionActionListComponent, [{
@@ -30293,7 +30863,7 @@
         }, {
           key: "setReportData",
           value: function setReportData(data, results, variables) {
-            var _this137 = this;
+            var _this139 = this;
 
             _get(_getPrototypeOf(QuestionActionListComponent.prototype), "setReportData", this).call(this, data, results, variables);
 
@@ -30309,7 +30879,7 @@
                 question = questionById.get(ta.questionId);
               }
 
-              _this137._questionActions[ta.questionId] = {
+              _this139._questionActions[ta.questionId] = {
                 scale: question.scale,
                 question: question,
                 action: ta.action,
@@ -30319,7 +30889,7 @@
             });
             this._questionsByScale = {};
             this.ScaleResults.forEach(function (sr) {
-              _this137._questionsByScale[sr.scale.id] = _this137.questionFinder.getQuestionsForScaleResult(_this137.AssessmentResult, sr);
+              _this139._questionsByScale[sr.scale.id] = _this139.questionFinder.getQuestionsForScaleResult(_this139.AssessmentResult, sr);
             });
           }
         }, {
@@ -30500,22 +31070,22 @@
         }, {
           key: "goToAdminLogin",
           value: function goToAdminLogin() {
-            var _this138 = this;
+            var _this140 = this;
 
             this.authService.logout().then(function () {
-              _this138.router.navigate(['/loginAdmin']).then(function () {
-                _this138.closeDialog();
+              _this140.router.navigate(['/loginAdmin']).then(function () {
+                _this140.closeDialog();
               });
             });
           }
         }, {
           key: "goToClientLogin",
           value: function goToClientLogin() {
-            var _this139 = this;
+            var _this141 = this;
 
             this.authService.logout().then(function () {
-              _this139.router.navigate(['/login']).then(function () {
-                _this139.closeDialog();
+              _this141.router.navigate(['/login']).then(function () {
+                _this141.closeDialog();
               });
             });
           }
@@ -30768,11 +31338,11 @@
         }, {
           key: "getAvailableSubScales",
           value: function getAvailableSubScales(potentialScales) {
-            var _this140 = this;
+            var _this142 = this;
 
             var availableScales = new Map();
             potentialScales = potentialScales.filter(function (s) {
-              return s.id != _this140.id;
+              return s.id != _this142.id;
             }); // filter out ourselves.
             // first init everything as true
 
@@ -30781,14 +31351,14 @@
             });
             potentialScales.forEach(function (ps) {
               // turn off all scales reachable by current sub scales.
-              if (_this140._subScales[ps.id]) {
+              if (_this142._subScales[ps.id]) {
                 availableScales.set(ps, false); // now set all the sub to be false
                 // TODO: stephen we still working on the reachability aspect of this but we'll punt on this for now.
                 // this.getConnectedSubScales(ps, 0).forEach(s => availableScales.set(s, false));
               } // if we are a sub scale of the potential scale we need to skip it...
 
 
-              if (ps.hasSubScale(_this140)) {
+              if (ps.hasSubScale(_this142)) {
                 availableScales.set(ps, false);
               }
             });
@@ -31309,7 +31879,7 @@
         }, {
           key: "login",
           value: function login() {
-            var _this141 = this;
+            var _this143 = this;
 
             if (!this._token || this._token.trim() === "") {
               this.alertService.error("Enter in your client token to continue");
@@ -31322,11 +31892,11 @@
 
 
             this.authService.authenticateClient(this._token.trim()).then(function (clientId) {
-              _this141.router.navigate(["/assessments/dashboard"]);
+              _this143.router.navigate(["/assessments/dashboard"]);
             })["catch"](function (error) {
               console.error(error);
 
-              _this141.alertService.error(error.message);
+              _this143.alertService.error(error.message);
             });
           }
         }, {
@@ -31637,7 +32207,7 @@
         }, {
           key: "handlePrint",
           value: function handlePrint() {
-            var _this142 = this;
+            var _this144 = this;
 
             this._hasPrinted = false;
             this.printing = true;
@@ -31653,25 +32223,25 @@
 
             var alert = this.alertService.info("Generating PDF Report", 120000);
             this.pdfService.generate(url, this.assignment).then(function (fileId) {
-              _this142.metrics.trackEvent(_this142.METRICS_CATEGORY, 'handlePrint', "PDF report generated");
+              _this144.metrics.trackEvent(_this144.METRICS_CATEGORY, 'handlePrint', "PDF report generated");
 
-              _this142.filePrintId = fileId;
+              _this144.filePrintId = fileId;
 
-              _this142.alertService.clearAlert(alert);
+              _this144.alertService.clearAlert(alert);
 
-              _this142.printing = false;
-              _this142._hasPrinted = true;
+              _this144.printing = false;
+              _this144._hasPrinted = true;
 
-              _this142.alertService.success("PDF report successfully generated");
+              _this144.alertService.success("PDF report successfully generated");
             })["catch"](function (error) {
-              _this142.metrics.trackEvent(_this142.METRICS_CATEGORY, 'handlePrint', "PDF report failed to generate");
+              _this144.metrics.trackEvent(_this144.METRICS_CATEGORY, 'handlePrint', "PDF report failed to generate");
 
-              _this142.printing = false;
+              _this144.printing = false;
               console.error(error);
 
-              _this142.alertService.clearAlert(alert);
+              _this144.alertService.clearAlert(alert);
 
-              _this142.alertService.error("PDF failed to generate.  Check your internet connection and try again.  Contact customer support if you keep experiencing problems");
+              _this144.alertService.error("PDF failed to generate.  Check your internet connection and try again.  Contact customer support if you keep experiencing problems");
             });
           }
         }, {
@@ -32094,40 +32664,40 @@
         _createClass(AccountOwnerSettingsComponent, [{
           key: "ngOnInit",
           value: function ngOnInit() {
-            var _this143 = this;
+            var _this145 = this;
 
             this.loaded = false;
             this.authService.getCurrentUser().then(function (user) {
-              _this143.companyService.getAccountOwnerCompany(user.companyID).then(function (c) {
-                _this143.loaded = true;
-                _this143._company = c;
+              _this145.companyService.getAccountOwnerCompany(user.companyID).then(function (c) {
+                _this145.loaded = true;
+                _this145._company = c;
               })["catch"](function (e) {
-                _this143.alertService.error("Failed to get company settings.  Check your internet connection and try again");
+                _this145.alertService.error("Failed to get company settings.  Check your internet connection and try again");
 
                 console.error(e);
               });
             })["catch"](function (error) {
               console.error(error);
 
-              _this143.alertService.error("Failed to retrieve account settings.  Check your internet connection and try again");
+              _this145.alertService.error("Failed to retrieve account settings.  Check your internet connection and try again");
             });
           }
         }, {
           key: "save",
           value: function save() {
-            var _this144 = this;
+            var _this146 = this;
 
             this.isSaving = true;
             this.companyService.saveAccountOwnerCompany(this._company).then(function (result) {
-              _this144._company = result;
-              _this144.isSaving = false;
+              _this146._company = result;
+              _this146.isSaving = false;
 
-              _this144.alertService.success("Company settings saved!");
+              _this146.alertService.success("Company settings saved!");
             })["catch"](function (e) {
-              _this144.alertService.error("Failed to save company settings.  Check your internet connection and try again.");
+              _this146.alertService.error("Failed to save company settings.  Check your internet connection and try again.");
 
               console.error(e);
-              _this144.isSaving = false;
+              _this146.isSaving = false;
             });
           }
         }, {
@@ -32254,14 +32824,14 @@
         var _super22 = _createSuper(AssessmentGroupDisplay);
 
         function AssessmentGroupDisplay() {
-          var _this145;
+          var _this147;
 
           _classCallCheck(this, AssessmentGroupDisplay);
 
-          _this145 = _super22.call(this);
-          _this145.ShowAdd = false;
-          _this145.Show = false;
-          return _this145;
+          _this147 = _super22.call(this);
+          _this147.ShowAdd = false;
+          _this147.Show = false;
+          return _this147;
         }
 
         return AssessmentGroupDisplay;
@@ -32528,13 +33098,13 @@
         _createClass(ReportViewerComponent, [{
           key: "ngOnInit",
           value: function ngOnInit() {
-            var _this146 = this;
+            var _this148 = this;
 
             this.queryParamsSubscription = this.route.queryParams.subscribe(function (params) {
               if (params['notes'] && params['notes'] == '1') {
-                _this146.displayTherapistNotes = true;
+                _this148.displayTherapistNotes = true;
               } else {
-                _this146.displayTherapistNotes = false;
+                _this148.displayTherapistNotes = false;
               }
             });
             this.routeParamsSubscription = this.route.params.subscribe(function (params) {
@@ -32545,7 +33115,7 @@
                 return;
               }
 
-              _this146.navBarService.setupReportSidebar(clientId);
+              _this148.navBarService.setupReportSidebar(clientId);
 
               var reportId = params['reportId'];
 
@@ -32561,7 +33131,7 @@
                 return;
               }
 
-              _this146.loadReport(clientId, reportId, assignmentId);
+              _this148.loadReport(clientId, reportId, assignmentId);
             });
           }
         }, {
@@ -32594,13 +33164,13 @@
         }, {
           key: "loadReport",
           value: function loadReport(clientId, reportId, assignmentId) {
-            var _this147 = this;
+            var _this149 = this;
 
             // get the client, get the reportData
             Promise.all([this.clientService.getClient(clientId), this.reportService.get(reportId)]).then(function (results) {
               var client = results[0];
-              _this147.report = results[1];
-              _this147.reportId = reportId;
+              _this149.report = results[1];
+              _this149.reportId = reportId;
 
               if (!client || !client.assignments || !client.assignments.length) {
                 throw new Error("No assessments to generate a report");
@@ -32611,21 +33181,21 @@
               if (!assignment) {
                 throw new Error("Assignment could not be found with this id");
               } else {
-                _this147.assignment = assignment;
+                _this149.assignment = assignment;
               }
 
-              if (!_this147.report) {
+              if (!_this149.report) {
                 throw new Error("No report data to display");
               }
 
-              _this147._reportData = _this147.report; // TODO: stephen this is a bug as it loads ALL of the client's assessments they've taken.
+              _this149._reportData = _this149.report; // TODO: stephen this is a bug as it loads ALL of the client's assessments they've taken.
 
               var assessmentResultIds = assignment.getAssessmentResultIds();
               var qrResultItems = assignment.getQuestionnaireResponseItems();
 
-              var arResults = _this147.assessmentService.getAssessmentResultList(clientId, assessmentResultIds);
+              var arResults = _this149.assessmentService.getAssessmentResultList(clientId, assessmentResultIds);
 
-              var qrResults = _this147.questionnaireResponseService.getQuestionnaireResponsesAsAssessmentResults(qrResultItems); // let completedResultIds = assignment.getResultIds();
+              var qrResults = _this149.questionnaireResponseService.getQuestionnaireResponsesAsAssessmentResults(qrResultItems); // let completedResultIds = assignment.getResultIds();
               // let resultPromises:Promise<AssessmentResult>[] = completedResultIds.map(r => this.assessmentService.getAssessmentResult(clientId, r));
               // return Promise.all(resultPromises);
 
@@ -32634,8 +33204,8 @@
                 return resultPromises[0].concat(resultPromises[1]);
               });
             }).then(function (results) {
-              _this147.assessmentResults = results;
-              _this147.hasLoadedResults = true;
+              _this149.assessmentResults = results;
+              _this149.hasLoadedResults = true;
             });
           }
         }, {
@@ -32897,13 +33467,13 @@
         var _super23 = _createSuper(FlaggedQuestionsListSimpleComponent);
 
         function FlaggedQuestionsListSimpleComponent() {
-          var _this148;
+          var _this150;
 
           _classCallCheck(this, FlaggedQuestionsListSimpleComponent);
 
-          _this148 = _super23.call(this);
-          _this148.flaggedQuestions = [];
-          return _this148;
+          _this150 = _super23.call(this);
+          _this150.flaggedQuestions = [];
+          return _this150;
         }
 
         _createClass(FlaggedQuestionsListSimpleComponent, [{
@@ -33616,7 +34186,7 @@
         _createClass(AssessmentResultHydrator, [{
           key: "hydrate",
           value: function hydrate(data) {
-            var _this149 = this;
+            var _this151 = this;
 
             var assessmentResult = new _models_assessment_result__WEBPACK_IMPORTED_MODULE_3__["AssessmentResult"]();
             var answerMap = {};
@@ -33636,7 +34206,7 @@
               this.fillInAnswers(assessmentResult, _answerMap);
               assessmentResult.flaggedQuestions = this.getFlaggedQuestions(flaggedQuestions, questionMap);
               assessmentResult.scaleResults = scaleResults.map(function (sr) {
-                return _this149.hydrateScaleResult(assessmentResult.assessment, sr);
+                return _this151.hydrateScaleResult(assessmentResult.assessment, sr);
               });
             }
 
@@ -33681,12 +34251,12 @@
         }, {
           key: "fillInAnswers",
           value: function fillInAnswers(assessmentResult, answerMap) {
-            var _this150 = this;
+            var _this152 = this;
 
             // populate the answers for the questions from the result set.
             assessmentResult.assessment.question_sets.forEach(function (qs) {
               return qs.questions.forEach(function (q) {
-                return _this150.fillInQuestion(q, qs, answerMap);
+                return _this152.fillInQuestion(q, qs, answerMap);
               });
             });
           }
@@ -33849,7 +34419,7 @@
         _createClass(ReportService, [{
           key: "getReportObjects",
           value: function getReportObjects() {
-            var _this151 = this;
+            var _this153 = this;
 
             var showAllReports = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
@@ -33860,9 +34430,9 @@
             return this.http.get("assessment-reports", {
               showAllReports: showAllReports
             }).then(function (reports) {
-              _this151.reports = reports;
-              _this151.allReportsIncludingHidden = showAllReports;
-              return _this151.reports;
+              _this153.reports = reports;
+              _this153.allReportsIncludingHidden = showAllReports;
+              return _this153.reports;
             })["catch"](function (error) {
               console.error(error);
               return [];
@@ -33887,10 +34457,10 @@
         }, {
           key: "create",
           value: function create(item) {
-            var _this152 = this;
+            var _this154 = this;
 
             return this.http.compressedPost("assessment-reports", item).then(function (result) {
-              _this152.reports = null; // invalidate the cache
+              _this154.reports = null; // invalidate the cache
 
               return result;
             });
@@ -33898,10 +34468,10 @@
         }, {
           key: "save",
           value: function save(item) {
-            var _this153 = this;
+            var _this155 = this;
 
             return this.http.compressedPost("assessment-reports/" + item.id, item).then(function (result) {
-              _this153.reports = null; // invalidate the cache
+              _this155.reports = null; // invalidate the cache
 
               return item;
             });
@@ -34231,6 +34801,464 @@
     },
 
     /***/
+    "izrt":
+    /*!********************************************************************************!*\
+      !*** ./src/app/assessment-charts/svg-scale-chart/svg-scale-chart.component.ts ***!
+      \********************************************************************************/
+
+    /*! exports provided: SvgScaleChartComponent */
+
+    /***/
+    function izrt(module, __webpack_exports__, __webpack_require__) {
+      "use strict";
+
+      __webpack_require__.r(__webpack_exports__);
+      /* harmony export (binding) */
+
+
+      __webpack_require__.d(__webpack_exports__, "SvgScaleChartComponent", function () {
+        return SvgScaleChartComponent;
+      });
+      /* harmony import */
+
+
+      var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
+      /*! @angular/core */
+      "fXoL");
+      /* harmony import */
+
+
+      var app_shared_models_scale_result__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
+      /*! app/shared/models/scale-result */
+      "+u/X");
+      /* harmony import */
+
+
+      var _angular_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
+      /*! @angular/common */
+      "ofXK");
+      /*
+       *   Copyright (c) 2026 Discover and Change @author Stephen Nielson <snielson@discoverandchange.com>
+       *   All rights reserved.
+       *   For License information see LICENSE.md in the root folder of this project.
+       */
+
+
+      function SvgScaleChartComponent_div_0__svg_rect_2_Template(rf, ctx) {
+        if (rf & 1) {
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnamespaceSVG"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "rect", 8);
+        }
+
+        if (rf & 2) {
+          var b_r6 = ctx.$implicit;
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵattribute"]("x", b_r6.x)("y", b_r6.y)("width", b_r6.width)("height", b_r6.height);
+        }
+      }
+
+      function SvgScaleChartComponent_div_0__svg_text_3_Template(rf, ctx) {
+        if (rf & 1) {
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnamespaceSVG"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "text", 9);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](1);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        }
+
+        if (rf & 2) {
+          var l_r7 = ctx.$implicit;
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵattribute"]("x", l_r7.x)("y", l_r7.y);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](l_r7.text);
+        }
+      }
+
+      function SvgScaleChartComponent_div_0__svg_rect_4_Template(rf, ctx) {
+        if (rf & 1) {
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnamespaceSVG"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "rect", 10);
+        }
+
+        if (rf & 2) {
+          var ctx_r3 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](2);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵattribute"]("x", ctx_r3.bar.x)("y", ctx_r3.bar.y)("width", ctx_r3.bar.width)("height", ctx_r3.bar.height);
+        }
+      }
+
+      function SvgScaleChartComponent_div_0__svg_g_5__svg_polygon_1_Template(rf, ctx) {
+        if (rf & 1) {
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnamespaceSVG"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "polygon", 13);
+        }
+
+        if (rf & 2) {
+          var ctx_r8 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](3);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵattribute"]("points", ctx_r8.scoreBubble.pointer);
+        }
+      }
+
+      function SvgScaleChartComponent_div_0__svg_g_5_Template(rf, ctx) {
+        if (rf & 1) {
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnamespaceSVG"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "g", 11);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](1, SvgScaleChartComponent_div_0__svg_g_5__svg_polygon_1_Template, 1, 1, "polygon", 12);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](2, "rect", 13);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](3, "text", 14);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](4);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        }
+
+        if (rf & 2) {
+          var ctx_r4 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](2);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx_r4.scoreBubble.pointer);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵattribute"]("x", ctx_r4.scoreBubble.rectX)("y", ctx_r4.scoreBubble.rectY)("width", ctx_r4.scoreBubble.width)("height", ctx_r4.scoreBubble.height)("rx", ctx_r4.scoreBubble.rx)("ry", ctx_r4.scoreBubble.rx);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵattribute"]("x", ctx_r4.scoreBubble.textX)("y", ctx_r4.scoreBubble.textY);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](ctx_r4.scoreBubble.text);
+        }
+      }
+
+      function SvgScaleChartComponent_div_0__svg_text_6_Template(rf, ctx) {
+        if (rf & 1) {
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnamespaceSVG"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "text", 15);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](1);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        }
+
+        if (rf & 2) {
+          var ctx_r5 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](2);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵattribute"]("x", 350)("y", 410);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](ctx_r5.scaleNameLabel);
+        }
+      }
+
+      function SvgScaleChartComponent_div_0_Template(rf, ctx) {
+        if (rf & 1) {
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 1);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnamespaceSVG"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "svg", 2);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](2, SvgScaleChartComponent_div_0__svg_rect_2_Template, 1, 4, "rect", 3);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](3, SvgScaleChartComponent_div_0__svg_text_3_Template, 2, 3, "text", 4);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](4, SvgScaleChartComponent_div_0__svg_rect_4_Template, 1, 4, "rect", 5);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](5, SvgScaleChartComponent_div_0__svg_g_5_Template, 5, 10, "g", 6);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](6, SvgScaleChartComponent_div_0__svg_text_6_Template, 2, 3, "text", 7);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        }
+
+        if (rf & 2) {
+          var ctx_r0 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵattribute"]("viewBox", ctx_r0.viewBox);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngForOf", ctx_r0.bands);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngForOf", ctx_r0.rangeLabels);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx_r0.bar);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx_r0.scoreBubble);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx_r0.scaleNameLabel);
+        }
+      }
+      /**
+       * Pure-SVG re-implementation of ScaleChartComponent (Option B).
+       *
+       * A single score bar drawn against the scale's score axis, with the scale
+       * ranges shown as faint alternating bands and their names labeled at each
+       * range midpoint. Inline SVG prints natively/crisply, so there is no
+       * canvas-to-image rasterization and none of its timing/blank-image issues.
+       * Mirrors the original @Input/@Output API for drop-in template replacement.
+       */
+
+
+      var SvgScaleChartComponent = /*#__PURE__*/function () {
+        function SvgScaleChartComponent(element) {
+          _classCallCheck(this, SvgScaleChartComponent);
+
+          this.element = element;
+          this.showRanges = true;
+          this.complete = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+          this.viewBox = "0 0 ".concat(SvgScaleChartComponent.W, " ").concat(SvgScaleChartComponent.H);
+          this.bands = [];
+          this.rangeLabels = [];
+          this.bar = null;
+          this.scoreBubble = null;
+          this.scaleNameLabel = "";
+        }
+
+        _createClass(SvgScaleChartComponent, [{
+          key: "ngOnChanges",
+          value: function ngOnChanges(changes) {
+            this.recompute(); // Preserve the original component's "complete" signal for any listeners.
+
+            this.complete.emit(null);
+          }
+        }, {
+          key: "recompute",
+          value: function recompute() {
+            var _this156 = this;
+
+            this.bands = [];
+            this.rangeLabels = [];
+            this.bar = null;
+            this.scoreBubble = null;
+            this.scaleNameLabel = "";
+
+            if (!this.hasResult) {
+              return;
+            }
+
+            var C = SvgScaleChartComponent;
+            var scale = this.scaleResult.scale;
+            var maxScore = scale.getMaxRange().rangeEnd || 1;
+            var marginBottom = this.showScaleName === true ? C.MARGIN_BOTTOM_WITH_NAME : C.MARGIN_BOTTOM;
+            var x0 = C.MARGIN_LEFT;
+            var y0 = C.MARGIN_TOP;
+            var plotW = C.W - C.MARGIN_LEFT - C.MARGIN_RIGHT;
+            var plotH = C.H - C.MARGIN_TOP - marginBottom; // Map a score value to a y pixel (0 at the bottom of the plot).
+
+            var yFor = function yFor(score) {
+              return y0 + plotH - Math.max(0, Math.min(score, maxScore)) / maxScore * plotH;
+            };
+
+            if (this.showRanges !== false) {
+              scale.ranges.forEach(function (r, i) {
+                var topY = yFor(r.rangeEnd);
+                var bottomY = yFor(r.rangeStart); // Faint alternating band, matching the original's even-range shading.
+
+                if (i % 2 === 1) {
+                  _this156.bands.push({
+                    x: x0,
+                    y: topY,
+                    width: plotW,
+                    height: Math.max(0, bottomY - topY)
+                  });
+                } // Range name label at the range midpoint.
+
+
+                _this156.rangeLabels.push({
+                  x: x0 - 6,
+                  y: yFor(r.midPoint) + 4,
+                  text: r.displayName || ""
+                });
+              });
+            } // Single score bar.
+
+
+            var score = this.scaleResult.score || 0;
+            var barW = Math.min(C.MAX_BAR_WIDTH, plotW * 0.25);
+            var centerX = x0 + plotW / 2;
+            var barTop = yFor(score);
+            this.bar = {
+              x: centerX - barW / 2,
+              y: barTop,
+              width: barW,
+              height: y0 + plotH - barTop
+            }; // Score bubble above the bar (matching the summary scales chart).
+
+            this.scoreBubble = this.buildScoreBubble(centerX, barTop, y0);
+
+            if (this.showScaleName === true) {
+              this.scaleNameLabel = scale.name || "";
+            }
+          }
+          /**
+           * Builds the rounded score bubble shown over the bar. It floats above the bar
+           * with a small downward pointer, or drops just inside the bar top when the bar
+           * reaches the plot ceiling. Width grows with the score text (1-3 digits and
+           * decimals fit) and is clamped horizontally so it never overflows the viewBox.
+           * Mirrors SvgSummaryScalesChartComponent.buildScoreBubble for a consistent look.
+           */
+
+        }, {
+          key: "buildScoreBubble",
+          value: function buildScoreBubble(centerX, barTop, y0) {
+            var C = SvgScaleChartComponent;
+            var text = this.safeScoreText();
+            var width = Math.max(C.BUBBLE_MIN_WIDTH, text.length * C.BUBBLE_CHAR_WIDTH + C.BUBBLE_PAD_X);
+            var height = C.BUBBLE_HEIGHT;
+            var desiredTop = barTop - C.BUBBLE_POINTER_H - height;
+            var above = desiredTop >= y0;
+            var rectY = above ? desiredTop : barTop + 3;
+            var minX = 2;
+            var maxX = C.W - width - 2;
+            var rectX = Math.max(minX, Math.min(maxX, centerX - width / 2));
+            var pointer = above ? "".concat(centerX - 5, ",").concat(rectY + height, " ").concat(centerX + 5, ",").concat(rectY + height, " ").concat(centerX, ",").concat(rectY + height + C.BUBBLE_POINTER_H) : null;
+            return {
+              rectX: rectX,
+              rectY: rectY,
+              width: width,
+              height: height,
+              rx: 5,
+              textX: rectX + width / 2,
+              textY: rectY + height * 0.68,
+              text: text,
+              pointer: pointer
+            };
+          }
+        }, {
+          key: "safeScoreText",
+          value: function safeScoreText() {
+            try {
+              return this.scaleResult.getScoreForDisplay();
+            } catch (e) {
+              return String(this.scaleResult.score != null ? this.scaleResult.score : "");
+            }
+          }
+        }, {
+          key: "hasResult",
+          get: function get() {
+            return this.scaleResult != null && this.scaleResult.scale != null && this.scaleResult.scale.getMaxRange() != null;
+          }
+        }]);
+
+        return SvgScaleChartComponent;
+      }();
+
+      SvgScaleChartComponent.W = 700;
+      SvgScaleChartComponent.H = 420;
+      SvgScaleChartComponent.MARGIN_LEFT = 160;
+      SvgScaleChartComponent.MARGIN_RIGHT = 12;
+      SvgScaleChartComponent.MARGIN_TOP = 24;
+      SvgScaleChartComponent.MARGIN_BOTTOM_WITH_NAME = 40;
+      SvgScaleChartComponent.MARGIN_BOTTOM = 14;
+      SvgScaleChartComponent.MAX_BAR_WIDTH = 60; // Score bubble geometry (shared look with the summary scales chart).
+
+      SvgScaleChartComponent.BUBBLE_HEIGHT = 20;
+      SvgScaleChartComponent.BUBBLE_POINTER_H = 5;
+      SvgScaleChartComponent.BUBBLE_MIN_WIDTH = 22;
+      SvgScaleChartComponent.BUBBLE_CHAR_WIDTH = 8;
+      SvgScaleChartComponent.BUBBLE_PAD_X = 14;
+
+      SvgScaleChartComponent.ɵfac = function SvgScaleChartComponent_Factory(t) {
+        return new (t || SvgScaleChartComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"]));
+      };
+
+      SvgScaleChartComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({
+        type: SvgScaleChartComponent,
+        selectors: [["app-svg-scale-chart"]],
+        inputs: {
+          scaleResult: ["scale-result", "scaleResult"],
+          showScaleName: ["show-scale-name", "showScaleName"],
+          showRanges: ["show-ranges", "showRanges"]
+        },
+        outputs: {
+          complete: "complete"
+        },
+        features: [_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵNgOnChangesFeature"]],
+        decls: 1,
+        vars: 1,
+        consts: [["class", "scale-chart-container svg-chart-container", 4, "ngIf"], [1, "scale-chart-container", "svg-chart-container"], ["preserveAspectRatio", "xMidYMid meet", "xmlns", "http://www.w3.org/2000/svg", 1, "dac-svg-chart"], ["class", "dac-svg-range-band", "shape-rendering", "crispEdges", 4, "ngFor", "ngForOf"], ["text-anchor", "end", "class", "dac-svg-rangelabel", 4, "ngFor", "ngForOf"], ["class", "dac-svg-bar", 4, "ngIf"], ["class", "dac-svg-bubble", 4, "ngIf"], ["text-anchor", "middle", "class", "dac-svg-scalename", 4, "ngIf"], ["shape-rendering", "crispEdges", 1, "dac-svg-range-band"], ["text-anchor", "end", 1, "dac-svg-rangelabel"], [1, "dac-svg-bar"], [1, "dac-svg-bubble"], ["class", "dac-svg-bubble-box", 4, "ngIf"], [1, "dac-svg-bubble-box"], ["text-anchor", "middle", 1, "dac-svg-bubble-text"], ["text-anchor", "middle", 1, "dac-svg-scalename"]],
+        template: function SvgScaleChartComponent_Template(rf, ctx) {
+          if (rf & 1) {
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](0, SvgScaleChartComponent_div_0_Template, 7, 6, "div", 0);
+          }
+
+          if (rf & 2) {
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx.hasResult);
+          }
+        },
+        directives: [_angular_common__WEBPACK_IMPORTED_MODULE_2__["NgIf"], _angular_common__WEBPACK_IMPORTED_MODULE_2__["NgForOf"]],
+        styles: ["[_nghost-%COMP%] {\n  display: block;\n  text-align: center;\n}\n\n.svg-chart-container[_ngcontent-%COMP%] {\n  width: 100%;\n}\n\n.dac-svg-chart[_ngcontent-%COMP%] {\n  width: 100%;\n  height: auto;\n  display: block;\n}\n\n.dac-svg-range-band[_ngcontent-%COMP%] {\n  fill: rgba(68, 170, 213, 0.1);\n}\n\n.dac-svg-bar[_ngcontent-%COMP%] {\n  fill: rgba(92, 141, 181, 0.75);\n  stroke: rgba(0, 0, 0, 0.35);\n  stroke-width: 1;\n}\n\n.dac-svg-rangelabel[_ngcontent-%COMP%] {\n  font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;\n  font-size: 13px;\n  fill: #000;\n}\n\n.dac-svg-bubble-box[_ngcontent-%COMP%] {\n  fill: rgba(33, 37, 41, 0.9);\n  stroke: #ffffff;\n  stroke-width: 1;\n}\n\n.dac-svg-bubble-text[_ngcontent-%COMP%] {\n  font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;\n  font-size: 13px;\n  font-weight: 700;\n  fill: #ffffff;\n}\n\n.dac-svg-scalename[_ngcontent-%COMP%] {\n  font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;\n  font-size: 13px;\n  fill: #666;\n}\n\n@media print {\n  .dac-svg-chart[_ngcontent-%COMP%] {\n    page-break-inside: avoid;\n  }\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvYXNzZXNzbWVudC1jaGFydHMvc3ZnLXNjYWxlLWNoYXJ0L3N2Zy1zY2FsZS1jaGFydC5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0UsY0FBYztFQUNkLGtCQUFrQjtBQUNwQjs7QUFFQTtFQUNFLFdBQVc7QUFDYjs7QUFFQTtFQUNFLFdBQVc7RUFDWCxZQUFZO0VBQ1osY0FBYztBQUNoQjs7QUFFQTtFQUNFLDZCQUE2QjtBQUMvQjs7QUFFQTtFQUNFLDhCQUE4QjtFQUM5QiwyQkFBMkI7RUFDM0IsZUFBZTtBQUNqQjs7QUFFQTtFQUNFLCtEQUErRDtFQUMvRCxlQUFlO0VBQ2YsVUFBVTtBQUNaOztBQUVBO0VBQ0UsMkJBQTJCO0VBQzNCLGVBQWU7RUFDZixlQUFlO0FBQ2pCOztBQUVBO0VBQ0UsK0RBQStEO0VBQy9ELGVBQWU7RUFDZixnQkFBZ0I7RUFDaEIsYUFBYTtBQUNmOztBQUVBO0VBQ0UsK0RBQStEO0VBQy9ELGVBQWU7RUFDZixVQUFVO0FBQ1o7O0FBRUE7RUFDRTtJQUNFLHdCQUF3QjtFQUMxQjtBQUNGIiwiZmlsZSI6InNyYy9hcHAvYXNzZXNzbWVudC1jaGFydHMvc3ZnLXNjYWxlLWNoYXJ0L3N2Zy1zY2FsZS1jaGFydC5jb21wb25lbnQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiOmhvc3Qge1xuICBkaXNwbGF5OiBibG9jaztcbiAgdGV4dC1hbGlnbjogY2VudGVyO1xufVxuXG4uc3ZnLWNoYXJ0LWNvbnRhaW5lciB7XG4gIHdpZHRoOiAxMDAlO1xufVxuXG4uZGFjLXN2Zy1jaGFydCB7XG4gIHdpZHRoOiAxMDAlO1xuICBoZWlnaHQ6IGF1dG87XG4gIGRpc3BsYXk6IGJsb2NrO1xufVxuXG4uZGFjLXN2Zy1yYW5nZS1iYW5kIHtcbiAgZmlsbDogcmdiYSg2OCwgMTcwLCAyMTMsIDAuMSk7XG59XG5cbi5kYWMtc3ZnLWJhciB7XG4gIGZpbGw6IHJnYmEoOTIsIDE0MSwgMTgxLCAwLjc1KTtcbiAgc3Ryb2tlOiByZ2JhKDAsIDAsIDAsIDAuMzUpO1xuICBzdHJva2Utd2lkdGg6IDE7XG59XG5cbi5kYWMtc3ZnLXJhbmdlbGFiZWwge1xuICBmb250LWZhbWlseTogJ0hlbHZldGljYSBOZXVlJywgJ0hlbHZldGljYScsICdBcmlhbCcsIHNhbnMtc2VyaWY7XG4gIGZvbnQtc2l6ZTogMTNweDtcbiAgZmlsbDogIzAwMDtcbn1cblxuLmRhYy1zdmctYnViYmxlLWJveCB7XG4gIGZpbGw6IHJnYmEoMzMsIDM3LCA0MSwgMC45KTtcbiAgc3Ryb2tlOiAjZmZmZmZmO1xuICBzdHJva2Utd2lkdGg6IDE7XG59XG5cbi5kYWMtc3ZnLWJ1YmJsZS10ZXh0IHtcbiAgZm9udC1mYW1pbHk6ICdIZWx2ZXRpY2EgTmV1ZScsICdIZWx2ZXRpY2EnLCAnQXJpYWwnLCBzYW5zLXNlcmlmO1xuICBmb250LXNpemU6IDEzcHg7XG4gIGZvbnQtd2VpZ2h0OiA3MDA7XG4gIGZpbGw6ICNmZmZmZmY7XG59XG5cbi5kYWMtc3ZnLXNjYWxlbmFtZSB7XG4gIGZvbnQtZmFtaWx5OiAnSGVsdmV0aWNhIE5ldWUnLCAnSGVsdmV0aWNhJywgJ0FyaWFsJywgc2Fucy1zZXJpZjtcbiAgZm9udC1zaXplOiAxM3B4O1xuICBmaWxsOiAjNjY2O1xufVxuXG5AbWVkaWEgcHJpbnQge1xuICAuZGFjLXN2Zy1jaGFydCB7XG4gICAgcGFnZS1icmVhay1pbnNpZGU6IGF2b2lkO1xuICB9XG59XG4iXX0= */"]
+      });
+      /*@__PURE__*/
+
+      (function () {
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](SvgScaleChartComponent, [{
+          type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
+          args: [{
+            selector: 'app-svg-scale-chart',
+            templateUrl: './svg-scale-chart.component.html',
+            styleUrls: ['./svg-scale-chart.component.css']
+          }]
+        }], function () {
+          return [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"]
+          }];
+        }, {
+          scaleResult: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"],
+            args: ["scale-result"]
+          }],
+          showScaleName: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"],
+            args: ["show-scale-name"]
+          }],
+          showRanges: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"],
+            args: ["show-ranges"]
+          }],
+          complete: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"]
+          }]
+        });
+      })();
+      /***/
+
+    },
+
+    /***/
     "j8yT":
     /*!*****************************************************!*\
       !*** ./src/app/shared/models/checklist-question.ts ***!
@@ -34268,14 +35296,14 @@
         var _super24 = _createSuper(ChecklistQuestion);
 
         function ChecklistQuestion() {
-          var _this154;
+          var _this157;
 
           _classCallCheck(this, ChecklistQuestion);
 
-          _this154 = _super24.call(this);
-          _this154._answers = {};
-          _this154.type = _question_type__WEBPACK_IMPORTED_MODULE_0__["QuestionType"].Checklist;
-          return _this154;
+          _this157 = _super24.call(this);
+          _this157._answers = {};
+          _this157.type = _question_type__WEBPACK_IMPORTED_MODULE_0__["QuestionType"].Checklist;
+          return _this157;
         }
 
         _createClass(ChecklistQuestion, [{
@@ -34298,7 +35326,7 @@
         }, {
           key: "setSavedAnswer",
           value: function setSavedAnswer(answer, labels) {
-            var _this155 = this;
+            var _this158 = this;
 
             Object.keys(answer).forEach(function (key) {
               var label = labels.find(function (l) {
@@ -34306,19 +35334,19 @@
               });
 
               if (label) {
-                _this155.addAnswer(label);
+                _this158.addAnswer(label);
               }
             });
           }
         }, {
           key: "getAnswerLabels",
           value: function getAnswerLabels() {
-            var _this156 = this;
+            var _this159 = this;
 
             return Object.keys(this._answers).filter(function (a) {
-              return _this156._answers[a].label;
+              return _this159._answers[a].label;
             }).map(function (a) {
-              return _this156._answers[a];
+              return _this159._answers[a];
             });
           }
         }, {
@@ -34628,14 +35656,14 @@
         var _super25 = _createSuper(AssignedAssessment);
 
         function AssignedAssessment() {
-          var _this157;
+          var _this160;
 
           _classCallCheck(this, AssignedAssessment);
 
-          _this157 = _super25.call(this);
-          _this157.uid = "";
-          _this157.Type = "Assessment";
-          return _this157;
+          _this160 = _super25.call(this);
+          _this160.uid = "";
+          _this160.Type = "Assessment";
+          return _this160;
         }
 
         _createClass(AssignedAssessment, [{
@@ -34965,10 +35993,10 @@
         _createClass(UserService, [{
           key: "getUserById",
           value: function getUserById(id) {
-            var _this158 = this;
+            var _this161 = this;
 
             return this.dac$http.get("assessment-users/" + id).then(function (response) {
-              var user = _this158.mapUser(response);
+              var user = _this161.mapUser(response);
 
               return user;
             });
@@ -34976,7 +36004,7 @@
         }, {
           key: "getUsers",
           value: function getUsers(offset) {
-            var _this159 = this;
+            var _this162 = this;
 
             // TODO: @adunsulag need to support more than 50 users
             var data = {
@@ -34986,7 +36014,7 @@
             return this.dac$http.get("assessment-users/", data).then(function (data) {
               if (data && data.results.length) {
                 return data.results.map(function (u) {
-                  return _this159.mapUser(u);
+                  return _this162.mapUser(u);
                 });
               }
             });
@@ -34994,10 +36022,10 @@
         }, {
           key: "createUser",
           value: function createUser(userToCreate) {
-            var _this160 = this;
+            var _this163 = this;
 
             return this.dac$http.post("assessment-users/", userToCreate).then(function (response) {
-              return _this160.mapUser(response);
+              return _this163.mapUser(response);
             });
           }
         }, {
@@ -35405,7 +36433,7 @@
 
       var SiteContainerComponent = /*#__PURE__*/function () {
         function SiteContainerComponent(breakpointObserver, dacConfig, navService, authService, router, themeService) {
-          var _this161 = this;
+          var _this164 = this;
 
           _classCallCheck(this, SiteContainerComponent);
 
@@ -35426,17 +36454,17 @@
           this._navItems = []; // TODO: stephen do we need this anymore?
 
           this._loginStateSubscription = this.authService.getLoginState().subscribe(function (state) {
-            var items = _this161.navService.topNavBarItemsForDisplay;
+            var items = _this164.navService.topNavBarItemsForDisplay;
 
             if (items && items.length) {
-              _this161._navItems = items;
+              _this164._navItems = items;
             } else {
-              _this161._navItems = [];
+              _this164._navItems = [];
             }
           });
           this.skipContentPadding = false;
           this._sidebarSubscription = this.navService.displaySideBarEvent.subscribe(function () {
-            _this161.showSideNav = !_this161.showSideNav;
+            _this164.showSideNav = !_this164.showSideNav;
           });
         }
 
@@ -35474,18 +36502,18 @@
         }, {
           key: "logout",
           value: function logout() {
-            var _this162 = this;
+            var _this165 = this;
 
             this.authService.logout().then(function (resp) {
               if (resp.redirectUrl) {
                 window.location.href = resp.redirectUrl;
               } else {
-                _this162.router.navigate(['/']);
+                _this165.router.navigate(['/']);
               }
             })["catch"](function (error) {
               console.error(error);
 
-              _this162.router.navigate(["/"]);
+              _this165.router.navigate(["/"]);
             });
           }
         }, {
@@ -36064,7 +37092,7 @@
           key: "getAssignmentTasksForClient",
           value: function getAssignmentTasksForClient(clientId) {
             return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee52() {
-              var _this163 = this;
+              var _this166 = this;
 
               var client, tasks, filteredTasks, assignments, assignmentByReference, unmatchedTasks;
               return regeneratorRuntime.wrap(function _callee52$(_context52) {
@@ -36142,7 +37170,7 @@
                               try {
                                 var record = JSON.parse(json);
 
-                                var _assignment = _this163.assignmentHydrator.hydrateAssignment(record);
+                                var _assignment = _this166.assignmentHydrator.hydrateAssignment(record);
 
                                 assignments.push(_assignment);
                               } catch (error) {
@@ -36568,13 +37596,13 @@
         var _super26 = _createSuper(PclAssessmentResultsComponent);
 
         function PclAssessmentResultsComponent(navigator, el, pclGrader) {
-          var _this164;
+          var _this167;
 
           _classCallCheck(this, PclAssessmentResultsComponent);
 
-          _this164 = _super26.call(this, navigator, el);
-          _this164.pclGrader = pclGrader;
-          return _this164;
+          _this167 = _super26.call(this, navigator, el);
+          _this167.pclGrader = pclGrader;
+          return _this167;
         }
 
         _createClass(PclAssessmentResultsComponent, [{
@@ -36739,7 +37767,7 @@
         }, {
           key: "hasPermission",
           set: function set(role) {
-            var _this165 = this;
+            var _this168 = this;
 
             if (this._userSubscription) {
               this._userSubscription.unsubscribe();
@@ -36748,10 +37776,10 @@
             this._userSubscription = this.authService.getLoginState().subscribe(function (loginState) {
               var user = loginState.user;
 
-              _this165.viewContainer.clear();
+              _this168.viewContainer.clear();
 
               if (user && user.role <= app_shared_models_role__WEBPACK_IMPORTED_MODULE_2__["Role"][role]) {
-                _this165.viewContainer.createEmbeddedView(_this165.templateRef);
+                _this168.viewContainer.createEmbeddedView(_this168.templateRef);
               }
             });
           }
@@ -37002,23 +38030,23 @@
         }, {
           key: "convertChartToImage",
           value: function convertChartToImage(e) {
-            var _this166 = this;
+            var _this169 = this;
 
             // since we are destroying the chart we want to get it out
             // of the current chart onComplete event cycle.
             this._timeoutHandler = setTimeout(function () {
-              _this166._timeoutHandler = null;
+              _this169._timeoutHandler = null;
 
-              if (_this166.chartNode && _this166.chartNode.parentNode) {
-                var dataUrl = _this166.chartNode.toDataURL('image/png');
+              if (_this169.chartNode && _this169.chartNode.parentNode) {
+                var dataUrl = _this169.chartNode.toDataURL('image/png');
 
-                _this166.chartImage = new Image();
-                _this166.chartImage.src = dataUrl;
+                _this169.chartImage = new Image();
+                _this169.chartImage.src = dataUrl;
 
-                _this166.chartNode.parentNode.appendChild(_this166.chartImage); // now that the chart has been created let's destroy the chart
+                _this169.chartNode.parentNode.appendChild(_this169.chartImage); // now that the chart has been created let's destroy the chart
 
 
-                _this166.destroyChart();
+                _this169.destroyChart();
               }
             }, 0);
           }
@@ -37193,10 +38221,10 @@
         _createClass(BillingService, [{
           key: "getBillingDetails",
           value: function getBillingDetails() {
-            var _this167 = this;
+            var _this170 = this;
 
             return this.authService.getCurrentUser().then(function (user) {
-              return _this167.httpService.get("/admin/billing/" + user.companyID).then(function (data) {
+              return _this170.httpService.get("/admin/billing/" + user.companyID).then(function (data) {
                 var cards = data._cards || [];
                 var subscriptions = data._subscriptions || [];
                 var billingDetails = Object.assign(new _models_billing_details__WEBPACK_IMPORTED_MODULE_3__["BillingDetails"](), data);
@@ -37209,7 +38237,7 @@
 
                 if (subscriptions.length) {
                   billingDetails.subscriptions = subscriptions.map(function (s) {
-                    return _this167.subHydrator.fromJSONObject(s);
+                    return _this170.subHydrator.fromJSONObject(s);
                   });
                 }
 
@@ -37227,22 +38255,22 @@
         }, {
           key: "updateDefaultBillingCard",
           value: function updateDefaultBillingCard(billingDetails) {
-            var _this168 = this;
+            var _this171 = this;
 
             return this.authService.getCurrentUser().then(function (user) {
-              return _this168.stripeService.createUpdateCardToken("Update card for Assessment Services", billingDetails.email).then(function (token) {
+              return _this171.stripeService.createUpdateCardToken("Update card for Assessment Services", billingDetails.email).then(function (token) {
                 console.log("token updated for customer.  Token now: ", token);
                 var promise;
 
                 if (!billingDetails.customerId) {
                   // create new billing profile
-                  promise = _this168.httpService.post("/admin/billing/", {
+                  promise = _this171.httpService.post("/admin/billing/", {
                     companyID: user.companyID,
                     card: token
                   });
                 } else {
                   // or update the existing card for the current billing profile
-                  promise = _this168.httpService.post("/admin/billing/" + user.companyID + "/card/", {
+                  promise = _this171.httpService.post("/admin/billing/" + user.companyID + "/card/", {
                     card: token
                   });
                 }
@@ -37255,7 +38283,7 @@
                   });
                   var subscriptions = newBilling.subscriptions || newBilling._subscriptions || [];
                   billingDetails.subscriptions = subscriptions.map(function (s) {
-                    return _this168.subHydrator.fromJSONObject(s);
+                    return _this171.subHydrator.fromJSONObject(s);
                   });
                   return billingDetails;
                 });
@@ -37265,11 +38293,11 @@
         }, {
           key: "deleteDefaultBillingCard",
           value: function deleteDefaultBillingCard(billingDetails) {
-            var _this169 = this;
+            var _this172 = this;
 
             if (billingDetails.cards.length) {
               return this.authService.getCurrentUser().then(function (user) {
-                return _this169.httpService["delete"]("/admin/billing/" + user.companyID + "/card/").then(function () {
+                return _this172.httpService["delete"]("/admin/billing/" + user.companyID + "/card/").then(function () {
                   billingDetails.cards = []; // clear out the cards.
 
                   return billingDetails;
@@ -37371,18 +38399,18 @@
         }, {
           key: "logout",
           value: function logout() {
-            var _this170 = this;
+            var _this173 = this;
 
             this.authService.logout().then(function (resp) {
               if (resp.redirectUrl) {
                 window.location.href = resp.redirectUrl;
               } else {
-                _this170.router.navigate(['/']);
+                _this173.router.navigate(['/']);
               }
             })["catch"](function (error) {
               console.error(error);
 
-              _this170.router.navigate(['/']);
+              _this173.router.navigate(['/']);
             });
           }
         }]);
@@ -37473,10 +38501,10 @@
         }, {
           key: "getResults",
           value: function getResults() {
-            var _this171 = this;
+            var _this174 = this;
 
             return this._queryFunc(this.offset).then(function (resultList) {
-              return _this171.handleResultsLoaded(resultList);
+              return _this174.handleResultsLoaded(resultList);
             });
           }
         }, {
@@ -37546,7 +38574,7 @@
         _createClass(AssessmentCompressorService, [{
           key: "compress",
           value: function compress(assessment) {
-            var _this172 = this;
+            var _this175 = this;
 
             var result = {
               _scales: [],
@@ -37554,10 +38582,10 @@
             };
             Object.assign(result, assessment);
             result._scales = assessment.scales.map(function (s) {
-              return _this172.compressScale(s);
+              return _this175.compressScale(s);
             });
             result._question_sets = assessment.question_sets.map(function (qs) {
-              return _this172.compressQuestionSet(qs);
+              return _this175.compressQuestionSet(qs);
             });
             return result;
           }
@@ -37578,14 +38606,14 @@
         }, {
           key: "compressQuestionSet",
           value: function compressQuestionSet(questionSet) {
-            var _this173 = this;
+            var _this176 = this;
 
             var result = {
               _display_conditions: []
             };
             Object.assign(result, questionSet);
             result._display_conditions = questionSet.display_conditions.map(function (dc) {
-              return _this173.compressDisplayCondition(dc);
+              return _this176.compressDisplayCondition(dc);
             });
             return result;
           }
@@ -37714,7 +38742,7 @@
         }, {
           key: "getClientList",
           value: function getClientList(user, offset) {
-            var _this174 = this;
+            var _this177 = this;
 
             var data = {
               _limit: 10,
@@ -37731,7 +38759,7 @@
 
             return this._dac$http.get("reports/clients", data).then(function (data) {
               return Promise.all(data.results.map(function (record) {
-                return _this174.hydrateClient(record);
+                return _this177.hydrateClient(record);
               })).then(function (results) {
                 data.results = results;
                 return data;
@@ -37753,13 +38781,13 @@
         }, {
           key: "createClient",
           value: function createClient(client) {
-            var _this175 = this;
+            var _this178 = this;
 
             return this._dac$http.post("clients/", client).then(function (serverResponse) {
-              _this175.hydrateClient(client).then(function (client) {
+              _this178.hydrateClient(client).then(function (client) {
                 var newClient = client;
 
-                _this175._clientNotice.next(newClient);
+                _this178._clientNotice.next(newClient);
 
                 return newClient;
               });
@@ -37791,10 +38819,10 @@
         }, {
           key: "saveClient",
           value: function saveClient(client) {
-            var _this176 = this;
+            var _this179 = this;
 
             return this._dac$http.post("clients/" + client.id, client).then(function (data) {
-              _this176._clientNotice.next(client);
+              _this179._clientNotice.next(client);
 
               return data;
             });
@@ -37803,7 +38831,7 @@
           key: "getClient",
           value: function getClient(clientId) {
             return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee54() {
-              var _this177 = this;
+              var _this180 = this;
 
               var client;
               return regeneratorRuntime.wrap(function _callee54$(_context54) {
@@ -37817,7 +38845,7 @@
                       client = _context54.sent;
                       return _context54.abrupt("return", client.request("Patient/" + clientId) // return this._dac$http.get<ManagedClient>("Patient/" + clientId)
                       .then(function (serverResponse) {
-                        return _this177.hydrateFhirPatient(serverResponse);
+                        return _this180.hydrateFhirPatient(serverResponse);
                       }));
 
                     case 4:
@@ -37831,7 +38859,7 @@
         }, {
           key: "searchClientList",
           value: function searchClientList(searchQueryObj, user, offset) {
-            var _this178 = this;
+            var _this181 = this;
 
             var search = searchQueryObj || {};
             search._limit = 10;
@@ -37848,7 +38876,7 @@
 
             return this._dac$http.get("reports/clients", search).then(function (data) {
               return Promise.all(data.results.map(function (record) {
-                return _this178.hydrateClient(record);
+                return _this181.hydrateClient(record);
               })).then(function (results) {
                 data.results = results;
                 return data;
@@ -38106,14 +39134,14 @@
         var _super27 = _createSuper(HtmlContentItemComponent);
 
         function HtmlContentItemComponent(domSanitizer) {
-          var _this179;
+          var _this182;
 
           _classCallCheck(this, HtmlContentItemComponent);
 
-          _this179 = _super27.call(this);
-          _this179.domSanitizer = domSanitizer;
-          _this179._classNames = [];
-          return _this179;
+          _this182 = _super27.call(this);
+          _this182.domSanitizer = domSanitizer;
+          _this182._classNames = [];
+          return _this182;
         }
 
         _createClass(HtmlContentItemComponent, [{
@@ -38387,18 +39415,18 @@
         }, {
           key: "loadAssetsForType",
           value: function loadAssetsForType(type) {
-            var _this180 = this;
+            var _this183 = this;
 
             this.assetService.getAssetsByType(type).then(function (assets) {
               assets.sort(function (a, b) {
                 return a.title.localeCompare(b.title);
               }); // make sure we are sorted by name here.
 
-              _this180.Assets = assets;
+              _this183.Assets = assets;
             })["catch"](function (error) {
               console.error(error);
 
-              _this180.alertService.error("Failed to retrieve the library resources.  Check your internet connection and refresh the page");
+              _this183.alertService.error("Failed to retrieve the library resources.  Check your internet connection and refresh the page");
             });
           }
         }, {
@@ -38641,7 +39669,7 @@
         _createClass(ScaleResultQuestionFinderService, [{
           key: "getQuestionsForScaleResult",
           value: function getQuestionsForScaleResult(assessmentResult, scaleResult) {
-            var _this181 = this;
+            var _this184 = this;
 
             var depth = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
             var questionList = [];
@@ -38654,7 +39682,7 @@
             if (this.hasSubScales(scaleResult)) {
               var subScaleResults = this.getSubScales(assessmentResult, scaleResult);
               questionList = subScaleResults.map(function (sr) {
-                return _this181.getQuestionsForScaleResult(assessmentResult, sr, depth + 1);
+                return _this184.getQuestionsForScaleResult(assessmentResult, sr, depth + 1);
               }).reduce(function (prev, curr) {
                 return prev.concat(curr);
               }, []);
@@ -39180,17 +40208,17 @@
         }, {
           key: "ngOnInit",
           value: function ngOnInit() {
-            var _this182 = this;
+            var _this185 = this;
 
             this.subscription = this.route.params.subscribe(function (params) {
               var assetType = params['type'];
 
               if (assetType == 'articles') {
-                _this182.assetType = 'article';
-                _this182.title = "Article";
+                _this185.assetType = 'article';
+                _this185.title = "Article";
               } else {
-                _this182.assetType = 'assignment';
-                _this182.title = "Exercise";
+                _this185.assetType = 'assignment';
+                _this185.title = "Exercise";
               }
             });
           }
@@ -39318,9 +40346,9 @@
       /* harmony import */
 
 
-      var _assessment_charts_summary_scales_chart_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
-      /*! ../../../assessment-charts/summary-scales-chart/summary-scales-chart.component */
-      "7gIF");
+      var _assessment_charts_svg_summary_scales_chart_svg_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
+      /*! ../../../assessment-charts/svg-summary-scales-chart/svg-summary-scales-chart.component */
+      "5CX4");
       /* harmony import */
 
 
@@ -39334,9 +40362,9 @@
        */
 
 
-      function SummarySectionGraphItemComponent_app_summary_scales_chart_6_Template(rf, ctx) {
+      function SummarySectionGraphItemComponent_app_svg_summary_scales_chart_6_Template(rf, ctx) {
         if (rf & 1) {
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "app-summary-scales-chart", 9);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "app-svg-summary-scales-chart", 9);
         }
 
         if (rf & 2) {
@@ -39466,7 +40494,7 @@
 
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](5, "div", 4);
 
-            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](6, SummarySectionGraphItemComponent_app_summary_scales_chart_6_Template, 1, 7, "app-summary-scales-chart", 5);
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](6, SummarySectionGraphItemComponent_app_svg_summary_scales_chart_6_Template, 1, 7, "app-svg-summary-scales-chart", 5);
 
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](7, SummarySectionGraphItemComponent_app_pcl_summary_7_Template, 1, 2, "app-pcl-summary", 6);
 
@@ -39503,7 +40531,7 @@
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx.item.data.showRangeLabel);
           }
         },
-        directives: [_angular_common__WEBPACK_IMPORTED_MODULE_2__["NgIf"], _assessment_charts_summary_scales_chart_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_3__["SummaryScalesChartComponent"], _angular_common__WEBPACK_IMPORTED_MODULE_2__["NgClass"], _pcl_summary_pcl_summary_component__WEBPACK_IMPORTED_MODULE_4__["PclSummaryComponent"]],
+        directives: [_angular_common__WEBPACK_IMPORTED_MODULE_2__["NgIf"], _assessment_charts_svg_summary_scales_chart_svg_summary_scales_chart_component__WEBPACK_IMPORTED_MODULE_3__["SvgSummaryScalesChartComponent"], _angular_common__WEBPACK_IMPORTED_MODULE_2__["NgClass"], _pcl_summary_pcl_summary_component__WEBPACK_IMPORTED_MODULE_4__["PclSummaryComponent"]],
         styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvcmVwb3J0cy9yZXBvcnQtaXRlbXMvc3VtbWFyeS1zZWN0aW9uLWdyYXBoLWl0ZW0vc3VtbWFyeS1zZWN0aW9uLWdyYXBoLWl0ZW0uY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7Ozs7RUFBQSIsImZpbGUiOiJzcmMvYXBwL3JlcG9ydHMvcmVwb3J0LWl0ZW1zL3N1bW1hcnktc2VjdGlvbi1ncmFwaC1pdGVtL3N1bW1hcnktc2VjdGlvbi1ncmFwaC1pdGVtLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLypcbiAqICAgQ29weXJpZ2h0IChjKSAyMDIyIERpc2NvdmVyIGFuZCBDaGFuZ2UgQGF1dGhvciBTdGVwaGVuIE5pZWxzb24gPHNuaWVsc29uQGRpc2NvdmVyYW5kY2hhbmdlLmNvbT5cbiAqICAgQWxsIHJpZ2h0cyByZXNlcnZlZC5cbiAqICAgRm9yIExpY2Vuc2UgaW5mb3JtYXRpb24gc2VlIExJQ0VOU0UubWQgaW4gdGhlIHJvb3QgZm9sZGVyIG9mIHRoaXMgcHJvamVjdC5cbiAqL1xuIl19 */"]
       });
       /*@__PURE__*/
@@ -40146,7 +41174,7 @@
         }, {
           key: "buyItem",
           value: function buyItem(event) {
-            var _this183 = this;
+            var _this186 = this;
 
             event.stopPropagation();
             event.preventDefault(); // let listener's know we were clicked with our item.
@@ -40168,27 +41196,27 @@
             }
 
             shoppingItem.then(function (i) {
-              _this183.alertService.clearAlert(alert);
+              _this186.alertService.clearAlert(alert);
 
               alert = null;
               i.quantity = 1; // make sure we have at least one item to add.
 
-              return _this183.shoppingService.addItemToCart(i);
+              return _this186.shoppingService.addItemToCart(i);
             }).then(function () {
-              _this183.buying = false;
+              _this186.buying = false;
 
-              _this183.shoppingService.startSingleCheckoutOrder(_this183.router.url);
+              _this186.shoppingService.startSingleCheckoutOrder(_this186.router.url);
 
-              _this183.router.navigateByUrl('/admin/shop/checkout');
+              _this186.router.navigateByUrl('/admin/shop/checkout');
             })["catch"](function (error) {
-              _this183.buying = false;
+              _this186.buying = false;
               console.error(error);
 
               if (alert) {
-                _this183.alertService.clearAlert(alert);
+                _this186.alertService.clearAlert(alert);
               }
 
-              _this183.alertService.error("There was an error in attempting to purchase this item.  Please try again or contact support");
+              _this186.alertService.error("There was an error in attempting to purchase this item.  Please try again or contact support");
             });
           }
         }]);
@@ -40476,10 +41504,10 @@
         _createClass(ReportViewerContainerComponent, [{
           key: "ngAfterViewInit",
           value: function ngAfterViewInit() {
-            var _this184 = this;
+            var _this187 = this;
 
             this.navBarSubscription = this.navBarService.navBarAction.subscribe(function (item) {
-              _this184.goToNavItem(item);
+              _this187.goToNavItem(item);
             });
             var reportVariables = this.report.variables || [];
             var reportComputedVariables = this.report.computedResults || [];
@@ -40503,15 +41531,15 @@
                 return;
               }
 
-              var component = _this184.createComponent(i.type, i.data, processedResults, variables);
+              var component = _this187.createComponent(i.type, i.data, processedResults, variables);
 
-              var componentId = _this184.uniqueIdService.generate();
+              var componentId = _this187.uniqueIdService.generate();
 
-              _this184.componentItems.push(component);
+              _this187.componentItems.push(component);
 
-              _this184.componentItemsById.set(componentId, component);
+              _this187.componentItemsById.set(componentId, component);
 
-              _this184.addComponentToNavBar(i, componentId);
+              _this187.addComponentToNavBar(i, componentId);
             }); // console.log("Component item counts are: ", this.componentItems.length);
 
             Promise.all(this.componentItems.map(function (ci) {
@@ -40522,14 +41550,14 @@
               console.log("adding dac-report-loaded class");
               document.body.classList.add("dac-report-loaded"); // this.elementRef.nativeElement.dispatchEvent(new Event("dac-report-loaded", {bubbles:true}));
 
-              _this184.hasLoadedResults = true;
+              _this187.hasLoadedResults = true;
 
-              _this184.handleLoadedResize();
+              _this187.handleLoadedResize();
             })["catch"](function (error) {
               console.error(error); // console.log("dispatching dac-report-load-failed event");
               // this.elementRef.nativeElement.dispatchEvent(new Event("dac-report-load-failed", {bubbles:true}));
 
-              _this184.hasLoadedResults = true;
+              _this187.hasLoadedResults = true;
             });
           }
         }, {
@@ -40568,7 +41596,7 @@
         }, {
           key: "processReportComputations",
           value: function processReportComputations(computed_results, results) {
-            var _this185 = this;
+            var _this188 = this;
 
             if (!computed_results || !computed_results.length) {
               return results;
@@ -40584,7 +41612,7 @@
               result.assessment.uid = cs.id;
               result.assessment.description = cs.description;
               result.assessment.name = cs.name;
-              result.scaleResults.push(_this185.createScaleResultFromComputation(cs, results));
+              result.scaleResults.push(_this188.createScaleResultFromComputation(cs, results));
               return result;
             });
             return results.concat(newResults);
@@ -40592,7 +41620,7 @@
         }, {
           key: "createScaleResultFromComputation",
           value: function createScaleResultFromComputation(computation, results) {
-            var _this186 = this;
+            var _this189 = this;
 
             var scaleResult = new app_shared_models_scale_result__WEBPACK_IMPORTED_MODULE_4__["ScaleResult"]();
 
@@ -40603,7 +41631,7 @@
 
             if (computation.items) {
               computation.items.forEach(function (i) {
-                return _this186.processCalculation(scaleResult, i, computation.calculation, results);
+                return _this189.processCalculation(scaleResult, i, computation.calculation, results);
               });
               console.log("score is ", scaleResult.score);
               scaleResult.range = scaleResult.scale.getRangeForScore(scaleResult.score);
@@ -40615,7 +41643,7 @@
         }, {
           key: "resolveVariables",
           value: function resolveVariables(variables, results, clientId) {
-            var _this187 = this;
+            var _this190 = this;
 
             var resolved = [];
             resolved = variables.map(function (v) {
@@ -40626,12 +41654,12 @@
               var value = null;
 
               if (v.type == 'computed_scale_result') {
-                return _this187.resolveComputedScale(v, results);
+                return _this190.resolveComputedScale(v, results);
               } else if (v.type == 'scale_result') {
                 // this is actually the range... not the scaleResult
-                return _this187.resolveResultScale(v, results);
+                return _this190.resolveResultScale(v, results);
               } else if (v.type == 'scale') {
-                return _this187.resolveScale(v, results);
+                return _this190.resolveScale(v, results);
               }
             }).filter(function (v) {
               return v != null;
@@ -41372,13 +42400,13 @@
         var _super28 = _createSuper(AssignedTemplateProfile);
 
         function AssignedTemplateProfile() {
-          var _this188;
+          var _this191;
 
           _classCallCheck(this, AssignedTemplateProfile);
 
-          _this188 = _super28.call(this);
-          _this188.Type = "TemplateProfile";
-          return _this188;
+          _this191 = _super28.call(this);
+          _this191.Type = "TemplateProfile";
+          return _this191;
         }
 
         _createClass(AssignedTemplateProfile, [{
@@ -41480,7 +42508,7 @@
         _createClass(AuthGuard, [{
           key: "canActivate",
           value: function canActivate(route, state) {
-            var _this189 = this;
+            var _this192 = this;
 
             return this.authService.getCurrentUser().then(function (user) {
               if (user && user.role === app_shared_models_role__WEBPACK_IMPORTED_MODULE_3__["Role"].Client) {
@@ -41488,7 +42516,7 @@
               } else {
                 var prefix = route.data['modulePath'] || '';
 
-                _this189.router.navigate([prefix + '/login'], {
+                _this192.router.navigate([prefix + '/login'], {
                   queryParams: {
                     "return": state.url
                   }
@@ -41499,7 +42527,7 @@
             })["catch"](function (error) {
               var prefix = route.data['modulePath'] || '';
 
-              _this189.router.navigate([prefix + '/login'], {
+              _this192.router.navigate([prefix + '/login'], {
                 queryParams: {
                   "return": state.url
                 }
@@ -41973,9 +43001,9 @@
       /* harmony import */
 
 
-      var _assessment_charts_scale_chart_scale_chart_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
-      /*! ../../../assessment-charts/scale-chart/scale-chart.component */
-      "GzvG");
+      var _assessment_charts_svg_scale_chart_svg_scale_chart_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
+      /*! ../../../assessment-charts/svg-scale-chart/svg-scale-chart.component */
+      "izrt");
       /* harmony import */
 
 
@@ -42023,7 +43051,7 @@
         if (rf & 1) {
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 13);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](1, "app-scale-chart", 18);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](1, "app-svg-scale-chart", 18);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         }
@@ -42165,7 +43193,7 @@
         if (rf & 1) {
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 19);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](1, "app-scale-chart", 34);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](1, "app-svg-scale-chart", 34);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         }
@@ -42337,16 +43365,16 @@
         var _super29 = _createSuper(AddoScaleResultsComponent);
 
         function AddoScaleResultsComponent() {
-          var _this190;
+          var _this193;
 
           _classCallCheck(this, AddoScaleResultsComponent);
 
-          _this190 = _super29.call(this);
-          _this190._pageBreaks = [];
-          _this190._skipTable = false;
-          _this190._skipContent = false;
-          _this190._skipGraph = false;
-          return _this190;
+          _this193 = _super29.call(this);
+          _this193._pageBreaks = [];
+          _this193._skipTable = false;
+          _this193._skipContent = false;
+          _this193._skipGraph = false;
+          return _this193;
         }
 
         _createClass(AddoScaleResultsComponent, [{
@@ -42536,7 +43564,7 @@
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", !ctx.IsSingleScaleResult);
           }
         },
-        directives: [_angular_common__WEBPACK_IMPORTED_MODULE_2__["NgIf"], _assessment_charts_scale_chart_scale_chart_component__WEBPACK_IMPORTED_MODULE_3__["ScaleChartComponent"], _scale_questions_list_scale_questions_list_component__WEBPACK_IMPORTED_MODULE_4__["ScaleQuestionsListComponent"], _angular_common__WEBPACK_IMPORTED_MODULE_2__["NgForOf"], _angular_common__WEBPACK_IMPORTED_MODULE_2__["NgClass"]],
+        directives: [_angular_common__WEBPACK_IMPORTED_MODULE_2__["NgIf"], _assessment_charts_svg_scale_chart_svg_scale_chart_component__WEBPACK_IMPORTED_MODULE_3__["SvgScaleChartComponent"], _scale_questions_list_scale_questions_list_component__WEBPACK_IMPORTED_MODULE_4__["ScaleQuestionsListComponent"], _angular_common__WEBPACK_IMPORTED_MODULE_2__["NgForOf"], _angular_common__WEBPACK_IMPORTED_MODULE_2__["NgClass"]],
         encapsulation: 2
       });
       /*@__PURE__*/
@@ -42663,7 +43691,7 @@
         _createClass(ScaleChartLegendComponent, [{
           key: "ngOnInit",
           value: function ngOnInit() {
-            var _this191 = this;
+            var _this194 = this;
 
             if (this.scaleResult) {}
 
@@ -42671,7 +43699,7 @@
 
             if (this.severityLabels && this.severityLabels.length == colors.length) {
               colors = colors.map(function (r, index) {
-                return new app_assessment_charts_models_chart_color__WEBPACK_IMPORTED_MODULE_1__["ChartColor"](_this191.severityLabels[index], r.color);
+                return new app_assessment_charts_models_chart_color__WEBPACK_IMPORTED_MODULE_1__["ChartColor"](_this194.severityLabels[index], r.color);
               });
             }
 
@@ -42921,14 +43949,14 @@
         _createClass(AdminGuard, [{
           key: "canActivate",
           value: function canActivate(route, state) {
-            var _this192 = this;
+            var _this195 = this;
 
             // need to make sure the user is an admin... otherwise redirect them back to the home screen.
             return this.authService.getCurrentUser().then(function (user) {
               if (user.role < app_shared_models_role__WEBPACK_IMPORTED_MODULE_3__["Role"].Client) {
                 return true;
               } else {
-                _this192.router.navigate(['/login'], {
+                _this195.router.navigate(['/login'], {
                   queryParams: {
                     "return": state.url,
                     loginType: 1 // admin
@@ -42941,7 +43969,7 @@
             })["catch"](function (error) {
               console.error(error); // not logged, or an error occurred with the login process so send them to login
 
-              _this192.router.navigate(['/login'], {
+              _this195.router.navigate(['/login'], {
                 queryParams: {
                   "return": state.url,
                   loginType: 1 // admin
@@ -43083,7 +44111,7 @@
         }, {
           key: "print",
           value: function print() {
-            var _this193 = this;
+            var _this196 = this;
 
             var name = this.file || "File";
             var element = this.element.nativeElement;
@@ -43097,11 +44125,11 @@
 
             var url = window.location.href;
             this.pdfService.generate(url, this.assignment).then(function () {
-              _this193.printing = false;
+              _this196.printing = false;
               console.log("document printed");
             })["catch"](function (error) {
               alert("There was an error in generating your pdf.  Please check your internet connection and try again");
-              _this193.printing = false;
+              _this196.printing = false;
               console.error(error);
             });
           }
@@ -43594,7 +44622,7 @@
         }, {
           key: "getFhirClient",
           value: function getFhirClient() {
-            var _this194 = this;
+            var _this197 = this;
 
             if (!this.fhirClient) {
               // admin/provider flow: rebuild the client from the brokered token (fhirclient's oauth2.ready()
@@ -43612,7 +44640,7 @@
               }
 
               return fhirclient__WEBPACK_IMPORTED_MODULE_3__["oauth2"].ready().then(function (client) {
-                _this194.fhirClient = client;
+                _this197.fhirClient = client;
                 return client;
               });
             }
@@ -43954,13 +44982,13 @@
         }, {
           key: "fhirClientReady",
           value: function fhirClientReady() {
-            var _this195 = this;
+            var _this198 = this;
 
             // admin/provider finalize: complete the confidential exchange via the broker instead of
             // fhirclient's oauth2.ready() (which would try a client-side confidential exchange and fail).
             if (this.isAdminOAuth() && new URLSearchParams(window.location.search).has('code')) {
               return this.completeAdminAuth().then(function (c) {
-                return _this195.loadFhirStylesFromClient(c).then(function () {
+                return _this198.loadFhirStylesFromClient(c).then(function () {
                   return c;
                 })["catch"](function () {
                   return c;
@@ -44911,7 +45939,7 @@
         }, {
           key: "ngOnInit",
           value: function ngOnInit() {
-            var _this196 = this;
+            var _this199 = this;
 
             this.scaleList = [];
             this.dateList = [];
@@ -44941,15 +45969,15 @@
               var questionnaireIds = questionnaires.map(function (q) {
                 return q.id;
               });
-              return _this196.questionnaireService.getPreviousQuestionnaireResponsesAsAssessmentResults(patientId, questionnaireIds, _this196.result.dateCompleted, _this196.maxRows - 1);
+              return _this199.questionnaireService.getPreviousQuestionnaireResponsesAsAssessmentResults(patientId, questionnaireIds, _this199.result.dateCompleted, _this199.maxRows - 1);
             }).then(function (results) {
-              _this196.hasLoadedResults = true; // make sure we add in our current result to the previous result
+              _this199.hasLoadedResults = true; // make sure we add in our current result to the previous result
 
-              _this196.setupResultHistory([_this196.result].concat(results || []));
+              _this199.setupResultHistory([_this199.result].concat(results || []));
             })["catch"](function (error) {
-              _this196.hasLoadedResults = true;
+              _this199.hasLoadedResults = true;
 
-              _this196.alertService.error("Failed to load previous response scores");
+              _this199.alertService.error("Failed to load previous response scores");
 
               console.error(error);
             }); // this.dateList.push(new Date());
@@ -44962,7 +45990,7 @@
         }, {
           key: "setupResultHistory",
           value: function setupResultHistory(results) {
-            var _this197 = this;
+            var _this200 = this;
 
             this.dateList = [];
             this.scaleResults.clear();
@@ -44980,16 +46008,16 @@
             }
 
             this.resultHistory.forEach(function (result) {
-              if (_this197.isAfterVisitAssessment(result)) {
+              if (_this200.isAfterVisitAssessment(result)) {
                 return; // skip over adding any scores for an after visit assessment
               }
 
-              _this197.dateList.push(result.dateCompleted);
+              _this200.dateList.push(result.dateCompleted);
 
-              for (var key in _this197.resultsMapping) {
+              for (var key in _this200.resultsMapping) {
                 var scaleResult = new app_shared_models_scale_result__WEBPACK_IMPORTED_MODULE_5__["ScaleResult"]();
-                scaleResult.scale = _this197.scalesById.get(key);
-                var resultAnswer = result.getAnswerForQuestionId(_this197.resultsMapping[key]);
+                scaleResult.scale = _this200.scalesById.get(key);
+                var resultAnswer = result.getAnswerForQuestionId(_this200.resultsMapping[key]);
                 var score = resultAnswer ? +resultAnswer.answer : 0;
 
                 if (!isNaN(score)) {
@@ -45000,10 +46028,10 @@
 
                 scaleResult.range = scaleResult.scale.getRangeForScore(scaleResult.score);
 
-                if (!_this197.scaleResults.has(scaleResult.scale)) {
-                  _this197.scaleResults.set(scaleResult.scale, [scaleResult]);
+                if (!_this200.scaleResults.has(scaleResult.scale)) {
+                  _this200.scaleResults.set(scaleResult.scale, [scaleResult]);
                 } else {
-                  _this197.scaleResults.get(scaleResult.scale).push(scaleResult);
+                  _this200.scaleResults.get(scaleResult.scale).push(scaleResult);
                 }
               }
             });
@@ -46277,22 +47305,22 @@
         _createClass(AdminViewAssetComponent, [{
           key: "ngOnInit",
           value: function ngOnInit() {
-            var _this198 = this;
+            var _this201 = this;
 
             this.route.params.subscribe(function (params) {
               var assetId = params['assetId'];
-              _this198.hasLoaded = false;
+              _this201.hasLoaded = false;
 
-              _this198.assetService.getAsset(assetId).then(function (asset) {
-                _this198.hasLoaded = true;
-                _this198.asset = asset;
+              _this201.assetService.getAsset(assetId).then(function (asset) {
+                _this201.hasLoaded = true;
+                _this201.asset = asset;
               })["catch"](function (error) {
                 console.error(error);
 
                 if (error && error.status === 404 || error.status === 400) {
-                  _this198.alertService.error("404 This item could not be found");
+                  _this201.alertService.error("404 This item could not be found");
                 } else {
-                  _this198.alertService.error("There was a server error in loading this item.  Check your internet connection or contact support");
+                  _this201.alertService.error("There was a server error in loading this item.  Check your internet connection or contact support");
                 }
               });
             });
@@ -46481,14 +47509,14 @@
         var _super30 = _createSuper(SingleChoiceQuestion);
 
         function SingleChoiceQuestion() {
-          var _this199;
+          var _this202;
 
           _classCallCheck(this, SingleChoiceQuestion);
 
-          _this199 = _super30.call(this);
-          _this199.type = app_shared_models_question_type__WEBPACK_IMPORTED_MODULE_1__["QuestionType"].SingleChoice;
-          _this199.isSelected = false;
-          return _this199;
+          _this202 = _super30.call(this);
+          _this202.type = app_shared_models_question_type__WEBPACK_IMPORTED_MODULE_1__["QuestionType"].SingleChoice;
+          _this202.isSelected = false;
+          return _this202;
         }
 
         _createClass(SingleChoiceQuestion, [{
@@ -46599,7 +47627,7 @@
 
       var NavBarService = /*#__PURE__*/function () {
         function NavBarService(authService, activatedRoute, router, dacConfig) {
-          var _this200 = this;
+          var _this203 = this;
 
           _classCallCheck(this, NavBarService);
 
@@ -46608,10 +47636,10 @@
           this.router = router;
           this.dacConfig = dacConfig;
           this._userSubscription = this.authService.getLoginState().subscribe(function (stateUpdate) {
-            _this200.user = stateUpdate.user;
-            _this200._navItems = _this200.createNavItems(); // update our navigation items.
+            _this203.user = stateUpdate.user;
+            _this203._navItems = _this203.createNavItems(); // update our navigation items.
 
-            _this200._topNavBarItems = _this200.createTopNavItems();
+            _this203._topNavBarItems = _this203.createTopNavItems();
           }); // this._navItems = this.createNavItems();
 
           this._displaySideBarEvent = new rxjs__WEBPACK_IMPORTED_MODULE_4__["Subject"]();
@@ -46674,7 +47702,7 @@
         }, {
           key: "handleMenuItemClick",
           value: function handleMenuItemClick(navItem, event) {
-            var _this201 = this;
+            var _this204 = this;
 
             if (navItem.id == 'logout') {
               event.preventDefault();
@@ -46684,12 +47712,12 @@
                 if (resp && resp.redirectUrl) {
                   window.location.href = resp.redirectUrl;
                 } else {
-                  _this201.router.navigate(['/login']);
+                  _this204.router.navigate(['/login']);
                 }
               })["catch"](function (error) {
                 console.error(error);
 
-                _this201.router.navigate(["/login"]);
+                _this204.router.navigate(["/login"]);
               });
               return;
             }
@@ -46960,22 +47988,22 @@
         }, {
           key: "shouldDisplayItem",
           value: function shouldDisplayItem(navItem) {
-            var _this202 = this;
+            var _this205 = this;
 
             if (navItem.capability && navItem.capability.length) {
               return navItem.capability.some(function (c) {
-                return _this202.user.hasCapability(c);
+                return _this205.user.hasCapability(c);
               });
             }
 
             if (navItem.role.length) {
               if (navItem.roleExplicitMatch) {
                 return navItem.role.some(function (r) {
-                  return _this202.user.role === r;
+                  return _this205.user.role === r;
                 });
               } else {
                 return navItem.role.some(function (r) {
-                  return _this202.user.role <= r;
+                  return _this205.user.role <= r;
                 });
               }
             }
@@ -46995,7 +48023,7 @@
         }, {
           key: "topNavBarItemsForDisplay",
           get: function get() {
-            var _this203 = this;
+            var _this206 = this;
 
             var items = this._topNavBarItems; // any item with children... filter out the children based upon the display
 
@@ -47003,19 +48031,19 @@
               return i.children;
             }).forEach(function (i) {
               i.children = i.children.filter(function (ic) {
-                return _this203.shouldDisplayItem(ic);
+                return _this206.shouldDisplayItem(ic);
               });
               i.hasChildren = i.children.length > 0;
             }); // now filter out the parents.
 
             return items.filter(function (ni) {
-              return _this203.shouldDisplayItem(ni);
+              return _this206.shouldDisplayItem(ni);
             });
           }
         }, {
           key: "navItemsForDisplay",
           get: function get() {
-            var _this204 = this;
+            var _this207 = this;
 
             var items = this.navItems;
 
@@ -47028,13 +48056,13 @@
               return i.children;
             }).forEach(function (i) {
               i.children = i.children.filter(function (ic) {
-                return _this204.shouldDisplayItem(ic);
+                return _this207.shouldDisplayItem(ic);
               });
               i.hasChildren = i.children.length > 0;
             }); // now filter out the parents.
 
             return items.filter(function (ni) {
-              return _this204.shouldDisplayItem(ni);
+              return _this207.shouldDisplayItem(ni);
             });
           }
         }, {

@@ -1,3 +1,78 @@
+v0.13.3 Rebuild patient SPA: restore Print button on single assessment/asset reports
+
+  Rebuilt the Angular SPA bundle in public/frontend/ from assessments-angular
+  (ai/svg-charts-prototype). Fixes the missing Print button on the single assessment result view
+  (app-assessment-result-view) and the single asset result view (app-asset-result-view).
+
+    - Both views gated their print button on isFeatureEnabled('pdf.printing'), which is false in this
+      deployment because the server-side PDF service is disabled. Since printing is now browser-based
+      (window.print()), the aggregated report-viewer had already dropped that gate and
+      questionnaire-result-view hardcoded it on, but these two single-item views were missed, so
+      their button never rendered.
+    - Removed the dead pdf.printing gate so the browser Print button always shows when command
+      buttons are shown, and aligned them with report-viewer: labeled "Print" and added d-print-none
+      so the button is not captured in the printout.
+
+  Carries forward everything in v0.13.2/v0.13.1/v0.13.0 and the merged smart-style/logo,
+  portal-submit/EHR-launch, confidential-client, and source-map-routing fixes. Bundle file set
+  unchanged, so frontend.html.twig is untouched. Built with `npm run build` (dev config) under
+  Node 14.
+
+v0.13.2 Rebuild patient SPA: score bubble on SVG scale chart (visual consistency)
+
+  Rebuilt the Angular SPA bundle in public/frontend/ from assessments-angular
+  (ai/svg-charts-prototype). The score-axis SvgScaleChartComponent (app-svg-scale-chart) now shows
+  its score in the same rounded bubble introduced for the summary chart in v0.13.1, instead of a
+  plain bold text label. Both SVG chart types now present an identical score readout (bubble floats
+  above the bar with a pointer, drops inside the bar top when full height, width grows with the
+  score text, clamped horizontally) so a report with both chart types reads consistently.
+
+  Carries forward everything in v0.13.1/v0.13.0 and the merged smart-style/logo,
+  portal-submit/EHR-launch, confidential-client, and source-map-routing fixes. Bundle file set
+  unchanged, so frontend.html.twig is untouched. Built with `npm run build` (dev config) under
+  Node 14.
+
+v0.13.1 Rebuild patient SPA: always-on score bubbles on SVG summary charts
+
+  Rebuilt the Angular SPA bundle in public/frontend/ from assessments-angular
+  (ai/svg-charts-prototype) to restore the per-bar score readout that the old Chart.js hover
+  tooltip provided. The native-SVG SummaryScalesChart (app-svg-summary-scales-chart), which drives
+  both the single-bar Section 1 Summary and the multi-bar Breakdown charts, now draws a rounded
+  score bubble over every bar.
+
+    - The bubble floats just above its bar with a small downward pointer; when a bar reaches the top
+      of the plot it drops just inside the bar top and the pointer is omitted.
+    - Bubble width grows with the score text so 1-3 digit (and decimal) scores all fit, and it is
+      clamped horizontally so edge bars never overflow the viewBox.
+    - The score-axis SvgScaleChartComponent already renders its score label, so it is unchanged.
+
+  Carries forward everything in v0.13.0 (native-SVG charts, Option B) and the merged
+  smart-style/logo and portal-submit/EHR-launch fixes (built from origin/openemr-integration).
+  Bundle file set unchanged, so frontend.html.twig is untouched. Built with `npm run build`
+  (dev config) under Node 14.
+
+v0.13.0 Rebuild patient SPA: native-SVG assessment report charts (Option B)
+
+  Rebuilt the Angular SPA bundle in public/frontend/ from assessments-angular
+  (ai/svg-charts-prototype) to replace the Chart.js canvas report charts with pure inline-SVG
+  components. This removes the canvas-to-image rasterization layer that caused report charts to
+  print blank, distorted, or missing (notably the Section 1 Summary and Breakdown charts on the
+  PAB-RI 'sexual-betrayal-relationship' report). SVG prints natively and crisply with no <canvas>,
+  no toDataURL, no animation-complete timing dependency, and no rasterization race with
+  window.print().
+
+    - New SvgSummaryScalesChartComponent (app-svg-summary-scales-chart) and SvgScaleChartComponent
+      (app-svg-scale-chart) mirror the original @Input/@Output APIs; all report templates were
+      swapped to the app-svg-* selectors. The old Chart.js components remain in the source but are
+      unreferenced (reversible).
+    - This is a UAT/prototype deploy for visual comparison; the SVG geometry replicates the Chart.js
+      layout but label spacing (long range names, single-bar summary) should be eyeballed.
+
+  Carries forward the merged smart-style/logo and portal-submit/EHR-launch fixes (built from
+  origin/openemr-integration, which includes PRs #1-4). Bundle file set unchanged
+  (runtime/polyfills/vendor/main/styles, es2015 + es5), so frontend.html.twig is untouched. Built
+  with `npm run build` (dev config) under Node 14.
+
 v0.12.38 Rebuild patient SPA: harden smart-style handling (no blank logo, parse double-encoded JSON)
 
   Rebuilt the Angular SPA bundle in public/frontend/ from assessments-angular
