@@ -1,3 +1,17 @@
+v0.13.2 Rebuild patient SPA: score bubble on SVG scale chart (visual consistency)
+
+  Rebuilt the Angular SPA bundle in public/frontend/ from assessments-angular
+  (ai/svg-charts-prototype). The score-axis SvgScaleChartComponent (app-svg-scale-chart) now shows
+  its score in the same rounded bubble introduced for the summary chart in v0.13.1, instead of a
+  plain bold text label. Both SVG chart types now present an identical score readout (bubble floats
+  above the bar with a pointer, drops inside the bar top when full height, width grows with the
+  score text, clamped horizontally) so a report with both chart types reads consistently.
+
+  Carries forward everything in v0.13.1/v0.13.0 and the merged smart-style/logo,
+  portal-submit/EHR-launch, confidential-client, and source-map-routing fixes. Bundle file set
+  unchanged, so frontend.html.twig is untouched. Built with `npm run build` (dev config) under
+  Node 14.
+
 v0.13.1 Rebuild patient SPA: always-on score bubbles on SVG summary charts
 
   Rebuilt the Angular SPA bundle in public/frontend/ from assessments-angular

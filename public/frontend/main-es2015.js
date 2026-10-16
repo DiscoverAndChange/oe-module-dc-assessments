@@ -19227,20 +19227,36 @@ function SvgScaleChartComponent_div_0__svg_rect_4_Template(rf, ctx) { if (rf & 1
     const ctx_r3 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](2);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵattribute"]("x", ctx_r3.bar.x)("y", ctx_r3.bar.y)("width", ctx_r3.bar.width)("height", ctx_r3.bar.height);
 } }
-function SvgScaleChartComponent_div_0__svg_text_5_Template(rf, ctx) { if (rf & 1) {
+function SvgScaleChartComponent_div_0__svg_g_5__svg_polygon_1_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnamespaceSVG"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "text", 11);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "polygon", 13);
+} if (rf & 2) {
+    const ctx_r8 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](3);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵattribute"]("points", ctx_r8.scoreBubble.pointer);
+} }
+function SvgScaleChartComponent_div_0__svg_g_5_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnamespaceSVG"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "g", 11);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](1, SvgScaleChartComponent_div_0__svg_g_5__svg_polygon_1_Template, 1, 1, "polygon", 12);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](2, "rect", 13);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](3, "text", 14);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](4);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 } if (rf & 2) {
     const ctx_r4 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵattribute"]("x", ctx_r4.scoreLabel.x)("y", ctx_r4.scoreLabel.y);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](ctx_r4.scoreLabel.text);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx_r4.scoreBubble.pointer);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵattribute"]("x", ctx_r4.scoreBubble.rectX)("y", ctx_r4.scoreBubble.rectY)("width", ctx_r4.scoreBubble.width)("height", ctx_r4.scoreBubble.height)("rx", ctx_r4.scoreBubble.rx)("ry", ctx_r4.scoreBubble.rx);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵattribute"]("x", ctx_r4.scoreBubble.textX)("y", ctx_r4.scoreBubble.textY);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](ctx_r4.scoreBubble.text);
 } }
 function SvgScaleChartComponent_div_0__svg_text_6_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnamespaceSVG"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "text", 12);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "text", 15);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](1);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 } if (rf & 2) {
@@ -19256,7 +19272,7 @@ function SvgScaleChartComponent_div_0_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](2, SvgScaleChartComponent_div_0__svg_rect_2_Template, 1, 4, "rect", 3);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](3, SvgScaleChartComponent_div_0__svg_text_3_Template, 2, 3, "text", 4);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](4, SvgScaleChartComponent_div_0__svg_rect_4_Template, 1, 4, "rect", 5);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](5, SvgScaleChartComponent_div_0__svg_text_5_Template, 2, 3, "text", 6);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](5, SvgScaleChartComponent_div_0__svg_g_5_Template, 5, 10, "g", 6);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](6, SvgScaleChartComponent_div_0__svg_text_6_Template, 2, 3, "text", 7);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
@@ -19271,7 +19287,7 @@ function SvgScaleChartComponent_div_0_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx_r0.bar);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx_r0.scoreLabel);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx_r0.scoreBubble);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx_r0.scaleNameLabel);
 } }
@@ -19293,7 +19309,7 @@ class SvgScaleChartComponent {
         this.bands = [];
         this.rangeLabels = [];
         this.bar = null;
-        this.scoreLabel = null;
+        this.scoreBubble = null;
         this.scaleNameLabel = "";
     }
     ngOnChanges(changes) {
@@ -19309,7 +19325,7 @@ class SvgScaleChartComponent {
         this.bands = [];
         this.rangeLabels = [];
         this.bar = null;
-        this.scoreLabel = null;
+        this.scoreBubble = null;
         this.scaleNameLabel = "";
         if (!this.hasResult) {
             return;
@@ -19342,10 +19358,47 @@ class SvgScaleChartComponent {
         const centerX = x0 + plotW / 2;
         const barTop = yFor(score);
         this.bar = { x: centerX - barW / 2, y: barTop, width: barW, height: (y0 + plotH) - barTop };
-        // Score value above the bar.
-        this.scoreLabel = { x: centerX, y: Math.max(y0 + 14, barTop - 6), text: this.scaleResult.getScoreForDisplay() };
+        // Score bubble above the bar (matching the summary scales chart).
+        this.scoreBubble = this.buildScoreBubble(centerX, barTop, y0);
         if (this.showScaleName === true) {
             this.scaleNameLabel = scale.name || "";
+        }
+    }
+    /**
+     * Builds the rounded score bubble shown over the bar. It floats above the bar
+     * with a small downward pointer, or drops just inside the bar top when the bar
+     * reaches the plot ceiling. Width grows with the score text (1-3 digits and
+     * decimals fit) and is clamped horizontally so it never overflows the viewBox.
+     * Mirrors SvgSummaryScalesChartComponent.buildScoreBubble for a consistent look.
+     */
+    buildScoreBubble(centerX, barTop, y0) {
+        const C = SvgScaleChartComponent;
+        const text = this.safeScoreText();
+        const width = Math.max(C.BUBBLE_MIN_WIDTH, text.length * C.BUBBLE_CHAR_WIDTH + C.BUBBLE_PAD_X);
+        const height = C.BUBBLE_HEIGHT;
+        const desiredTop = barTop - C.BUBBLE_POINTER_H - height;
+        const above = desiredTop >= y0;
+        const rectY = above ? desiredTop : barTop + 3;
+        const minX = 2;
+        const maxX = C.W - width - 2;
+        const rectX = Math.max(minX, Math.min(maxX, centerX - width / 2));
+        const pointer = above
+            ? `${centerX - 5},${rectY + height} ${centerX + 5},${rectY + height} ${centerX},${rectY + height + C.BUBBLE_POINTER_H}`
+            : null;
+        return {
+            rectX, rectY, width, height, rx: 5,
+            textX: rectX + width / 2,
+            textY: rectY + height * 0.68,
+            text,
+            pointer
+        };
+    }
+    safeScoreText() {
+        try {
+            return this.scaleResult.getScoreForDisplay();
+        }
+        catch (e) {
+            return String(this.scaleResult.score != null ? this.scaleResult.score : "");
         }
     }
 }
@@ -19357,12 +19410,18 @@ SvgScaleChartComponent.MARGIN_TOP = 24;
 SvgScaleChartComponent.MARGIN_BOTTOM_WITH_NAME = 40;
 SvgScaleChartComponent.MARGIN_BOTTOM = 14;
 SvgScaleChartComponent.MAX_BAR_WIDTH = 60;
+// Score bubble geometry (shared look with the summary scales chart).
+SvgScaleChartComponent.BUBBLE_HEIGHT = 20;
+SvgScaleChartComponent.BUBBLE_POINTER_H = 5;
+SvgScaleChartComponent.BUBBLE_MIN_WIDTH = 22;
+SvgScaleChartComponent.BUBBLE_CHAR_WIDTH = 8;
+SvgScaleChartComponent.BUBBLE_PAD_X = 14;
 SvgScaleChartComponent.ɵfac = function SvgScaleChartComponent_Factory(t) { return new (t || SvgScaleChartComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"])); };
-SvgScaleChartComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: SvgScaleChartComponent, selectors: [["app-svg-scale-chart"]], inputs: { scaleResult: ["scale-result", "scaleResult"], showScaleName: ["show-scale-name", "showScaleName"], showRanges: ["show-ranges", "showRanges"] }, outputs: { complete: "complete" }, features: [_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵNgOnChangesFeature"]], decls: 1, vars: 1, consts: [["class", "scale-chart-container svg-chart-container", 4, "ngIf"], [1, "scale-chart-container", "svg-chart-container"], ["preserveAspectRatio", "xMidYMid meet", "xmlns", "http://www.w3.org/2000/svg", 1, "dac-svg-chart"], ["class", "dac-svg-range-band", "shape-rendering", "crispEdges", 4, "ngFor", "ngForOf"], ["text-anchor", "end", "class", "dac-svg-rangelabel", 4, "ngFor", "ngForOf"], ["class", "dac-svg-bar", 4, "ngIf"], ["text-anchor", "middle", "class", "dac-svg-score", 4, "ngIf"], ["text-anchor", "middle", "class", "dac-svg-scalename", 4, "ngIf"], ["shape-rendering", "crispEdges", 1, "dac-svg-range-band"], ["text-anchor", "end", 1, "dac-svg-rangelabel"], [1, "dac-svg-bar"], ["text-anchor", "middle", 1, "dac-svg-score"], ["text-anchor", "middle", 1, "dac-svg-scalename"]], template: function SvgScaleChartComponent_Template(rf, ctx) { if (rf & 1) {
+SvgScaleChartComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: SvgScaleChartComponent, selectors: [["app-svg-scale-chart"]], inputs: { scaleResult: ["scale-result", "scaleResult"], showScaleName: ["show-scale-name", "showScaleName"], showRanges: ["show-ranges", "showRanges"] }, outputs: { complete: "complete" }, features: [_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵNgOnChangesFeature"]], decls: 1, vars: 1, consts: [["class", "scale-chart-container svg-chart-container", 4, "ngIf"], [1, "scale-chart-container", "svg-chart-container"], ["preserveAspectRatio", "xMidYMid meet", "xmlns", "http://www.w3.org/2000/svg", 1, "dac-svg-chart"], ["class", "dac-svg-range-band", "shape-rendering", "crispEdges", 4, "ngFor", "ngForOf"], ["text-anchor", "end", "class", "dac-svg-rangelabel", 4, "ngFor", "ngForOf"], ["class", "dac-svg-bar", 4, "ngIf"], ["class", "dac-svg-bubble", 4, "ngIf"], ["text-anchor", "middle", "class", "dac-svg-scalename", 4, "ngIf"], ["shape-rendering", "crispEdges", 1, "dac-svg-range-band"], ["text-anchor", "end", 1, "dac-svg-rangelabel"], [1, "dac-svg-bar"], [1, "dac-svg-bubble"], ["class", "dac-svg-bubble-box", 4, "ngIf"], [1, "dac-svg-bubble-box"], ["text-anchor", "middle", 1, "dac-svg-bubble-text"], ["text-anchor", "middle", 1, "dac-svg-scalename"]], template: function SvgScaleChartComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](0, SvgScaleChartComponent_div_0_Template, 7, 6, "div", 0);
     } if (rf & 2) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx.hasResult);
-    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_2__["NgIf"], _angular_common__WEBPACK_IMPORTED_MODULE_2__["NgForOf"]], styles: ["[_nghost-%COMP%] {\n  display: block;\n  text-align: center;\n}\n\n.svg-chart-container[_ngcontent-%COMP%] {\n  width: 100%;\n}\n\n.dac-svg-chart[_ngcontent-%COMP%] {\n  width: 100%;\n  height: auto;\n  display: block;\n}\n\n.dac-svg-range-band[_ngcontent-%COMP%] {\n  fill: rgba(68, 170, 213, 0.1);\n}\n\n.dac-svg-bar[_ngcontent-%COMP%] {\n  fill: rgba(92, 141, 181, 0.75);\n  stroke: rgba(0, 0, 0, 0.35);\n  stroke-width: 1;\n}\n\n.dac-svg-rangelabel[_ngcontent-%COMP%] {\n  font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;\n  font-size: 13px;\n  fill: #000;\n}\n\n.dac-svg-score[_ngcontent-%COMP%] {\n  font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;\n  font-size: 18px;\n  font-weight: 700;\n  fill: #333;\n}\n\n.dac-svg-scalename[_ngcontent-%COMP%] {\n  font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;\n  font-size: 13px;\n  fill: #666;\n}\n\n@media print {\n  .dac-svg-chart[_ngcontent-%COMP%] {\n    page-break-inside: avoid;\n  }\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvYXNzZXNzbWVudC1jaGFydHMvc3ZnLXNjYWxlLWNoYXJ0L3N2Zy1zY2FsZS1jaGFydC5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0UsY0FBYztFQUNkLGtCQUFrQjtBQUNwQjs7QUFFQTtFQUNFLFdBQVc7QUFDYjs7QUFFQTtFQUNFLFdBQVc7RUFDWCxZQUFZO0VBQ1osY0FBYztBQUNoQjs7QUFFQTtFQUNFLDZCQUE2QjtBQUMvQjs7QUFFQTtFQUNFLDhCQUE4QjtFQUM5QiwyQkFBMkI7RUFDM0IsZUFBZTtBQUNqQjs7QUFFQTtFQUNFLCtEQUErRDtFQUMvRCxlQUFlO0VBQ2YsVUFBVTtBQUNaOztBQUVBO0VBQ0UsK0RBQStEO0VBQy9ELGVBQWU7RUFDZixnQkFBZ0I7RUFDaEIsVUFBVTtBQUNaOztBQUVBO0VBQ0UsK0RBQStEO0VBQy9ELGVBQWU7RUFDZixVQUFVO0FBQ1o7O0FBRUE7RUFDRTtJQUNFLHdCQUF3QjtFQUMxQjtBQUNGIiwiZmlsZSI6InNyYy9hcHAvYXNzZXNzbWVudC1jaGFydHMvc3ZnLXNjYWxlLWNoYXJ0L3N2Zy1zY2FsZS1jaGFydC5jb21wb25lbnQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiOmhvc3Qge1xuICBkaXNwbGF5OiBibG9jaztcbiAgdGV4dC1hbGlnbjogY2VudGVyO1xufVxuXG4uc3ZnLWNoYXJ0LWNvbnRhaW5lciB7XG4gIHdpZHRoOiAxMDAlO1xufVxuXG4uZGFjLXN2Zy1jaGFydCB7XG4gIHdpZHRoOiAxMDAlO1xuICBoZWlnaHQ6IGF1dG87XG4gIGRpc3BsYXk6IGJsb2NrO1xufVxuXG4uZGFjLXN2Zy1yYW5nZS1iYW5kIHtcbiAgZmlsbDogcmdiYSg2OCwgMTcwLCAyMTMsIDAuMSk7XG59XG5cbi5kYWMtc3ZnLWJhciB7XG4gIGZpbGw6IHJnYmEoOTIsIDE0MSwgMTgxLCAwLjc1KTtcbiAgc3Ryb2tlOiByZ2JhKDAsIDAsIDAsIDAuMzUpO1xuICBzdHJva2Utd2lkdGg6IDE7XG59XG5cbi5kYWMtc3ZnLXJhbmdlbGFiZWwge1xuICBmb250LWZhbWlseTogJ0hlbHZldGljYSBOZXVlJywgJ0hlbHZldGljYScsICdBcmlhbCcsIHNhbnMtc2VyaWY7XG4gIGZvbnQtc2l6ZTogMTNweDtcbiAgZmlsbDogIzAwMDtcbn1cblxuLmRhYy1zdmctc2NvcmUge1xuICBmb250LWZhbWlseTogJ0hlbHZldGljYSBOZXVlJywgJ0hlbHZldGljYScsICdBcmlhbCcsIHNhbnMtc2VyaWY7XG4gIGZvbnQtc2l6ZTogMThweDtcbiAgZm9udC13ZWlnaHQ6IDcwMDtcbiAgZmlsbDogIzMzMztcbn1cblxuLmRhYy1zdmctc2NhbGVuYW1lIHtcbiAgZm9udC1mYW1pbHk6ICdIZWx2ZXRpY2EgTmV1ZScsICdIZWx2ZXRpY2EnLCAnQXJpYWwnLCBzYW5zLXNlcmlmO1xuICBmb250LXNpemU6IDEzcHg7XG4gIGZpbGw6ICM2NjY7XG59XG5cbkBtZWRpYSBwcmludCB7XG4gIC5kYWMtc3ZnLWNoYXJ0IHtcbiAgICBwYWdlLWJyZWFrLWluc2lkZTogYXZvaWQ7XG4gIH1cbn1cbiJdfQ== */"] });
+    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_2__["NgIf"], _angular_common__WEBPACK_IMPORTED_MODULE_2__["NgForOf"]], styles: ["[_nghost-%COMP%] {\n  display: block;\n  text-align: center;\n}\n\n.svg-chart-container[_ngcontent-%COMP%] {\n  width: 100%;\n}\n\n.dac-svg-chart[_ngcontent-%COMP%] {\n  width: 100%;\n  height: auto;\n  display: block;\n}\n\n.dac-svg-range-band[_ngcontent-%COMP%] {\n  fill: rgba(68, 170, 213, 0.1);\n}\n\n.dac-svg-bar[_ngcontent-%COMP%] {\n  fill: rgba(92, 141, 181, 0.75);\n  stroke: rgba(0, 0, 0, 0.35);\n  stroke-width: 1;\n}\n\n.dac-svg-rangelabel[_ngcontent-%COMP%] {\n  font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;\n  font-size: 13px;\n  fill: #000;\n}\n\n.dac-svg-bubble-box[_ngcontent-%COMP%] {\n  fill: rgba(33, 37, 41, 0.9);\n  stroke: #ffffff;\n  stroke-width: 1;\n}\n\n.dac-svg-bubble-text[_ngcontent-%COMP%] {\n  font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;\n  font-size: 13px;\n  font-weight: 700;\n  fill: #ffffff;\n}\n\n.dac-svg-scalename[_ngcontent-%COMP%] {\n  font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;\n  font-size: 13px;\n  fill: #666;\n}\n\n@media print {\n  .dac-svg-chart[_ngcontent-%COMP%] {\n    page-break-inside: avoid;\n  }\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvYXNzZXNzbWVudC1jaGFydHMvc3ZnLXNjYWxlLWNoYXJ0L3N2Zy1zY2FsZS1jaGFydC5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0UsY0FBYztFQUNkLGtCQUFrQjtBQUNwQjs7QUFFQTtFQUNFLFdBQVc7QUFDYjs7QUFFQTtFQUNFLFdBQVc7RUFDWCxZQUFZO0VBQ1osY0FBYztBQUNoQjs7QUFFQTtFQUNFLDZCQUE2QjtBQUMvQjs7QUFFQTtFQUNFLDhCQUE4QjtFQUM5QiwyQkFBMkI7RUFDM0IsZUFBZTtBQUNqQjs7QUFFQTtFQUNFLCtEQUErRDtFQUMvRCxlQUFlO0VBQ2YsVUFBVTtBQUNaOztBQUVBO0VBQ0UsMkJBQTJCO0VBQzNCLGVBQWU7RUFDZixlQUFlO0FBQ2pCOztBQUVBO0VBQ0UsK0RBQStEO0VBQy9ELGVBQWU7RUFDZixnQkFBZ0I7RUFDaEIsYUFBYTtBQUNmOztBQUVBO0VBQ0UsK0RBQStEO0VBQy9ELGVBQWU7RUFDZixVQUFVO0FBQ1o7O0FBRUE7RUFDRTtJQUNFLHdCQUF3QjtFQUMxQjtBQUNGIiwiZmlsZSI6InNyYy9hcHAvYXNzZXNzbWVudC1jaGFydHMvc3ZnLXNjYWxlLWNoYXJ0L3N2Zy1zY2FsZS1jaGFydC5jb21wb25lbnQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiOmhvc3Qge1xuICBkaXNwbGF5OiBibG9jaztcbiAgdGV4dC1hbGlnbjogY2VudGVyO1xufVxuXG4uc3ZnLWNoYXJ0LWNvbnRhaW5lciB7XG4gIHdpZHRoOiAxMDAlO1xufVxuXG4uZGFjLXN2Zy1jaGFydCB7XG4gIHdpZHRoOiAxMDAlO1xuICBoZWlnaHQ6IGF1dG87XG4gIGRpc3BsYXk6IGJsb2NrO1xufVxuXG4uZGFjLXN2Zy1yYW5nZS1iYW5kIHtcbiAgZmlsbDogcmdiYSg2OCwgMTcwLCAyMTMsIDAuMSk7XG59XG5cbi5kYWMtc3ZnLWJhciB7XG4gIGZpbGw6IHJnYmEoOTIsIDE0MSwgMTgxLCAwLjc1KTtcbiAgc3Ryb2tlOiByZ2JhKDAsIDAsIDAsIDAuMzUpO1xuICBzdHJva2Utd2lkdGg6IDE7XG59XG5cbi5kYWMtc3ZnLXJhbmdlbGFiZWwge1xuICBmb250LWZhbWlseTogJ0hlbHZldGljYSBOZXVlJywgJ0hlbHZldGljYScsICdBcmlhbCcsIHNhbnMtc2VyaWY7XG4gIGZvbnQtc2l6ZTogMTNweDtcbiAgZmlsbDogIzAwMDtcbn1cblxuLmRhYy1zdmctYnViYmxlLWJveCB7XG4gIGZpbGw6IHJnYmEoMzMsIDM3LCA0MSwgMC45KTtcbiAgc3Ryb2tlOiAjZmZmZmZmO1xuICBzdHJva2Utd2lkdGg6IDE7XG59XG5cbi5kYWMtc3ZnLWJ1YmJsZS10ZXh0IHtcbiAgZm9udC1mYW1pbHk6ICdIZWx2ZXRpY2EgTmV1ZScsICdIZWx2ZXRpY2EnLCAnQXJpYWwnLCBzYW5zLXNlcmlmO1xuICBmb250LXNpemU6IDEzcHg7XG4gIGZvbnQtd2VpZ2h0OiA3MDA7XG4gIGZpbGw6ICNmZmZmZmY7XG59XG5cbi5kYWMtc3ZnLXNjYWxlbmFtZSB7XG4gIGZvbnQtZmFtaWx5OiAnSGVsdmV0aWNhIE5ldWUnLCAnSGVsdmV0aWNhJywgJ0FyaWFsJywgc2Fucy1zZXJpZjtcbiAgZm9udC1zaXplOiAxM3B4O1xuICBmaWxsOiAjNjY2O1xufVxuXG5AbWVkaWEgcHJpbnQge1xuICAuZGFjLXN2Zy1jaGFydCB7XG4gICAgcGFnZS1icmVhay1pbnNpZGU6IGF2b2lkO1xuICB9XG59XG4iXX0= */"] });
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](SvgScaleChartComponent, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
         args: [{
