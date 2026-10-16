@@ -11,5 +11,5 @@ RewriteRule ^index\.php$ - [L]
 ## exclude the assets directory
 RewriteCond %{REQUEST_URI} !^/(assets)/
 ## exclude any files with an extension that we use in our application.
-RewriteCond %{REQUEST_URI} !(\.eot|\.ttf|\.woff|\.svg|\.png|\.jpg|\.gif|\.css|\.js|\.ico)$
+RewriteCond %{REQUEST_URI} !(\.eot|\.ttf|\.woff|\.svg|\.png|\.jpg|\.gif|\.css|\.js|\.ico|\.map)$
 RewriteRule . index.php [L]
