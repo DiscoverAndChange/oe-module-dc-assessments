@@ -1,3 +1,23 @@
+v0.13.3 Rebuild patient SPA: restore Print button on single assessment/asset reports
+
+  Rebuilt the Angular SPA bundle in public/frontend/ from assessments-angular
+  (ai/svg-charts-prototype). Fixes the missing Print button on the single assessment result view
+  (app-assessment-result-view) and the single asset result view (app-asset-result-view).
+
+    - Both views gated their print button on isFeatureEnabled('pdf.printing'), which is false in this
+      deployment because the server-side PDF service is disabled. Since printing is now browser-based
+      (window.print()), the aggregated report-viewer had already dropped that gate and
+      questionnaire-result-view hardcoded it on, but these two single-item views were missed, so
+      their button never rendered.
+    - Removed the dead pdf.printing gate so the browser Print button always shows when command
+      buttons are shown, and aligned them with report-viewer: labeled "Print" and added d-print-none
+      so the button is not captured in the printout.
+
+  Carries forward everything in v0.13.2/v0.13.1/v0.13.0 and the merged smart-style/logo,
+  portal-submit/EHR-launch, confidential-client, and source-map-routing fixes. Bundle file set
+  unchanged, so frontend.html.twig is untouched. Built with `npm run build` (dev config) under
+  Node 14.
+
 v0.13.2 Rebuild patient SPA: score bubble on SVG scale chart (visual consistency)
 
   Rebuilt the Angular SPA bundle in public/frontend/ from assessments-angular

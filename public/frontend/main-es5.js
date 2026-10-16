@@ -5224,49 +5224,35 @@
         }
       }
 
-      function AssetResultViewComponent_div_6_input_1_Template(rf, ctx) {
+      function AssetResultViewComponent_div_6_Template(rf, ctx) {
         if (rf & 1) {
-          var _r9 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
+          var _r8 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "input", 16);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 14);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function AssetResultViewComponent_div_6_input_1_Template_input_click_0_listener() {
-            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r9);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "input", 15);
 
-            var ctx_r8 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](2);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function AssetResultViewComponent_div_6_Template_input_click_1_listener() {
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r8);
 
-            return ctx_r8.browserPrint();
+            var ctx_r7 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
+
+            return ctx_r7.browserPrint();
           });
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        }
-      }
-
-      function AssetResultViewComponent_div_6_Template(rf, ctx) {
-        if (rf & 1) {
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 14);
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](1, AssetResultViewComponent_div_6_input_1_Template, 1, 0, "input", 15);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        }
-
-        if (rf & 2) {
-          var ctx_r1 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx_r1.allowPrinting);
         }
       }
 
       function AssetResultViewComponent_div_11_Template(rf, ctx) {
         if (rf & 1) {
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 17);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 16);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "div", 18);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "div", 17);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](2, "p", 19);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](2, "p", 18);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](3, "app-spin-icon");
 
@@ -5282,7 +5268,7 @@
 
       function AssetResultViewComponent_dac_exercise_15_Template(rf, ctx) {
         if (rf & 1) {
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "dac-exercise", 20);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "dac-exercise", 19);
         }
 
         if (rf & 2) {
@@ -5294,7 +5280,7 @@
 
       function AssetResultViewComponent_dac_article_16_Template(rf, ctx) {
         if (rf & 1) {
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "dac-article", 21);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "dac-article", 20);
         }
 
         if (rf & 2) {
@@ -5410,7 +5396,7 @@
         selectors: [["dac-asset-result-view"]],
         decls: 17,
         vars: 12,
-        consts: [[1, "col", "itemsContainer", "d-print-block-visible"], [1, "row", "report-controls"], ["class", "col-2", 4, "ngIf"], [3, "ngClass"], [1, "h1-responsive", "report-name", "text-center"], ["class", "col-2 ml-auto", 4, "ngIf"], [1, "row", "d-none", "d-print-block-visible"], [1, "col-12", "text-center"], ["class", "row", 4, "ngIf"], [1, "text-center", "offset-2", "col-8"], ["class", "card card-body", 3, "exercise", "result", "hideHeaders", "disabled", 4, "ngIf"], ["class", "card card-body", 3, "article", "result", "hideHeaders", "disabled", 4, "ngIf"], [1, "col-2"], ["type", "button", "value", "Back", 1, "btn", "btn-primary", 3, "click"], [1, "col-2", "ml-auto"], ["class", "btn btn-secondary", "type", "button", "value", "Download PDF", 3, "click", 4, "ngIf"], ["type", "button", "value", "Download PDF", 1, "btn", "btn-secondary", 3, "click"], [1, "row"], [1, "col"], [1, "alert", "alert-warning"], [1, "card", "card-body", 3, "exercise", "result", "hideHeaders", "disabled"], [1, "card", "card-body", 3, "article", "result", "hideHeaders", "disabled"]],
+        consts: [[1, "col", "itemsContainer", "d-print-block-visible"], [1, "row", "report-controls"], ["class", "col-2", 4, "ngIf"], [3, "ngClass"], [1, "h1-responsive", "report-name", "text-center"], ["class", "col-2 ml-auto", 4, "ngIf"], [1, "row", "d-none", "d-print-block-visible"], [1, "col-12", "text-center"], ["class", "row", 4, "ngIf"], [1, "text-center", "offset-2", "col-8"], ["class", "card card-body", 3, "exercise", "result", "hideHeaders", "disabled", 4, "ngIf"], ["class", "card card-body", 3, "article", "result", "hideHeaders", "disabled", 4, "ngIf"], [1, "col-2"], ["type", "button", "value", "Back", 1, "btn", "btn-primary", 3, "click"], [1, "col-2", "ml-auto"], ["type", "button", "value", "Print", 1, "btn", "btn-secondary", "d-print-none", 3, "click"], [1, "row"], [1, "col"], [1, "alert", "alert-warning"], [1, "card", "card-body", 3, "exercise", "result", "hideHeaders", "disabled"], [1, "card", "card-body", 3, "article", "result", "hideHeaders", "disabled"]],
         template: function AssetResultViewComponent_Template(rf, ctx) {
           if (rf & 1) {
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 0);
@@ -5429,7 +5415,7 @@
 
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
-            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](6, AssetResultViewComponent_div_6_Template, 2, 1, "div", 5);
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](6, AssetResultViewComponent_div_6_Template, 2, 0, "div", 5);
 
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
@@ -19077,36 +19063,18 @@
         }
       }
 
-      function AssessmentResultViewComponent_div_6_input_1_Template(rf, ctx) {
+      function AssessmentResultViewComponent_div_6_input_2_Template(rf, ctx) {
         if (rf & 1) {
-          var _r9 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
+          var _r8 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
 
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "input", 13);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function AssessmentResultViewComponent_div_6_input_1_Template_input_click_0_listener() {
-            _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r9);
-
-            var ctx_r8 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](2);
-
-            return ctx_r8.browserPrint();
-          });
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        }
-      }
-
-      function AssessmentResultViewComponent_div_6_input_2_Template(rf, ctx) {
-        if (rf & 1) {
-          var _r11 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "input", 14);
-
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function AssessmentResultViewComponent_div_6_input_2_Template_input_click_0_listener() {
-            _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r11);
+            _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r8);
 
-            var ctx_r10 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](2);
+            var ctx_r7 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](2);
 
-            return ctx_r10.saveRescoredResult();
+            return ctx_r7.saveRescoredResult();
           });
 
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
@@ -19115,9 +19083,21 @@
 
       function AssessmentResultViewComponent_div_6_Template(rf, ctx) {
         if (rf & 1) {
+          var _r10 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
+
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 10);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](1, AssessmentResultViewComponent_div_6_input_1_Template, 1, 0, "input", 11);
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "input", 11);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function AssessmentResultViewComponent_div_6_Template_input_click_1_listener() {
+            _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r10);
+
+            var ctx_r9 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"]();
+
+            return ctx_r9.browserPrint();
+          });
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](2, AssessmentResultViewComponent_div_6_input_2_Template, 1, 0, "input", 12);
 
@@ -19127,11 +19107,7 @@
         if (rf & 2) {
           var ctx_r1 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"]();
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ctx_r1.allowPrinting);
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ctx_r1.allowRescoreResults);
         }
@@ -19139,11 +19115,11 @@
 
       function AssessmentResultViewComponent_div_7_Template(rf, ctx) {
         if (rf & 1) {
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 15);
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 14);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "div", 16);
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "div", 15);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](2, "p", 17);
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](2, "p", 16);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](3, "app-spin-icon");
 
@@ -19159,17 +19135,17 @@
 
       function AssessmentResultViewComponent_div_8_Template(rf, ctx) {
         if (rf & 1) {
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 18);
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 17);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "div", 19);
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "div", 18);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](2, "div", 20);
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](2, "div", 19);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](3, "div", 21);
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](3, "div", 20);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](4, "div", 22);
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](4, "div", 21);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](5, "h3", 23);
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](5, "h3", 22);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](6, "Summary");
 
@@ -19177,13 +19153,11 @@
 
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](7, "div", 24);
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](7, "div", 23);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](8, "div", 15);
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](8, "div", 14);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](9, "app-scale-results-table-summary", 25, 26);
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](9, "app-scale-results-table-summary", 24, 25);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 
@@ -19191,9 +19165,11 @@
 
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](11, "div", 15);
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](12, "app-therapist-scale-results", 27, 28);
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](11, "div", 14);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](12, "app-therapist-scale-results", 26, 27);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 
@@ -19442,7 +19418,7 @@
         },
         decls: 9,
         vars: 12,
-        consts: [[1, "col", "itemsContainer", "d-print-block-visible", 3, "ngClass"], [1, "row", "report-controls"], ["class", "col-2", 4, "ngIf"], [3, "ngClass"], [1, "h1-responsive", "report-name", "text-center"], ["class", "col-2 ml-auto", 4, "ngIf"], ["class", "row", 4, "ngIf"], ["class", "row d-print-block-visible", 4, "ngIf"], [1, "col-2"], ["type", "button", "value", "Back", 1, "btn", "btn-primary", 3, "click"], [1, "col-2", "ml-auto"], ["class", "btn btn-secondary", "type", "button", "value", "Download PDF", 3, "click", 4, "ngIf"], ["class", "btn btn-secondary", "type", "button", "value", "Save Result", 3, "click", 4, "ngIf"], ["type", "button", "value", "Download PDF", 1, "btn", "btn-secondary", 3, "click"], ["type", "button", "value", "Save Result", 1, "btn", "btn-secondary", 3, "click"], [1, "row"], [1, "col"], [1, "alert", "alert-warning"], [1, "row", "d-print-block-visible"], [1, "col", "d-print-block-visible"], [1, "row", "mb-3"], [1, "card", "card-cascade", "wider", "col"], [1, "view", "gradient-card-header", "primary-gradient", "text-light"], [1, "h3-responsive", "text-center"], [1, "card-body"], [1, "col", 3, "scaleResults"], ["tableSummary", ""], [1, "col", 3, "resultTitle", "assessmentResult", "scaleResults"], ["therapistScaleResults", ""]],
+        consts: [[1, "col", "itemsContainer", "d-print-block-visible", 3, "ngClass"], [1, "row", "report-controls"], ["class", "col-2", 4, "ngIf"], [3, "ngClass"], [1, "h1-responsive", "report-name", "text-center"], ["class", "col-2 ml-auto", 4, "ngIf"], ["class", "row", 4, "ngIf"], ["class", "row d-print-block-visible", 4, "ngIf"], [1, "col-2"], ["type", "button", "value", "Back", 1, "btn", "btn-primary", 3, "click"], [1, "col-2", "ml-auto"], ["type", "button", "value", "Print", 1, "btn", "btn-secondary", "d-print-none", 3, "click"], ["class", "btn btn-secondary", "type", "button", "value", "Save Result", 3, "click", 4, "ngIf"], ["type", "button", "value", "Save Result", 1, "btn", "btn-secondary", 3, "click"], [1, "row"], [1, "col"], [1, "alert", "alert-warning"], [1, "row", "d-print-block-visible"], [1, "col", "d-print-block-visible"], [1, "row", "mb-3"], [1, "card", "card-cascade", "wider", "col"], [1, "view", "gradient-card-header", "primary-gradient", "text-light"], [1, "h3-responsive", "text-center"], [1, "card-body"], [1, "col", 3, "scaleResults"], ["tableSummary", ""], [1, "col", 3, "resultTitle", "assessmentResult", "scaleResults"], ["therapistScaleResults", ""]],
         template: function AssessmentResultViewComponent_Template(rf, ctx) {
           if (rf & 1) {
             _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 0);
@@ -19461,7 +19437,7 @@
 
             _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 
-            _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](6, AssessmentResultViewComponent_div_6_Template, 3, 2, "div", 5);
+            _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](6, AssessmentResultViewComponent_div_6_Template, 3, 1, "div", 5);
 
             _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 
